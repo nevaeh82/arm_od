@@ -6,7 +6,7 @@ ProjectDir=$$PWD
 CONFIG += staticlib
 
 include(../../specs/project.pri)
-#include(../ARM_OD_Common/reference.pri)
+include(../ARM_OD_Common/reference.pri)
 include(../../specs/qxt.pri)
 include(../../specs/logger.pri)
 include($$SolutionDir/specs/pwgiswidget.pri )
@@ -75,7 +75,8 @@ HEADERS += \
     Tabs/Tree/TreeWidgetDelegate.h \
     UAV/BLAPerehvatDialog.h \
     UAV/ZInterception.h \
-    arm_od_view.h
+    MainWindow.h \
+    MainWindowController.h
 
 SOURCES += \
     Common/CommandMessage.cpp \
@@ -100,7 +101,8 @@ SOURCES += \
     Tabs/Tree/TreeWidgetDelegate.cpp \
     UAV/BLAPerehvatDialog.cpp \
     UAV/ZInterception.cpp \
-    arm_od_view.cpp
+    MainWindow.cpp \
+    MainWindowController.cpp
 
 FORMS += \
     Tabs/Solver/Solver.ui \
