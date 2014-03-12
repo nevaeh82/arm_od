@@ -29,14 +29,16 @@
 
 #include "../NIIPP/NIIPPControl.h"
 
-class TabManager: public QTabWidget, public IModuleController, public ITabManager
+class TabManager: public QObject, public IModuleController, public ITabManager
 {
     Q_OBJECT
 public:
-    TabManager(QWidget *parent = 0);
+	TabManager(QTabWidget *tabWidget, QObject *parent = 0);
     ~TabManager();
 
 private:
+	QTabWidget* m_tabWidget;
+
     unsigned int    _id;
     QString         _name;
     QMap<int, TabsProperty *>   _map_settings;

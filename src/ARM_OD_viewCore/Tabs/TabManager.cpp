@@ -2,9 +2,11 @@
 
 #include <QDebug>
 
-TabManager::TabManager(QWidget *parent):
-    QTabWidget(parent)
+TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
+	QObject(parent)
 {
+	m_tabWidget = tabWidget;
+
     _map_controller = new MapController();
     _router = new Router();
 
@@ -79,7 +81,7 @@ int TabManager::start()
 {
     connect(this, SIGNAL(currentChanged(int)), this, SLOT(_slot_change_tab(int)));
 
-     _current_tab_widget  = static_cast<TabMap* >(this->currentWidget());
+	 _current_tab_widget  = static_cast<TabMap* >(m_tabWidget->currentWidget());
      _current_tab_widget->start();
 //    _map_settings.value(this->currentIndex());
     return 0;
@@ -145,7 +147,7 @@ int TabManager::createSubModules(QString path_to_ini_file)
     for(it = _map_settings.begin(); it != _map_settings.end(); ++it)
     {
         TabMap* tab_sp = new TabMap(it.value(), _router, this, _map_niipp, _db_manager_bla, _db_manager_evil);
-        this->addTab(tab_sp, it.value()->get_name());
+		m_tabWidget->addTab(tab_sp, it.value()->get_name());
         _map_tabs.insert(it.key(), tab_sp);
     }
 
@@ -165,7 +167,7 @@ QString TabManager::getStationName(int id)
 /// call this method when data in tree has changed
 void TabManager::send_data(int pid, IMessage *msg)
 {
-    TabMap* tab_sp = static_cast<TabMap* >(this->widget(pid));
+	TabMap* tab_sp = static_cast<TabMap* >(m_tabWidget->widget(pid));
     tab_sp->set_command(msg);
 }
 
@@ -174,7 +176,7 @@ void TabManager::_slot_change_tab(int index)
 {
     _current_tab_widget->stop();
 
-    _current_tab_widget = static_cast<TabMap* >(this->widget(index));
+	_current_tab_widget = static_cast<TabMap* >(m_tabWidget->widget(index));
     _current_tab_widget->start();
     TabsProperty *prop = _current_tab_widget->get_tab_property();
 //    qDebug() << "cur id = " << prop->get_id();

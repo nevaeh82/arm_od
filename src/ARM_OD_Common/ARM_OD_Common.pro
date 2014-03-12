@@ -8,7 +8,7 @@ QT       += network
 
 QT       -= gui
 
-TARGET = ARM_R_Common
+TARGET = ARM_OD_Common
 TEMPLATE = lib
 CONFIG += staticlib
 

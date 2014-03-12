@@ -7,10 +7,8 @@
 
 #include <PwLogger/PwLogger.h>
 
-#include "arm_od_view.h"
-
-//#include "MainWindow.h"
-//#include "MainWindowController.h"
+#include "MainWindow.h"
+#include "MainWindowController.h"
 
 #define PWLOGGERINIT_AGENTCONFNAME ("ARM_OD_view.log4qt")
 
@@ -35,15 +33,15 @@ int main(int argc, char *argv[])
 	translator.load(":/ARM-OD_ru.qm");
 	a.installTranslator(&translator);
 
-	ARM_OD_view view;
-//	MainWindow view;
+	MainWindow view;
 
-//	MainWindowController controller;
-//	controller.appendView(&view);
+	MainWindowController controller;
+	controller.appendView(&view);
 
 	view.show();
 
-//	controller.startServer();
+	controller.startServer();
+
 
 	qRegisterMetaType<QVector<QPointF> >("rpc_send_points_vector");
     qRegisterMetaType<quint32>("quint32");

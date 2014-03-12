@@ -1,7 +1,7 @@
 #ifndef IDBMANAGER_H
 #define IDBMANAGER_H
 
-#include <QMap>;
+#include <QMap>
 #include <QVector>
 class QVariant;
 class QString;
@@ -9,7 +9,7 @@ class QString;
 class IDBManager
 {
 public:
-    virtual ~IDBManager(){};
+	virtual ~IDBManager(){}
 
     virtual int set(int group, QMap<QString, QVariant>* data)               = 0;
     virtual int set_property(int group, QMap<QString, QVariant>* data)      = 0;
