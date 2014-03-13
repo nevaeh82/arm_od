@@ -45,35 +45,37 @@
 #define RPC_SLOT_SET_DATA_TO_SOLVER                "rpc_slot_set_data_to_solver"
 #define RPC_SLOT_SET_CLEAR_TO_SOLVER               "rpc_slot_set_clear_to_solver"
 
+#include <QObject>
+
 typedef struct A_Dir_Ans_msg
 {
-	//id запроса
+	//id Р·Р°РїСЂРѕСЃР°
 	int requestId;
-	//id источника, при ответе на DirectionFindingRequest совпадает с айди запроса
-	//              при ответе на ScanRequest назначается пеленгатором
+	//id РёСЃС‚РѕС‡РЅРёРєР°, РїСЂРё РѕС‚РІРµС‚Рµ РЅР° DirectionFindingRequest СЃРѕРІРїР°РґР°РµС‚ СЃ Р°Р№РґРё Р·Р°РїСЂРѕСЃР°
+	//              РїСЂРё РѕС‚РІРµС‚Рµ РЅР° ScanRequest РЅР°Р·РЅР°С‡Р°РµС‚СЃСЏ РїРµР»РµРЅРіР°С‚РѕСЂРѕРј
 	int sourceId;
-	//время засечки
-	//DateTime.Utc.Now - время в 100наносекундных интервалах начиная с 1 января 1 года
+	//РІСЂРµРјСЏ Р·Р°СЃРµС‡РєРё
+	//DateTime.Utc.Now - РІСЂРµРјСЏ РІ 100РЅР°РЅРѕСЃРµРєСѓРЅРґРЅС‹С… РёРЅС‚РµСЂРІР°Р»Р°С… РЅР°С‡РёРЅР°СЏ СЃ 1 СЏРЅРІР°СЂСЏ 1 РіРѕРґР°
 	quint64 dateTime;
 
-	//имя поста
+	//РёРјСЏ РїРѕСЃС‚Р°
 	QString post;
 	double postLatitude;     //GPS Geo Coords
 	double postLongitude;    //GPS Geo Coords
 	double postHeight;       //meters
 
-	//центральная частота
+	//С†РµРЅС‚СЂР°Р»СЊРЅР°СЏ С‡Р°СЃС‚РѕС‚Р°
 	double frequency;
-	//ширина пика
+	//С€РёСЂРёРЅР° РїРёРєР°
 	double widht;
 
-	//пеленг
+	//РїРµР»РµРЅРі
 	double direction;
-	//угол места
+	//СѓРіРѕР» РјРµСЃС‚Р°
 	double angle;
-	//уровень
+	//СѓСЂРѕРІРµРЅСЊ
 	double level;
-	//качество
+	//РєР°С‡РµСЃС‚РІРѕ
 	double quality;
 
 	int motionType;
@@ -83,19 +85,19 @@ typedef struct A_Dir_Ans_msg
 // POSITION_ANSWER_MESSAGE
 typedef struct A_Pos_Ans_msg
 {
-	//id запроса
+	//id Р·Р°РїСЂРѕСЃР°
 	int requestId;
-	//id источника, при ответе на DirectionFindingRequest совпадает с айди запроса
-	//              при ответе на ScanRequest назначается пеленгатором
+	//id РёСЃС‚РѕС‡РЅРёРєР°, РїСЂРё РѕС‚РІРµС‚Рµ РЅР° DirectionFindingRequest СЃРѕРІРїР°РґР°РµС‚ СЃ Р°Р№РґРё Р·Р°РїСЂРѕСЃР°
+	//              РїСЂРё РѕС‚РІРµС‚Рµ РЅР° ScanRequest РЅР°Р·РЅР°С‡Р°РµС‚СЃСЏ РїРµР»РµРЅРіР°С‚РѕСЂРѕРј
 	int sourceId;
-	//время засечки
+	//РІСЂРµРјСЏ Р·Р°СЃРµС‡РєРё
 	quint64 dateTime;
 
 	 //Geo Coords
 	double longitude;
 	 //Geo Coords
 	double latitude;
-	 //качество
+	 //РєР°С‡РµСЃС‚РІРѕ
 	double quality;
 }A_Pos_Ans_msg;
 
