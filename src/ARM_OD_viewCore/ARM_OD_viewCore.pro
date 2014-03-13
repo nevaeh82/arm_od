@@ -7,6 +7,7 @@ CONFIG += staticlib
 
 include(../../specs/project.pri)
 include(../ARM_OD_Common/reference.pri)
+include($$SolutionDir/specs/CISCommonLib.pri )
 include(../../specs/qxt.pri)
 include(../../specs/logger.pri)
 include($$SolutionDir/specs/pwgiswidget.pri )
