@@ -69,7 +69,7 @@ SOURCES += \
     RPC/RPCServer.cpp \
 #    TCP/ParserKTR.cpp \
 #    TCP/PrmClient.cpp \
-    TCP/source.cpp \
+#    TCP/source.cpp \
     TCP/TCPClient.cpp \
     TCP/TCPController.cpp \
     TCP/NIIPP/NIIPPController.cpp \
