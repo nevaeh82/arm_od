@@ -110,7 +110,7 @@ void BLAParser::parsing(QByteArray data)
     }
 
 
-    QSharedPointer<IMessage> msg(new Message(_id, KTR_BLA, ba));
+    QSharedPointer<IMessageOld> msg(new MessageOld(_id, KTR_BLA, ba));
     _subscriber->data_ready(KTR_BLA, msg);
 }
 

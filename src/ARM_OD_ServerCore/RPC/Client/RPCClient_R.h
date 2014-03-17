@@ -47,33 +47,33 @@
 
 typedef struct A_Dir_Ans_msg
 {
-    //id запроса
+    //id пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     int requestId;
-    //id источника, при ответе на DirectionFindingRequest совпадает с айди запроса
-    //              при ответе на ScanRequest назначается пеленгатором
+    //id пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ DirectionFindingRequest пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    //              пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ ScanRequest пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     int sourceId;
-    //время засечки
-    //DateTime.Utc.Now - время в 100наносекундных интервалах начиная с 1 января 1 года
+    //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    //DateTime.Utc.Now - пїЅпїЅпїЅпїЅпїЅ пїЅ 100пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ 1 пїЅпїЅпїЅпїЅпїЅпїЅ 1 пїЅпїЅпїЅпїЅ
     quint64 dateTime;
 
-    //имя поста
+    //пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
     QString post;
     double postLatitude;     //GPS Geo Coords
     double postLongitude;    //GPS Geo Coords
     double postHeight;       //meters
 
-    //центральная частота
+    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     double frequency;
-    //ширина пика
+    //пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
     double widht;
 
-    //пеленг
+    //пїЅпїЅпїЅпїЅпїЅпїЅ
     double direction;
-    //угол места
+    //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
     double angle;
-    //уровень
+    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     double level;
-    //качество
+    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     double quality;
 
     int motionType;
@@ -93,7 +93,7 @@ public:
     virtual int get_id();
     virtual void set_type(int type);
     virtual int get_type();
-    virtual void send_data(QSharedPointer<IMessage> msg_ptr);
+	virtual void send_data(QSharedPointer<IMessageOld> msg_ptr);
 
 
 private slots:
@@ -101,20 +101,20 @@ private slots:
     virtual int stop();
 
 public:
-    void set_command(IMessage* msg);
+	void set_command(IMessageOld* msg);
     void push_msg(QByteArray msg);
 
 private slots:
-    void _slotSetCommand(IMessage* msg);
+	void _slotSetCommand(IMessageOld* msg);
     void _slotPushMsg(QByteArray msg);
-    void _slotGetData(QSharedPointer<IMessage> msg_ptr);
+	void _slotGetData(QSharedPointer<IMessageOld> msg_ptr);
 
 
 private:
     QxtRPCPeer*         _rpc_client;
     QString             _ip_RPC;
     quint16             _port_RPC;
-    IMessage*           _command_msg;
+	IMessageOld*           _command_msg;
     int                 _id;
     IRouter*            _router;
     ISubscriber*        _subscriber;
@@ -125,7 +125,7 @@ private:
 //    int     _init();
 
     int     _read_settings(QString path_to_ini_file_RPC);
-    void    _form_command(IMessage *msg);
+	void    _form_command(IMessageOld *msg);
 
 private slots:
     void _close();
@@ -135,11 +135,11 @@ private slots:
     void _slotReconnection();
 
 signals:
-    void signalSetCommand(IMessage *msg);
+	void signalSetCommand(IMessageOld *msg);
     void signalPushMsh(QByteArray* data);
     void signalFinished();
 
-    void signalSendData(QSharedPointer<IMessage> msg_ptr);
+	void signalSendData(QSharedPointer<IMessageOld> msg_ptr);
 
     void signalStart();
     void signalStop();

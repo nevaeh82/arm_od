@@ -1,4 +1,4 @@
-#ifndef RPCCLIENT_H
+п»ї#ifndef RPCCLIENT_H
 #define RPCCLIENT_H
 
 #include <QObject>
@@ -84,33 +84,33 @@ typedef QVector<DataFly>         rpc_data_fly;
 
 typedef struct A_Dir_Ans_msg
 {
-    //id запроса
+    //id Р·Р°РїСЂРѕСЃР°
     int requestId;
-    //id источника, при ответе на DirectionFindingRequest совпадает с айди запроса
-    //              при ответе на ScanRequest назначается пеленгатором
+    //id РёСЃС‚РѕС‡РЅРёРєР°, РїСЂРё РѕС‚РІРµС‚Рµ РЅР° DirectionFindingRequest СЃРѕРІРїР°РґР°РµС‚ СЃ Р°Р№РґРё Р·Р°РїСЂРѕСЃР°
+    //              РїСЂРё РѕС‚РІРµС‚Рµ РЅР° ScanRequest РЅР°Р·РЅР°С‡Р°РµС‚СЃСЏ РїРµР»РµРЅРіР°С‚РѕСЂРѕРј
     int sourceId;
-    //время засечки
-    //DateTime.Utc.Now - время в 100наносекундных интервалах начиная с 1 января 1 года
+    //РІСЂРµРјСЏ Р·Р°СЃРµС‡РєРё
+    //DateTime.Utc.Now - РІСЂРµРјСЏ РІ 100РЅР°РЅРѕСЃРµРєСѓРЅРґРЅС‹С… РёРЅС‚РµСЂРІР°Р»Р°С… РЅР°С‡РёРЅР°СЏ СЃ 1 СЏРЅРІР°СЂСЏ 1 РіРѕРґР°
     quint64 dateTime;
 
-    //имя поста
+    //РёРјСЏ РїРѕСЃС‚Р°
     QString post;
     double postLatitude;     //GPS Geo Coords
     double postLongitude;    //GPS Geo Coords
     double postHeight;       //meters
 
-    //центральная частота
+    //С†РµРЅС‚СЂР°Р»СЊРЅР°СЏ С‡Р°СЃС‚РѕС‚Р°
     double frequency;
-    //ширина пика
+    //С€РёСЂРёРЅР° РїРёРєР°
     double widht;
 
-    //пеленг
+    //РїРµР»РµРЅРі
     double direction;
-    //угол места
+    //СѓРіРѕР» РјРµСЃС‚Р°
     double angle;
-    //уровень
+    //СѓСЂРѕРІРµРЅСЊ
     double level;
-    //качество
+    //РєР°С‡РµСЃС‚РІРѕ
     double quality;
 
     int motionType;
@@ -120,19 +120,19 @@ typedef struct A_Dir_Ans_msg
 // POSITION_ANSWER_MESSAGE
 typedef struct A_Pos_Ans_msg
 {
-    //id запроса
+    //id Р·Р°РїСЂРѕСЃР°
     int requestId;
-    //id источника, при ответе на DirectionFindingRequest совпадает с айди запроса
-    //              при ответе на ScanRequest назначается пеленгатором
+    //id РёСЃС‚РѕС‡РЅРёРєР°, РїСЂРё РѕС‚РІРµС‚Рµ РЅР° DirectionFindingRequest СЃРѕРІРїР°РґР°РµС‚ СЃ Р°Р№РґРё Р·Р°РїСЂРѕСЃР°
+    //              РїСЂРё РѕС‚РІРµС‚Рµ РЅР° ScanRequest РЅР°Р·РЅР°С‡Р°РµС‚СЃСЏ РїРµР»РµРЅРіР°С‚РѕСЂРѕРј
     int sourceId;
-    //время засечки
+    //РІСЂРµРјСЏ Р·Р°СЃРµС‡РєРё
     quint64 dateTime;
 
      //Geo Coords
     double longitude;
      //Geo Coords
     double latitude;
-     //качество
+     //РєР°С‡РµСЃС‚РІРѕ
     double quality;
 }A_Pos_Ans_msg;
 
@@ -158,16 +158,16 @@ private slots:
     virtual int stop();
 
 public:
-    void set_command(IMessage* msg);
+	void set_command(IMessageOld* msg);
 
 private slots:
-    void _slotSetCommand(IMessage* msg);
+	void _slotSetCommand(IMessageOld* msg);
 
 private:
     QxtRPCPeer*         _rpc_client;
     QString             _ip_RPC;
     quint16             _port_RPC;
-    IMessage*           _command_msg;
+	IMessageOld*           _command_msg;
     IDBManager*         _db_manager;
     IDBManager*         _db_manager_target;
     TabsProperty*       _tab_property;
@@ -185,7 +185,7 @@ private:
 //    int     _init();
 
     int     _read_settings(QString path_to_ini_file_RPC);
-    void    _form_command(IMessage *msg);
+	void    _form_command(IMessageOld *msg);
     void    _set_solver_auto(QByteArray ba);
 //    void    _recognize();
 //    void    _ss_correlation(bool enable);
@@ -204,7 +204,7 @@ private slots:
     void _slotReconnection();
 
 signals:
-    void signalSetCommand(IMessage *msg);
+	void signalSetCommand(IMessageOld *msg);
     void signalFinished();
 
     void signalStart();

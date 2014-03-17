@@ -47,7 +47,7 @@ void TCPClient::proccess()
     if(!socket_->waitForConnected(1000))
     {
         QString thiserror;
-        thiserror.append(("Ошибка! Истекло время ожидания подключния!"));
+        thiserror.append(("пїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!"));
         emit error(thiserror);
         finish_connection();
     }
@@ -59,17 +59,17 @@ void TCPClient::onSocketDisplayError(QAbstractSocket::SocketError socketError)
     switch(socketError)
     {
     case QAbstractSocket::RemoteHostClosedError:
-        thiserror.append(tr("Ошибка! Соеденение с пунктом потеряно!"));
+        thiserror.append(tr("пїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!"));
         return;
         break;
     case QAbstractSocket::HostNotFoundError:
-        thiserror.append(tr("Ошибка! Не удалось подключиться к пункту!"));
+        thiserror.append(tr("пїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!"));
         break;
     case QAbstractSocket::ConnectionRefusedError:
-        thiserror.append(tr("Ошибка! Отказано в соединении"));
+        thiserror.append(tr("пїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"));
         break;
     default:
-        thiserror.append((tr("Ошибка! Произошла ошибка: ") + socket_->errorString()));
+        thiserror.append((tr("пїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ: ") + socket_->errorString()));
         break;
     }
     QTextStream(stdout) << thiserror << endl;
@@ -131,7 +131,7 @@ void TCPClient::set_id(int id)
     _id = id;
 }
 
-void TCPClient::send_data(QSharedPointer<IMessage> msg_ptr)
+void TCPClient::send_data(QSharedPointer<IMessageOld> msg_ptr)
 {    
 //    emit signalPrepareToWrite(msg_ptr);
 }

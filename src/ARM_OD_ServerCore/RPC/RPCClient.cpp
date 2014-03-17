@@ -21,7 +21,7 @@ void RPCClient::set_id(int id)
     _id = id;
 }
 
-void RPCClient::send_data(QSharedPointer<IMessage> msg_ptr)
+void RPCClient::send_data(QSharedPointer<IMessageOld> msg_ptr)
 {
     _slotGetData(msg_ptr);
 }
@@ -45,7 +45,7 @@ void RPCClient::_slotGetData(rpc_msg msg_ptr)
 {
     int type1 = 1;
     int id = 0;
-    IMessage *f = (msg_ptr.data());
+	IMessageOld *f = (msg_ptr.data());
     QByteArray* dd = f->get(id, type1);
     QDataStream ds(*dd);
     quint64 cid = _server->get_client_id(this);
