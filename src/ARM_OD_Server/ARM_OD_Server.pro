@@ -14,7 +14,7 @@ SOURCES = main.cpp
 
 include(../../specs/project.pri)
 include(../ARM_OD_ServerCore/reference.pri)
-#include(../ARM_OD_Common/reference.pri)
+include(../ARM_OD_Common/reference.pri)
 include(../../specs/qxt.pri)
 include(../../specs/Solver.pri)
 include(../../specs/protobuf.pri)
