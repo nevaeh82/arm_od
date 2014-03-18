@@ -165,7 +165,7 @@ QString TabManager::getStationName(int id)
 }
 
 /// call this method when data in tree has changed
-void TabManager::send_data(int pid, IMessage *msg)
+void TabManager::send_data(int pid, IMessageOld *msg)
 {
 	TabMap* tab_sp = static_cast<TabMap* >(m_tabWidget->widget(pid));
     tab_sp->set_command(msg);

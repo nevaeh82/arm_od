@@ -96,7 +96,7 @@ private:
 
 public:
     TabsProperty *get_tab_property();
-    void set_command(IMessage *msg);
+    void set_command(IMessageOld *msg);
 
 
 signals:

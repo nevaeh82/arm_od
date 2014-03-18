@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-Message::Message(const int id, const int type, QByteArray* data)
+MessageOld::MessageOld(const int id, const int type, QByteArray* data)
 {
     _id = id;
     _data = data;
@@ -12,13 +12,13 @@ Message::Message(const int id, const int type, QByteArray* data)
     //_data = data;
 }
 
-Message::~Message()
+MessageOld::~MessageOld()
 {
     delete _data;
 //    qDebug() << "terminated";
 }
 
-QByteArray* Message::get(int& id, int& type) const
+QByteArray* MessageOld::get(int& id, int& type) const
 {
     id = _id;
     type = _type;

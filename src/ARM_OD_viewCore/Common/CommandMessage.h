@@ -27,7 +27,7 @@
 
 
 
-class CommandMessage : public IMessage
+class CommandMessage : public IMessageOld
 {
 public:
     CommandMessage(int type, QByteArray data);

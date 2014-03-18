@@ -7,12 +7,14 @@ ProjectDir = $$PWD
 CONFIG += staticlib
 
 include(../../specs/project.pri)
-#include(../ARM_OD_Common/reference.pri)
+include(../ARM_OD_Common/reference.pri)
 include(../../specs/protobuf.pri)
 include($$SolutionDir/specs/CISCommonLib.pri )
 include(../../specs/qxt.pri)
 include(../../specs/Solver.pri)
 include(../../specs/logger.pri)
+
+INCLUDEPATH += $$PWD
 
 HEADERS += \
     ARM_OD_Application.h \
@@ -52,7 +54,24 @@ HEADERS += \
     TCP/UAV/BLAParser.h \
     TCP/UAV/BLAParser2.h \
     TCP/UAV/BLASimulator.h \
-    TCP/UAV/IBLAController.h
+    TCP/UAV/IBLAController.h \
+    TCP/TcpDefines.h \
+    TCP/TcpSettingsManager.h \
+    TCP/BaseClasses/BaseTcpClient.h \
+    TCP/BaseClasses/BaseTcpDeviceCoder.h \
+    TCP/BaseClasses/BaseTcpDeviceController.h \
+    TCP/Interfaces/ITcpClient.h \
+    TCP/Interfaces/ITcpDeviceCoder.h \
+    TCP/Interfaces/ITcpDeviceController.h \
+    TCP/Interfaces/ITcpListener.h \
+    TCP/Interfaces/ITcpManager.h \
+    TCP/Interfaces/ITcpReceiver.h \
+    TCP/Interfaces/ITcpSettingsManager.h \
+    MessageSP.h \
+    TCP/TcpNIIPPCoder.h \
+    TCP/TcpNIIPPController.h \
+    TCP/TcpKTRCoder.h \
+    TCP/TcpKTRController.h
 
 SOURCES += \
     ARM_OD_Application.cpp \
@@ -80,4 +99,12 @@ SOURCES += \
     TCP/UAV/BLAControllerParser.cpp \
     TCP/UAV/BLAParser.cpp \
     TCP/UAV/BLAParser2.cpp \
-    TCP/UAV/BLASimulator.cpp
+    TCP/UAV/BLASimulator.cpp \
+    TCP/TcpSettingsManager.cpp \
+    TCP/BaseClasses/BaseTcpClient.cpp \
+    TCP/BaseClasses/BaseTcpDeviceCoder.cpp \
+    TCP/BaseClasses/BaseTcpDeviceController.cpp \
+    TCP/TcpNIIPPCoder.cpp \
+    TCP/TcpNIIPPController.cpp \
+    TCP/TcpKTRCoder.cpp \
+    TCP/TcpKTRController.cpp

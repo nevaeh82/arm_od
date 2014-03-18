@@ -75,7 +75,7 @@ public:
 
 public:
     virtual QString getStationName(int id);
-    virtual void send_data(int pid, IMessage* msg);
+    virtual void send_data(int pid, IMessageOld* msg);
     virtual MapController* get_map_controller();
 
     virtual void set_dbs(IDBManager* db_bla, IDBManager* db_evil);
