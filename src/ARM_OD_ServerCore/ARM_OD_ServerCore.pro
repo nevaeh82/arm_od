@@ -8,9 +8,10 @@ CONFIG += staticlib
 
 include(../../specs/project.pri)
 #include(../ARM_OD_Common/reference.pri)
+include(../../specs/protobuf.pri)
+include($$SolutionDir/specs/CISCommonLib.pri )
 include(../../specs/qxt.pri)
 include(../../specs/Solver.pri)
-include(../../specs/protobuf.pri)
 include(../../specs/logger.pri)
 
 HEADERS += \
