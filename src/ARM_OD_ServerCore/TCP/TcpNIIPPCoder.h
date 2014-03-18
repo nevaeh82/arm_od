@@ -10,6 +10,8 @@
 
 class TcpNIIPPCoder : public BaseTcpDeviceCoder
 {
+	Q_OBJECT
+
 public:
 	explicit TcpNIIPPCoder(QObject* parent = NULL);
 	virtual ~TcpNIIPPCoder();
@@ -18,7 +20,7 @@ public:
 public:
 	virtual MessageSP encode(const QByteArray& data);
 	virtual QByteArray decode(const MessageSP message);
-	virtual QObject*asQObject();
+	virtual QObject* asQObject();
 
 private:
 	QByteArray prepareDataToSend(const QStringList& list);

@@ -67,7 +67,10 @@ HEADERS += \
     TCP/Interfaces/ITcpReceiver.h \
     TCP/Interfaces/ITcpSettingsManager.h \
     MessageSP.h \
-    TCP/TcpNIIPPCoder.h
+    TCP/TcpNIIPPCoder.h \
+    TCP/TcpNIIPPController.h \
+    TCP/TcpKTRCoder.h \
+    TCP/TcpKTRController.h
 
 SOURCES += \
     ARM_OD_Application.cpp \
@@ -100,4 +103,7 @@ SOURCES += \
     TCP/BaseClasses/BaseTcpClient.cpp \
     TCP/BaseClasses/BaseTcpDeviceCoder.cpp \
     TCP/BaseClasses/BaseTcpDeviceController.cpp \
-    TCP/TcpNIIPPCoder.cpp
+    TCP/TcpNIIPPCoder.cpp \
+    TCP/TcpNIIPPController.cpp \
+    TCP/TcpKTRCoder.cpp \
+    TCP/TcpKTRController.cpp

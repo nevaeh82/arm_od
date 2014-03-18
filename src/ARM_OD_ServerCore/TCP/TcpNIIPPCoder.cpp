@@ -307,8 +307,7 @@ QByteArray TcpNIIPPCoder::decode(const MessageSP message)
 QByteArray TcpNIIPPCoder::prepareDataToSend(const QStringList& list)
 {
 	QString str = list.join(",");
-	QByteArray data = str.toLocal8Bit();
-	quint8 _crc = crc(data);
+	quint8 _crc = crc(str.toLocal8Bit());
 
 	str.append(",*");
 	str.append(QString::number(_crc));

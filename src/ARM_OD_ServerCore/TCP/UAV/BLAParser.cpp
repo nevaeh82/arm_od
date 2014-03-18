@@ -25,8 +25,8 @@ BLAParser::~BLAParser()
 
 void BLAParser::parsing(QByteArray data)
 {
-    char f1 = data.at(0);
-    char f2 = data.at(1);
+	char f1 = data.at(0);
+	char f2 = data.at(1);
     QString r1 = "A";
     QString r2 = "G";
     QString r3 = "N";
