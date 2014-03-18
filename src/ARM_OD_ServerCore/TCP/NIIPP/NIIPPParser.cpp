@@ -99,7 +99,7 @@ void NIIPPParser::parsing(QByteArray data)
     ds << course;
     ds << angle;
 
-    QSharedPointer<IMessage> msg(new Message(_id, NIIPP_ANSWER, ba));
+	QSharedPointer<IMessageOld> msg(new MessageOld(_id, NIIPP_ANSWER, ba));
     _subscriber->data_ready(NIIPP_ANSWER, msg);
     qDebug() << "MMMMMMMMMMMMMMMMMMMMMM" << course << angle << mode;
 

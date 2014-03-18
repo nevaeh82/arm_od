@@ -137,7 +137,7 @@ void Parser::FilterData(QString data) {
     ds << map1;
 
 
-    QSharedPointer<IMessage> msg(new Message(_id, AIS_DATA, ba));
+	QSharedPointer<IMessageOld> msg(new MessageOld(_id, AIS_DATA, ba));
     _subscriber->data_ready(AIS_DATA, msg);
 
     emit NewListParser(listDataFly);

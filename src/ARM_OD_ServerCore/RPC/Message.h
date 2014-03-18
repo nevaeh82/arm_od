@@ -1,14 +1,14 @@
-#ifndef MESSAGE_H
-#define MESSAGE_H
+#ifndef MESSAGEOLD_H
+#define MESSAGEOLD_H
 
 #include <QByteArray>
 #include "../Common/IMessage.h"
 
-class Message : public IMessage
+class MessageOld : public IMessageOld
 {
 public:
-    Message(int id, int type, QByteArray* data);
-    ~Message();
+	MessageOld(int id, int type, QByteArray* data);
+	~MessageOld();
 
 public:
     virtual QByteArray* get(int& id, int& type) const;
@@ -20,4 +20,4 @@ private:
 
 };
 
-#endif // MESSAGE_H
+#endif // MESSAGEOLD_H

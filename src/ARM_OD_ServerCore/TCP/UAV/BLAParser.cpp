@@ -25,8 +25,8 @@ BLAParser::~BLAParser()
 
 void BLAParser::parsing(QByteArray data)
 {
-    char f1 = data.at(0);
-    char f2 = data.at(1);
+	char f1 = data.at(0);
+	char f2 = data.at(1);
     QString r1 = "A";
     QString r2 = "G";
     QString r3 = "N";
@@ -110,7 +110,7 @@ void BLAParser::parsing(QByteArray data)
     }
 
 
-    QSharedPointer<IMessage> msg(new Message(_id, KTR_BLA, ba));
+    QSharedPointer<IMessageOld> msg(new MessageOld(_id, KTR_BLA, ba));
     _subscriber->data_ready(KTR_BLA, msg);
 }
 

@@ -12,7 +12,7 @@ RPCClient_R::RPCClient_R(IRouter* router)
     connect(this, SIGNAL(signalStart()), this, SLOT(start()));
     connect(this, SIGNAL(signalStop()), this, SLOT(stop()));
     connect(this, SIGNAL(signalFinishRPC()), this, SLOT(_close()));
-    connect(this, SIGNAL(signalSendData(QSharedPointer<IMessage>)), this, SLOT(_slotGetData(QSharedPointer<IMessage>)));
+    connect(this, SIGNAL(signalSendData(QSharedPointer<IMessageOld>)), this, SLOT(_slotGetData(QSharedPointer<IMessageOld>)));
 }
 
 RPCClient_R::~RPCClient_R()
@@ -39,7 +39,7 @@ int RPCClient_R::get_type()
     return _type;
 }
 
-void RPCClient_R::send_data(QSharedPointer<IMessage> msg_ptr)
+void RPCClient_R::send_data(QSharedPointer<IMessageOld> msg_ptr)
 {
     emit signalSendData(msg_ptr);
     //_slotGetData(msg_ptr);
@@ -58,7 +58,7 @@ void RPCClient_R::slotInit()
     connect(_rpc_client, SIGNAL(connectedToServer()), this, SLOT(_slotRCPConnetion()));
     connect(_rpc_client, SIGNAL(serverError(QAbstractSocket::SocketError)), this, SLOT(_slotErrorRPCConnection(QAbstractSocket::SocketError)));
 
-    connect(this, SIGNAL(signalSetCommand(IMessage*)), this, SLOT(_slotSetCommand(IMessage*)));
+    connect(this, SIGNAL(signalSetCommand(IMessageOld*)), this, SLOT(_slotSetCommand(IMessageOld*)));
 
     _rpc_client->attachSignal(this, SIGNAL(signalSetClientId(int)), RPC_SLOT_SET_CLIENT_ID);
 
@@ -96,7 +96,7 @@ void RPCClient_R::_close()
     emit signalFinished();
 }
 
-void RPCClient_R::set_command(IMessage *msg)
+void RPCClient_R::set_command(IMessageOld *msg)
 {
     emit signalSetCommand(msg);
 }
@@ -106,7 +106,7 @@ void RPCClient_R::push_msg(QByteArray msg)
 //    emit signalPushMsh(msg);
 }
 
-void RPCClient_R::_slotSetCommand(IMessage *msg)
+void RPCClient_R::_slotSetCommand(IMessageOld *msg)
 {
     _command_msg = msg;
     _form_command(_command_msg);
@@ -117,11 +117,11 @@ void RPCClient_R::_slotPushMsg(QByteArray msg)
     emit signalSetSolver(msg);
 }
 
-void RPCClient_R::_slotGetData(QSharedPointer<IMessage> msg_ptr)
+void RPCClient_R::_slotGetData(QSharedPointer<IMessageOld> msg_ptr)
 {
     int type1 = 1;
     int id = 0;
-    IMessage *f = (msg_ptr.data());
+    IMessageOld *f = (msg_ptr.data());
     QByteArray* dd = f->get(id, type1);
     QDataStream ds(*dd);
     int id1 = 0;
@@ -159,7 +159,7 @@ void RPCClient_R::_slotGetData(QSharedPointer<IMessage> msg_ptr)
 
 }
 
-void RPCClient_R::_form_command(IMessage *msg)
+void RPCClient_R::_form_command(IMessageOld *msg)
 {
 //    qDebug() << "form command";
 //    QVariant data;
@@ -310,7 +310,7 @@ void RPCClient_R::rpc_slot_server_send_bpla_def(QByteArray ba1)
 //    ds << id;
 
 
-    QSharedPointer<IMessage> msg(new Message(_id, ARM_R_SERVER_BPLA_COORDS, ba));
+    QSharedPointer<IMessageOld> msg(new MessageOld(_id, ARM_R_SERVER_BPLA_COORDS, ba));
     _subscriber->data_ready(ARM_R_SERVER_BPLA_COORDS, msg);
 }
 
@@ -325,7 +325,7 @@ void RPCClient_R::rpc_slot_server_send_bpla_def_auto(QByteArray ba)
 //    ds << id;
 
 
-    QSharedPointer<IMessage> msg(new Message(_id, ARM_R_SERVER_BPLA_COORDS_AUTO, ba1));
+    QSharedPointer<IMessageOld> msg(new MessageOld(_id, ARM_R_SERVER_BPLA_COORDS_AUTO, ba1));
     _subscriber->data_ready(ARM_R_SERVER_BPLA_COORDS_AUTO, msg);
 
 }
@@ -373,7 +373,7 @@ void RPCClient_R::rpc_slot_server_atlant_direction(QByteArray ba1)
 ////    ds << id;
 
 
-    QSharedPointer<IMessage> msg1(new Message(_id, ARM_R_SERVER_ATLANT_DIRECTION, ba));
+    QSharedPointer<IMessageOld> msg1(new MessageOld(_id, ARM_R_SERVER_ATLANT_DIRECTION, ba));
     _subscriber->data_ready(ARM_R_SERVER_ATLANT_DIRECTION, msg1);
 
 }
@@ -384,7 +384,7 @@ void RPCClient_R::rpc_slot_server_atlant_position(QByteArray ba1)
     QByteArray *ba = new QByteArray();
     ba->append(ba1);
 
-    QSharedPointer<IMessage> msg1(new Message(_id, ARM_R_SERVER_ATLANT_POSITION, ba));
+    QSharedPointer<IMessageOld> msg1(new MessageOld(_id, ARM_R_SERVER_ATLANT_POSITION, ba));
     _subscriber->data_ready(ARM_R_SERVER_ATLANT_POSITION, msg1);
 
 }

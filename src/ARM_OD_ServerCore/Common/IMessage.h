@@ -1,13 +1,13 @@
-#ifndef IMESSAGE_H
-#define IMESSAGE_H
+#ifndef IMESSAGEOLD_H
+#define IMESSAGEOLD_H
 
 #include <QByteArray>
 
-class IMessage
+class IMessageOld
 {
 public:
-    virtual ~IMessage(){};
+	virtual ~IMessageOld(){};
     virtual QByteArray* get(int& id, int& type) const      = 0;
 };
 
-#endif // IMESSAGE_H
+#endif // IMESSAGEOLD_H
