@@ -1,7 +1,7 @@
 #ifndef TCPKTRCODER_H
 #define TCPKTRCODER_H
 
-#include "BaseClasses/BaseTcpDeviceCoder.h"
+#include "Tcp/BaseTcpDeviceCoder.h"
 
 class TcpKTRCoder : public BaseTcpDeviceCoder
 {

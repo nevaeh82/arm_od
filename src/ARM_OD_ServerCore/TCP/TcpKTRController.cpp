@@ -23,7 +23,7 @@ void TcpKTRController::createTcpDeviceCoder()
 
 }
 
-QObject*TcpKTRController::asQObject()
+QObject* TcpKTRController::asQObject()
 {
 	return this;
 }

@@ -22,10 +22,4 @@ SOURCES += \
     Rpc/RpcDefines.cpp
 
 HEADERS += \
-    Rpc/RpcDefines.h \  
-    BaseSubject.h \
-    Message.h \
-    SingletonTemplate.h \
-    SingletonTemplate.hpp \
-    TcpDevicesDefines.h \
-    Interfaces/IMessage.h
+    Rpc/RpcDefines.h \

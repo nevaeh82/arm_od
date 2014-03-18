@@ -1,7 +1,7 @@
 #include "TcpNIIPPController.h"
 
 TcpNIIPPController::TcpNIIPPController(QObject *parent) :
-	BaseTcpDeviceController(Pw::Logger::PwLoggerFactory::Instance()->createLogger(LOGGERCLASSNAME(TcpNIIPPController)), parent)
+	BaseTcpDeviceController(parent)
 {
 	m_tcpDeviceName = NIIPP_TCP_DEVICE;
 	m_logger->debug(QString("Created %1").arg(m_tcpDeviceName));
