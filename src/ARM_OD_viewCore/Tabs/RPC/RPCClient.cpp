@@ -45,7 +45,7 @@ void RPCClient::slotInit()
     connect(_rpc_client, SIGNAL(connectedToServer()), this, SLOT(_slotRCPConnetion()));
     connect(_rpc_client, SIGNAL(serverError(QAbstractSocket::SocketError)), this, SLOT(_slotErrorRPCConnection(QAbstractSocket::SocketError)));
 
-    connect(this, SIGNAL(signalSetCommand(IMessage*)), this, SLOT(_slotSetCommand(IMessage*)));
+    connect(this, SIGNAL(signalSetCommand(IMessageOld*)), this, SLOT(_slotSetCommand(IMessageOld*)));
 
     _rpc_client->attachSignal(this, SIGNAL(signalSetClientId(int)), RPC_SLOT_SET_CLIENT_ID);
     _rpc_client->attachSignal(this, SIGNAL(signalSetNIIPPBPLA(QByteArray)), RPC_SLOT_SET_NIIPP_BPLA);
@@ -82,18 +82,18 @@ void RPCClient::_close()
     emit signalFinished();
 }
 
-void RPCClient::set_command(IMessage *msg)
+void RPCClient::set_command(IMessageOld *msg)
 {
     emit signalSetCommand(msg);
 }
 
-void RPCClient::_slotSetCommand(IMessage *msg)
+void RPCClient::_slotSetCommand(IMessageOld *msg)
 {
     _command_msg = msg;
     _form_command(_command_msg);
 }
 
-void RPCClient::_form_command(IMessage *msg)
+void RPCClient::_form_command(IMessageOld *msg)
 {
     qDebug() << "form command";
     QByteArray data;

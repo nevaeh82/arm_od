@@ -47,17 +47,17 @@ void RPCServer::_slotErrorRPCConnection(QAbstractSocket::SocketError socketError
     switch(socketError)
     {
     case QAbstractSocket::RemoteHostClosedError:
-        thiserror.append(("Ошибка! Соеденение с пунктом потеряно!"));
+        thiserror.append(("пїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!"));
         return;
         break;
     case QAbstractSocket::HostNotFoundError:
-        thiserror.append(("Ошибка! Не удалось подключиться к пункту!"));
+        thiserror.append(("пїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!"));
         break;
     case QAbstractSocket::ConnectionRefusedError:
-        thiserror.append(("Ошибка! Отказано в соединении"));
+        thiserror.append(("пїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"));
         break;
     default:
-//        thiserror.append(("Ошибка! Произошла ошибка: " + _rpc_client->->errorString()));
+//        thiserror.append(("пїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ: " + _rpc_client->->errorString()));
         break;
     }
     qDebug() << thiserror;
@@ -130,7 +130,7 @@ void RPCServer::rpc_slot_set_niipp_data(quint64 client, QByteArray data)
     QByteArray* ba = new QByteArray();
     ba->append(data);
 
-    QSharedPointer<IMessage> msg(new Message(id, NIIPP_BPLA, ba));
+	QSharedPointer<IMessageOld> msg(new MessageOld(id, NIIPP_BPLA, ba));
     _subscriber->data_ready(NIIPP_BPLA, msg);
 }
 
@@ -146,7 +146,7 @@ void RPCServer::rpc_slot_set_solver_data(quint64 client, QByteArray data)
     QByteArray* ba = new QByteArray();
     ba->append(data);
 
-    QSharedPointer<IMessage> msg(new Message(id, SOLVER_SET, ba));
+	QSharedPointer<IMessageOld> msg(new MessageOld(id, SOLVER_SET, ba));
     _subscriber->data_ready(SOLVER_SET, msg);
 }
 
@@ -160,7 +160,7 @@ void RPCServer::rpc_slot_set_solver_clear(quint64 client, QByteArray data)
     QByteArray* ba = new QByteArray();
     ba->append(data);
 
-    QSharedPointer<IMessage> msg(new Message(id, SOLVER_CLEAR, ba));
+	QSharedPointer<IMessageOld> msg(new MessageOld(id, SOLVER_CLEAR, ba));
     _subscriber->data_ready(SOLVER_CLEAR, msg);
 }
 

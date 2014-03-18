@@ -4,13 +4,13 @@
 #include <QObject>
 
 class IOrbitor;
-class IMessage;
+class IMessageOld;
 
 class IQueue : public QObject
 {
 public:
     virtual ~IQueue(){};
-    virtual void add_data(IMessage *msg)            = 0;
+    virtual void add_data(IMessageOld *msg)            = 0;
     virtual void set_orbitor(IOrbitor *orbitor)     = 0;
     virtual void terminate(bool state)              = 0;
 public slots:

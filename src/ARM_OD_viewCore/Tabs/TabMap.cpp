@@ -259,7 +259,7 @@ TabsProperty* TabMap::get_tab_property()
     return _tab_property;
 }
 
-void TabMap::set_command(IMessage *msg)
+void TabMap::set_command(IMessageOld *msg)
 {
     _rpc_client1->set_command(msg);
 }

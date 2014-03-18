@@ -25,10 +25,10 @@ class AtlantSimulator : public QObject, public IClient
         virtual int get_id();
         virtual void set_type(int type);
         virtual int get_type();
-        virtual void send_data(QSharedPointer<IMessage> msg_ptr);
+        virtual void send_data(QSharedPointer<IMessageOld> msg_ptr);
 
     private slots:
-        void _slot_simulation(QSharedPointer<IMessage> msg_ptr);
+        void _slot_simulation(QSharedPointer<IMessageOld> msg_ptr);
 
     private:
         int             _id;
@@ -41,7 +41,7 @@ class AtlantSimulator : public QObject, public IClient
         int _sourceid;
 
 signals:
-        void signalData(QSharedPointer<IMessage>);
+        void signalData(QSharedPointer<IMessageOld>);
 
         void signalFinished();
 };

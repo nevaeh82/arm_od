@@ -43,7 +43,7 @@ void NIIPPController::set_id(int id)
 
 }
 
-void NIIPPController::send_data(QSharedPointer<IMessage> msg_ptr)
+void NIIPPController::send_data(QSharedPointer<IMessageOld> msg_ptr)
 {
     _slotGetData(msg_ptr);
 }
@@ -67,7 +67,7 @@ void NIIPPController::_slotGetData(rpc_msg msg_ptr)
 {
     int type1 = 1;
     int id = 0;
-    IMessage *f = (msg_ptr.data());
+	IMessageOld *f = (msg_ptr.data());
     QByteArray* dd = f->get(id, type1);
     QDataStream ds(*dd);
 

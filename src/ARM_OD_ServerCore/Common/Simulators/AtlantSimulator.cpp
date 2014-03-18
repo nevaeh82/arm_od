@@ -10,7 +10,7 @@ AtlantSimulator::AtlantSimulator(IRouter* router, double lat, double lon, int so
     _lon = lon;
     _sourceid = sourceid;
 
-    connect(this, SIGNAL(signalData(QSharedPointer<IMessage>)), this, SLOT(_slot_simulation(QSharedPointer<IMessage>)));
+    connect(this, SIGNAL(signalData(QSharedPointer<IMessageOld>)), this, SLOT(_slot_simulation(QSharedPointer<IMessageOld>)));
 }
 
 AtlantSimulator::~AtlantSimulator()
@@ -38,17 +38,17 @@ int AtlantSimulator::get_type()
     return _type;
 }
 
-void AtlantSimulator::send_data(QSharedPointer<IMessage> msg_ptr)
+void AtlantSimulator::send_data(QSharedPointer<IMessageOld> msg_ptr)
 {
     emit signalData(msg_ptr);
 }
 
 
-void AtlantSimulator::_slot_simulation(QSharedPointer<IMessage> msg_ptr)
+void AtlantSimulator::_slot_simulation(QSharedPointer<IMessageOld> msg_ptr)
 {
     int type1 = 1;
     int id = 0;
-    IMessage *f = (msg_ptr.data());
+    IMessageOld *f = (msg_ptr.data());
     QByteArray* dd = f->get(id, type1);
     QDataStream ds1(*dd);
     QPointF point;
@@ -138,7 +138,7 @@ void AtlantSimulator::_slot_simulation(QSharedPointer<IMessage> msg_ptr)
 //        ds << 0;
 //        ds << 0;
 
-        QSharedPointer<IMessage> msg1(new Message(_id, ARM_R_SERVER_ATLANT_DIRECTION, ba));
+        QSharedPointer<IMessageOld> msg1(new MessageOld(_id, ARM_R_SERVER_ATLANT_DIRECTION, ba));
         _subscriber->data_ready(ARM_R_SERVER_ATLANT_DIRECTION, msg1);
 
 //        break;

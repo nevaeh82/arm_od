@@ -10,7 +10,7 @@ ARM_OD_Srv::ARM_OD_Srv()
 
     qRegisterMetaType<rpc_msg> ("rpc_msg");
     qRegisterMetaType<rpc_QPointF> ("rpc_QPointF");
-    qRegisterMetaType<QSharedPointer<IMessage> > ("QSharedPointer<IMessage>");
+	qRegisterMetaType<QSharedPointer<IMessageOld> > ("QSharedPointer<IMessage>");
 
     qRegisterMetaType<QByteArray>("rpc_send_ba_data");
 
