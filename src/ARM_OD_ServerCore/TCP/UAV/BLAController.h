@@ -31,7 +31,7 @@ private:
     const int           _dev_control_BLA;
 
     BLAControllerParser             *_parser;
-    QMap<quint16, ITCPClient *>     _map_clients;
+    QMap<quint16, ITCPClientOld *>     _map_clients;
 
 public:
     void setController(QString ip, quint16 port);

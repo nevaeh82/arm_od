@@ -33,12 +33,12 @@ BLA::~BLA()
 void BLA::set()
 {
     _tcp_controller->add_connection(_ip, _port, _id);
-    ITCPClient *client1 = _tcp_controller->get_client(_ip, _port, _id);
+    ITCPClientOld *client1 = _tcp_controller->get_client(_ip, _port, _id);
     client1->set_parser(_parser);
     connect(client1, SIGNAL(signalConnected(bool)), this, SLOT(_send_request(bool)));
 
     _tcp_controller->add_connection(_ip, _port, _id*100);
-    ITCPClient *client2 = _tcp_controller->get_client(_ip, _port, _id*100);
+    ITCPClientOld *client2 = _tcp_controller->get_client(_ip, _port, _id*100);
     client2->set_parser(_parser2);
     connect(client2, SIGNAL(signalConnected(bool)), this, SLOT(_send_request2(bool)));
 
@@ -49,7 +49,7 @@ void BLA::_send_request(bool state)
     if(!state)
         return;
 
-    ITCPClient *client1 = _tcp_controller->get_client(_ip, _port, _id);
+    ITCPClientOld *client1 = _tcp_controller->get_client(_ip, _port, _id);
     QString request = "user link command b" + QString::number(_id) + "d" +QString::number(_dev);
     QByteArray ba(request.toAscii());
     client1->set(ba);
@@ -60,7 +60,7 @@ void BLA::_send_request2(bool state)
     if(!state)
         return;
 
-    ITCPClient *client1 = _tcp_controller->get_client(_ip, _port, _id*100);
+    ITCPClientOld *client1 = _tcp_controller->get_client(_ip, _port, _id*100);
     QString request1 = "user link command b" + QString::number(_id) + "d" +QString::number(622);
     QByteArray ba1(request1.toAscii());
     client1->set(ba1);

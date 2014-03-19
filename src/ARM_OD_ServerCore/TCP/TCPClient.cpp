@@ -2,7 +2,7 @@
 #include "assert.h"
 
 
-TCPClient::TCPClient(QString host, quint16 port, IRouter *router)
+TCPClientOld::TCPClientOld(QString host, quint16 port, IRouter *router)
     : _should_stop(false),
       _isRead(false),
       _state(false),
@@ -19,7 +19,7 @@ TCPClient::TCPClient(QString host, quint16 port, IRouter *router)
     connect(this, SIGNAL(signalSend(QByteArray)), this, SLOT(_slotWrite(QByteArray)));
 }
 
-TCPClient::~TCPClient()
+TCPClientOld::~TCPClientOld()
 {
     qDebug() <<"TCP client Destructor";
     if(_parser != NULL)
@@ -28,12 +28,12 @@ TCPClient::~TCPClient()
     }
 }
 
-void TCPClient::set_parser(ITCPParser *parser)
+void TCPClientOld::set_parser(ITCPParser *parser)
 {
     _parser = parser;
 }
 
-void TCPClient::proccess()
+void TCPClientOld::proccess()
 {
     this->socket_ = new QTcpSocket(this);
 //    connect(socket_, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(_slot_stateCh(QAbstractSocket::SocketState)))
@@ -47,36 +47,36 @@ void TCPClient::proccess()
     if(!socket_->waitForConnected(1000))
     {
         QString thiserror;
-        thiserror.append(("Ошибка! Истекло время ожидания подключния!"));
+        thiserror.append(("пїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!"));
         emit error(thiserror);
         finish_connection();
     }
 }
 
-void TCPClient::onSocketDisplayError(QAbstractSocket::SocketError socketError)
+void TCPClientOld::onSocketDisplayError(QAbstractSocket::SocketError socketError)
 {
     QString thiserror;
     switch(socketError)
     {
     case QAbstractSocket::RemoteHostClosedError:
-        thiserror.append(tr("Ошибка! Соеденение с пунктом потеряно!"));
+        thiserror.append(tr("пїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!"));
         return;
         break;
     case QAbstractSocket::HostNotFoundError:
-        thiserror.append(tr("Ошибка! Не удалось подключиться к пункту!"));
+        thiserror.append(tr("пїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!"));
         break;
     case QAbstractSocket::ConnectionRefusedError:
-        thiserror.append(tr("Ошибка! Отказано в соединении"));
+        thiserror.append(tr("пїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"));
         break;
     default:
-        thiserror.append((tr("Ошибка! Произошла ошибка: ") + socket_->errorString()));
+        thiserror.append((tr("пїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ: ") + socket_->errorString()));
         break;
     }
     QTextStream(stdout) << thiserror << endl;
     finish_connection();
 }
 
-void TCPClient::slotState(QAbstractSocket::SocketState state)
+void TCPClientOld::slotState(QAbstractSocket::SocketState state)
 {
     if(state == QAbstractSocket::UnconnectedState)
     {
@@ -88,7 +88,7 @@ void TCPClient::slotState(QAbstractSocket::SocketState state)
     }
 }
 
-void TCPClient::onSocketConnected()
+void TCPClientOld::onSocketConnected()
 {
     _mutex.lock();
     _is_connected = true;
@@ -108,7 +108,7 @@ void TCPClient::onSocketConnected()
     }
 }
 
-void TCPClient::onSocketDisconnected()
+void TCPClientOld::onSocketDisconnected()
 {
     _mutex.lock();
     _is_connected = false;
@@ -121,55 +121,55 @@ void TCPClient::onSocketDisconnected()
 }
 
 /// get connection state
-bool TCPClient::get_state()
+bool TCPClientOld::get_state()
 {
     return _state;
 }
 
-void TCPClient::set_id(int id)
+void TCPClientOld::set_id(int id)
 {
     _id = id;
 }
 
-void TCPClient::send_data(QSharedPointer<IMessage> msg_ptr)
+void TCPClientOld::send_data(QSharedPointer<IMessageOld> msg_ptr)
 {    
 //    emit signalPrepareToWrite(msg_ptr);
 }
 
-int TCPClient::get_id()
+int TCPClientOld::get_id()
 {
     return _id;
 }
 
-void TCPClient::set_type(int type)
+void TCPClientOld::set_type(int type)
 {
     _type = type;
 }
 
-int TCPClient::get_type()
+int TCPClientOld::get_type()
 {
     return _type;
 }
 
-void TCPClient::stop()
+void TCPClientOld::stop()
 {
     qDebug() << "stop";
     socket_->disconnectFromHost();
 }
 
-void TCPClient::slotDestroy()
+void TCPClientOld::slotDestroy()
 {
     stop();
     emit finished();
 }
 
 ///called then closed connection
-void TCPClient::finish_connection()
+void TCPClientOld::finish_connection()
 {
     emit signalConnected(false);
 }
 
-void TCPClient::reconnection()
+void TCPClientOld::reconnection()
 {
     if(socket_->state() != QAbstractSocket::UnconnectedState)
         return;
@@ -185,7 +185,7 @@ void TCPClient::reconnection()
 }
 
 /// ready to read
-void TCPClient::onSocketReadyRead()
+void TCPClientOld::onSocketReadyRead()
 {
     if(socket_->bytesAvailable() < 1)
         return;
@@ -198,7 +198,7 @@ void TCPClient::onSocketReadyRead()
     }
 }
 
-void TCPClient::_slotWrite(QByteArray data)
+void TCPClientOld::_slotWrite(QByteArray data)
 {
     int writesize = -1;
     bool connected = false;
@@ -218,14 +218,14 @@ void TCPClient::_slotWrite(QByteArray data)
     }while(writesize == -1);
 }
 
-void TCPClient::set(QByteArray data)
+void TCPClientOld::set(QByteArray data)
 {
     if(socket_->state() == QAbstractSocket::UnconnectedState)
         return;
     emit signalSend(data);
 }
 
-void TCPClient::distruct()
+void TCPClientOld::distruct()
 {
     delete this;
 }

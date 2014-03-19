@@ -21,7 +21,7 @@ BLAController::~BLAController()
 
 void BLAController::setController(QString ip, quint16 port)
 {
-    TCPClient *client = _tcp_controller->get_client(_ip, _port, _id);
+    TCPClientOld *client = _tcp_controller->get_client(_ip, _port, _id);
     if(client)
         client->slotDestroy();
 
@@ -30,7 +30,7 @@ void BLAController::setController(QString ip, quint16 port)
 
     qDebug() << _tcp_controller->add_connection(_ip, _port, _id);
 
-    TCPClient *client1 = _tcp_controller->get_client(_ip, _port, _id);
+    TCPClientOld *client1 = _tcp_controller->get_client(_ip, _port, _id);
     client1->set_parser(_parser);
     connect(client1, SIGNAL(signalConnected(bool)), this, SLOT(_send_request(bool)));
 }
@@ -40,7 +40,7 @@ void BLAController::_send_request(bool state)
     if(!state)
         return;
 
-    ITCPClient *client1 = _tcp_controller->get_client(_ip, _port, _id);
+    ITCPClientOld *client1 = _tcp_controller->get_client(_ip, _port, _id);
     QString request = "user link command ctrl";
     QByteArray ba(request.toAscii());
     client1->set(ba);
@@ -49,7 +49,7 @@ void BLAController::_send_request(bool state)
 /// interface method for looking for bla connections
 void BLAController::connect_bla(QVector<quint16> ids)
 {
-    QMap<quint16, ITCPClient *>::iterator it;
+    QMap<quint16, ITCPClientOld *>::iterator it;
     for(it = _map_clients.begin(); it != _map_clients.end(); ++it)
     {
         if(!ids.contains(it.key()))
@@ -72,7 +72,7 @@ void BLAController::connect_bla(QVector<quint16> ids)
         int id = *itt;
         BLA *bla = new BLA(_ip, _port, id, _dev_control_BLA, _router);
         bla->set();
-        ITCPClient *client1 = _tcp_controller->get_client(_ip, _port, _id);
+        ITCPClientOld *client1 = _tcp_controller->get_client(_ip, _port, _id);
 
         _map_clients.insert(id, client1);
     }

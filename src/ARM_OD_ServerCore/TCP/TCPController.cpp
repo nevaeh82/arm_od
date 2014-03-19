@@ -1,4 +1,4 @@
-#include "TCPController.h"
+ï»¿#include "TCPController.h"
 
 TCPController::TCPController(IRouter *router)
     : _is_started(false)
@@ -39,13 +39,13 @@ bool TCPController::add_connection(QString host, quint16 port, int id)
 
         if(_sockets_container.contains(sig_con))
         {
-            QString error = QObject::tr("Ñîåäèíåíèå ") + host + ":" + port + ":" + id + QObject::tr("óæå ñóùåñòâóåò!");
+            QString error = QObject::tr("Ğ¡Ğ¾ĞµĞ´Ğ¸Ğ½ĞµĞ½Ğ¸Ğµ ") + host + ":" + port + ":" + id + QObject::tr("ÑƒĞ¶Ğµ ÑÑƒÑ‰ĞµÑÑ‚Ğ²ÑƒĞµÑ‚!");
             emit add_error(error);
             return false;
         }
 
         QThread *thread = new QThread;
-        TCPClient *client = new TCPClient(host, port, _router);
+		TCPClientOld *client = new TCPClientOld(host, port, _router);
         client->set_id(id);
 
 //        qDebug() << client;
@@ -98,7 +98,7 @@ void TCPController::stopped_error()
     emit error_connection();
 }
 
-TCPClient *TCPController::get_client(QString host, quint16 port, int id)
+TCPClientOld *TCPController::get_client(QString host, quint16 port, int id)
 {
     QString sig_con = host + ":" + QString::number(port) + ":" + QString::number(id);
     if(_sockets_container.contains(sig_con))

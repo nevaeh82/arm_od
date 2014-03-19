@@ -64,7 +64,7 @@ void BLASimulator::_slot_simulation()
         ds << point;
         ds << alt;
 
-        QSharedPointer<IMessage> msg(new Message(_id, KTR_BLA, ba));
+        QSharedPointer<IMessageOld> msg(new MessageOld(_id, KTR_BLA, ba));
         _subscriber->data_ready(KTR_BLA, msg);
     }
     else
@@ -98,7 +98,7 @@ void BLASimulator::_slot_simulation()
 //        ds << aData.heigh.at(aLastItem);
 //        ds << aData.relativeBearing.at(aLastItem);
 
-        QSharedPointer<IMessage> msg(new Message(_id, ARM_R_SERVER_BPLA_COORDS, ba));
+        QSharedPointer<IMessageOld> msg(new MessageOld(_id, ARM_R_SERVER_BPLA_COORDS, ba));
         _subscriber->data_ready(ARM_R_SERVER_BPLA_COORDS, msg);
     }
 }

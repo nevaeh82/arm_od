@@ -19,7 +19,7 @@ void NIIPPController::setController(QString ip, quint16 port)
     _parser = new NIIPPParser(_id, _type);
     _parser->set_router(_router);
 
-    TCPClient *client = _router->get_tcp_controller()->get_client(_ip, _port, _id);
+    TCPClientOld *client = _router->get_tcp_controller()->get_client(_ip, _port, _id);
     if(client)
         client->slotDestroy();
 
@@ -28,7 +28,7 @@ void NIIPPController::setController(QString ip, quint16 port)
 
     qDebug() << _router->get_tcp_controller()->add_connection(_ip, _port, _id);
 
-    TCPClient *client1 = _router->get_tcp_controller()->get_client(_ip, _port, _id);
+    TCPClientOld *client1 = _router->get_tcp_controller()->get_client(_ip, _port, _id);
     client1->set_parser(_parser);
 
     connect(this, SIGNAL(signalSendToEncodeBpla(QByteArray*)), this, SLOT(_slot_encode(QByteArray*)));
@@ -43,7 +43,7 @@ void NIIPPController::set_id(int id)
 
 }
 
-void NIIPPController::send_data(QSharedPointer<IMessage> msg_ptr)
+void NIIPPController::send_data(QSharedPointer<IMessageOld> msg_ptr)
 {
     _slotGetData(msg_ptr);
 }
@@ -67,7 +67,7 @@ void NIIPPController::_slotGetData(rpc_msg msg_ptr)
 {
     int type1 = 1;
     int id = 0;
-    IMessage *f = (msg_ptr.data());
+	IMessageOld *f = (msg_ptr.data());
     QByteArray* dd = f->get(id, type1);
     QDataStream ds(*dd);
 
@@ -293,7 +293,7 @@ void NIIPPController::_slot_encode(QByteArray* data)
 
     QByteArray ba = _encode(list);
 
-    ITCPClient* cl = _router->get_tcp_controller()->get_client(_ip, _port, _id);
+    ITCPClientOld* cl = _router->get_tcp_controller()->get_client(_ip, _port, _id);
     if(cl != NULL)
     {
         cl->set(ba);

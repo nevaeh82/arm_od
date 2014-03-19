@@ -18,6 +18,9 @@ void BLAControllerParser::set_router(IRouter *router)
 void BLAControllerParser::parsing(QByteArray data)
 {
     qDebug() << "parse data from KTR" << QString::fromAscii(data.constData(), data.size());
+	if (data.mid(0, 12) != "control link") {
+		qDebug() << "VSE PLOHO";
+	}
     data.remove(0, 12);
     int count_bla = data.at(0);
     QVector<quint16> ids;

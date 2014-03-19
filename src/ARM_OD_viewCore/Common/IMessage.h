@@ -6,10 +6,10 @@
 #include <QVariant>
 #include <QByteArray>
 
-class IMessage
+class IMessageOld
 {
 public:
-    virtual ~IMessage(){};
+    virtual ~IMessageOld(){};
 
     virtual int get(QByteArray& data) = 0;
 

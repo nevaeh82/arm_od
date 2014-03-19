@@ -11,7 +11,7 @@
 #include "../TCPClient.h"
 #include "NIIPPParser.h"
 
-typedef QSharedPointer<IMessage> rpc_msg;
+typedef QSharedPointer<IMessageOld> rpc_msg;
 
 
 class NIIPPController : public QObject, public IClient
@@ -29,7 +29,7 @@ public:
     virtual int get_id();
     virtual void set_type(int type);
     virtual int get_type();
-    virtual void send_data(QSharedPointer<IMessage> msg_ptr);
+	virtual void send_data(QSharedPointer<IMessageOld> msg_ptr);
 
 
 private:
@@ -43,7 +43,7 @@ private:
     NIIPPParser*        _parser;
 
 private slots:
-    void _slotGetData(QSharedPointer<IMessage> msg_ptr);
+	void _slotGetData(QSharedPointer<IMessageOld> msg_ptr);
 
 private slots:
     void _slot_encode(QByteArray* data);

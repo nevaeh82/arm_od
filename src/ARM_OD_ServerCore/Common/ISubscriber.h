@@ -59,7 +59,7 @@ class ISubscriber
 public:
     virtual ~ISubscriber(){};
 
-    virtual void data_ready(int type, QSharedPointer<IMessage> msg)         = 0;
+    virtual void data_ready(int type, QSharedPointer<IMessageOld> msg)         = 0;
 
     virtual void add_subscription(int type, IClient* client)                = 0;
     virtual void remove_subscription(int type, IClient* client)             = 0;

@@ -1,5 +1,5 @@
-#ifndef TCPCLIENT_H
-#define TCPCLIENT_H
+#ifndef TCPCLIENTOLD_H
+#define TCPCLIENTOLD_H
 
 #include <QObject>
 #include <QDebug>
@@ -22,12 +22,12 @@
 #include "../Common/IClient.h"
 #include "../Common/ISubscriber.h"
 
-class TCPClient : public ITCPClient, public IClient
+class TCPClientOld : public ITCPClientOld, public IClient
 {
     Q_OBJECT
 public:
-    TCPClient(QString host, quint16 port, IRouter *router);
-    ~TCPClient();
+	TCPClientOld(QString host, quint16 port, IRouter *router);
+	~TCPClientOld();
 
 public:
     virtual void set_parser(ITCPParser* parser);
@@ -41,7 +41,7 @@ public:
     virtual int  get_id();
     virtual void set_type(int type);
     virtual int  get_type();
-    virtual void send_data(QSharedPointer<IMessage> msg_ptr);
+	virtual void send_data(QSharedPointer<IMessageOld> msg_ptr);
 
 
 
@@ -108,4 +108,4 @@ private slots:
      void slotState(QAbstractSocket::SocketState state);
 };
 
-#endif // TCPCLIENT_H
+#endif // TCPCLIENTOLD_H
