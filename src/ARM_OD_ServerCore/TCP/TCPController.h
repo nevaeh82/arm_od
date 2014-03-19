@@ -23,11 +23,11 @@ public:
     void stop();
     void delete_all_connections();
     int count_connections();
-    TCPClient *get_client(QString host, quint16 port, int id);
+    TCPClientOld *get_client(QString host, quint16 port, int id);
 
 private:
     bool _is_started;
-    QHash<QString, TCPClient *> _sockets_container; //QString signature: "host:port"
+    QHash<QString, TCPClientOld *> _sockets_container; //QString signature: "host:port"
     IRouter     *_router;
 
 

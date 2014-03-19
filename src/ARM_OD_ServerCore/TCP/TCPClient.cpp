@@ -2,7 +2,7 @@
 #include "assert.h"
 
 
-TCPClient::TCPClient(QString host, quint16 port, IRouter *router)
+TCPClientOld::TCPClientOld(QString host, quint16 port, IRouter *router)
     : _should_stop(false),
       _isRead(false),
       _state(false),
@@ -19,7 +19,7 @@ TCPClient::TCPClient(QString host, quint16 port, IRouter *router)
     connect(this, SIGNAL(signalSend(QByteArray)), this, SLOT(_slotWrite(QByteArray)));
 }
 
-TCPClient::~TCPClient()
+TCPClientOld::~TCPClientOld()
 {
     qDebug() <<"TCP client Destructor";
     if(_parser != NULL)
@@ -28,12 +28,12 @@ TCPClient::~TCPClient()
     }
 }
 
-void TCPClient::set_parser(ITCPParser *parser)
+void TCPClientOld::set_parser(ITCPParser *parser)
 {
     _parser = parser;
 }
 
-void TCPClient::proccess()
+void TCPClientOld::proccess()
 {
     this->socket_ = new QTcpSocket(this);
 //    connect(socket_, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(_slot_stateCh(QAbstractSocket::SocketState)))
@@ -53,7 +53,7 @@ void TCPClient::proccess()
     }
 }
 
-void TCPClient::onSocketDisplayError(QAbstractSocket::SocketError socketError)
+void TCPClientOld::onSocketDisplayError(QAbstractSocket::SocketError socketError)
 {
     QString thiserror;
     switch(socketError)
@@ -76,7 +76,7 @@ void TCPClient::onSocketDisplayError(QAbstractSocket::SocketError socketError)
     finish_connection();
 }
 
-void TCPClient::slotState(QAbstractSocket::SocketState state)
+void TCPClientOld::slotState(QAbstractSocket::SocketState state)
 {
     if(state == QAbstractSocket::UnconnectedState)
     {
@@ -88,7 +88,7 @@ void TCPClient::slotState(QAbstractSocket::SocketState state)
     }
 }
 
-void TCPClient::onSocketConnected()
+void TCPClientOld::onSocketConnected()
 {
     _mutex.lock();
     _is_connected = true;
@@ -108,7 +108,7 @@ void TCPClient::onSocketConnected()
     }
 }
 
-void TCPClient::onSocketDisconnected()
+void TCPClientOld::onSocketDisconnected()
 {
     _mutex.lock();
     _is_connected = false;
@@ -121,55 +121,55 @@ void TCPClient::onSocketDisconnected()
 }
 
 /// get connection state
-bool TCPClient::get_state()
+bool TCPClientOld::get_state()
 {
     return _state;
 }
 
-void TCPClient::set_id(int id)
+void TCPClientOld::set_id(int id)
 {
     _id = id;
 }
 
-void TCPClient::send_data(QSharedPointer<IMessageOld> msg_ptr)
+void TCPClientOld::send_data(QSharedPointer<IMessageOld> msg_ptr)
 {    
 //    emit signalPrepareToWrite(msg_ptr);
 }
 
-int TCPClient::get_id()
+int TCPClientOld::get_id()
 {
     return _id;
 }
 
-void TCPClient::set_type(int type)
+void TCPClientOld::set_type(int type)
 {
     _type = type;
 }
 
-int TCPClient::get_type()
+int TCPClientOld::get_type()
 {
     return _type;
 }
 
-void TCPClient::stop()
+void TCPClientOld::stop()
 {
     qDebug() << "stop";
     socket_->disconnectFromHost();
 }
 
-void TCPClient::slotDestroy()
+void TCPClientOld::slotDestroy()
 {
     stop();
     emit finished();
 }
 
 ///called then closed connection
-void TCPClient::finish_connection()
+void TCPClientOld::finish_connection()
 {
     emit signalConnected(false);
 }
 
-void TCPClient::reconnection()
+void TCPClientOld::reconnection()
 {
     if(socket_->state() != QAbstractSocket::UnconnectedState)
         return;
@@ -185,7 +185,7 @@ void TCPClient::reconnection()
 }
 
 /// ready to read
-void TCPClient::onSocketReadyRead()
+void TCPClientOld::onSocketReadyRead()
 {
     if(socket_->bytesAvailable() < 1)
         return;
@@ -198,7 +198,7 @@ void TCPClient::onSocketReadyRead()
     }
 }
 
-void TCPClient::_slotWrite(QByteArray data)
+void TCPClientOld::_slotWrite(QByteArray data)
 {
     int writesize = -1;
     bool connected = false;
@@ -218,14 +218,14 @@ void TCPClient::_slotWrite(QByteArray data)
     }while(writesize == -1);
 }
 
-void TCPClient::set(QByteArray data)
+void TCPClientOld::set(QByteArray data)
 {
     if(socket_->state() == QAbstractSocket::UnconnectedState)
         return;
     emit signalSend(data);
 }
 
-void TCPClient::distruct()
+void TCPClientOld::distruct()
 {
     delete this;
 }

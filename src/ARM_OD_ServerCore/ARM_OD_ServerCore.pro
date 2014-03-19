@@ -60,7 +60,9 @@ HEADERS += \
     TCP/TcpNIIPPCoder.h \
     TCP/TcpNIIPPController.h \
     TCP/TcpKTRCoder.h \
-    TCP/TcpKTRController.h
+    TCP/TcpKTRController.h \
+    TCP/Interfaces/ITcpManager.h \
+    TCP/TcpManager.h
 
 SOURCES += \
     ARM_OD_Application.cpp \
@@ -92,4 +94,5 @@ SOURCES += \
     TCP/TcpNIIPPCoder.cpp \
     TCP/TcpNIIPPController.cpp \
     TCP/TcpKTRCoder.cpp \
-    TCP/TcpKTRController.cpp
+    TCP/TcpKTRController.cpp \
+    TCP/TcpManager.cpp

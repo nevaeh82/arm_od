@@ -3,7 +3,7 @@
 TcpKTRController::TcpKTRController(QObject* parent) :
 	BaseTcpDeviceController(parent)
 {
-	m_tcpDeviceName = KTP_TCP_DEVICE;
+	m_tcpDeviceName = KTR_TCP_DEVICE;
 	debug(QString("Created %1").arg(m_tcpDeviceName));
 	connect(this, SIGNAL(createTcpKTRCoderInternalSignal()), this, SLOT(createTcpKTRCoderInternalSlot()));
 }

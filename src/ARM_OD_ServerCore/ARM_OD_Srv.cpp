@@ -36,7 +36,7 @@ ARM_OD_Srv::ARM_OD_Srv()
     _rpc_server->start();
 
 
-    _read_settingsKTR();
+	_read_settingsKTR();
 
     _rpc_client1 = new RPCClient_R(_router);
 
@@ -84,7 +84,7 @@ ARM_OD_Srv::ARM_OD_Srv()
 //    BLASimulator* bpla_sim = new BLASimulator(_router, 0.1, false);
 //    bpla_sim->start();
 
-    _ais = new Ais(_router);
+	_ais = new Ais(_router);
 //    QThread *thread = new QThread;
 
 //    connect(_ais, SIGNAL(finished()), thread, SLOT(quit()));
@@ -114,6 +114,19 @@ ARM_OD_Srv::ARM_OD_Srv()
 //    a_sim->setParent(0);
 //    a_sim->moveToThread(thread_atlant_sim);
 //    thread_atlant_sim->start();
+
+
+
+	TcpManager* m_tcpManager = new TcpManager;
+	QThread* tcpManagerThread = new QThread;
+	connect(tcpManagerThread, SIGNAL(finished()), m_tcpManager, SLOT(deleteLater()));
+	connect(tcpManagerThread, SIGNAL(finished()), tcpManagerThread, SLOT(deleteLater()));
+	m_tcpManager->moveToThread(tcpManagerThread);
+	tcpManagerThread->start();
+
+//	m_tcpManager->addTcpDevice(NIIPP_TCP_DEVICE, "192.168.10.50", 6340);
+//	m_tcpManager->addTcpDevice(NIIPP_TCP_DEVICE, "192.168.245.51", 6340);
+//	m_tcpManager->addTcpDevice(KTR_TCP_DEVICE, "192.168.137.98", 64300);
 
 }
 

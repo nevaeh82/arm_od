@@ -2,6 +2,6 @@
 #define TCPDEVICESDEFINES_H
 
 #define NIIPP_TCP_DEVICE	"niippTcpDevice"
-#define KTP_TCP_DEVICE		"ktrTcpDevice"
+#define KTR_TCP_DEVICE		"ktrTcpDevice"
 
 #endif // TCPDEVICESDEFINES_H

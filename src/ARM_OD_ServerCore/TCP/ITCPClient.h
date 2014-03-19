@@ -1,15 +1,15 @@
-#ifndef ITCPCLIENT_H
-#define ITCPCLIENT_H
+#ifndef ITCPCLIENTOLD_H
+#define ITCPCLIENTOLD_H
 
 #include <QObject>
 #include <QByteArray>
 
 #include "ITCPParser.h"
 
-class ITCPClient: public QObject
+class ITCPClientOld: public QObject
 {
 public:
-    virtual ~ITCPClient(){};
+	virtual ~ITCPClientOld(){};
 
     virtual void set_parser(ITCPParser* parser) = 0;
 
@@ -24,4 +24,4 @@ signals:
     void signalConnected(bool state);
 };
 
-#endif // ITCPCLIENT_H
+#endif // ITCPCLIENTOLD_H
