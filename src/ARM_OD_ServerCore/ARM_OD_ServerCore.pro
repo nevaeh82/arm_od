@@ -61,7 +61,6 @@ HEADERS += \
     TCP/TcpNIIPPController.h \
     TCP/TcpKTRCoder.h \
     TCP/TcpKTRController.h \
-    TCP/Interfaces/ITcpManager.h \
     TCP/TcpManager.h \
     TCP/UAV/IBLAController.h \
     TCP/TcpArmrClientController.h \

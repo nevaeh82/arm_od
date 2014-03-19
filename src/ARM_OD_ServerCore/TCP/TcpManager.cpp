@@ -74,6 +74,11 @@ void TcpManager::setRpcServer(IRPC* rpcServer)
 	m_rpcServer = rpcServer;
 }
 
+void TcpManager::setTcpServer(ITcpServer *tcpServer)
+{
+	m_tcpServer = tcpServer;
+}
+
 QObject* TcpManager::asQObject()
 {
 	return this;

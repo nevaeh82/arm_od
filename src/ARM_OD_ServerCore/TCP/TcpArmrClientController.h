@@ -7,7 +7,7 @@
 
 #include "Logger.h"
 
-#include "Tcp/Defines.h"
+#include "TcpDevicesDefines.h"
 
 class TcpArmrClientController : public BaseTcpDeviceController
 {

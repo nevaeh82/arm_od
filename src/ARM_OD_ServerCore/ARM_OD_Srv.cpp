@@ -27,11 +27,6 @@ ARM_OD_Srv::ARM_OD_Srv()
 
     _read_settings();
 
-
-// connect up the signals
-//    QObject::connect(_rpc_server, SIGNAL(finished()), &a, SLOT(quit()));
-//    QObject::connect(&a, SIGNAL(aboutToQuit()), _rpc_server, SLOT(aboutToQuitApp()));
-
     _rpc_server = new RPCServer(_router);
     _rpc_server->start();
 
@@ -43,8 +38,6 @@ ARM_OD_Srv::ARM_OD_Srv()
 
     QThread *thread_rpc_client = new QThread;
     qDebug() << "create thread for rpc client ";
-
-//    connect(thread_rpc_client, SIGNAL(started()), _rpc_client1, SLOT(slotInit()));
 
     connect(this, SIGNAL(signalStartRPC()), _rpc_client1, SLOT(slotStart()));
     connect(_rpc_client1, SIGNAL(signalFinished()), thread_rpc_client, SLOT(quit()));
@@ -61,8 +54,6 @@ ARM_OD_Srv::ARM_OD_Srv()
     _subscriber_up->add_subscription(SOLVER_CLEAR, _rpc_client1);
     thread_rpc_client->start();
 
-//    _rpc_client1->start();
-
     _niipp1 = new NIIPPController(_router);
     _niipp1->set_id(100);
     _niipp1->set_type(1);
@@ -72,50 +63,10 @@ ARM_OD_Srv::ARM_OD_Srv()
     _niipp2 = new NIIPPController(_router);
     _niipp2->set_id(101);
     _niipp2->set_type(1);
-    _niipp2->setController("192.168.245.51", 6340);
-//    _niipp2 = new NIIPPController(_router);
-//    _niipp2->set_id(102);
+	_niipp2->setController("192.168.245.51", 6340);
     emit signalStartRPC();
 
-
-//    BLASimulator* bla_sim = new BLASimulator(_router, 0.3, true);
-//    bla_sim->start();
-
-//    BLASimulator* bpla_sim = new BLASimulator(_router, 0.1, false);
-//    bpla_sim->start();
-
 	_ais = new Ais(_router);
-//    QThread *thread = new QThread;
-
-//    connect(_ais, SIGNAL(finished()), thread, SLOT(quit()));
-//    connect(_ais, SIGNAL(finished()), _ais, SLOT(deleteLater()));
-
-//    connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
-//    connect(this, SIGNAL(closeALL()), _ais, SLOT(stop()));
-
-//    _ais->moveToThread(thread);
-//    thread->start();
-
-
-
-
-//    AtlantSimulator* a_sim = new AtlantSimulator(_router, 42.623, 41.746917/*42.741194, 41.42694*/, 33);
-//    a_sim->set_id(778);
-//    a_sim->set_type(1);
-//    _subscriber_up->add_subscription(KTR_BLA, a_sim);
-
-//    QThread *thread_atlant_sim = new QThread;
-
-//    connect(a_sim, SIGNAL(signalFinished()), thread_atlant_sim, SLOT(quit()));
-//    connect(thread_atlant_sim, SIGNAL(finished()), thread_atlant_sim, SLOT(deleteLater()));
-
-//    connect(a_sim, SIGNAL(signalFinished()), a_sim, SLOT(deleteLater()));
-
-//    a_sim->setParent(0);
-//    a_sim->moveToThread(thread_atlant_sim);
-//    thread_atlant_sim->start();
-
-
 
 	TcpManager* m_tcpManager = new TcpManager;
 	QThread* tcpManagerThread = new QThread;
@@ -127,7 +78,6 @@ ARM_OD_Srv::ARM_OD_Srv()
 //	m_tcpManager->addTcpDevice(NIIPP_TCP_DEVICE, "192.168.10.50", 6340);
 //	m_tcpManager->addTcpDevice(NIIPP_TCP_DEVICE, "192.168.245.51", 6340);
 //	m_tcpManager->addTcpDevice(KTR_TCP_DEVICE, "192.168.137.98", 64300);
-
 }
 
 ARM_OD_Srv::~ARM_OD_Srv()
