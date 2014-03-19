@@ -2,17 +2,11 @@
 
 #include <QDebug>
 
-RPCServer::RPCServer(IRouter* router/*, IRPC* r_client*/)
+RPCServer::RPCServer(IRouter* router)
 {
     _rpc_server = NULL;
     _router = router;
-    _subscriber = router->get_subscriber();
-//    _r_client = r_client;
-
-//    qRegisterMetaType<QVector<QPointF> >("rpc_send_points_vector");
-//    qRegisterMetaType<QVector<QPointF> >("QVector<QPointF>");
-//    qRegisterMetaTypeStreamOperators<QVector<QPointF> >("QVector<QPointF>");
-//    qRegisterMetaType<quint32>("quint32");
+	_subscriber = router->get_subscriber();
 }
 
 RPCServer::~RPCServer()
@@ -25,7 +19,6 @@ int RPCServer::start()
     connect(_rpc_server, SIGNAL(clientConnected(quint64)), this, SLOT(_slotRPCConnetion(quint64)));
     connect(_rpc_server, SIGNAL(serverError(QAbstractSocket::SocketError)), this, SLOT(_slotErrorRPCConnection(QAbstractSocket::SocketError)));
     connect(_rpc_server, SIGNAL(clientDisconnected(quint64)), this, SLOT(_slotRPCDisconnected(quint64)));
-
 
     _rpc_server->attachSlot(RPC_SLOT_SET_CLIENT_ID, this, SLOT(rpc_slot_set_client_id(quint64,int)));
     _rpc_server->attachSlot(RPC_SLOT_SET_NIIPP_BPLA, this, SLOT(rpc_slot_set_niipp_data(quint64,QByteArray)));
@@ -114,12 +107,7 @@ void RPCServer::rpc_slot_set_client_id(quint64 client, int id)
     _subscriber->add_subscription(ARM_R_SERVER_ATLANT_DIRECTION, cl);
     _subscriber->add_subscription(ARM_R_SERVER_ATLANT_POSITION, cl);
 
-    _subscriber->add_subscription(AIS_DATA, cl);
-//    _subscriber->add_subscription(FLAKON_FFT, cl);
-//    _subscriber->add_subscription(FLAKON_CORRELATION, cl);
-//    _subscriber->add_subscription(FLAKON_SIGNAL_TYPE, cl);
-    //    _subscriber->add_subscription(PRM_STATUS, cl);
-
+	_subscriber->add_subscription(AIS_DATA, cl);
 }
 
 void RPCServer::rpc_slot_set_niipp_data(quint64 client, QByteArray data)
@@ -136,9 +124,6 @@ void RPCServer::rpc_slot_set_niipp_data(quint64 client, QByteArray data)
 
 void RPCServer::rpc_slot_set_solver_data(quint64 client, QByteArray data)
 {
-
-//    RPCClient_R* client_r = dynamic_cast<RPCClient_R *>(_r_client);
-//    client_r->push_msg(data);
     QDataStream ds(&data, QIODevice::ReadOnly);
     int id = -1;
     ds >> id;
@@ -213,11 +198,6 @@ void RPCServer::rpc_slot_send_NIIPP_data(quint64 client, QByteArray *data)
 {
     _rpc_server->call(client, RPC_SLOT_SERVER_SEND_NIIPP_DATA, QVariant::fromValue(*data));
 }
-
-//void RPCServer::rpc_slot_send_bla_point(quint64 client, int id, rpc_QPointF point, double alt)
-//{
-//    _rpc_server->call(client, RPC_SLOT_SERVER_SEND_BLA_POINTS, QVariant::fromValue(id), QVariant::fromValue(point), QVariant::fromValue(alt));
-//}b
 
 void RPCServer::aboutToQuitApp()
 {

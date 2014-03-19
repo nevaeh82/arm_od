@@ -514,21 +514,9 @@ void RPCClient::rpc_slot_server_send_atlant_direction(QByteArray data)
     ds >> msg.motionType;
     ds >> msg.motionConfidence;
 
-//    qDebug() << msg.sourceId;
-//    qDebug() << msg.requestId;
-//    qDebug() << msg.frequency;
-//    qDebug() << msg.widht;
-//    qDebug() << msg.direction;
-//    qDebug() << msg.angle;
-//    qDebug() << msg.level;
-//    qDebug() << msg.quality;
-
     int id_post = msg.post.right(1).toInt();
 
-
-
     _map_controller->get_map_client(1)->slot_peleng(msg.sourceId, id_post, msg.postLatitude, msg.postLongitude, msg.direction);
-
 }
 
 void RPCClient::rpc_slot_server_send_atlant_position(QByteArray data)

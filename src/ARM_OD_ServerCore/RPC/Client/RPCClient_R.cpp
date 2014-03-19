@@ -41,8 +41,7 @@ int RPCClient_R::get_type()
 
 void RPCClient_R::send_data(QSharedPointer<IMessage> msg_ptr)
 {
-    emit signalSendData(msg_ptr);
-    //_slotGetData(msg_ptr);
+	emit signalSendData(msg_ptr);
 }
 
 void RPCClient_R::slotInit()
@@ -67,13 +66,10 @@ void RPCClient_R::slotInit()
 
     _rpc_client->attachSignal(this, SIGNAL(signalSetSolver(QByteArray)), RPC_SLOT_SET_DATA_TO_SOLVER);
     _rpc_client->attachSignal(this, SIGNAL(signalSetSolverClear(QByteArray)), RPC_SLOT_SET_CLEAR_TO_SOLVER);
-//    connect(this, SIGNAL(signalPushMsh(QByteArray)), this, SLOT(_slotPushMsg(QByteArray)));
-//    qDebug() << this->thread();
 }
 
 int RPCClient_R::start()
 {
-//    qDebug() << this->thread();
     slotInit();
     _rpc_client->connect(_ip_RPC, _port_RPC);
     return 0;
@@ -103,7 +99,6 @@ void RPCClient_R::set_command(IMessage *msg)
 
 void RPCClient_R::push_msg(QByteArray msg)
 {
-//    emit signalPushMsh(msg);
 }
 
 void RPCClient_R::_slotSetCommand(IMessage *msg)
@@ -145,60 +140,10 @@ void RPCClient_R::_slotGetData(QSharedPointer<IMessage> msg_ptr)
         return;
         break;
     }
-
-//    QDataStream ds1(&ba11, QIODevice::ReadWrite);
-//    ds1 << id1;
-//    ds1 << val;
-
-//    ds1 >> id1;
-//    ds1 >> val;
-//    quint64 cid = _server->get_client_id(this);
-//    QVector<QPointF> points;
-//    QString str;
-//    int id_temp = 0;
-
 }
 
 void RPCClient_R::_form_command(IMessage *msg)
 {
-//    qDebug() << "form command";
-//    QVariant data;
-//    int type = msg->get(data);
-//    switch(type)
-//    {
-//    case KTR_BLA:
-
-//        rpc_slot_server_send_bla_points(int id, rpc_QPointF point, double alt);
-//        break;
-//    case COMMAND_TOBLACKLIST:
-//        break;
-//    case COMMAND_TOWHITELIST:
-//        break;
-//    case COMMAND_RECOGNIZESIGNAL:
-//        _recognize();
-//        break;
-//    case COMMAND_KM:
-//        _ss_correlation(data.toBool());
-//        break;
-//    case COMMAND_PRM_SET_FREQ:
-//        _prm_set_freq(data.toUInt());
-//        break;
-//    case COMMAND_PRM_REQUEST_FREQ:
-//        _prm_request_freq();
-//        break;
-//    case COMMAND_PRM_SET_ATT1:
-//        _prm_set_att1(data.toInt());
-//        break;
-//    case COMMAND_PRM_SET_ATT2:
-//        _prm_set_att2(data.toInt());
-//        break;
-//    case COMMAND_PRM_SET_FILTER:
-//        _prm_set_filter(data.toInt());
-//        break;
-//    default:
-//        break;
-//    }
-//    msg->clenup();
 }
 
 /// slot when connection complete
@@ -212,8 +157,6 @@ void RPCClient_R::_slotRCPConnetion()
 
     _rpc_client->attachSlot(RPC_SLOT_SERVER_ATLANT_DIRECTION, this, SLOT(rpc_slot_server_atlant_direction(QByteArray)));
     _rpc_client->attachSlot(RPC_SLOT_SERVER_ATLANT_POSITION, this, SLOT(rpc_slot_server_atlant_position(QByteArray)));
-
-//    _rpc_client->attachSlot(RPC_SLOT_SET_NIIPP_BPLA, this, SLOT(rpc_slot_set_niipp_bpla(QByteArray)));
 }
 
 void RPCClient_R::_slotRPCDisconnection()
@@ -239,14 +182,11 @@ void RPCClient_R::_slotErrorRPCConnection(QAbstractSocket::SocketError socketErr
     case QAbstractSocket::ConnectionRefusedError:
         thiserror.append(("Ошибка! Отказано в соединении"));
         break;
-    default:
-//        thiserror.append(("Ошибка! Произошла ошибка: " + _rpc_client->->errorString()));
+	default:
         break;
-    }
-//    _rpc_client->takeDevice()->;
+	}
 
-    emit signalReconnection();
-//    qDebug() << thiserror;
+	emit signalReconnection();
 }
 
 void RPCClient_R::_slotReconnection()
@@ -270,8 +210,7 @@ int RPCClient_R::_read_settings(QString path_to_ini_file_RPC)
         if(childKey.toLatin1() != "RPC_UI")
         {
             continue;
-        }
-//        qDebug() << "m_settings = " << childKey.toLatin1();
+		}
         m_settings.beginGroup(childKey);
 
         _ip_RPC = m_settings.value("IP", "127.0.0.1").toString();
@@ -302,13 +241,8 @@ void RPCClient_R::slotFinish()
 void RPCClient_R::rpc_slot_server_send_bpla_def(QByteArray ba1)
 {
 //    qDebug() << "GOT FROM SERVER ID BPLA! = ";// << id;
-
     QByteArray *ba = new QByteArray();
-    ba->append(ba1);
-//    QDataStream ds(&ba1, QIODevice::ReadWrite);
-//    ds >> ba;
-//    ds << id;
-
+	ba->append(ba1);
 
     QSharedPointer<IMessage> msg(new Message(_id, ARM_R_SERVER_BPLA_COORDS, ba));
     _subscriber->data_ready(ARM_R_SERVER_BPLA_COORDS, msg);
@@ -320,10 +254,6 @@ void RPCClient_R::rpc_slot_server_send_bpla_def_auto(QByteArray ba)
 
     QByteArray *ba1 = new QByteArray();
     ba1->append(ba);
-//    QDataStream ds(&ba1, QIODevice::ReadWrite);
-//    ds >> ba;
-//    ds << id;
-
 
     QSharedPointer<IMessage> msg(new Message(_id, ARM_R_SERVER_BPLA_COORDS_AUTO, ba1));
     _subscriber->data_ready(ARM_R_SERVER_BPLA_COORDS_AUTO, msg);
@@ -332,46 +262,9 @@ void RPCClient_R::rpc_slot_server_send_bpla_def_auto(QByteArray ba)
 
 void RPCClient_R::rpc_slot_server_atlant_direction(QByteArray ba1)
 {
-
     QByteArray *ba = new QByteArray();
     ba->append(ba1);
-
 //    qDebug() << "GOT FROM SERVER ATLANT! = ";// << id;
-
-//    qDebug() << "GOT DATA FROM ATLANT!";
-//    QDataStream ds(&ba1, QIODevice::ReadWrite);
-//    A_Dir_Ans_msg msg;
-//    ds >> msg.requestId;
-//    ds >> msg.sourceId;
-//    ds >> msg.dateTime;
-//    ds >> msg.post;
-//    ds >> msg.postLatitude;
-//    ds >> msg.postLongitude;
-//    ds >> msg.postHeight;
-//    ds >> msg.frequency;
-//    ds >> msg.widht;
-//    ds >> msg.direction;
-//    ds >> msg.angle;
-//    ds >> msg.level;
-//    ds >> msg.quality;
-//    ds >> msg.motionType;
-//    ds >> msg.motionConfidence;
-
-//    qDebug() << msg.sourceId;
-//    qDebug() << msg.requestId;
-//    qDebug() << msg.frequency;
-//    qDebug() << msg.widht;
-//    qDebug() << msg.direction;
-//    qDebug() << msg.angle;
-//    qDebug() << msg.level;
-//    qDebug() << msg.quality;
-
-//    QByteArray *ba = new QByteArray();
-//    ba->append(ba1);
-////    QDataStream ds(&ba1, QIODevice::ReadWrite);
-////    ds >> ba;
-////    ds << id;
-
 
     QSharedPointer<IMessage> msg1(new Message(_id, ARM_R_SERVER_ATLANT_DIRECTION, ba));
     _subscriber->data_ready(ARM_R_SERVER_ATLANT_DIRECTION, msg1);
@@ -380,7 +273,6 @@ void RPCClient_R::rpc_slot_server_atlant_direction(QByteArray ba1)
 
 void RPCClient_R::rpc_slot_server_atlant_position(QByteArray ba1)
 {
-
     QByteArray *ba = new QByteArray();
     ba->append(ba1);
 
@@ -388,6 +280,3 @@ void RPCClient_R::rpc_slot_server_atlant_position(QByteArray ba1)
     _subscriber->data_ready(ARM_R_SERVER_ATLANT_POSITION, msg1);
 
 }
-
-
-
