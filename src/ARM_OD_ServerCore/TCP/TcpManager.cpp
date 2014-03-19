@@ -22,9 +22,11 @@ void TcpManager::addTcpDevice(const QString& deviceType, const QString& host, co
 
 	if (deviceType == NIIPP_TCP_DEVICE) {
 		controller = new TcpNIIPPController(NIIPP_TCP_DEVICE);
+		controller->registerReceiver(this);
 		debug(QString("Created TcpNIIPPController"));
 	} else if (deviceType == KTR_TCP_DEVICE) {
 		controller = new TcpKTRController(KTR_TCP_DEVICE);
+		controller->registerReceiver(this);
 		debug(QString("Created TcpKTRController"));
 	}
 
@@ -48,6 +50,10 @@ void TcpManager::addTcpDevice(const QString& deviceType, const QString& host, co
 	controller->createTcpDeviceCoder();
 	controller->createTcpClient();
 	controller->connectToHost(host, port);
+
+	if (deviceType == KTR_TCP_DEVICE) {
+		controller->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_GET_BOARD_LIST, QByteArray())));
+	}
 
 	debug(QString("Added device connection for %1 with %2").arg(deviceType).arg(key));
 }
@@ -92,7 +98,35 @@ void TcpManager::onMessageReceived(const QString& device, const MessageSP argume
 		}
 	} else if (device == KTR_TCP_DEVICE) {
 		if (messageType == TCP_KTR_ANSWER_BOARD_LIST) {
-			/// Do nothing?!
+
+			if (!m_controllersMap.contains(KTR_TCP_DEVICE)) {
+				debug(QString("Map doesn't contain %1").arg(KTR_TCP_DEVICE));
+				return;
+			}
+
+			BaseTcpDeviceController* controller = m_controllersMap.value(KTR_TCP_DEVICE, NULL);
+			if (controller == NULL) {
+				return;
+			}
+
+			QList<quint16> boardList;
+			QDataStream inputDataStream(&messageData, QIODevice::ReadOnly);
+			inputDataStream >> boardList;
+
+			foreach (quint16 boardID, boardList) {
+				quint32 dev = 1;
+
+				QByteArray dataToSend;
+				QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
+				dataStream << boardID << dev;
+				controller->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_COMMAND_TO_BPLA, dataToSend)));
+
+				dataToSend.clear();
+				dev = 622;
+				dataStream << boardID << dev;
+				controller->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_COMMAND_TO_BPLA, dataToSend)));
+			}
+
 		} else if (messageType == TCP_KTR_ANSWER_BPLA){
 //			m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_BLA_POINTS, messageData);
 

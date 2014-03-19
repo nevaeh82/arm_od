@@ -36,7 +36,7 @@ ARM_OD_Srv::ARM_OD_Srv()
     _rpc_server->start();
 
 
-	_read_settingsKTR();
+//	_read_settingsKTR();
 
     _rpc_client1 = new RPCClient_R(_router);
 
@@ -115,7 +115,7 @@ ARM_OD_Srv::ARM_OD_Srv()
 //    a_sim->moveToThread(thread_atlant_sim);
 //    thread_atlant_sim->start();
 
-
+	qRegisterMetaType<MessageSP>("MessageSP");
 
 	TcpManager* m_tcpManager = new TcpManager;
 	QThread* tcpManagerThread = new QThread;
@@ -126,7 +126,7 @@ ARM_OD_Srv::ARM_OD_Srv()
 
 //	m_tcpManager->addTcpDevice(NIIPP_TCP_DEVICE, "192.168.10.50", 6340);
 //	m_tcpManager->addTcpDevice(NIIPP_TCP_DEVICE, "192.168.245.51", 6340);
-//	m_tcpManager->addTcpDevice(KTR_TCP_DEVICE, "192.168.137.98", 64300);
+	m_tcpManager->addTcpDevice(KTR_TCP_DEVICE, "192.168.137.98", 64300);
 
 }
 
