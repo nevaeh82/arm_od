@@ -8,10 +8,10 @@ CONFIG += staticlib
 
 include(../../specs/project.pri)
 include(../ARM_OD_Common/reference.pri)
-include(../../specs/protobuf.pri)
-include($$SolutionDir/specs/CISCommonLib.pri )
 include(../../specs/qxt.pri)
 include(../../specs/Solver.pri)
+include(../../specs/protobuf.pri)
+include($$SolutionDir/specs/CISCommonLib.pri )
 include(../../specs/logger.pri)
 
 INCLUDEPATH += $$PWD
@@ -62,7 +62,11 @@ HEADERS += \
     TCP/TcpKTRCoder.h \
     TCP/TcpKTRController.h \
     TCP/Interfaces/ITcpManager.h \
-    TCP/TcpManager.h
+    TCP/TcpManager.h \
+    TCP/UAV/IBLAController.h \
+    TCP/TcpArmrClientController.h \
+    TCP/TcpArmrClientCoder.h \
+    Common/Defines.h
 
 SOURCES += \
     ARM_OD_Application.cpp \
@@ -95,4 +99,7 @@ SOURCES += \
     TCP/TcpNIIPPController.cpp \
     TCP/TcpKTRCoder.cpp \
     TCP/TcpKTRController.cpp \
-    TCP/TcpManager.cpp
+    TCP/TcpManager.cpp \
+    TCP/UAV/BLASimulator.cpp \
+    TCP/TcpArmrClientController.cpp \
+    TCP/TcpArmrClientCoder.cpp
