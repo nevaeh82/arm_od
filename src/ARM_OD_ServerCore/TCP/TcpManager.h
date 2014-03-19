@@ -16,6 +16,8 @@
 #include "TcpNIIPPController.h"
 #include "TcpKTRController.h"
 
+#include "TcpArmrClientController.h"
+
 #include "Rpc/RPCServer.h"
 
 class TcpManager : public QObject, public ITcpManager, public ITcpListener, public IRpcListener

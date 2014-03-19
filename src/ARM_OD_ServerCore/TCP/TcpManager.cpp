@@ -26,7 +26,11 @@ void TcpManager::addTcpDevice(const QString& deviceType, const QString& host, co
 	} else if (deviceType == KTR_TCP_DEVICE) {
 		controller = new TcpKTRController(KTR_TCP_DEVICE);
 		debug(QString("Created TcpKTRController"));
+	} else if (deviceType == ARMR_TCP_CLIENT) {
+		controller = new TcpArmrClientController(ARMR_TCP_CLIENT);
+		debug(QString("Created TcpArmrClientController"));
 	}
+
 
 	/// if something else, create new Tcp%Device%Controller with new name and/or class
 

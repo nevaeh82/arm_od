@@ -22,5 +22,4 @@ SOURCES += \
     Rpc/RpcDefines.cpp
 
 HEADERS += \
-    Rpc/RpcDefines.h \  
-    Tcp/Defines.h
+    Rpc/RpcDefines.h
