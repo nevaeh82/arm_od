@@ -1,7 +1,9 @@
 #ifndef TCPNIIPPCONTROLLER_H
 #define TCPNIIPPCONTROLLER_H
 
-#include "BaseClasses/BaseTcpDeviceController.h"
+#include <Tcp/BaseTcpDeviceController.h>
+
+#include "TcpDevicesDefines.h"
 #include "TcpNIIPPCoder.h"
 
 class TcpNIIPPController : public BaseTcpDeviceController
@@ -16,7 +18,6 @@ public:
 	// ITcpDeviceController interface
 public:
 	virtual void createTcpDeviceCoder();
-	virtual QObject* asQObject();
 
 signals:
 	void createTcpNIIPPCoderInternalSignal();

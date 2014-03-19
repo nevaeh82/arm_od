@@ -1,7 +1,9 @@
 #ifndef TCPKTRCONTROLLER_H
 #define TCPKTRCONTROLLER_H
 
-#include "BaseClasses/BaseTcpDeviceController.h"
+#include <Tcp/BaseTcpDeviceController.h>
+
+#include "TcpDevicesDefines.h"
 #include "TcpKTRCoder.h"
 
 class TcpKTRController : public BaseTcpDeviceController
@@ -16,7 +18,6 @@ public:
 	// ITcpDeviceController interface
 public:
 	virtual void createTcpDeviceCoder();
-	virtual QObject* asQObject();
 
 signals:
 	void createTcpKTRCoderInternalSignal();

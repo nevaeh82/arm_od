@@ -8,5 +8,7 @@
 /// KTR device internal
 #define TCP_KTR_ANSWER_BOARD_LIST			"tcpKtrAnswerBoardList"
 #define TCP_KTR_REQUEST_GET_BOARD_LIST		"tcpKtrRequestGetBoardList"
+#define TCP_KTR_ANSWER_BPLA					"tcpKtrAnswerBpla"
+#define TCP_KTR_REQUEST_COMMAND_TO_BPLA		"tcpKtrRequestCommandToBpla"
 
 #endif // TCPDEFINES_H

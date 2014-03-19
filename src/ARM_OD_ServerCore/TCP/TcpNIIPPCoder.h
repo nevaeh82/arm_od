@@ -1,12 +1,14 @@
 #ifndef TCPNIIPPCODER_H
 #define TCPNIIPPCODER_H
 
-#include "BaseClasses/BaseTcpDeviceCoder.h"
+#include <Tcp/BaseTcpDeviceCoder.h>
 
 #include <QDateTime>
 #include <QPointF>
 #include <QDataStream>
 #include <QStringList>
+
+#include "TcpDefines.h"
 
 class TcpNIIPPCoder : public BaseTcpDeviceCoder
 {
@@ -20,7 +22,6 @@ public:
 public:
 	virtual MessageSP encode(const QByteArray& data);
 	virtual QByteArray decode(const MessageSP message);
-	virtual QObject* asQObject();
 
 private:
 	QByteArray prepareDataToSend(const QStringList& list);

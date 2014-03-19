@@ -1,7 +1,7 @@
 #include "TcpNIIPPCoder.h"
 
 TcpNIIPPCoder::TcpNIIPPCoder(QObject* parent) :
-	BaseTcpDeviceCoder(Pw::Logger::PwLoggerFactory::Instance()->createLogger(LOGGERCLASSNAME(TcpNIIPPCoder)), parent)
+	BaseTcpDeviceCoder(parent)
 {
 }
 
@@ -83,7 +83,7 @@ MessageSP TcpNIIPPCoder::encode(const QByteArray& data)
 	ds << course;
 	ds << angle;
 
-	m_logger->debug(QString("MMMMMMMMMMMMMMMMMMMMMM %1 %2 %3").arg(course).arg(angle).arg(mode));
+	debug(QString("MMMMMMMMMMMMMMMMMMMMMM %1 %2 %3").arg(course).arg(angle).arg(mode));
 	return MessageSP(new Message<QByteArray>(TCP_NIIPP_ANSWER, dataToSend));
 
 //	QSharedPointer<IMessageOld> msg(new MessageOld(_id, NIIPP_ANSWER, ba));
@@ -323,9 +323,4 @@ quint8 TcpNIIPPCoder::crc(const QByteArray& data)
 		crc ^= data.at(i);
 	}
 	return crc;
-}
-
-QObject* TcpNIIPPCoder::asQObject()
-{
-	return this;
 }
