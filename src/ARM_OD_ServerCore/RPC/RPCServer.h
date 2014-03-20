@@ -104,8 +104,6 @@ public slots:
     void rpc_slot_send_NIIPP_data(quint64 client, QByteArray* data);
 
 private:
-    QxtRPCPeer*     _rpc_server;
-
     QMap<quint64, IClient *> _map_clients;
 
     IRouter*        _router;
