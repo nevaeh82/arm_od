@@ -65,7 +65,7 @@ void MainWindowController::init()
 	connect(m_view, SIGNAL(openAtlasSignal()), m_tabManager->get_map_controller(), SLOT(open_map_from_Atlas()));
 	connect(m_view, SIGNAL(openMapSignal()), m_tabManager->get_map_controller(), SLOT(open_map_from_local_file()));
 
-	connect(m_view, SIGNAL(setupKoordinatometriyaSignal()), m_solver, SLOT(slot_show()));
+	connect(m_view, SIGNAL(setupKoordinatometriyaSignal()), m_solver, SLOT(slotShow()));
 
 }
 

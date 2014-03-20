@@ -14,6 +14,8 @@
 #include <QDataStream>
 #include <QCheckBox>
 
+#include "SolverWidget.h"
+
 #include "../ITabManager.h"
 #include "../../Common/CommandMessage.h"
 
@@ -23,36 +25,29 @@ class Solver;
 
 class Solver : public QWidget
 {
-    Q_OBJECT
-    
+	Q_OBJECT
+
 public:
-    explicit Solver(int id, ITabManager* tab_manager);
-    ~Solver();
-    
+	explicit Solver(int id, ITabManager* tab_manager);
+	~Solver();
+
+	QWidget* getWidget();
+
 private:
-    Ui::Solver *ui;
-
-    ITabManager*        _tab_manager;
-    int                 _id;
-
-    QDoubleSpinBox*     _dsb_alt;
-    QSpinBox*           _sb_track_length;
-    QSpinBox*           _sb_count_point_for_state;
-    QPushButton*        _accept;
-    QPushButton*        _cancel;
-    QPushButton*        _pb_clear;
-    QCheckBox*          _chb_auto;
+	SolverWidget*       _widget;
+	ITabManager*        _tab_manager;
+	int                 _id;
 
 private slots:
-    void _slot_accept();
-    void _slot_cancel();
-    void _slot_auto(bool state);
+	void slotAccept();
+	void slotCancel();
+	void slotAuto(bool state);
 
-    void _slot_clear();
-    void _slot_count_track(int count);
+	void slotClear();
+	void slotCountTrack(int count);
 
 public slots:
-    void slot_show();
+	void slotShow();
 };
 
 #endif // SOLVER_H
