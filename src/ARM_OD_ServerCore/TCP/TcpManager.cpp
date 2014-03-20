@@ -128,4 +128,18 @@ void TcpManager::onMethodCalled(const QString& method, const QVariant& argument)
 
 void TcpManager::onMethodCalledInternalSlot(const QString& method, const QVariant& argument)
 {
+	if (method == RPC_SLOT_SET_SOLVER_CLEAR) {
+		BaseTcpDeviceController* controller = m_controllersMap.value(ARMR_TCP_CLIENT, NULL);
+		if (controller == NULL) {
+			return;
+		}
+		controller->sendData(MessageSP(new Message<QByteArray>(TCP_ARMR_SEND_SOLVER_CLEAR, argument.toByteArray())));
+
+	} else if (method == RPC_SLOT_SET_SOLVER_DATA) {
+		BaseTcpDeviceController* controller = m_controllersMap.value(ARMR_TCP_CLIENT, NULL);
+		if (controller == NULL) {
+			return;
+		}
+		controller->sendData(MessageSP(new Message<QByteArray>(TCP_ARMR_SEND_SOLVER_DATA, argument.toByteArray())));
+	}
 }

@@ -122,6 +122,7 @@ void RPCServer::rpc_slot_set_niipp_data(quint64 client, QByteArray data)
 
 void RPCServer::rpc_slot_set_solver_data(quint64 client, QByteArray data)
 {
+	/*TODO: REMOVE subscriber usage*/
     QDataStream ds(&data, QIODevice::ReadOnly);
     int id = -1;
     ds >> id;
@@ -131,10 +132,15 @@ void RPCServer::rpc_slot_set_solver_data(quint64 client, QByteArray data)
 
 	QSharedPointer<IMessageOld> msg(new MessageOld(id, SOLVER_SET, ba));
     _subscriber->data_ready(SOLVER_SET, msg);
+
+	foreach (IRpcListener* listener, m_receiversList) {
+		listener->onMethodCalled(RPC_SLOT_SET_SOLVER_DATA, QVariant(data));
+	}
 }
 
 void RPCServer::rpc_slot_set_solver_clear(quint64 client, QByteArray data)
 {
+	/*TODO: REMOVE subscriber usage*/
     QDataStream ds(&data, QIODevice::ReadOnly);
     int id = -1;
     ds >> id;
@@ -145,6 +151,10 @@ void RPCServer::rpc_slot_set_solver_clear(quint64 client, QByteArray data)
 
 	QSharedPointer<IMessageOld> msg(new MessageOld(id, SOLVER_CLEAR, ba));
     _subscriber->data_ready(SOLVER_CLEAR, msg);
+
+	foreach (IRpcListener* listener, m_receiversList) {
+		listener->onMethodCalled(RPC_SLOT_SET_SOLVER_CLEAR, QVariant(data));
+	}
 }
 
 quint64 RPCServer::get_client_id(IClient *client)
