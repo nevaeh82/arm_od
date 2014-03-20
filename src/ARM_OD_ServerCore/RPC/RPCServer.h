@@ -24,6 +24,8 @@
 
 #include "Client/RPCClient_R.h"
 
+#include "Rpc/RpcServerBase.h"
+
 
 #define RPC_SLOT_SET_CLIENT_ID   "rpc_slot_set_client_id"
 
@@ -54,18 +56,23 @@
 ///PRM to RPC client
 //#define RPC_SLOT_SERVER_PRM_STATUS                   "rpc_slot_server_prm_status"
 
-class RPCServer : public QObject, public IRPC
+class RPCServer : public RpcServerBase, public IRPC
 {
     Q_OBJECT
 public:
-    RPCServer(IRouter* router/*, IRPC* r_client*/);
+	RPCServer(QObject *parent = NULL);
     ~RPCServer();
 
 public:
-    virtual int start();
-    virtual int stop();
-    virtual quint64 get_client_id(IClient* client);
+	bool start(quint16 port, QHostAddress address);
 
+   // virtual int start();
+  //  virtual int stop();
+	quint64 get_client_id(IClient* client);
+
+	void setRouter(IRouter*);
+
+	void sendDataByRpc(const QString& signalType, const QByteArray& data);
 
 private slots:
     void _slotErrorRPCConnection(QAbstractSocket::SocketError socketError);
@@ -107,8 +114,6 @@ private:
 signals:
     void finished();
 
-public slots:
-    void aboutToQuitApp();
 };
 
 #endif // RPCSERVER_H

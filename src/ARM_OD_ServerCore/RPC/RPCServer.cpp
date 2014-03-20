@@ -2,17 +2,29 @@
 
 #include <QDebug>
 
-RPCServer::RPCServer(IRouter* router)
+RPCServer::RPCServer(QObject* parent) :
+	RpcServerBase(parent)
 {
-    _rpc_server = NULL;
-    _router = router;
-	_subscriber = router->get_subscriber();
 }
 
 RPCServer::~RPCServer()
 {
 }
 
+bool RPCServer::start(quint16 port, QHostAddress address)
+{
+	connect(_rpc_server, SIGNAL(clientConnected(quint64)), this, SLOT(_slotRPCConnetion(quint64)));
+	connect(_rpc_server, SIGNAL(serverError(QAbstractSocket::SocketError)), this, SLOT(_slotErrorRPCConnection(QAbstractSocket::SocketError)));
+	connect(_rpc_server, SIGNAL(clientDisconnected(quint64)), this, SLOT(_slotRPCDisconnected(quint64)));
+
+	_rpc_server->attachSlot(RPC_SLOT_SET_CLIENT_ID, this, SLOT(rpc_slot_set_client_id(quint64,int)));
+	_rpc_server->attachSlot(RPC_SLOT_SET_NIIPP_BPLA, this, SLOT(rpc_slot_set_niipp_data(quint64,QByteArray)));
+	_rpc_server->attachSlot(RPC_SLOT_SET_SOLVER_DATA, this, SLOT(rpc_slot_set_solver_data(quint64, QByteArray)));
+	_rpc_server->attachSlot(RPC_SLOT_SET_SOLVER_CLEAR, this, SLOT(rpc_slot_set_solver_clear(quint64,QByteArray)));
+
+	return RpcServerBase::start(port, address);
+}
+/*
 int RPCServer::start()
 {
     _rpc_server = new QxtRPCPeer();
@@ -30,7 +42,7 @@ int RPCServer::start()
         qDebug() << "error";
     }
     return 0;
-}
+}*/
 
 /// slot if have some error while connetiting
 void RPCServer::_slotErrorRPCConnection(QAbstractSocket::SocketError socketError)
@@ -148,7 +160,7 @@ void RPCServer::rpc_slot_set_solver_clear(quint64 client, QByteArray data)
 	QSharedPointer<IMessageOld> msg(new MessageOld(id, SOLVER_CLEAR, ba));
     _subscriber->data_ready(SOLVER_CLEAR, msg);
 }
-
+/*
 int RPCServer::stop()
 {
     if(_rpc_server != NULL)
@@ -156,11 +168,21 @@ int RPCServer::stop()
         delete _rpc_server;
     }
     return 0;
-}
+}*/
 
 quint64 RPCServer::get_client_id(IClient *client)
 {
-    return _map_clients.key(client);
+	return _map_clients.key(client);
+}
+
+void RPCServer::setRouter(IRouter* router)
+{
+	_router = router;
+	_subscriber = router->get_subscriber();
+}
+
+void RPCServer::sendDataByRpc(const QString &signalType, const QByteArray &data)
+{
 }
 
 ///// send bpla coords
@@ -197,8 +219,4 @@ void RPCServer::rpc_slot_send_atlant_position(quint64 client, QByteArray *data)
 void RPCServer::rpc_slot_send_NIIPP_data(quint64 client, QByteArray *data)
 {
     _rpc_server->call(client, RPC_SLOT_SERVER_SEND_NIIPP_DATA, QVariant::fromValue(*data));
-}
-
-void RPCServer::aboutToQuitApp()
-{
 }

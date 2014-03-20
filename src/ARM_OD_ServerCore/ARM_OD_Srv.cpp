@@ -27,8 +27,9 @@ ARM_OD_Srv::ARM_OD_Srv()
 
     _read_settings();
 
-    _rpc_server = new RPCServer(_router);
-    _rpc_server->start();
+	_rpc_server = new RPCServer(this);
+	_rpc_server->setRouter(_router);
+	_rpc_server->start(24550, QHostAddress::Any);
 
 
 	_read_settingsKTR();
