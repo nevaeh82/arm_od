@@ -25,6 +25,9 @@ MessageSP TcpArmrClientCoder::encode(const QByteArray &data)
 			case Zaviruha::sendBplaPoints:
 				method = QString(ARM_R_SERVER_BPLA_COORDS);
 				break;
+			case Zaviruha::sendBplaPointsAuto:
+				method = QString(ARM_R_SERVER_BPLA_COORDS_AUTO);
+				break;
 			default:
 				break;
 		}

@@ -9,6 +9,8 @@
 #include <Interfaces/IRpcListener.h>
 #include <Logger.h>
 
+#include "Common/Defines.h"
+
 #include "Interfaces/Tcp/ITcpManager.h"
 #include "Interfaces/Tcp/ITcpServer.h"
 
@@ -19,6 +21,7 @@
 #include "TcpArmrClientController.h"
 
 #include "Rpc/RPCServer.h"
+#include "Rpc/RpcDefines.h"
 
 class TcpManager : public QObject, public ITcpManager, public ITcpListener, public IRpcListener
 {

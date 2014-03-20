@@ -22,27 +22,13 @@ bool RPCServer::start(quint16 port, QHostAddress address)
 	m_serverPeer->attachSlot(RPC_SLOT_SET_SOLVER_DATA, this, SLOT(rpc_slot_set_solver_data(quint64, QByteArray)));
 	m_serverPeer->attachSlot(RPC_SLOT_SET_SOLVER_CLEAR, this, SLOT(rpc_slot_set_solver_clear(quint64,QByteArray)));
 
+	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCBPLAPoints(QByteArray)), RPC_SLOT_SERVER_SEND_BPLA_POINTS);
+	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCBPLAPointsAuto(QByteArray)), RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO);
+	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCAtlantDirection(QByteArray)), RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION);
+	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCAtlantPosition(QByteArray)), RPC_SLOT_SERVER_SEND_ATLANT_POSITION);
+
 	return RpcServerBase::start(port, address);
 }
-/*
-int RPCServer::start()
-{
-	m_serverPeer = new QxtRPCPeer();
-	connect(m_serverPeer, SIGNAL(clientConnected(quint64)), this, SLOT(_slotRPCConnetion(quint64)));
-	connect(m_serverPeer, SIGNAL(serverError(QAbstractSocket::SocketError)), this, SLOT(_slotErrorRPCConnection(QAbstractSocket::SocketError)));
-	connect(m_serverPeer, SIGNAL(clientDisconnected(quint64)), this, SLOT(_slotRPCDisconnected(quint64)));
-
-	m_serverPeer->attachSlot(RPC_SLOT_SET_CLIENT_ID, this, SLOT(rpc_slot_set_client_id(quint64,int)));
-	m_serverPeer->attachSlot(RPC_SLOT_SET_NIIPP_BPLA, this, SLOT(rpc_slot_set_niipp_data(quint64,QByteArray)));
-	m_serverPeer->attachSlot(RPC_SLOT_SET_SOLVER_DATA, this, SLOT(rpc_slot_set_solver_data(quint64, QByteArray)));
-	m_serverPeer->attachSlot(RPC_SLOT_SET_SOLVER_CLEAR, this, SLOT(rpc_slot_set_solver_clear(quint64,QByteArray)));
-
-	if(!m_serverPeer->listen(QHostAddress::Any, 24550))
-    {
-        qDebug() << "error";
-    }
-    return 0;
-}*/
 
 /// slot if have some error while connetiting
 void RPCServer::_slotErrorRPCConnection(QAbstractSocket::SocketError socketError)
@@ -160,15 +146,6 @@ void RPCServer::rpc_slot_set_solver_clear(quint64 client, QByteArray data)
 	QSharedPointer<IMessageOld> msg(new MessageOld(id, SOLVER_CLEAR, ba));
     _subscriber->data_ready(SOLVER_CLEAR, msg);
 }
-/*
-int RPCServer::stop()
-{
-	if(m_serverPeer != NULL)
-    {
-		delete m_serverPeer;
-    }
-    return 0;
-}*/
 
 quint64 RPCServer::get_client_id(IClient *client)
 {
@@ -183,6 +160,15 @@ void RPCServer::setRouter(IRouter* router)
 
 void RPCServer::sendDataByRpc(const QString &signalType, const QByteArray &data)
 {
+	if (signalType == RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION) {
+		emit signalSendToRPCAtlantDirection(data);
+	} else if (signalType == RPC_SLOT_SERVER_SEND_ATLANT_POSITION) {
+		emit signalSendToRPCAtlantPosition(data);
+	} else if (signalType == RPC_SLOT_SERVER_SEND_BPLA_POINTS) {
+		emit signalSendToRPCBPLAPoints(data);
+	} else if (signalType == RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO) {
+		emit signalSendToRPCBPLAPointsAuto(data);
+	}
 }
 
 ///// send bpla coords

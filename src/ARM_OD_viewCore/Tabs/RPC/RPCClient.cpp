@@ -171,15 +171,6 @@ void RPCClient::_slotRCPConnetion()
     _rpc_client->attachSlot(RPC_SLOT_SERVER_SEND_NIIPP_DATA, this, SLOT(rpc_send_niipp_data(QByteArray)));
     _rpc_client->attachSlot(RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION, this, SLOT(rpc_slot_server_send_atlant_direction(QByteArray)));
     _rpc_client->attachSlot(RPC_SLOT_SERVER_SEND_ATLANT_POSITION, this, SLOT(rpc_slot_server_send_atlant_position(QByteArray)));
-
-    //    _rpc_client->attachSlot(RPC_SLOT_SERVER_SEND_POINTS, this, SLOT(rpc_slot_getting_points(rpc_send_points_vector)));
-//    _rpc_client->attachSlot(RPC_SLOT_SERVER_SEND_RESPONSE_MODULATION, this, SLOT(rpc_slot_getting_modulation(QString)));
-//    _rpc_client->attachSlot(RPC_SLOT_SERVER_SEND_CORRELATION, this, SLOT(rpc_slot_server_send_correlation(int, int, rpc_send_points_vector)));
-
-//    _rpc_client->attachSlot(RPC_SLOT_SERVER_PRM_STATUS, this, SLOT(rpc_slot_server_prm_status(int, int, int, int)));
-
-//    CommandMessage *msg = new CommandMessage(COMMAND_PRM_REQUEST_FREQ, QVariant());
-//    this->set_command(msg);
 }
 
 void RPCClient::_slotRPCDisconnection()

@@ -107,6 +107,18 @@ void TcpManager::onMessageReceived(const QString& device, const MessageSP argume
 
 		}
 	}
+
+	if (device == ARMR_TCP_CLIENT) {
+		if (messageType == QString(ARM_R_SERVER_ATLANT_DIRECTION)) {
+			m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION, messageData);
+		} else if (messageType == QString(ARM_R_SERVER_ATLANT_POSITION)){
+			m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_ATLANT_POSITION, messageData);
+		} else if (messageType == QString(ARM_R_SERVER_BPLA_COORDS)){
+			m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_BPLA_POINTS, messageData);
+		} else if (messageType == QString(ARM_R_SERVER_BPLA_COORDS_AUTO)){
+			m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO, messageData);
+		}
+	}
 }
 
 void TcpManager::onMethodCalled(const QString& method, const QVariant& argument)
