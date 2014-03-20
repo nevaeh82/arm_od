@@ -130,10 +130,10 @@ int TabManager::createSubModules(QString path_to_ini_file)
     NIIPPControl* _niipp2 = new NIIPPControl(101, tr("СПИП ДД-2"), latlon2, _router, _map_controller, this);
 
     QDockWidget* dock_niipp1 = new QDockWidget(tr("СПИП ДД-1"));
-    dock_niipp1->setWidget(_niipp1);
+	dock_niipp1->setWidget(_niipp1->getControlWidget());
 
     QDockWidget* dock_niipp2 = new QDockWidget(tr("СПИП ДД-2"));
-    dock_niipp2->setWidget(_niipp2);
+	dock_niipp2->setWidget(_niipp2->getControlWidget());
 
 
     _map_niipp->insert(1, dock_niipp1);

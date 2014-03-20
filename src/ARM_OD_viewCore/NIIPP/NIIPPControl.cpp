@@ -10,11 +10,14 @@ const double _zone_dir[28] = {2.5, 3, 4, 5,
                        22, 26, 29, 33, 37, 41, 47, 52, 57, 62, 68, 72, 76};
 
 NIIPPControl::NIIPPControl(int id, QString name, QPointF latlon, IRouter *router, MapController* map_controller, ITabManager* parent_tab):
-    _number_command("0200"),
-    _antena_type(0),
-    _width_angle(25),
-    _mode_current_index(-1)
+	_number_command("0200"),
+	_antena_type(0),
+	_width_angle(25),
+	_mode_current_index(-1)
 {
+
+	_control_view = new NIIPPControlWidget(this, 0);
+
     _id = id;
     _name = name;
     _latlon = latlon;
@@ -29,161 +32,6 @@ NIIPPControl::NIIPPControl(int id, QString name, QPointF latlon, IRouter *router
     _map_controller->get_map_client(1)->set_niipp_controller(this);
 
 //    this->setStyleSheet("background-color: red; border-width: 10px; border-color: black");
-
-    _pb_start = new QPushButton(tr("Пуск"));
-    _pb_start->setStyleSheet("background-color: red;" \
-                             "border-style: solid;" \
-                             "border-width:1px;" \
-                             "border-radius:25px;" \
-                             "border-color: red;" \
-                             "max-width:50px;" \
-                             "max-height:50px;" \
-                             "min-width:50px;"\
-                             "min-height:50px");
-    _pb_start->setCheckable(true);
-
-    connect(_pb_start, SIGNAL(clicked(bool)), this, SLOT(_slot_start_stop_clicked(bool)));
-    _sb_power = new QSpinBox();
-    QFont* font = new QFont();
-    font->setBold(true);
-    font->setPixelSize(20);
-
-    _sb_power->setFont(*font);
-    _sb_power->show();
-
-    _le_distance = new QLineEdit();
-    _le_distance->setFont(*font);
-    _le_distance->setText(tr("0 км"));
-    _le_distance->setFixedWidth(70);
-    _le_distance->show();
-
-
-    QHBoxLayout* hbox = new QHBoxLayout();
-
-    QVBoxLayout* v1 = new QVBoxLayout();
-    QLabel* lbl_power = new QLabel(tr("Зона"));
-    v1->addWidget(lbl_power);
-    v1->addWidget(_sb_power);
-    hbox->addLayout(v1);
-
-    QVBoxLayout* v2 = new QVBoxLayout();
-    QLabel* lbl_distance = new QLabel(tr("Радиус"));
-    v2->addWidget(lbl_distance);
-    v2->addWidget(_le_distance);
-    hbox->addLayout(v2);
-    hbox->addWidget(_pb_start);
-
-    _sl_power = new QSlider(Qt::Horizontal);
-    _sl_power->setRange(0, 27);
-    _sl_power->setTickPosition(QSlider::TicksBelow);
-    _sl_power->setTickInterval(4);
-
-    connect(_sl_power, SIGNAL(valueChanged(int)), _sb_power, SLOT(setValue(int)));
-//    connect(_sb_power, SIGNAL(valueChanged(int)), _sl_power, SLOT(setValue(int)));
-
-    connect(_sb_power, SIGNAL(valueChanged(int)), this, SLOT(_slot_change_value_power(int)));
-
-
-    QVBoxLayout* vbox = new QVBoxLayout();
-
-    _pb_enable_complex = new QPushButton(tr("Включить комплекс"));
-    _pb_enable_complex->setCheckable(true);
-    _pb_enable_complex->setStyleSheet(QString::fromUtf8("background-color: rgb(255,0,0);"));
-    connect(_pb_enable_complex, SIGNAL(toggled(bool)), this, SLOT(_slot_enable_complex(bool)));
-    vbox->addWidget(_pb_enable_complex);
-
-
-    vbox->addLayout(hbox);
-    vbox->addWidget(_sl_power);
-
-    QLabel* lbl_antena = new QLabel(tr("Выбор антенны"));
-    _cb_antena = new QComboBox();
-    _cb_antena->addItem(tr("Направленная"));
-    _cb_antena->addItem(tr("Ненапрвленная"));
-    QVBoxLayout* antena_layout = new QVBoxLayout();
-    antena_layout->addWidget(lbl_antena);
-    antena_layout->addWidget(_cb_antena);
-
-    connect(_cb_antena, SIGNAL(activated(int)), this, SLOT(set_antenna_type(int)));
-
-    QLabel* lbl_mode = new QLabel(tr("Режим работы"));
-    _cb_mode = new QComboBox();
-    _cb_mode->addItem(tr("Облучение"));
-    _cb_mode->addItem(tr("Приведение"));
-//    _cb_mode->addItem(tr("ОД"));
-    _cb_mode->addItem(tr("Круговой обзор"));
-    QVBoxLayout* mode_layout = new QVBoxLayout();
-    mode_layout->addWidget(lbl_mode);
-    mode_layout->addWidget(_cb_mode);
-
-    connect(_cb_mode, SIGNAL(activated(int)), this, SLOT(_slot_change_mode(int)));
-
-    QHBoxLayout* hbox3 = new QHBoxLayout();
-    hbox3->addLayout(antena_layout);
-    hbox3->addLayout(mode_layout);
-    vbox->addLayout(hbox3);
-
-    QHBoxLayout* hbox_l1 = new QHBoxLayout();
-    QVBoxLayout* point_layout_lat = new QVBoxLayout();
-
-    QLabel* lbl_l1 = new QLabel(tr("Широта"));
-    point_layout_lat->addWidget(lbl_l1);
-    _le_lat = new QLineEdit();
-    _le_lat->setFixedWidth(70);
-
-    point_layout_lat->addWidget(_le_lat);
-
-    hbox_l1->addLayout(point_layout_lat);
-
-    QVBoxLayout* point_layout_lon = new QVBoxLayout();
-
-    QLabel* lbl_l2 = new QLabel(tr("Долгота"));
-    point_layout_lon->addWidget(lbl_l2);
-    _le_lon = new QLineEdit();
-    _le_lon->setFixedWidth(70);
-    point_layout_lon->addWidget(_le_lon);
-
-    hbox_l1->addLayout(point_layout_lon);
-
-    QVBoxLayout* point_layout_clear = new QVBoxLayout();
-
-    QLabel* lbl_l3 = new QLabel(tr(""));
-    point_layout_clear->addWidget(lbl_l3);
-    _clear_uvod = new QPushButton(tr("Очистить"));
-    point_layout_clear->addWidget(_clear_uvod);
-    hbox_l1->addLayout(point_layout_clear);
-
-    connect(_clear_uvod, SIGNAL(clicked()), this, SLOT(_slot_clear()));
-    vbox->addLayout(hbox_l1);
-
-
-
-    _le_status = new QLineEdit();
-    _le_status->setReadOnly(true);
-    _le_status->setText(tr("Простой"));
-    QLabel* lbl_status = new QLabel(tr("Статус"));
-
-    QVBoxLayout* v3 = new QVBoxLayout();
-    v3->addWidget(lbl_status);
-    v3->addWidget(_le_status);
-
-    vbox->addLayout(v3);
-
-//    _sl_angel = new QSlider(Qt::Horizontal);
-//    _sl_angel->setRange(0, 360);
-//    _sl_angel->setTickPosition(QSlider::TicksBelow);
-//    _sl_angel->setTickInterval(45);
-
-//    vbox->addWidget(_sl_angel);
-
-    this->setLayout(vbox);
-
-    QPalette p(palette());
-    p.setColor(QPalette::Background, Qt::white);
-    this->setAutoFillBackground(true);
-    this->setPalette(p);
-    this->show();
-
     create();
 
 
@@ -197,10 +45,6 @@ NIIPPControl::NIIPPControl(int id, QString name, QPointF latlon, IRouter *router
 
 NIIPPControl::~NIIPPControl()
 {
-    delete _sb_power;
-    delete _pb_start;
-    delete _sl_power;
-    delete _le_distance;
 }
 
 void NIIPPControl::create()
@@ -222,7 +66,7 @@ void NIIPPControl::create()
 
 bool NIIPPControl::getState()
 {
-    return _pb_enable_complex->isChecked();
+	return _control_view->getEnableComplexState();
 }
 
 void NIIPPControl::set_data(QByteArray data)
@@ -232,63 +76,18 @@ void NIIPPControl::set_data(QByteArray data)
     int mode;
 
     ds >> mode;
-    switch(mode)
-    {
-    case 00:
-        _le_status->setText(tr("Простой"));
-        break;
-    case 01:
-        _le_status->setText(tr("Облучение"));
-        break;
-    case 10:
-        _le_status->setText(tr("Облучение"));
-        break;
-    case 11:
-        _le_status->setText(tr("Авария"));
-        break;
-    case 55:
-        _le_status->setText(tr("Нет координат"));
-        break;
-    case 99:
-        _le_status->setText(tr("Обслуживание"));
-        break;
-    default:
-        _le_status->setText(tr("Нет данных"));
-        break;
-    }
+
+	_control_view->setLeStatusText(mode);
 
 }
 
 void NIIPPControl::_slot_start_stop_clicked(bool state)
 {
-    _pb_start->setChecked(state);
 
-    if(state == true)
-    {
-        _pb_start->setStyleSheet("background-color: green;" \
-                                 "border-style: solid;" \
-                                 "border-width:1px;" \
-                                 "border-radius:25px;" \
-                                 "border-color: red;" \
-                                 "max-width:50px;" \
-                                 "max-height:50px;" \
-                                 "min-width:50px;"\
-                                 "min-height:50px");
-    }
-    else
-    {
-        _pb_start->setStyleSheet("background-color: red;" \
-                                 "border-style: solid;" \
-                                 "border-width:1px;" \
-                                 "border-radius:25px;" \
-                                 "border-color: red;" \
-                                 "max-width:50px;" \
-                                 "max-height:50px;" \
-                                 "min-width:50px;"\
-                                 "min-height:50px");
-
-        _stop_commad();
-    }
+	if(!state)
+	{
+		_stop_commad();
+	}
 }
 
 void NIIPPControl::_stop_commad()
@@ -344,12 +143,12 @@ void NIIPPControl::_slot_enable_complex(bool state)
     if(state)
     {
         status = "0000";
-        _pb_enable_complex->setStyleSheet(QString::fromUtf8("background-color: rgb(0,255,0);"));
+		//_pb_enable_complex->setStyleSheet(QString::fromUtf8("background-color: rgb(0,255,0);"));
     }
     else
     {
         status = "0001";
-        _pb_enable_complex->setStyleSheet(QString::fromUtf8("background-color: rgb(255,0,0);"));
+		//_pb_enable_complex->setStyleSheet(QString::fromUtf8("background-color: rgb(255,0,0);"));
     }
 
 //    QStringList list;
@@ -428,16 +227,12 @@ void NIIPPControl::_slot_clear()
 {
     _point_uvode_niipp.setX(0);
     _point_uvode_niipp.setY(0);
-    _le_lat->clear();
-    _le_lon->clear();
 
     _map_controller->get_map_client(1)->slot_remove_point_uvoda();
 }
 
 void NIIPPControl::_slot_change_value_power(int value)
 {
-    _sl_power->setValue(value);
-
     QByteArray ba;
     QDataStream ds(&ba, QIODevice::WriteOnly);
 
@@ -450,21 +245,21 @@ void NIIPPControl::_slot_change_value_power(int value)
     {
         _map_controller->get_map_client(1)->slot_update_sector(_id, _zone_dir[value], _angel, ba);
         _radius_sector = _zone_dir[value];
-        _le_distance->setText(QString("%1 км").arg(QString::number(_radius_sector)));
-        if(_pb_start->isChecked())
-        {
-            _le_status->setText(tr("Облучение"));
-        }
+//        _le_distance->setText(QString("%1 км").arg(QString::number(_radius_sector)));
+//        if(_pb_start->isChecked())
+//        {
+//            _le_status->setText(tr("Облучение"));
+//        }
     }
     if(_antena_type == 1)
     {
         _map_controller->get_map_client(1)->slot_niipp_power_cicle(_id, _zone[value], ba);
         _radius_circle = _zone[value];
-        _le_distance->setText(QString("%1 км").arg(QString::number(_radius_circle)));
-        if(_pb_start->isChecked())
-        {
-            _le_status->setText(tr("Облучение"));
-        }
+//        _le_distance->setText(QString("%1 км").arg(QString::number(_radius_circle)));
+//        if(_pb_start->isChecked())
+//        {
+//            _le_status->setText(tr("Облучение"));
+//        }
     }
 
 //    emit signalChangeValuePower(value);
@@ -511,36 +306,13 @@ void NIIPPControl::set_antenna_type(int value)
     {
         _map_controller->get_map_client(1)->slot_niipp_power_cicle(_id, _radius_circle, ba);
 
-        _cb_mode->setEnabled(false);
 
-        _mode_current_index = _cb_mode->currentIndex();
-        _cb_mode->setCurrentIndex(-1);
-
-        _sl_power->setRange(0, 23);
-        _sl_power->update();
-        _sb_power->setRange(0, 23);
-        _sb_power->update();
-        if(_pb_start->isChecked())
-        {
-            _le_status->setText(tr("Облучение"));
-        }
+		_mode_current_index = _control_view->getModeIndex();
 
     }
     else
     {
         _map_controller->get_map_client(1)->slot_update_sector(_id, _radius_sector, _angel, ba);
-        _cb_mode->setEnabled(true);
-
-        _cb_mode->setCurrentIndex(_mode_current_index);
-
-        _sl_power->setRange(0, 27);
-        _sl_power->update();
-        _sb_power->setRange(0, 27);
-        _sb_power->update();
-        if(_pb_start->isChecked())
-        {
-            _le_status->setText(tr("Облучение"));
-        }
 
     }
 }
@@ -554,14 +326,14 @@ void NIIPPControl::set_point(QPointF coord)
 {
     _point_uvode_niipp = coord;
     QString lat_s = QString::number(coord.x(), 'f', 4);
-    _le_lat->setText(lat_s);
-    QString lon_s = QString::number(coord.y(), 'f', 4);
-    _le_lon->setText(lon_s);
+	_control_view->setLatText(lat_s);
+	QString lon_s = QString::number(coord.y(), 'f', 4);
+	_control_view->setLonText(lon_s);
 }
 
 void NIIPPControl::send_evil(QPointF point, QPointF point_uvoda, double alt, double bearing)
 {
-    if(!_pb_start->isChecked())
+	if(!_control_view->getStartState())
     {
         return;
     }
@@ -574,7 +346,7 @@ void NIIPPControl::send_evil(QPointF point, QPointF point_uvoda, double alt, dou
     ds << dt.date();
     ds << dt.time();
 
-    int index = _cb_antena->currentIndex();
+	int index = _control_view->getAntenaIndex();
     QString str_temp;
     if(index == 1)
     {
@@ -619,7 +391,7 @@ void NIIPPControl::send_evil(QPointF point, QPointF point_uvoda, double alt, dou
 
 //    int velocity_direction = 0;
     ds << bearing1;
-    int zone = _sb_power->value();
+	int zone = _control_view->getSbPowerValue();
     ds << zone;
 
     ds << _point_uvode_niipp;
@@ -660,4 +432,29 @@ QByteArray NIIPPControl::_encode(QStringList list)
 void NIIPPControl::_slot_change_mode(int value)
 {
     _mode = value;
+}
+
+int NIIPPControl::getAntenaType()
+{
+	return _antena_type;
+}
+
+double NIIPPControl::getRadiusCircle()
+{
+	return _radius_circle;
+}
+
+double NIIPPControl::getRadiusSector()
+{
+	return _radius_sector;
+}
+
+int NIIPPControl::getModeCurrentIndex()
+{
+	return _mode_current_index;
+}
+
+QWidget* NIIPPControl::getControlWidget()
+{
+	return _control_view;
 }

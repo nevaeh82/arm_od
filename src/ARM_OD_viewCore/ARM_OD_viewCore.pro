@@ -77,7 +77,9 @@ HEADERS += \
     UAV/BLAPerehvatDialog.h \
     UAV/ZInterception.h \
     MainWindow.h \
-    MainWindowController.h
+    MainWindowController.h \
+    NIIPP/NIIPPControlWidget.h \
+    MapInterface/MapControllerWidget.h
 
 SOURCES += \
     Common/CommandMessage.cpp \
@@ -103,10 +105,15 @@ SOURCES += \
     UAV/BLAPerehvatDialog.cpp \
     UAV/ZInterception.cpp \
     MainWindow.cpp \
-    MainWindowController.cpp
+    MainWindowController.cpp \
+    NIIPP/NIIPPControlWidget.cpp \
+    MapInterface/MapControllerWidget.cpp
 
 FORMS += \
     Tabs/Solver/Solver.ui \
     UAV/blaperehvatdialog.ui \
-    arm_od_view.ui
+    arm_od_view.ui \
+    TabMap.ui \
+    NIIPP/NIIPPControlWidget.ui \
+    MapInterface/MapControllerWidget.ui
 

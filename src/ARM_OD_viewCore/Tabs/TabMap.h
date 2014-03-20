@@ -12,6 +12,8 @@
 
 #include <QDockWidget>
 
+#include "ui_TabMap.h"
+
 #include "../Abstracts/ISubModule.h"
 
 #include "TabsProperty.h"
@@ -36,6 +38,10 @@
 
 #include "../UAV/BLAPerehvatDialog.h"
 
+namespace Ui {
+	class TabMap;
+}
+
 class TabMap: public QWidget, public ISubModule, public ITabMap
 {
     Q_OBJECT
@@ -44,6 +50,7 @@ public:
     ~TabMap();
 
 private:
+	Ui::TabMap *_ui;
     int                 _id;
     QString             _name;
     TabsProperty*       _tab_property;

@@ -13,12 +13,13 @@
 #include <QLabel>
 #include <QDateTime>
 #include <QLineEdit>
-
 #include <QStringList>
 //#include <QLCDNumber>
 #include "../MapInterface/MapController.h"
 
 #include "INiippController.h"
+#include "NIIPPControlWidget.h"
+
 #include "../Interfaces/core/IRouter.h"
 #include "../Interfaces/core/ITCPController.h"
 #include "../Interfaces/ITCPClient.h"
@@ -28,6 +29,8 @@
 
 #include "../Common/CommandMessage.h"
 
+class NIIPPControlWidget;
+
 class NIIPPControl : public QWidget, public INiiPPController
 {
     Q_OBJECT
@@ -35,11 +38,17 @@ public:
     NIIPPControl(int id, QString name, QPointF latlon, IRouter *router, MapController* map_controller, ITabManager * parent_tab);
     ~NIIPPControl();
 
-    void create();
+	void create();
 
-    bool getState();
+	bool getState();
 
     void set_data(QByteArray data);
+
+	int getAntenaType();
+	double getRadiusCircle();
+	double getRadiusSector();
+	int getModeCurrentIndex();
+	QWidget* getControlWidget();
 
 private slots:
     void _slot_start_stop_clicked(bool state);
@@ -48,9 +57,9 @@ private:
     void _stop_commad();
     QByteArray _encode(QStringList list);
 
-
 private:
 
+	NIIPPControlWidget *_control_view;
     int             _id;
     int             _type;
     QString         _name;
@@ -58,19 +67,6 @@ private:
     QPointF         _latlon;
     double          _width_angle;
     ITabManager*    _parent_tab;
-    QPushButton*    _pb_enable_complex;
-    QPushButton*    _pb_start;
-    QSlider*        _sl_power;
-    QSpinBox*       _sb_power;
-
-    QLineEdit*       _le_distance;
-
-    QComboBox*      _cb_antena;
-    QComboBox*      _cb_mode;
-
-    QLineEdit*      _le_lat;
-    QLineEdit*      _le_lon;
-    QPushButton*    _clear_uvod;
 
     MapController*      _map_controller;
 
@@ -91,8 +87,6 @@ private:
     int                 _mode_current_index;
 
 
-    QLineEdit*          _le_status;
-
     QPointF             _point_uvode_niipp;
 
 
@@ -101,8 +95,9 @@ signals:
     void signalChangeAngle(double);
 
 private slots:
-    void _slot_change_value_power(int value);
+
     void _slot_change_angel(double value);
+	void _slot_change_value_power(int value);
 //    void _slot_change_antena(int value);
     void _slot_change_mode(int value);
 

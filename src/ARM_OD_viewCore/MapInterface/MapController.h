@@ -19,6 +19,8 @@
 #include <IMapManager.h>
 #include <IProfileManager.h>
 
+#include "MapControllerWidget.h"
+
 #include "../Tabs/TabsProperty.h"
 
 #include "MapClient1.h"
@@ -27,6 +29,8 @@
 #include "../Tabs/Tree/IDBManager.h"
 
 #include "../UAV/ZInterception.h"
+
+class MapControllerWidget;
 
 class MapController : public QWidget, public IMapController
 {
@@ -57,9 +61,6 @@ public:
 
 
 public:
-    QPushButton*                pb_show_BLA_tree;
-    QPushButton*                pb_show_BPLA_tree;
-    QPushButton*                pb_show_NiiPP;
 
 private:
     QCheckBox*                  _chb_stations;
@@ -74,10 +75,8 @@ private:
 private:
     Pw::Gis::IMapManager        *_mapManager;
     Pw::Gis::IProfileManager    *_profileManager;
-    PwGisWidget                 *_pwwidget;
+	MapControllerWidget         *_controller_widget;
 
-    QWidget                     *_panel_widget;
-    QWidget                     *_com_widget;
 
     QMap<int, IMapClient *>     _map_clients;
     QMap<int, TabsProperty *>   _m_settings;
@@ -89,7 +88,6 @@ private:
 
 
 private:
-    void mouseMoveEvent(QMouseEvent *);
     bool eventFilter(QObject *obj, QEvent *e);
 
 public slots:
@@ -102,6 +100,10 @@ private slots:
 
 signals:
     void signalOpenedMap();
+
+	void controller_showBLAtree();
+	void controller_showBPLAtree();
+	void controller_showNIIPP();
 
 };
 
