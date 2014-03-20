@@ -23,7 +23,7 @@ namespace Ui {
 class Solver;
 }
 
-class Solver : public QWidget
+class Solver : public QObject
 {
 	Q_OBJECT
 
