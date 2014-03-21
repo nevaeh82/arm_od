@@ -2,10 +2,10 @@
 
 #include <QDebug>
 
-const double _zone[24] = {1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5,
+const double m_zone[24] = {1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5,
                        5, 6, 7, 8, 9, 10, 11, 12, 14, 16,
                        18, 20, 22, 24, 28, 30};
-const double _zone_dir[28] = {2.5, 3, 4, 5,
+const double m_zoneDir[28] = {2.5, 3, 4, 5,
                        6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20,
                        22, 26, 29, 33, 37, 41, 47, 52, 57, 62, 68, 72, 76};
 
@@ -448,8 +448,8 @@ void NIIPPControl::_slot_change_value_power(int value)
 
     if(_antena_type == 0)
     {
-        _map_controller->get_map_client(1)->slot_update_sector(_id, _zone_dir[value], _angel, ba);
-        _radius_sector = _zone_dir[value];
+		_map_controller->get_map_client(1)->slot_update_sector(_id, m_zoneDir[value], _angel, ba);
+		_radius_sector = m_zoneDir[value];
         _le_distance->setText(QString("%1 км").arg(QString::number(_radius_sector)));
         if(_pb_start->isChecked())
         {
@@ -458,8 +458,8 @@ void NIIPPControl::_slot_change_value_power(int value)
     }
     if(_antena_type == 1)
     {
-        _map_controller->get_map_client(1)->slot_niipp_power_cicle(_id, _zone[value], ba);
-        _radius_circle = _zone[value];
+		_map_controller->get_map_client(1)->slot_niipp_power_cicle(_id, m_zone[value], ba);
+		_radius_circle = m_zone[value];
         _le_distance->setText(QString("%1 км").arg(QString::number(_radius_circle)));
         if(_pb_start->isChecked())
         {
