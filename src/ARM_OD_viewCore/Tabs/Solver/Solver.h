@@ -19,10 +19,6 @@
 #include "../ITabManager.h"
 #include "../../Common/CommandMessage.h"
 
-namespace Ui {
-class Solver;
-}
-
 class Solver : public QObject
 {
 	Q_OBJECT
@@ -31,23 +27,26 @@ public:
 	explicit Solver(int id, ITabManager* tab_manager);
 	~Solver();
 
-	QWidget* getWidget();
+	void setAutoState(bool val);
+	void setHeight(double val);
+	void setTrackLength(int val);
+
+	void autoState();
+	void accept();
 
 private:
-	SolverWidget*       _widget;
 	ITabManager*        _tab_manager;
 	int                 _id;
 
-private slots:
-	void slotAccept();
-	void slotCancel();
-	void slotAuto(bool state);
+	bool _autoStateValue;
+	double _height;
+	int _trackLength;
 
-	void slotClear();
-	void slotCountTrack(int count);
+private slots:
+	void clear();
+	void countTrack(int count);
 
 public slots:
-	void slotShow();
 };
 
 #endif // SOLVER_H

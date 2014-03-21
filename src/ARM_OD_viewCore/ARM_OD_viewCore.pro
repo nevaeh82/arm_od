@@ -78,7 +78,8 @@ HEADERS += \
 	UAV/BLAPerehvatDialog.h \
 	UAV/ZInterception.h \
 	MainWindow.h \
-	MainWindowController.h
+	MainWindowController.h \
+    Tabs/Solver/SolverController.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -105,7 +106,8 @@ SOURCES += \
 	UAV/BLAPerehvatDialog.cpp \
 	UAV/ZInterception.cpp \
 	MainWindow.cpp \
-	MainWindowController.cpp
+	MainWindowController.cpp \
+    Tabs/Solver/SolverController.cpp
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \

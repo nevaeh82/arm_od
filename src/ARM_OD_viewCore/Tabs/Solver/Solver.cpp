@@ -1,57 +1,59 @@
 #include "Solver.h"
 
-Solver::Solver(int id, ITabManager *tab_manager) :
-	_widget(new SolverWidget())
+Solver::Solver(int id, ITabManager *tab_manager)
 {
 	_id = id;
 	_tab_manager = tab_manager;
 
-	connect(_widget, SIGNAL(signalClear()), this, SLOT(slotClear()));
-	connect(_widget, SIGNAL(signalAccept()), this, SLOT(slotAccept()));
-	connect(_widget, SIGNAL(signalCancel()), this, SLOT(slotCancel()));
-	connect(_widget, SIGNAL(signalAuto(bool)), this, SLOT(slotAuto(bool)));
+	_autoStateValue = true;
+	_height = 0;
+	_trackLength = 0;
 }
 
 Solver::~Solver()
 {
-	delete _widget;
 }
 
-QWidget*Solver::getWidget()
+void Solver::setAutoState(bool val)
 {
-	return _widget;
+	_autoStateValue = val;
 }
 
-void Solver::slotAccept()
+void Solver::setHeight(double val)
+{
+	_height = val;
+}
+
+void Solver::setTrackLength(int val)
+{
+	_trackLength = val;
+}
+
+void Solver::accept()
 {
 	QByteArray ba;
 	QDataStream ds(&ba, QIODevice::ReadWrite);
 
 	ds << _id;
-	ds << _widget->getTrackLength();
-	ds << _widget->getHeight();
+	ds << _trackLength;
+	ds << _height;
 
 	CommandMessage* msg = new CommandMessage(COMMAND_SET_SOLVER, ba);
 	_tab_manager->send_data(0, msg);
 }
 
-void Solver::slotCancel()
-{
-	_widget->hide();
-}
-
-void Solver::slotAuto(bool state)
+void Solver::autoState()
 {
 	QByteArray ba;
 	QDataStream ds(&ba, QIODevice::ReadWrite);
 
-	ds << _widget->getAutoState();
+	ds << _autoStateValue;
 
 	CommandMessage* msg = new CommandMessage(COMMAND_SET_SOLVER_AUTO, ba);
 	_tab_manager->send_data(0, msg);
 }
 
-void Solver::slotClear()
+void Solver::clear()
 {
 	QByteArray ba;
 	QDataStream ds(&ba, QIODevice::ReadWrite);
@@ -64,11 +66,7 @@ void Solver::slotClear()
 	_tab_manager->send_data(0, msg);
 }
 
-void Solver::slotCountTrack(int count)
+void Solver::countTrack(int count)
 {
 }
 
-void Solver::slotShow()
-{
-	_widget->show();
-}
