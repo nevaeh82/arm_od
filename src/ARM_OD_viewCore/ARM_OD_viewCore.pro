@@ -64,6 +64,7 @@ HEADERS += \
 	Tabs/RPC/RPCClient.h \
 	Tabs/Solver/Solver.h \
 	Tabs/Solver/SolverWidget.h \
+	Tabs/Solver/SolverController.h \
 	Tabs/Tree/BLAWidgetDelegate.h \
 	Tabs/Tree/DBController.h \
 	Tabs/Tree/DBManager.h \
@@ -78,8 +79,7 @@ HEADERS += \
 	UAV/BLAPerehvatDialog.h \
 	UAV/ZInterception.h \
 	MainWindow.h \
-	MainWindowController.h \
-    Tabs/Solver/SolverController.h
+	MainWindowController.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -96,6 +96,7 @@ SOURCES += \
 	Tabs/RPC/rpcclient.cpp \
 	Tabs/Solver/Solver.cpp \
 	Tabs/Solver/SolverWidget.cpp \
+	Tabs/Solver/SolverController.cpp \
 	Tabs/Tree/BLAWidgetDelegate.cpp \
 	Tabs/Tree/DBController.cpp \
 	Tabs/Tree/DBManager.cpp \
@@ -106,8 +107,7 @@ SOURCES += \
 	UAV/BLAPerehvatDialog.cpp \
 	UAV/ZInterception.cpp \
 	MainWindow.cpp \
-	MainWindowController.cpp \
-    Tabs/Solver/SolverController.cpp
+	MainWindowController.cpp
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \
