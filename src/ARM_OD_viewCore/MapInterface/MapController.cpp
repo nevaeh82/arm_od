@@ -38,9 +38,9 @@ MapController::MapController() : _controller_widget(new MapControllerWidget(this
 
 //    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	connect(_controller_widget, SIGNAL(showBLAtree()), this, SIGNAL(controller_showBLAtree()));
-	connect(_controller_widget, SIGNAL(showBPLAtree()), this, SIGNAL(controller_showBPLAtree()));
-	connect(_controller_widget, SIGNAL(showNIIPP()), this, SIGNAL(controller_showNIIPP()));
+	connect(_controller_widget, SIGNAL(showBLAtree()), this, SIGNAL(controllerShowBLAtree()));
+	connect(_controller_widget, SIGNAL(showBPLAtree()), this, SIGNAL(controllerShowBPLAtree()));
+	connect(_controller_widget, SIGNAL(showNIIPP()), this, SIGNAL(controllerShowNIIPP()));
 
 }
 
@@ -99,7 +99,7 @@ void MapController::onMapReady()
         (it.value())->set_Point();
     }
 	get_panel_widget()->setMouseTracking(true);
-    emit signalOpenedMap();
+	emit mapOpened();
 	_layerManager = _controller_widget->getPwGis()->mapProvider()->layerManager();
 }
 

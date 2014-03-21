@@ -99,11 +99,11 @@ private slots:
     void _slot_station_visible(bool state);
 
 signals:
-    void signalOpenedMap();
+	void mapOpened();
 
-	void controller_showBLAtree();
-	void controller_showBPLAtree();
-	void controller_showNIIPP();
+	void controllerShowBLAtree();
+	void controllerShowBPLAtree();
+	void controllerShowNIIPP();
 
 };
 

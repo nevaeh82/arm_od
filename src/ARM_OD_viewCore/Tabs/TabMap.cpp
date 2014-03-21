@@ -249,10 +249,9 @@ int TabMap::createTree()
     _hboxlayout->insertLayout(2, _vboxlayout);
 //    _hboxlayout->insertWidget(2, _tree_view, Qt::AlignRight);
 
-	connect(_tab_manager->get_map_controller(), SIGNAL(controller_showBLAtree()), this, SLOT(slot_show_tree_BLA()));
-	connect(_tab_manager->get_map_controller(), SIGNAL(controller_showBPLAtree()), this, SLOT(slot_show_tree_BPLA()));
-
-	connect(_tab_manager->get_map_controller(), SIGNAL(controller_showNIIPP()), this, SLOT(slot_show_niipp()));
+	connect(_tab_manager->get_map_controller(), SIGNAL(controllerShowBLAtree()), this, SLOT(slot_show_tree_BLA()));
+	connect(_tab_manager->get_map_controller(), SIGNAL(controllerShowBPLAtree()), this, SLOT(slot_show_tree_BPLA()));
+	connect(_tab_manager->get_map_controller(), SIGNAL(controllerShowNIIPP()), this, SLOT(slot_show_niipp()));
 	return 0;
 }
 

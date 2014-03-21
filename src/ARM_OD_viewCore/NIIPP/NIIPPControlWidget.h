@@ -19,7 +19,7 @@ public:
 	~NIIPPControlWidget();
 
 	bool getState();
-	void set_point(QPointF coord);
+	void setPoint(QPointF coord);
 
 	bool getEnableComplexState();
 	int getModeIndex();
@@ -35,11 +35,11 @@ private:
 	NIIPPControl *_controller;
 
 private slots:
-	void _slot_enable_complex(bool state);
-	void _slot_change_value_power(int value);
-	void _slot_start_stop_clicked(bool state);
-	void _slot_clear();
-	void _set_antenna_type(int value);
+	void slotEnableComplex(bool state);
+	void slotChangeValuePower(int value);
+	void slotStartStopClicked(bool state);
+	void slotClear();
+	void setAntennaType(int value);
 };
 
 #endif // NIIPPCONTROLWIDGET_H
