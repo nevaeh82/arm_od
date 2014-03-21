@@ -19,12 +19,11 @@
 #include "../ITabManager.h"
 #include "../../Common/CommandMessage.h"
 
-class Solver : public QObject
+class Solver
 {
-	Q_OBJECT
 
 public:
-	explicit Solver(int id, ITabManager* tab_manager);
+	explicit Solver(int id, ITabManager* tabManager);
 	~Solver();
 
 	void setAutoState(bool val);
@@ -33,20 +32,17 @@ public:
 
 	void autoState();
 	void accept();
+	void clear();
 
 private:
-	ITabManager*        _tab_manager;
-	int                 _id;
+	ITabManager*        m_tabManager;
+	int                 m_id;
 
-	bool _autoStateValue;
-	double _height;
-	int _trackLength;
+	bool m_autoStateValue;
+	double m_height;
+	int m_trackLength;
 
-private slots:
-	void clear();
 	void countTrack(int count);
-
-public slots:
 };
 
 #endif // SOLVER_H

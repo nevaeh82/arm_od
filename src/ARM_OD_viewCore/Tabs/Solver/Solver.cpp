@@ -1,13 +1,13 @@
 #include "Solver.h"
 
-Solver::Solver(int id, ITabManager *tab_manager)
+Solver::Solver(int id, ITabManager *tabManager)
 {
-	_id = id;
-	_tab_manager = tab_manager;
+	m_id = id;
+	m_tabManager = tabManager;
 
-	_autoStateValue = true;
-	_height = 0;
-	_trackLength = 0;
+	m_autoStateValue = true;
+	m_height = 0;
+	m_trackLength = 0;
 }
 
 Solver::~Solver()
@@ -16,17 +16,17 @@ Solver::~Solver()
 
 void Solver::setAutoState(bool val)
 {
-	_autoStateValue = val;
+	m_autoStateValue = val;
 }
 
 void Solver::setHeight(double val)
 {
-	_height = val;
+	m_height = val;
 }
 
 void Solver::setTrackLength(int val)
 {
-	_trackLength = val;
+	m_trackLength = val;
 }
 
 void Solver::accept()
@@ -34,12 +34,12 @@ void Solver::accept()
 	QByteArray ba;
 	QDataStream ds(&ba, QIODevice::ReadWrite);
 
-	ds << _id;
-	ds << _trackLength;
-	ds << _height;
+	ds << m_id;
+	ds << m_trackLength;
+	ds << m_height;
 
 	CommandMessage* msg = new CommandMessage(COMMAND_SET_SOLVER, ba);
-	_tab_manager->send_data(0, msg);
+	m_tabManager->send_data(0, msg);
 }
 
 void Solver::autoState()
@@ -47,10 +47,10 @@ void Solver::autoState()
 	QByteArray ba;
 	QDataStream ds(&ba, QIODevice::ReadWrite);
 
-	ds << _autoStateValue;
+	ds << m_autoStateValue;
 
 	CommandMessage* msg = new CommandMessage(COMMAND_SET_SOLVER_AUTO, ba);
-	_tab_manager->send_data(0, msg);
+	m_tabManager->send_data(0, msg);
 }
 
 void Solver::clear()
@@ -59,11 +59,11 @@ void Solver::clear()
 	QDataStream ds(&ba, QIODevice::ReadWrite);
 
 	bool t =true;
-	ds << _id;
+	ds << m_id;
 	ds << t;
 
 	CommandMessage* msg = new CommandMessage(COMMAND_SET_SOLVER_CLEAR, ba);
-	_tab_manager->send_data(0, msg);
+	m_tabManager->send_data(0, msg);
 }
 
 void Solver::countTrack(int count)

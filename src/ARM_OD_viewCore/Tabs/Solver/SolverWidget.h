@@ -19,7 +19,7 @@ public:
 	bool getAutoState();
 
 private:
-	Ui::SolverWidget *_ui;
+	Ui::SolverWidget *m_ui;
 
 signals:
 	void signalClear();

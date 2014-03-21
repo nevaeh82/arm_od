@@ -1,53 +1,57 @@
 #include "SolverController.h"
 
-SolverController::SolverController(int id, ITabManager* tab_manager) :
-	_widget(new SolverWidget())
-	, _model(new Solver(id, tab_manager))
+SolverController::SolverController(int id, ITabManager* tabManager)
+	: m_widget( new SolverWidget() )
+	, m_model( new Solver(id, tabManager) )
 {
-	connect(_widget, SIGNAL(signalClear()), _model, SLOT(clear()));
-	connect(_widget, SIGNAL(signalAccept()), this, SLOT(accept()));
-	connect(_widget, SIGNAL(signalAuto(bool)), this, SLOT(autoState(bool)));
-
-	connect(_widget, SIGNAL(signalCancel()), this, SLOT(cancel()));
+	connect( m_widget, SIGNAL(signalClear()), this, SLOT(clear()) );
+	connect( m_widget, SIGNAL(signalAccept()), this, SLOT(accept()) );
+	connect( m_widget, SIGNAL(signalAuto(bool)), this, SLOT(autoState(bool)) );
+	connect( m_widget, SIGNAL(signalCancel()), this, SLOT(cancel()) );
 }
 
 SolverController::~SolverController()
 {
-	_widget->deleteLater();
-	_model->deleteLater();
+	delete m_widget;
+	delete m_model;
 }
 
 void SolverController::show()
 {
-	_widget->show();
+	m_widget->show();
 }
 
 QWidget* SolverController::getWidget()
 {
-	return _widget;
+	return m_widget;
 }
 
 Solver* SolverController::getModel()
 {
-	return _model;
+	return m_model;
 }
 
 void SolverController::cancel()
 {
-	_widget->hide();
+	m_widget->hide();
 }
 
 void SolverController::accept()
 {
-	_model->setTrackLength(_widget->getTrackLength());
-	_model->setHeight(_widget->getHeight());
+	m_model->setTrackLength(m_widget->getTrackLength());
+	m_model->setHeight(m_widget->getHeight());
 
-	_model->accept();
+	m_model->accept();
 }
 
 void SolverController::autoState(bool)
 {
-	_model->setAutoState(_widget->getAutoState());
+	m_model->setAutoState(m_widget->getAutoState());
 
-	_model->autoState();
+	m_model->autoState();
+}
+
+void SolverController::clear()
+{
+	m_model->clear();
 }

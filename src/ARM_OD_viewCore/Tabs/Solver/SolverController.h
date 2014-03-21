@@ -19,8 +19,8 @@ public:
 	Solver* getModel();
 
 private:
-	SolverWidget *_widget;
-	Solver       *_model;
+	SolverWidget *m_widget;
+	Solver       *m_model;
 
 public slots:
 	void show();
@@ -29,6 +29,7 @@ private slots:
 	void cancel();
 	void accept();
 	void autoState(bool);
+	void clear();
 };
 
 #endif // SOLVERCONTROLLER_H
