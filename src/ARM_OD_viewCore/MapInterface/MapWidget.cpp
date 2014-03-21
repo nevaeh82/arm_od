@@ -1,6 +1,6 @@
 #include "../Icons/IconsGenerator.h"
 
-#include "MapControllerWidget.h"
+#include "MapWidget.h"
 #include "ui_MapControllerWidget.h"
 
 MapControllerWidget::MapControllerWidget(MapController *controller, QWidget *parent) :

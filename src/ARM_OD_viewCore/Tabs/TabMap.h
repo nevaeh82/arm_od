@@ -32,7 +32,7 @@
 
 #include "../Common/IRouter.h"
 
-#include "../NIIPP/NiippControl.h"
+#include "../NIIPP/NIIPPController.h"
 
 #include "Tree/BLAWidgetDelegate.h"
 

@@ -1,17 +1,17 @@
-#include "NIIPPControlWidget.h"
+#include "NIIPPWidget.h"
 #include "ui_NIIPPControlWidget.h"
 
-NIIPPControlWidget::NIIPPControlWidget(NIIPPControl* control, QWidget *parent) :
+NiippControlWidget::NiippControlWidget(NiippController* control, QWidget *parent) :
 	QWidget(parent)
-	, ui(new Ui::NIIPPControlWidget)
-  , _controller(control)
+	, ui(new Ui::NiippControlWidget)
+	, _controller(control)
 {
 	ui->setupUi(this);
 
 	ui->_pb_enable_complex->setCheckable(true);
 	ui->_pb_enable_complex->setStyleSheet(QString::fromUtf8("background-color: rgb(255,0,0);"));
-	connect(ui->_pb_enable_complex, SIGNAL(toggled(bool)), this, SLOT(slotEnableComplex(bool)));
-	connect(ui->_pb_enable_complex, SIGNAL(toggled(bool)), _controller, SLOT(slotEnableComplex(bool)));
+	connect(ui->_pb_enable_complex, SIGNAL(toggled(bool)), this, SLOT(enableComplex(bool)));
+	connect(ui->_pb_enable_complex, SIGNAL(toggled(bool)), this, SIGNAL(signalEnableComplex(bool)));
 
 	QFont* font = new QFont();
 	font->setBold(true);
@@ -24,8 +24,8 @@ NIIPPControlWidget::NIIPPControlWidget(NIIPPControl* control, QWidget *parent) :
 	ui->_sl_power->setTickInterval(4);
 
 	connect(ui->_sl_power, SIGNAL(valueChanged(int)), ui->_sb_power, SLOT(setValue(int)));
-	connect(ui->_sb_power, SIGNAL(valueChanged(int)), this, SLOT(slotChangeValuePower(int)));
-	connect(ui->_sb_power, SIGNAL(valueChanged(int)), _controller, SLOT(slotChangeValuePower(int)));
+	connect(ui->_sb_power, SIGNAL(valueChanged(int)), this, SLOT(changeValuePower(int)));
+	connect(ui->_sb_power, SIGNAL(valueChanged(int)), this, SIGNAL(signalChangeValuePower(int)));
 
 	ui->_le_distance->setFont(*font);
 	ui->_le_distance->setText(tr("0 км"));
@@ -43,19 +43,19 @@ NIIPPControlWidget::NIIPPControlWidget(NIIPPControl* control, QWidget *parent) :
 							 "min-height:50px");
 	ui->_pb_start->setCheckable(true);
 
-	connect(ui->_pb_start, SIGNAL(clicked(bool)), this, SLOT(slotStartStopClicked(bool)));
-	connect(ui->_pb_start, SIGNAL(clicked(bool)), _controller, SLOT(slotStartStopClicked(bool)));
+	connect(ui->_pb_start, SIGNAL(clicked(bool)), this, SLOT(startStopClicked(bool)));
+	connect(ui->_pb_start, SIGNAL(clicked(bool)), this, SIGNAL(signalStartStopClicked(bool)));
 
 	ui->_cb_antena->addItem(tr("Направленная"));
 	ui->_cb_antena->addItem(tr("Ненапрвленная"));
 
 	connect(ui->_cb_antena, SIGNAL(activated(int)), this, SLOT(setAntennaType(int)));
-	connect(ui->_cb_antena, SIGNAL(activated(int)), _controller, SLOT(set_antenna_type(int)));
+	connect(ui->_cb_antena, SIGNAL(activated(int)), this, SIGNAL(signalSetAntennaType(int)));
 
 	ui->_cb_mode->addItem(tr("Облучение"));
 	ui->_cb_mode->addItem(tr("Приведение"));
 	ui->_cb_mode->addItem(tr("Круговой обзор"));
-	connect(ui->_cb_mode, SIGNAL(activated(int)), _controller, SLOT(_slot_change_mode(int)));
+	connect(ui->_cb_mode, SIGNAL(activated(int)), this, SIGNAL(signalChangeMode(int)));
 
 	ui->_le_lat->setFixedWidth(70);
 	ui->_le_lon->setFixedWidth(70);
@@ -63,21 +63,21 @@ NIIPPControlWidget::NIIPPControlWidget(NIIPPControl* control, QWidget *parent) :
 	ui->_le_status->setReadOnly(true);
 	ui->_le_status->setText(tr("Простой"));
 
-	connect(ui->_clear_uvod, SIGNAL(clicked()), this, SLOT(slotClear()));
-	connect(ui->_clear_uvod, SIGNAL(clicked()), _controller, SLOT(slotClear()));
+	connect(ui->_clear_uvod, SIGNAL(clicked()), this, SLOT(clear()));
+	connect(ui->_clear_uvod, SIGNAL(clicked()), this, SIGNAL(signalClear()));
 }
 
-NIIPPControlWidget::~NIIPPControlWidget()
+NiippControlWidget::~NiippControlWidget()
 {
 	delete ui;
 }
 
-bool NIIPPControlWidget::getState()
+bool NiippControlWidget::getState()
 {
 	return ui->_pb_enable_complex->isChecked();
 }
 
-void NIIPPControlWidget::slotEnableComplex(bool state)
+void NiippControlWidget::enableComplex(bool state)
 {
 	if(state)
 	{
@@ -89,18 +89,18 @@ void NIIPPControlWidget::slotEnableComplex(bool state)
 	}
 }
 
-void NIIPPControlWidget::slotChangeValuePower(int value)
+void NiippControlWidget::changeValuePower(int value)
 {
 	ui->_sl_power->setValue(value);
 
-	if(_controller->getAntenaType() == 0) {
+	if(ui->_cb_antena->currentIndex() == 0) {
 		ui->_le_distance->setText(QString("%1 км").arg(QString::number(_controller->getRadiusSector())));
 		if(ui->_pb_start->isChecked())
 		{
 			ui->_le_status->setText(tr("Облучение"));
 		}
 	}
-	if(_controller->getAntenaType() == 1) {
+	if(ui->_cb_antena->currentIndex() == 1) {
 		ui->_le_distance->setText(QString("%1 км").arg(QString::number(_controller->getRadiusCircle())));
 		if(ui->_pb_start->isChecked())
 		{
@@ -109,7 +109,7 @@ void NIIPPControlWidget::slotChangeValuePower(int value)
 	}
 }
 
-void NIIPPControlWidget::slotStartStopClicked(bool state)
+void NiippControlWidget::startStopClicked(bool state)
 {
 	ui->_pb_start->setChecked(state);
 
@@ -137,7 +137,7 @@ void NIIPPControlWidget::slotStartStopClicked(bool state)
 	}
 }
 
-void NIIPPControlWidget::setAntennaType(int value)
+void NiippControlWidget::setAntennaType(int value)
 {
 	if(value == 1) {
 		ui->_cb_mode->setEnabled(false);
@@ -167,13 +167,13 @@ void NIIPPControlWidget::setAntennaType(int value)
 	}
 }
 
-void NIIPPControlWidget::slotClear()
+void NiippControlWidget::clear()
 {
 	ui->_le_lat->clear();
 	ui->_le_lon->clear();
 }
 
-void NIIPPControlWidget::setPoint(QPointF coord)
+void NiippControlWidget::setPoint(QPointF coord)
 {
 	QString lat_s = QString::number(coord.x(), 'f', 4);
 	ui->_le_lat->setText(lat_s);
@@ -181,32 +181,32 @@ void NIIPPControlWidget::setPoint(QPointF coord)
 	ui->_le_lon->setText(lon_s);
 }
 
-bool NIIPPControlWidget::getEnableComplexState()
+bool NiippControlWidget::getEnableComplexState()
 {
 	return ui->_pb_enable_complex->isChecked();
 }
 
-bool NIIPPControlWidget::getStartState()
+bool NiippControlWidget::getStartState()
 {
 	return ui->_pb_start->isChecked();
 }
 
-int NIIPPControlWidget::getModeIndex()
+int NiippControlWidget::getModeIndex()
 {
 	return ui->_cb_mode->currentIndex();
 }
 
-int NIIPPControlWidget::getAntenaIndex()
+int NiippControlWidget::getAntenaIndex()
 {
 	return ui->_cb_antena->currentIndex();
 }
 
-int NIIPPControlWidget::getSbPowerValue()
+int NiippControlWidget::getSbPowerValue()
 {
 	return ui->_sb_power->value();
 }
 
-void NIIPPControlWidget::setLeStatusText(int mode)
+void NiippControlWidget::setStatusText(int mode)
 {
 	switch(mode) {
 	case 00:
@@ -233,12 +233,12 @@ void NIIPPControlWidget::setLeStatusText(int mode)
 	}
 }
 
-void NIIPPControlWidget::setLatText(QString text)
+void NiippControlWidget::setLatText(QString text)
 {
 	ui->_le_lat->setText(text);
 }
 
-void NIIPPControlWidget::setLonText(QString text)
+void NiippControlWidget::setLonText(QString text)
 {
 	ui->_le_lon->setText(text);
 }

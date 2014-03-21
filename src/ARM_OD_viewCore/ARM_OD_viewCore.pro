@@ -50,12 +50,14 @@ HEADERS += \
 	MapInterface/IMapController.h \
 	MapInterface/mapclient1.h \
 	MapInterface/MapController.h \
-	MapInterface/MapControllerWidget.h \
+	MapInterface/Map.h \
+	MapInterface/MapWidget.h \
 	NIIPP/INiippController.h \
-	NIIPP/NIIPPControl.h \
-	NIIPP/NIIPPControlWidget.h \
-	NIIPP/NIIPPParser.h \
 	NIIPP/TCPPareserNiiPP.h \
+	NIIPP/Niipp.h \
+	NIIPP/NiippController.h \
+	NIIPP/NiippWidget.h \
+	NIIPP/NiippParser.h \
 	Tabs/RPC/IRPC.h \
 	Tabs/RPC/RadiolocationInterface.h \
 	Tabs/RPC/RPCClient.h \
@@ -79,7 +81,7 @@ HEADERS += \
 	UAV/BLAPerehvatDialog.h \
 	UAV/ZInterception.h \
 	MainWindow.h \
-	MainWindowController.h \
+	MainWindowController.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -87,11 +89,13 @@ SOURCES += \
 	Icons/IconsGenerator.cpp \
 	MapInterface/mapclient1.cpp \
 	MapInterface/MapController.cpp \
-	MapInterface/MapControllerWidget.cpp \
-	NIIPP/NIIPPControl.cpp \
-	NIIPP/NIIPPParser.cpp \
+	MapInterface/Map.cpp \
+	MapInterface/MapWidget.cpp \
 	NIIPP/TCPPareserNiiPP.cpp \
-	NIIPP/NIIPPControlWidget.cpp \
+	NIIPP/NiippController.cpp \
+	NIIPP/Niipp.cpp \
+	NIIPP/NiippParser.cpp \
+	NIIPP/NiippWidget.cpp \
 	Tabs/RPC/rpcclient.cpp \
 	Tabs/Solver/Solver.cpp \
 	Tabs/Tree/BLAWidgetDelegate.cpp \
@@ -114,6 +118,6 @@ FORMS += \
 	UAV/blaperehvatdialog.ui \
 	arm_od_view.ui \
 	TabMap.ui \
-	NIIPP/NIIPPControlWidget.ui \
-	MapInterface/MapControllerWidget.ui
+	NIIPP/NiippControlWidget.ui \
+	MapInterface/MapWidget.ui
 

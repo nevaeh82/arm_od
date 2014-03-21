@@ -7,135 +7,86 @@
 
 #include "../UAV/ZInterception.h"
 
-//MapController* MapController::_map_controller = 0;
-
-//MapController* MapController::getInstance()
-//{
-//    if(_map_controller == 0)
-//    {
-//       _map_controller = new MapController();
-//    }
-//    return _map_controller;
-//}
-
-MapController::MapController() : _controller_widget(new MapControllerWidget(this, this))
+MapController::MapController()
+	: m_controllerWidget(new MapControllerWidget(this))
+	, m_mapModel(new Map())
 {
-    _layersCounter = 0;
+	m_mapModel->setMapManager(m_controllerWidget->getPwGis()->mapProvider()->mapManager());
+	m_mapModel->setProfileManager(m_controllerWidget->getPwGis()->mapProvider()->profileManager());
 
-	_mapManager = _controller_widget->getPwGis()->mapProvider()->mapManager();
-	QObject::connect(&_mapManager->events(), SIGNAL(mapReady()), this, SLOT(onMapReady()));
+	QObject::connect(m_mapModel, SIGNAL(modelMapReady()), this, SLOT(onMapReady()));
 
-	//_mapManager = _pwwidget->mapProvider()->mapManager();
-	_profileManager = _controller_widget->getPwGis()->mapProvider()->profileManager();
-
-	_profileManager->registerProfile("Zav", ":/images/");
-//    _profileManager->registerProfile("Zav", ":/images/UAV/BLA.png");
-
-//    _pwwidget->enableDebugger(true);
-	_mapManager->setProfile("Zav");
-	_controller_widget->getPwGis()->enableDebugger(false);
-
-
-//    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-	connect(_controller_widget, SIGNAL(showBLAtree()), this, SIGNAL(controllerShowBLAtree()));
-	connect(_controller_widget, SIGNAL(showBPLAtree()), this, SIGNAL(controllerShowBPLAtree()));
-	connect(_controller_widget, SIGNAL(showNIIPP()), this, SIGNAL(controllerShowNIIPP()));
-
+	m_controllerWidget->getPwGis()->enableDebugger(false);
+	connect(m_controllerWidget, SIGNAL(showBLAtree()), this, SIGNAL(controllerShowBLAtree()));
+	connect(m_controllerWidget, SIGNAL(showBPLAtree()), this, SIGNAL(controllerShowBPLAtree()));
+	connect(m_controllerWidget, SIGNAL(showNIIPP()), this, SIGNAL(controllerShowNIIPP()));
 }
 
 MapController::~MapController()
 {
-	_mapManager->closeMap();
+	m_controllerWidget->deleteLater();
+	m_mapModel->deleteLater();
 }
 
 void MapController::init(QMap<int, TabsProperty *> map_settings, IDBManager* db_bla, IDBManager* db_evil)
 {
-    _db_bla = db_bla;
-    _db_evil = db_evil;
-
-    _m_settings = map_settings;
-    QMap<int, TabsProperty *>::iterator it;
-    for (it = _m_settings.begin(); it != _m_settings.end(); ++it)
-    {
-		_map_clients[(it.value())->get_id()] = new MapClient1(_controller_widget->getPwGis()
-																, it.value(), _db_bla, _db_evil);
-    }
+	m_mapModel->init(map_settings, db_bla, db_evil, m_controllerWidget->getPwGis());
 }
 
-void MapController::open_map_from_Atlas()
+void MapController::openMapFromAtlas()
 {
-    bool rc = _mapManager->openAtlas();
-//    qDebug() << rc;
+	m_mapModel->openAtlas();
 }
 
-void MapController::open_map_from_local_file(/*const QString mapFile*/)
+void MapController::openMapFromLocalFile(/*const QString mapFile*/)
 {
+	QString filename = QFileDialog::getOpenFileName(
+		0,
+		tr("Открыть карту"),
+		QDir::currentPath(),
+		tr("Формат (*.chart *.sxf);;Все файлы (*.*)") );
+	if( !filename.isNull() )
+	{
+	}
 
-    QString filename = QFileDialog::getOpenFileName(
-        this,
-        tr("Открыть карту"),
-        QDir::currentPath(),
-        tr("Формат (*.chart *.sxf);;Все файлы (*.*)") );
-    if( !filename.isNull() )
-    {
-//      qDebug( filename.toAscii() );
-    }
-
-//    _pwwidget->enableDebugger(true);
-    bool rc = _mapManager->openMap(filename, 100);
-//    qDebug() << rc;
-
+	m_mapModel->openMap(filename);
 }
 
 void MapController::onMapReady()
 {
-    QMap<int, IMapClient *>::iterator it;
-
-    for (it = _map_clients.begin(); it != _map_clients.end(); ++it)
-    {
-        if(!it.value())
-            continue;
-        (it.value())->set_Point();
-    }
 	get_panel_widget()->setMouseTracking(true);
+	m_mapModel->setLayerManager(m_controllerWidget->getPwGis()->mapProvider()->layerManager());
 	emit mapOpened();
-	_layerManager = _controller_widget->getPwGis()->mapProvider()->layerManager();
 }
 
 void MapController::_slot_station_visible(bool state)
 {
-    _map_clients.value(1)->show_layer(0, state);
+	m_mapModel->setStationVisible(state);
 }
 
 PwGisWidget *MapController::get_pwwidget()
 {
-	return _controller_widget->getPwGis();
+	return m_controllerWidget->getPwGis();
 }
 
 QWidget *MapController::get_widget()
 {
-	return _controller_widget->getWidget();
+	return m_controllerWidget->getWidget();
 }
 
 bool MapController::eventFilter(QObject *obj, QEvent *e)
 {
-    //_panel_widget->show();
-    //_panel_widget->setCursor(Qt::CrossCursor);
-//    qDebug() << "HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH";
-
-    return true;
+	return true;
 }
-
 
 /// get map client by name
 IMapClient *MapController::get_map_client(int id)
 {
-    return _map_clients[id];
+	return m_mapModel->getMapClient(id);
 }
 
 /// get panel widget
 QWidget *MapController::get_panel_widget()
 {
-	return _controller_widget->getPanelWidget();
+	return m_controllerWidget->getPanelWidget();
 }

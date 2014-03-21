@@ -1,0 +1,66 @@
+#ifndef NIIPPCONTROL_H
+#define NIIPPCONTROL_H
+
+#include <QWidget>
+
+#include "INiippController.h"
+#include "NiippWidget.h"
+#include "Niipp.h"
+
+#include "NIIPPParser.h"
+
+class NiippControlWidget;
+
+class NiippController : public QWidget, public INiiPPController
+{
+	Q_OBJECT
+public:
+	NiippController(int id, QString name, QPointF latlon, IRouter *router, MapController* map_controller, ITabManager * parent_tab);
+	~NiippController();
+
+	void create();
+
+	bool getState();
+	void setData(QByteArray data);
+
+	int getAntenaType();
+	double getRadiusCircle();
+	double getRadiusSector();
+	int getModeCurrentIndex();
+	QWidget* getControlWidget();
+
+private slots:
+	void startStopClicked(bool state);
+
+private:
+	void stopCommad();
+	QByteArray _encode(QStringList list);
+
+private:
+
+	NiippControlWidget *m_controlView;
+	Niipp  *m_controlModel;
+
+signals:
+	void signalChangeValuePower(int);
+	void signalChangeAngle(double);
+
+private slots:
+
+	void changeAngel(double value);
+	void changeValuePower(int value);
+	void changeMode(int value);
+	void enableComplex(bool state);
+	void clear();
+
+public slots:
+	virtual void set_power(double value);
+	virtual void set_switch_on(bool state);
+	virtual void set_antenna_type(int value);
+	virtual int get_id();
+	virtual void set_point(QPointF coord);
+	virtual void send_evil(QPointF point, QPointF point_uvoda, double alt, double bearing);
+	virtual void set_angle(double angle);
+};
+
+#endif // NIIPPCONTROL_H

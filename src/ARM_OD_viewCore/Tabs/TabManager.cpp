@@ -122,12 +122,12 @@ int TabManager::createSubModules(QString path_to_ini_file)
     QPointF latlon1;
     latlon1.setX(42.511183);
     latlon1.setY(41.6905);
-    NIIPPControl* _niipp1 = new NIIPPControl(100, tr("СПИП ДД-1"), latlon1, _router, _map_controller, this);
+	NiippController* _niipp1 = new NiippController(100, tr("СПИП ДД-1"), latlon1, _router, _map_controller, this);
 
     QPointF latlon2;
     latlon2.setX(42.634183);
     latlon2.setY(41.912167);
-    NIIPPControl* _niipp2 = new NIIPPControl(101, tr("СПИП ДД-2"), latlon2, _router, _map_controller, this);
+	NiippController* _niipp2 = new NiippController(101, tr("СПИП ДД-2"), latlon2, _router, _map_controller, this);
 
     QDockWidget* dock_niipp1 = new QDockWidget(tr("СПИП ДД-1"));
 	dock_niipp1->setWidget(_niipp1->getControlWidget());
@@ -201,16 +201,16 @@ void TabManager::_slot_show_niipp1(bool state)
 
 void TabManager::_slot_send_data_to_niipp_control(int id, QByteArray data)
 {
-    NIIPPControl* niip_contr;
+	NiippController* niip_contr;
     switch(id)
     {
     case 100:
-        niip_contr = dynamic_cast<NIIPPControl *>(_map_niipp->value(1)->widget());
-        niip_contr->set_data(data);
+		niip_contr = dynamic_cast<NiippController *>(_map_niipp->value(1)->widget());
+		niip_contr->setData(data);
         break;
     case 101:
-        niip_contr = dynamic_cast<NIIPPControl *>(_map_niipp->value(2)->widget());
-        niip_contr->set_data(data);        break;
+		niip_contr = dynamic_cast<NiippController *>(_map_niipp->value(2)->widget());
+		niip_contr->setData(data);        break;
     default:
         break;
     }
