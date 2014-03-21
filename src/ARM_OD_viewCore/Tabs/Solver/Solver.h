@@ -1,21 +1,6 @@
 #ifndef SOLVER_H
 #define SOLVER_H
 
-#include <QWidget>
-#include <QDoubleSpinBox>
-#include <QSpinBox>
-#include <QLabel>
-
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QGridLayout>
-#include <QPushButton>
-#include <QByteArray>
-#include <QDataStream>
-#include <QCheckBox>
-
-#include "SolverWidget.h"
-
 #include "../ITabManager.h"
 #include "../../Common/CommandMessage.h"
 

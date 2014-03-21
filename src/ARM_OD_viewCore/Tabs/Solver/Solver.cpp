@@ -58,7 +58,7 @@ void Solver::clear()
 	QByteArray ba;
 	QDataStream ds(&ba, QIODevice::ReadWrite);
 
-	bool t =true;
+	bool t = true;
 	ds << m_id;
 	ds << t;
 
