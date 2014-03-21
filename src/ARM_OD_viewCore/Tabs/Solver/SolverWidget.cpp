@@ -3,8 +3,8 @@
 #include "SolverWidget.h"
 
 
-SolverWidget::SolverWidget(QWidget *parent) :
-	QWidget(parent)
+SolverWidget::SolverWidget(QWidget *parent)
+	: QWidget(parent)
 	, m_ui(new Ui::SolverWidget)
 {
 	m_ui->setupUi(this);
