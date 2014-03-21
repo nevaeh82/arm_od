@@ -25,7 +25,7 @@ ARM_OD_Srv::ARM_OD_Srv()
     _router->set_tcp_controller(_tcp_controller);
 
 
-    _read_settings();
+//    _read_settings();
 
 
 // connect up the signals
@@ -62,7 +62,7 @@ ARM_OD_Srv::ARM_OD_Srv()
     thread_rpc_client->start();
 
 //    _rpc_client1->start();
-
+/*
     _niipp1 = new NIIPPController(_router);
     _niipp1->set_id(100);
     _niipp1->set_type(1);
@@ -76,7 +76,7 @@ ARM_OD_Srv::ARM_OD_Srv()
 //    _niipp2 = new NIIPPController(_router);
 //    _niipp2->set_id(102);
     emit signalStartRPC();
-
+*/
 
 //    BLASimulator* bla_sim = new BLASimulator(_router, 0.3, true);
 //    bla_sim->start();
@@ -124,8 +124,8 @@ ARM_OD_Srv::ARM_OD_Srv()
 	m_tcpManager->moveToThread(tcpManagerThread);
 	tcpManagerThread->start();
 
-//	m_tcpManager->addTcpDevice(NIIPP_TCP_DEVICE, "192.168.10.50", 6340);
-//	m_tcpManager->addTcpDevice(NIIPP_TCP_DEVICE, "192.168.245.51", 6340);
+	m_tcpManager->addTcpDevice(NIIPP_TCP_DEVICE, "192.168.10.50", 6340);
+	m_tcpManager->addTcpDevice(NIIPP_TCP_DEVICE, "192.168.245.51", 6340);
 	m_tcpManager->addTcpDevice(KTR_TCP_DEVICE, "192.168.137.98", 64300);
 
 }
