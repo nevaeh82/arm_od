@@ -70,18 +70,23 @@ ARM_OD_Srv::ARM_OD_Srv()
 	_ais = new Ais(_router);
 
 	TcpManager* m_tcpManager = new TcpManager;
+	m_tcpManager->addTcpDevice(ARMR_TCP_CLIENT, "127.0.0.1", 6662);
+	m_tcpManager->setRpcServer(_rpc_server);
+	_rpc_server->registerReceiver(m_tcpManager);
+
 	QThread* tcpManagerThread = new QThread;
 	connect(tcpManagerThread, SIGNAL(finished()), m_tcpManager, SLOT(deleteLater()));
 	connect(tcpManagerThread, SIGNAL(finished()), tcpManagerThread, SLOT(deleteLater()));
 	m_tcpManager->moveToThread(tcpManagerThread);
 	tcpManagerThread->start();
 
-	m_tcpManager->setRpcServer(_rpc_server);
+//	m_tcpManager->setRpcServer(_rpc_server);
+	//_rpc_server->registerReceiver(m_tcpManager);
 
 //	m_tcpManager->addTcpDevice(NIIPP_TCP_DEVICE, "192.168.10.50", 6340);
 //	m_tcpManager->addTcpDevice(NIIPP_TCP_DEVICE, "192.168.245.51", 6340);
 //	m_tcpManager->addTcpDevice(KTR_TCP_DEVICE, "192.168.137.98", 64300);
-	m_tcpManager->addTcpDevice(ARMR_TCP_CLIENT, "127.0.0.1", 6662);
+//	m_tcpManager->addTcpDevice(ARMR_TCP_CLIENT, "127.0.0.1", 6662);
 }
 
 ARM_OD_Srv::~ARM_OD_Srv()

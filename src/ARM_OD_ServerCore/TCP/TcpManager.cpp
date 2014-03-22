@@ -49,6 +49,8 @@ void TcpManager::addTcpDevice(const QString& deviceType, const QString& host, co
 
 	m_controllersMap.insert(deviceType, controller);
 
+	controller->registerReceiver(this);
+
 	controller->createTcpDeviceCoder();
 	controller->createTcpClient();
 	controller->connectToHost(host, port);
