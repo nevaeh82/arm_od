@@ -84,7 +84,7 @@ ARM_OD_Srv::ARM_OD_Srv()
 //    BLASimulator* bpla_sim = new BLASimulator(_router, 0.1, false);
 //    bpla_sim->start();
 
-	_ais = new Ais(_router);
+//	_ais = new Ais(_router);
 //    QThread *thread = new QThread;
 
 //    connect(_ais, SIGNAL(finished()), thread, SLOT(quit()));
@@ -127,6 +127,9 @@ ARM_OD_Srv::ARM_OD_Srv()
 	m_tcpManager->addTcpDevice(NIIPP_TCP_DEVICE, "192.168.10.50", 6340);
 	m_tcpManager->addTcpDevice(NIIPP_TCP_DEVICE, "192.168.245.51", 6340);
 	m_tcpManager->addTcpDevice(KTR_TCP_DEVICE, "192.168.137.98", 64300);
+
+	/// 60.7209, 28.0289, 58.8187, 34.0933
+	m_tcpManager->addTcpDevice(AIS_TCP_DEVICE, "60.7209:28.0289:58.8187:34.0933", 0);
 
 }
 

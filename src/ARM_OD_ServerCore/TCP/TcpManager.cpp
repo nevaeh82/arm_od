@@ -28,6 +28,10 @@ void TcpManager::addTcpDevice(const QString& deviceType, const QString& host, co
 		controller = new TcpKTRController(KTR_TCP_DEVICE);
 		controller->registerReceiver(this);
 		debug(QString("Created TcpKTRController"));
+	} else if (deviceType == AIS_TCP_DEVICE) {
+		controller = new TcpAISController(AIS_TCP_DEVICE);
+		controller->registerReceiver(this);
+		debug(QString("Created TcpAISController"));
 	}
 
 	/// if something else, create new Tcp%Device%Controller with new name and/or class
@@ -130,6 +134,10 @@ void TcpManager::onMessageReceived(const QString& device, const MessageSP argume
 		} else if (messageType == TCP_KTR_ANSWER_BPLA){
 //			m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_BLA_POINTS, messageData);
 
+		}
+	} else if (device == AIS_TCP_DEVICE) {
+		if (messageType == TCP_AIS_ANSWER_DATA) {
+//			m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_AIS_DATA, messageData);
 		}
 	}
 }

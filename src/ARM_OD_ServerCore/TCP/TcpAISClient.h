@@ -9,8 +9,6 @@
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
 
-#define TCP_STANDART_AIS_URL "http://bma.fr24.com/zones/"
-
 class TcpAISClient : public BaseTcpClient
 {
 	Q_OBJECT

@@ -14,6 +14,7 @@
 #include "TcpDevicesDefines.h"
 #include "TcpNIIPPController.h"
 #include "TcpKTRController.h"
+#include "TcpAISController.h"
 
 #include "Rpc/RPCServer.h"
 
