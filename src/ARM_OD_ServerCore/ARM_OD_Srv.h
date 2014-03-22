@@ -35,6 +35,10 @@ typedef QByteArray               rpc_send_ba_data;
 class ARM_OD_Srv : public QObject
 {
     Q_OBJECT
+
+private:
+	TcpManager* m_tcpManager;
+
 public:
     ARM_OD_Srv();
     ~ARM_OD_Srv();

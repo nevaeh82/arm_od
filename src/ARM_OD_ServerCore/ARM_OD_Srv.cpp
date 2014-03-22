@@ -117,7 +117,7 @@ ARM_OD_Srv::ARM_OD_Srv()
 
 	qRegisterMetaType<MessageSP>("MessageSP");
 
-	TcpManager* m_tcpManager = new TcpManager;
+	m_tcpManager = new TcpManager;
 	QThread* tcpManagerThread = new QThread;
 	connect(tcpManagerThread, SIGNAL(finished()), m_tcpManager, SLOT(deleteLater()));
 	connect(tcpManagerThread, SIGNAL(finished()), tcpManagerThread, SLOT(deleteLater()));
@@ -146,56 +146,56 @@ ARM_OD_Srv::~ARM_OD_Srv()
 /// read settings from ini file
 void ARM_OD_Srv::_read_settings()
 {
-    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-    QString app_dir = QCoreApplication::applicationDirPath();
-    app_dir.append("/TCP/coders.ini");
-    QSettings m_settings(app_dir, QSettings::IniFormat);
+//    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+//    QString app_dir = QCoreApplication::applicationDirPath();
+//    app_dir.append("/TCP/coders.ini");
+//    QSettings m_settings(app_dir, QSettings::IniFormat);
 
-    m_settings.setIniCodec(codec);
-    QString ip = "127.0.0.1";
-    quint16 port = 1024;
+//    m_settings.setIniCodec(codec);
+//    QString ip = "127.0.0.1";
+//    quint16 port = 1024;
 
-    QStringList childKeys = m_settings.childGroups();
-    foreach (const QString &childKey, childKeys)
-    {
-        qDebug() << "m_settings = " << childKey.toLatin1();
-        m_settings.beginGroup(childKey);
+//    QStringList childKeys = m_settings.childGroups();
+//    foreach (const QString &childKey, childKeys)
+//    {
+//        qDebug() << "m_settings = " << childKey.toLatin1();
+//        m_settings.beginGroup(childKey);
 
-        ip = m_settings.value("ip", "127.0.0.1").toString();
-        port = m_settings.value("Port", 2323).toInt();
+//        ip = m_settings.value("ip", "127.0.0.1").toString();
+//        port = m_settings.value("Port", 2323).toInt();
 
-//        _tcp_controller->add_connection(ip, port, _router);
+////        _tcp_controller->add_connection(ip, port, _router);
 
-        m_settings.endGroup();
-    }
+//        m_settings.endGroup();
+//    }
 }
 
 /// read settings from ini file
 void ARM_OD_Srv::_read_settingsKTR()
 {
-    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-    QString app_dir = QCoreApplication::applicationDirPath();
-    app_dir.append("/KTR/KTR.ini");
-    QSettings m_settings(app_dir, QSettings::IniFormat);
+//    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+//    QString app_dir = QCoreApplication::applicationDirPath();
+//    app_dir.append("/KTR/KTR.ini");
+//    QSettings m_settings(app_dir, QSettings::IniFormat);
 
-    m_settings.setIniCodec(codec);
-    QString ip = "127.0.0.1";
-    quint16 port = 64300;
+//    m_settings.setIniCodec(codec);
+//    QString ip = "127.0.0.1";
+//    quint16 port = 64300;
 
-    QStringList childKeys = m_settings.childGroups();
-    foreach (const QString &childKey, childKeys)
-    {
-        qDebug() << "m_settings = " << childKey.toLatin1();
-        m_settings.beginGroup(childKey);
+//    QStringList childKeys = m_settings.childGroups();
+//    foreach (const QString &childKey, childKeys)
+//    {
+//        qDebug() << "m_settings = " << childKey.toLatin1();
+//        m_settings.beginGroup(childKey);
 
-        _ip_ktr = m_settings.value("IP", "127.0.0.1").toString();
-        _port_ktr = m_settings.value("Port", 64300).toInt();
+//        _ip_ktr = m_settings.value("IP", "127.0.0.1").toString();
+//        _port_ktr = m_settings.value("Port", 64300).toInt();
 
-        BLAController* bla_controller = new BLAController(_router);
-        bla_controller->setController(_ip_ktr, _port_ktr);
+//        BLAController* bla_controller = new BLAController(_router);
+//        bla_controller->setController(_ip_ktr, _port_ktr);
 
-//        _tcp_controller->add_connection(ip, port, _router);
+////        _tcp_controller->add_connection(ip, port, _router);
 
-        m_settings.endGroup();
-    }
+//        m_settings.endGroup();
+//    }
 }

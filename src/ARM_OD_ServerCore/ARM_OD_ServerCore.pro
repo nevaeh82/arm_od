@@ -62,7 +62,12 @@ HEADERS += \
     TCP/TcpKTRCoder.h \
     TCP/TcpKTRController.h \
     TCP/Interfaces/ITcpManager.h \
-    TCP/TcpManager.h
+    TCP/TcpManager.h \
+    TCP/TcpAISClient.h \
+    TCP/TcpAISCoder.h \
+    TCP/TcpAISController.h \
+    TCP/TcpAISZoneManager.h \
+    TCP/TcpAISZoneDefines.h
 
 SOURCES += \
     ARM_OD_Application.cpp \
@@ -95,4 +100,9 @@ SOURCES += \
     TCP/TcpNIIPPController.cpp \
     TCP/TcpKTRCoder.cpp \
     TCP/TcpKTRController.cpp \
-    TCP/TcpManager.cpp
+    TCP/TcpManager.cpp \
+    TCP/TcpAISClient.cpp \
+    TCP/TcpAISCoder.cpp \
+    TCP/TcpAISController.cpp \
+    TCP/TcpAISZoneManager.cpp \
+    TCP/TcpAISZoneDefines.cpp

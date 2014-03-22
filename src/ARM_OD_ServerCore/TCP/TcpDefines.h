@@ -11,4 +11,7 @@
 #define TCP_KTR_ANSWER_BPLA					"tcpKtrAnswerBpla"
 #define TCP_KTR_REQUEST_COMMAND_TO_BPLA		"tcpKtrRequestCommandToBpla"
 
+/// AIS device internal
+#define TCP_AIS_ANSWER_DATA	"tcpAisAnswerData"
+
 #endif // TCPDEFINES_H
