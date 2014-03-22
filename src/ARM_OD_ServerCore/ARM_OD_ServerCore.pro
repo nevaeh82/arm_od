@@ -66,8 +66,7 @@ HEADERS += \
     TCP/TcpAISClient.h \
     TCP/TcpAISCoder.h \
     TCP/TcpAISController.h \
-    TCP/TcpAISZoneManager.h \
-    TCP/TcpAISZoneDefines.h
+    TCP/TcpAISZoneManager.h
 
 SOURCES += \
     ARM_OD_Application.cpp \
@@ -104,5 +103,4 @@ SOURCES += \
     TCP/TcpAISClient.cpp \
     TCP/TcpAISCoder.cpp \
     TCP/TcpAISController.cpp \
-    TCP/TcpAISZoneManager.cpp \
-    TCP/TcpAISZoneDefines.cpp
+    TCP/TcpAISZoneManager.cpp
