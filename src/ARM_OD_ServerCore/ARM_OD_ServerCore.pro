@@ -53,7 +53,6 @@ HEADERS += \
     TCP/UAV/BLAControllerParser.h \
     TCP/UAV/BLAParser.h \
     TCP/UAV/BLAParser2.h \
-    TCP/UAV/BLASimulator.h \
     TCP/UAV/IBLAController.h \
     TCP/TcpDevicesDefines.h \
     TCP/TcpDefines.h \
@@ -90,7 +89,6 @@ SOURCES += \
     TCP/UAV/BLAControllerParser.cpp \
     TCP/UAV/BLAParser.cpp \
     TCP/UAV/BLAParser2.cpp \
-    TCP/UAV/BLASimulator.cpp \
     TCP/TcpNIIPPCoder.cpp \
     TCP/TcpNIIPPController.cpp \
     TCP/TcpKTRCoder.cpp \

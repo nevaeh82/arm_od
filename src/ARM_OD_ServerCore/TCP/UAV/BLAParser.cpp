@@ -1,5 +1,7 @@
-#include "BLAParser.h"
+#include <QPointF>
 #include <QDebug>
+
+#include "BLAParser.h"
 
 BLAParser::BLAParser(int id, IRouter *router)
 {
@@ -84,7 +86,6 @@ void BLAParser::parsing(QByteArray data)
     QPointF point;
     point.setX(_latitude);
     point.setY(_longitude);
-
 
     QByteArray *ba = new QByteArray();
     QDataStream ds(ba, QIODevice::ReadWrite);

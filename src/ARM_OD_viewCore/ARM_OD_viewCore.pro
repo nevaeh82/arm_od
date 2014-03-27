@@ -50,15 +50,14 @@ HEADERS += \
 	MapInterface/IMapController.h \
 	MapInterface/mapclient1.h \
 	MapInterface/MapController.h \
+	MapInterface/Map.h \
+	MapInterface/MapWidget.h \
 	NIIPP/INiippController.h \
-	NIIPP/NIIPPControl.h \
-	NIIPP/NIIPPParser.h \
 	NIIPP/TCPPareserNiiPP.h \
-	Tabs/ITabManager.h \
-	Tabs/ITabMap.h \
-	Tabs/TabManager.h \
-	Tabs/TabMap.h \
-	Tabs/TabsProperty.h \
+	NIIPP/Niipp.h \
+	NIIPP/NiippController.h \
+	NIIPP/NiippWidget.h \
+	NIIPP/NiippParser.h \
 	Tabs/RPC/IRPC.h \
 	Tabs/RPC/RadiolocationInterface.h \
 	Tabs/RPC/RPCClient.h \
@@ -76,6 +75,11 @@ HEADERS += \
 	Tabs/Tree/TreeModel.h \
 	Tabs/Tree/TreeView.h \
 	Tabs/Tree/TreeWidgetDelegate.h \
+	Tabs/ITabManager.h \
+	Tabs/ITabMap.h \
+	Tabs/TabManager.h \
+	Tabs/TabMap.h \
+	Tabs/TabsProperty.h \
 	UAV/BLAPerehvatDialog.h \
 	UAV/ZInterception.h \
 	MainWindow.h \
@@ -87,12 +91,13 @@ SOURCES += \
 	Icons/IconsGenerator.cpp \
 	MapInterface/mapclient1.cpp \
 	MapInterface/MapController.cpp \
-	NIIPP/NIIPPControl.cpp \
-	NIIPP/NIIPPParser.cpp \
+	MapInterface/Map.cpp \
+	MapInterface/MapWidget.cpp \
 	NIIPP/TCPPareserNiiPP.cpp \
-	Tabs/TabManager.cpp \
-	Tabs/TabMap.cpp \
-	Tabs/TabsProperty.cpp \
+	NIIPP/NiippController.cpp \
+	NIIPP/Niipp.cpp \
+	NIIPP/NiippParser.cpp \
+	NIIPP/NiippWidget.cpp \
 	Tabs/RPC/rpcclient.cpp \
 	Tabs/Solver/Solver.cpp \
 	Tabs/Solver/SolverWidget.cpp \
@@ -104,6 +109,9 @@ SOURCES += \
 	Tabs/Tree/treemodel.cpp \
 	Tabs/Tree/TreeView.cpp \
 	Tabs/Tree/TreeWidgetDelegate.cpp \
+	Tabs/TabManager.cpp \
+	Tabs/TabMap.cpp \
+	Tabs/TabsProperty.cpp \
 	UAV/BLAPerehvatDialog.cpp \
 	UAV/ZInterception.cpp \
 	MainWindow.cpp \
@@ -112,5 +120,8 @@ SOURCES += \
 FORMS += \
 	UAV/blaperehvatdialog.ui \
 	arm_od_view.ui \
-	Tabs/Solver/SolverWidget.ui
+	TabMap.ui \
+	Tabs/Solver/SolverWidget.ui \
+	MapInterface/MapWidget.ui \
+	NIIPP/NiippWidget.ui
 
