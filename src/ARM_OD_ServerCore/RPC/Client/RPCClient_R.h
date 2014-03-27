@@ -47,125 +47,125 @@
 
 typedef struct A_Dir_Ans_msg
 {
-    //id запроса
-    int requestId;
-    //id источника, при ответе на DirectionFindingRequest совпадает с айди запроса
-    //              при ответе на ScanRequest назначается пеленгатором
-    int sourceId;
-    //время засечки
-    //DateTime.Utc.Now - время в 100наносекундных интервалах начиная с 1 января 1 года
-    quint64 dateTime;
+	//id пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	int requestId;
+	//id пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ DirectionFindingRequest пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	//              пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ ScanRequest пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	int sourceId;
+	//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	//DateTime.Utc.Now - пїЅпїЅпїЅпїЅпїЅ пїЅ 100пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ 1 пїЅпїЅпїЅпїЅпїЅпїЅ 1 пїЅпїЅпїЅпїЅ
+	quint64 dateTime;
 
-    //имя поста
-    QString post;
-    double postLatitude;     //GPS Geo Coords
-    double postLongitude;    //GPS Geo Coords
-    double postHeight;       //meters
+	//пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+	QString post;
+	double postLatitude;     //GPS Geo Coords
+	double postLongitude;    //GPS Geo Coords
+	double postHeight;       //meters
 
-    //центральная частота
-    double frequency;
-    //ширина пика
-    double widht;
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	double frequency;
+	//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+	double widht;
 
-    //пеленг
-    double direction;
-    //угол места
-    double angle;
-    //уровень
-    double level;
-    //качество
-    double quality;
+	//пїЅпїЅпїЅпїЅпїЅпїЅ
+	double direction;
+	//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+	double angle;
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	double level;
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	double quality;
 
-    int motionType;
-    double motionConfidence;
+	int motionType;
+	double motionConfidence;
 }A_Dir_Ans_msg;
 
 
 class RPCClient_R : public QObject, public IClient
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    RPCClient_R(IRouter* router);
-    ~RPCClient_R();
+	RPCClient_R(IRouter* router);
+	~RPCClient_R();
 
 public:
-    virtual void set_id(int id);
-    virtual int get_id();
-    virtual void set_type(int type);
-    virtual int get_type();
-    virtual void send_data(QSharedPointer<IMessage> msg_ptr);
+	virtual void set_id(int id);
+	virtual int get_id();
+	virtual void set_type(int type);
+	virtual int get_type();
+	virtual void send_data(QSharedPointer<IMessageOld> msg_ptr);
 
 
 private slots:
-    virtual int start();
-    virtual int stop();
+	virtual int start();
+	virtual int stop();
 
 public:
-    void set_command(IMessage* msg);
-    void push_msg(QByteArray msg);
+	void set_command(IMessageOld* msg);
+	void push_msg(QByteArray msg);
 
 private slots:
-    void _slotSetCommand(IMessage* msg);
-    void _slotPushMsg(QByteArray msg);
-    void _slotGetData(QSharedPointer<IMessage> msg_ptr);
+	void _slotSetCommand(IMessageOld* msg);
+	void _slotPushMsg(QByteArray msg);
+	void _slotGetData(QSharedPointer<IMessageOld> msg_ptr);
 
 
 private:
-    QxtRPCPeer*         _rpc_client;
-    QString             _ip_RPC;
-    quint16             _port_RPC;
-    IMessage*           _command_msg;
-    int                 _id;
-    IRouter*            _router;
-    ISubscriber*        _subscriber;
+	QxtRPCPeer*         _rpc_client;
+	QString             _ip_RPC;
+	quint16             _port_RPC;
+	IMessageOld*        _command_msg;
+	int                 _id;
+	IRouter*            _router;
+	ISubscriber*        _subscriber;
 
-    int                 _type;
+	int                 _type;
 
 private:
 //    int     _init();
 
-    int     _read_settings(QString path_to_ini_file_RPC);
-    void    _form_command(IMessage *msg);
+	int     _read_settings(QString path_to_ini_file_RPC);
+	void    _form_command(IMessageOld *msg);
 
 private slots:
-    void _close();
-    void _slotRCPConnetion();
-    void _slotRPCDisconnection();
-    void _slotErrorRPCConnection(QAbstractSocket::SocketError socketError);
-    void _slotReconnection();
+	void _close();
+	void _slotRCPConnetion();
+	void _slotRPCDisconnection();
+	void _slotErrorRPCConnection(QAbstractSocket::SocketError socketError);
+	void _slotReconnection();
 
 signals:
-    void signalSetCommand(IMessage *msg);
-    void signalPushMsh(QByteArray* data);
-    void signalFinished();
+	void signalSetCommand(IMessageOld *msg);
+	void signalPushMsh(QByteArray* data);
+	void signalFinished();
 
-    void signalSendData(QSharedPointer<IMessage> msg_ptr);
+	void signalSendData(QSharedPointer<IMessageOld> msg_ptr);
 
-    void signalStart();
-    void signalStop();
-    void signalFinishRPC();
+	void signalStart();
+	void signalStop();
+	void signalFinishRPC();
 
-    ///RPC signals
+	///RPC signals
 signals:
-    void signalSetClientId(int id);
-    void signalSetSolver(QByteArray data);
-    void signalSetSolverClear(QByteArray data);
+	void signalSetClientId(int id);
+	void signalSetSolver(QByteArray data);
+	void signalSetSolverClear(QByteArray data);
 
 
-    void signalReconnection();
+	void signalReconnection();
 
 public slots:
-    void slotInit();
-    void slotStart();
-    void slotStop();
-    void slotFinish();
+	void slotInit();
+	void slotStart();
+	void slotStop();
+	void slotFinish();
 
-    ///rpc_server
-    void rpc_slot_server_send_bpla_def(QByteArray ba);
-    void rpc_slot_server_send_bpla_def_auto(QByteArray ba);
+	///rpc_server
+	void rpc_slot_server_send_bpla_def(QByteArray ba);
+	void rpc_slot_server_send_bpla_def_auto(QByteArray ba);
 
-    void rpc_slot_server_atlant_direction(QByteArray ba);
-    void rpc_slot_server_atlant_position(QByteArray ba);
+	void rpc_slot_server_atlant_direction(QByteArray ba);
+	void rpc_slot_server_atlant_position(QByteArray ba);
 
 
 //    void rpc_slot_server_send_bpla_def(QByteArray ba);
