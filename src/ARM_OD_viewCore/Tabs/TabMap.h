@@ -9,6 +9,7 @@
 #include <QGridLayout>
 #include <QHeaderView>
 #include <QThread>
+#include <QHostAddress>
 
 #include <QDockWidget>
 
@@ -36,6 +37,8 @@
 
 #include "../UAV/BLAPerehvatDialog.h"
 
+#define DEFAULT_RPC_PORT		24500
+
 class TabMap: public QWidget, public ISubModule, public ITabMap
 {
     Q_OBJECT
@@ -57,11 +60,11 @@ private:
     TreeView*           _tree_view;
     QDockWidget*        _dock_tree_view;
 
-//    IDBManager*          _db_manager;
+	QString m_rpcHostAddress;
+	quint16 m_rpcHostPort;
 
     TreeModel*          _model;
     TreeModel*          _model_BLA;
-
 
     RPCClient*          _rpc_client1;
 
@@ -76,11 +79,6 @@ private:
 
     BLAWidgetDelegate*          _delegate_BLA;
 
-
-//    BLAPerehvatDialog*          _bla_perehvat;
-
-
-
 public:
     virtual int start();
     virtual int stop();
@@ -93,11 +91,11 @@ public:
 
 private:
     int _init();
+	void readSettings();
 
 public:
     TabsProperty *get_tab_property();
     void set_command(IMessageOld *msg);
-
 
 signals:
     void signalStartRPC();
@@ -109,9 +107,7 @@ signals:
 
 private slots:
     void _slot_get_points_from_rpc(QVector<QPointF> points);
-
     void _slot_tree_bla_double_clicked(QModelIndex index);
-
     void _slot_tree_BLA_Changed(QModelIndex, QModelIndex);
 
 public slots:
