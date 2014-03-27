@@ -11,7 +11,7 @@
 #include "ServiceHandler/ServiceHandler.h"
 
 #include "Tabs/TabManager.h"
-#include "Tabs/Solver/Solver.h"
+#include "Tabs/Solver/SolverController.h"
 
 
 class MainWindowController : public QObject//, public IController<MainWindow>
@@ -27,7 +27,7 @@ private:
 	Pw::Common::ServiceControl::ServiceHandler* m_serverHandler;
 
 	TabManager*  m_tabManager;
-	Solver* m_solver;
+	SolverController* m_solver;
 
 public:
 	explicit MainWindowController(QObject *parent = 0);
