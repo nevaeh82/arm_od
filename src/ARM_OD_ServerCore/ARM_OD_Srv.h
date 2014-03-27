@@ -15,7 +15,6 @@
 #include "Common/Subscriber.h"
 
 #include "TCP/UAV/BLAController.h"
-#include "TCP/UAV/BLASimulator.h"
 
 #include "Common/Simulators/AtlantSimulator.h"
 
@@ -34,38 +33,38 @@ typedef QByteArray               rpc_send_ba_data;
 
 class ARM_OD_Srv : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    ARM_OD_Srv();
-    ~ARM_OD_Srv();
+	ARM_OD_Srv();
+	~ARM_OD_Srv();
 
 public:
 
 private:
-    RPCServer*      _rpc_server;
-    Router*         _router;
-    Subscriber*     _subscriber_up;
-    TCPController*  _tcp_controller;
-    RPCClient_R*    _rpc_client1;
-    NIIPPController*    _niipp1;
-    NIIPPController*    _niipp2;
+	RPCServer*      _rpc_server;
+	Router*         _router;
+	Subscriber*     _subscriber_up;
+	TCPController*  _tcp_controller;
+	RPCClient_R*    _rpc_client1;
+	NIIPPController*    _niipp1;
+	NIIPPController*    _niipp2;
 
-    Ais*             _ais;
+	Ais*             _ais;
 
-    QString         _ip_ktr;
-    quint16         _port_ktr;
+	QString         _ip_ktr;
+	quint16         _port_ktr;
 
 private:
-    void _read_settings();
-    void _read_settingsKTR();
+	void _read_settings();
+	void _read_settingsKTR();
 
 
 signals:
-    void signalStartRPC();
-    void signalStopRPC();
-    void signalFinishRPC();
+	void signalStartRPC();
+	void signalStopRPC();
+	void signalFinishRPC();
 
-    void closeALL();
+	void closeALL();
 
 };
 

@@ -1,5 +1,7 @@
-#include "BLAParser2.h"
+#include <QPointF>
 #include <QDebug>
+
+#include "BLAParser2.h"
 
 BLAParser2::BLAParser2(int id, IRouter *router)
 {

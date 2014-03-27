@@ -78,12 +78,6 @@ ARM_OD_Srv::ARM_OD_Srv()
     emit signalStartRPC();
 
 
-//    BLASimulator* bla_sim = new BLASimulator(_router, 0.3, true);
-//    bla_sim->start();
-
-//    BLASimulator* bpla_sim = new BLASimulator(_router, 0.1, false);
-//    bpla_sim->start();
-
 	_ais = new Ais(_router);
 //    QThread *thread = new QThread;
 

@@ -23,3 +23,7 @@ DEFINES += UNICODE
 DEFINES += _UNICODE
 
 applyReferences()
+
+RESOURCES += \
+	../ARM_OD_viewCore/rc.qrc \
+	../ARM_OD_viewCore/translations.qrc

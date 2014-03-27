@@ -1,5 +1,7 @@
-#include "NIIPPParser.h"
+#include <QPointF>
 #include <QDebug>
+
+#include "NIIPPParser.h"
 
 NIIPPParser::NIIPPParser(int id, int type)
 {
