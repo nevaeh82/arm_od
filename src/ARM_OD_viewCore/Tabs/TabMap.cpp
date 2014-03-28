@@ -1,8 +1,11 @@
 #include "TabMap.h"
+#include "ui_TabMap.h"
 #include <QDebug>
 
-TabMap::TabMap(TabsProperty* prop, IRouter* router, ITabManager* tab_manager, QMap<int, QDockWidget* > *map_niipp, IDBManager* db_bla, IDBManager* db_evil)
+TabMap::TabMap(TabsProperty* prop, IRouter* router, ITabManager* tab_manager, QMap<int, QDockWidget* > *map_niipp, IDBManager* db_bla, IDBManager* db_evil) :
+	_ui(new Ui::TabMap)
 {
+	_ui->setupUi(this);
     _router = router;
     _tab_manager = tab_manager;
 
@@ -170,7 +173,7 @@ int TabMap::createView(QWidget* view)
 //    _hboxlayout->insertWidget(0, _controlPRM, Qt::AlignLeft);
 //    _controlPRM->slotShow();
 
-    _hboxlayout->insertWidget(1, _tab_manager->get_map_controller()->get_widget() , Qt::AlignJustify);
+	_hboxlayout->insertWidget(1, _tab_manager->get_map_controller()->get_widget() , Qt::AlignJustify);
 
 //    }
     return 0;
@@ -247,11 +250,10 @@ int TabMap::createTree()
     _hboxlayout->insertLayout(2, _vboxlayout);
 //    _hboxlayout->insertWidget(2, _tree_view, Qt::AlignRight);
 
-    connect(_tab_manager->get_map_controller()->pb_show_BLA_tree, SIGNAL(clicked()), this, SLOT(slot_show_tree_BLA()));
-    connect(_tab_manager->get_map_controller()->pb_show_BPLA_tree, SIGNAL(clicked()), this, SLOT(slot_show_tree_BPLA()));
-
-    connect(_tab_manager->get_map_controller()->pb_show_NiiPP, SIGNAL(clicked()), this, SLOT(slot_show_niipp()));
-    return 0;
+	connect(_tab_manager->get_map_controller(), SIGNAL(controllerShowBLAtree()), this, SLOT(slot_show_tree_BLA()));
+	connect(_tab_manager->get_map_controller(), SIGNAL(controllerShowBPLAtree()), this, SLOT(slot_show_tree_BPLA()));
+	connect(_tab_manager->get_map_controller(), SIGNAL(controllerShowNIIPP()), this, SLOT(slot_show_niipp()));
+	return 0;
 }
 
 TabsProperty* TabMap::get_tab_property()

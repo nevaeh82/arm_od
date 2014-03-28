@@ -60,12 +60,12 @@ void MainWindowController::init()
 	m_tabManager->createSubModules(tabs_setting_file);
 	m_tabManager->start();
 
-	m_solver = new Solver(701, m_tabManager);
+	m_solver = new SolverController(701, m_tabManager);
 
-	connect(m_view, SIGNAL(openAtlasSignal()), m_tabManager->get_map_controller(), SLOT(open_map_from_Atlas()));
-	connect(m_view, SIGNAL(openMapSignal()), m_tabManager->get_map_controller(), SLOT(open_map_from_local_file()));
+	connect(m_view, SIGNAL(openAtlasSignal()), m_tabManager->get_map_controller(), SLOT(openMapFromAtlas()));
+	connect(m_view, SIGNAL(openMapSignal()), m_tabManager->get_map_controller(), SLOT(openMapFromLocalFile()));
 
-	connect(m_view, SIGNAL(setupKoordinatometriyaSignal()), m_solver, SLOT(slot_show()));
+	connect(m_view, SIGNAL(setupKoordinatometriyaSignal()), m_solver, SLOT(show()));
 
 }
 

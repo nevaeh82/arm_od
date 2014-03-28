@@ -30,11 +30,15 @@
 
 #include "../Common/IRouter.h"
 
-#include "../NIIPP/NiippControl.h"
+#include "../NIIPP/NIIPPController.h"
 
 #include "Tree/BLAWidgetDelegate.h"
 
 #include "../UAV/BLAPerehvatDialog.h"
+
+namespace Ui {
+	class TabMap;
+}
 
 class TabMap: public QWidget, public ISubModule, public ITabMap
 {
@@ -44,6 +48,7 @@ public:
     ~TabMap();
 
 private:
+	Ui::TabMap *_ui;
     int                 _id;
     QString             _name;
     TabsProperty*       _tab_property;

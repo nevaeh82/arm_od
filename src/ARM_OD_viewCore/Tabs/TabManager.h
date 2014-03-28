@@ -27,7 +27,7 @@
 
 #include "../Common/Router.h"
 
-#include "../NIIPP/NIIPPControl.h"
+#include "../NIIPP/NIIPPController.h"
 
 class TabManager: public QObject, public IModuleController, public ITabManager
 {
