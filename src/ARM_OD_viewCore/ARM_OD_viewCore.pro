@@ -83,7 +83,14 @@ HEADERS += \
 	UAV/BLAPerehvatDialog.h \
 	UAV/ZInterception.h \
 	MainWindow.h \
-	MainWindowController.h
+	MainWindowController.h \
+	MapInterface/MapFeatures/AisFeature.h \
+	MapInterface/MapFeatures/NiippFeature.h \
+	MapInterface/MapFeatures/PelengatorFeature.h \
+	MapInterface/MapFeatures/PerehvatFeature.h \
+	MapInterface/MapFeatures/BlaFeature.h \
+	MapInterface/MapFeatures/BplaFeature.h \
+	MapInterface/MapFeatures/StationFeature.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -115,7 +122,14 @@ SOURCES += \
 	UAV/BLAPerehvatDialog.cpp \
 	UAV/ZInterception.cpp \
 	MainWindow.cpp \
-	MainWindowController.cpp
+	MainWindowController.cpp \
+	MapInterface/MapFeatures/AisFeature.cpp \
+	MapInterface/MapFeatures/NiippFeature.cpp \
+	MapInterface/MapFeatures/PelengatorFeature.cpp \
+	MapInterface/MapFeatures/PerehvatFeature.cpp \
+	MapInterface/MapFeatures/BlaFeature.cpp \
+	MapInterface/MapFeatures/BplaFeature.cpp \
+	MapInterface/MapFeatures/StationFeature.cpp
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \
