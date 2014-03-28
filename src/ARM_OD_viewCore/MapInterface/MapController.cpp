@@ -88,9 +88,3 @@ void MapController::appendView(MapWidget *view)
 {
 	m_view = view;
 }
-
-///// get panel widget
-//QWidget *MapController::get_panel_widget()
-//{
-//	return m_view->getPanelWidget();
-//}

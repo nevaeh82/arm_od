@@ -23,12 +23,10 @@ public:
 
 	QWidget* getWidget();
 	PwGisWidget* getPwGis();
-	//QWidget*getPanelWidget();
 
 private:
 	Ui::MapWidget *ui;
 
-	//void mouseMoveEvent(QMouseEvent* event);
 
 signals:
 	void showBLAtree();

@@ -46,7 +46,6 @@ public:
 
 	PwGisWidget *get_pwwidget();
 	QWidget     *get_widget();
-//	QWidget     *get_panel_widget();
 
 	virtual IMapClient  *get_map_client(int id);
 
