@@ -8,10 +8,10 @@ CONFIG += staticlib
 
 include(../../specs/project.pri)
 include(../ARM_OD_Common/reference.pri)
-include(../../specs/protobuf.pri)
-include($$SolutionDir/specs/CISCommonLib.pri )
 include(../../specs/qxt.pri)
 include(../../specs/Solver.pri)
+include(../../specs/protobuf.pri)
+include($$SolutionDir/specs/CISCommonLib.pri )
 include(../../specs/logger.pri)
 
 INCLUDEPATH += $$PWD
@@ -40,10 +40,13 @@ HEADERS += \
     TCP/TcpNIIPPController.h \
     TCP/TcpKTRCoder.h \
     TCP/TcpKTRController.h \
-    TCP/Interfaces/ITcpManager.h \
     TCP/TcpManager.h \
     TCP/TcpAISClient.h \
     TCP/TcpAISCoder.h \
+    TCP/TcpManager.h \
+    TCP/UAV/IBLAController.h \
+    TCP/TcpArmrClientController.h \
+    TCP/TcpArmrClientCoder.h \
     TCP/TcpAISController.h \
     TCP/TcpAISZoneManager.h \
     TCP/TcpAISZoneDefines.h \
@@ -70,5 +73,8 @@ SOURCES += \
     TCP/TcpAISClient.cpp \
     TCP/TcpAISCoder.cpp \
     TCP/TcpAISController.cpp \
+    TCP/UAV/BLASimulator.cpp \
+    TCP/TcpArmrClientController.cpp \
+    TCP/TcpArmrClientCoder.cpp \
     TCP/TcpAISZoneManager.cpp \
     TCP/TcpSettingsManager.cpp

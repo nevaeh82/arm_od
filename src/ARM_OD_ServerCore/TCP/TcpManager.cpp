@@ -33,9 +33,14 @@ void TcpManager::addTcpDevice(const QString& deviceName, const quint32& deviceTy
 			controller = new TcpAISController(deviceName);
 			debug(QString("Created TcpAISController"));
 			break;
+		case DeviceTypes::ARMR_TCP_CLIENT:
+			controller = new TcpArmrClientController(deviceName);
+			debug(QString("Created TcpArmrClientController"));
+			break;
 		default:
 			break;
 	}
+
 
 	/// if something else, create new Tcp%Device%Controller with new name and/or class
 
@@ -55,6 +60,8 @@ void TcpManager::addTcpDevice(const QString& deviceName, const quint32& deviceTy
 	controllerThread->start();
 
 	m_controllersMap.insert(deviceName, controller);
+
+	controller->registerReceiver(this);
 
 	controller->createTcpDeviceCoder();
 	controller->createTcpClient();
@@ -87,6 +94,11 @@ void TcpManager::removeTcpDevice(const QString& deviceName)
 void TcpManager::setRpcServer(IRPC* rpcServer)
 {
 	m_rpcServer = rpcServer;
+}
+
+void TcpManager::setTcpServer(ITcpServer *tcpServer)
+{
+	m_tcpServer = tcpServer;
 }
 
 QObject* TcpManager::asQObject()
@@ -150,6 +162,17 @@ void TcpManager::onMessageReceived(const quint32 deviceType, const QString& devi
 //				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_AIS_DATA, messageData);
 			}
 			break;
+		case DeviceTypes::ARMR_TCP_CLIENT:
+			if (messageType == QString(ARM_R_SERVER_ATLANT_DIRECTION)) {
+				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION, messageData);
+			} else if (messageType == QString(ARM_R_SERVER_ATLANT_POSITION)){
+				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_ATLANT_POSITION, messageData);
+			} else if (messageType == QString(ARM_R_SERVER_BPLA_COORDS)){
+				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_BPLA_POINTS, messageData);
+			} else if (messageType == QString(ARM_R_SERVER_BPLA_COORDS_AUTO)){
+				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO, messageData);
+			}
+			break;
 		default:
 			break;
 	}
@@ -160,10 +183,25 @@ void TcpManager::onMethodCalled(const QString& method, const QVariant& argument)
 	emit onMethodCalledInternalSignal(method,argument);
 }
 
-void TcpManager::onMethodCalledInternalSlot(const QString& method, const QVariant& argument)
+QString TcpManager::getTcpClientName()
 {
+	return ARMR_TCP_CLIENT_NAME;
 }
 
-void TcpManager::setTcpServer(ITcpServer* tcpServer)
+void TcpManager::onMethodCalledInternalSlot(const QString& method, const QVariant& argument)
 {
+	if (method == RPC_SLOT_SET_SOLVER_CLEAR) {
+		BaseTcpDeviceController* controller = m_controllersMap.value(getTcpClientName(), NULL);
+		if (controller == NULL) {
+			return;
+		}
+		controller->sendData(MessageSP(new Message<QByteArray>(TCP_ARMR_SEND_SOLVER_CLEAR, argument.toByteArray())));
+
+	} else if (method == RPC_SLOT_SET_SOLVER_DATA) {
+		BaseTcpDeviceController* controller = m_controllersMap.value(getTcpClientName(), NULL);
+		if (controller == NULL) {
+			return;
+		}
+		controller->sendData(MessageSP(new Message<QByteArray>(TCP_ARMR_SEND_SOLVER_DATA, argument.toByteArray())));
+	}
 }

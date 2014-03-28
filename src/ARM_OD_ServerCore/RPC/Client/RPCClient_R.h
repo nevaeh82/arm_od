@@ -21,65 +21,7 @@
 
 #include "../../Common/IClient.h"
 
-#define RPC_SLOT_SET_CLIENT_ID   "rpc_slot_set_client_id"
-
-/// to solver
-#define RPC_SLOT_SET_DATA_TO_SOLVER                "rpc_slot_set_data_to_solver"
-#define RPC_SLOT_SET_CLEAR_TO_SOLVER               "rpc_slot_set_clear_to_solver"
-
-
-
-///server
-#define RPC_SLOT_SERVER_SEND_BPLA_DEF                 "rpc_slot_server_send_bpla_def"
-#define RPC_SLOT_SERVER_SEND_BPLA_DEF_AUTO            "rpc_slot_server_send_bpla_def_auto"
-
-
-/// NIIPP
-#define RPC_SLOT_SERVER_SEND_NIIP_DATA                "rpc_slot_server_send_NIIPP_data"
-
-
-/// to NIIPP from map
-//#define RPC_SLOT_SET_NIIPP_BPLA                       "rpc_slot_set_niipp_bpla"
-
-///ATLANT
-#define RPC_SLOT_SERVER_ATLANT_DIRECTION            "rpc_slot_server_atlant_direction"
-#define RPC_SLOT_SERVER_ATLANT_POSITION              "rpc_slot_server_atlant_position"
-
-typedef struct A_Dir_Ans_msg
-{
-    //id �������
-    int requestId;
-    //id ���������, ��� ������ �� DirectionFindingRequest ��������� � ���� �������
-    //              ��� ������ �� ScanRequest ����������� ������������
-    int sourceId;
-    //����� �������
-    //DateTime.Utc.Now - ����� � 100������������� ���������� ������� � 1 ������ 1 ����
-    quint64 dateTime;
-
-    //��� �����
-    QString post;
-    double postLatitude;     //GPS Geo Coords
-    double postLongitude;    //GPS Geo Coords
-    double postHeight;       //meters
-
-    //����������� �������
-    double frequency;
-    //������ ����
-    double widht;
-
-    //������
-    double direction;
-    //���� �����
-    double angle;
-    //�������
-    double level;
-    //��������
-    double quality;
-
-    int motionType;
-    double motionConfidence;
-}A_Dir_Ans_msg;
-
+#include "Rpc/RpcDefines.h"
 
 class RPCClient_R : public QObject, public IClient
 {

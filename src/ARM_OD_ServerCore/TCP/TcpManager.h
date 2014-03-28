@@ -10,12 +10,18 @@
 #include <Interfaces/Tcp/ITcpManager.h>
 #include <Logger.h>
 
+#include "Common/Defines.h"#include "Interfaces/Tcp/ITcpManager.h"
+#include "Interfaces/Tcp/ITcpServer.h"
+
 #include "TcpDevicesDefines.h"
 #include "TcpNIIPPController.h"
 #include "TcpKTRController.h"
 #include "TcpAISController.h"
 
+#include "TcpArmrClientController.h"
+
 #include "Rpc/RPCServer.h"
+#include "Rpc/RpcDefines.h"
 
 class TcpManager : public QObject, public ITcpManager, public ITcpListener, public IRpcListener
 {
@@ -25,6 +31,7 @@ private:
 
 	/// TODO
 	IRPC* m_rpcServer;
+	ITcpServer* m_tcpServer;
 
 	QMap< QString, BaseTcpDeviceController* > m_controllersMap;
 	/**
@@ -43,8 +50,8 @@ public:
 	virtual void addTcpDevice(const QString& deviceName, const quint32& deviceType);
 	virtual void removeTcpDevice(const QString& deviceName);
 	virtual void setRpcServer(IRPC* rpcServer);
-	virtual QObject* asQObject();
 	virtual void setTcpServer(ITcpServer* tcpServer);
+	virtual QObject* asQObject();
 
 	// ITcpListener interface
 public:
@@ -53,6 +60,9 @@ public:
 	// IRpcListener interface
 public:
 	virtual void onMethodCalled(const QString& method, const QVariant& argument);
+
+private:
+	QString getTcpClientName();
 
 signals:
 	void threadTerminateSignal();
