@@ -8,7 +8,7 @@
 #include <QMap>
 #include <QTimer>
 #include "IMapClient.h"
-#include "../Tabs/TabsProperty.h"
+#include "Station.h"
 #include <QMutex>
 #include <QMutexLocker>
 #include <stdlib.h>
@@ -68,8 +68,8 @@ class MapClient1 : public IMapClient
 {
     Q_OBJECT
 public:
-    MapClient1(PwGisWidget *pwwidget, TabsProperty *property, IDBManager* db_bla, IDBManager* db_evil);
-    ~MapClient1();
+	MapClient1(PwGisWidget *pwwidget, Station* station, IDBManager* db_bla, IDBManager* db_evil);
+	virtual ~MapClient1();
 
     virtual void set_niipp_controller(INiiPPController *niipp_controller);
 
@@ -180,7 +180,8 @@ private slots:
 private:
     PwGisWidget             *_pwwidget;
     Pw::Gis::IMapBounds     *_mapBounds;
-    TabsProperty            *_property;
+
+	Station*					m_station;
 
     QMap<int, QByteArray>      _map_cur_points;
 
@@ -188,7 +189,6 @@ private:
 
     QPointF                 _point_uvoda_niipp;
 
-private:
     double _main_latitude;
     double _main_longitude;
     QMap<int, PwGisPointList *>  *_last_coord;

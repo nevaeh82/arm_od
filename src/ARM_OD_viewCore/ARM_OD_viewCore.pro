@@ -73,17 +73,27 @@ HEADERS += \
 	Tabs/Tree/ITreeModel.h \
 	Tabs/Tree/TreeItem.h \
 	Tabs/Tree/TreeModel.h \
-	Tabs/Tree/TreeView.h \
 	Tabs/Tree/TreeWidgetDelegate.h \
 	Tabs/ITabManager.h \
 	Tabs/ITabMap.h \
 	Tabs/TabManager.h \
-	Tabs/TabMap.h \
-	Tabs/TabsProperty.h \
 	UAV/BLAPerehvatDialog.h \
 	UAV/ZInterception.h \
 	MainWindow.h \
-	MainWindowController.h
+	MainWindowController.h \
+#    DB/DbController.h \
+#    DB/DbManager.h \
+#    SettingsTree/TreeItem.h \
+#    SettingsTree/TreeModel.h \
+#    SettingsTree/TreeWidgetDelegate.h \
+    Interfaces/IDbChangedListener.h \
+    Interfaces/IDbController.h \
+    Interfaces/IDbManager.h \
+    UiDefines.h \
+    Interfaces/ISettingsChangedListener.h \
+    Tabs/MapTabWidget.h \
+    Station.h \
+    Tabs/MapTabWidgetController.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -107,21 +117,25 @@ SOURCES += \
 	Tabs/Tree/DBManager.cpp \
 	Tabs/Tree/TreeItem.cpp \
 	Tabs/Tree/treemodel.cpp \
-	Tabs/Tree/TreeView.cpp \
 	Tabs/Tree/TreeWidgetDelegate.cpp \
 	Tabs/TabManager.cpp \
-	Tabs/TabMap.cpp \
-	Tabs/TabsProperty.cpp \
 	UAV/BLAPerehvatDialog.cpp \
 	UAV/ZInterception.cpp \
 	MainWindow.cpp \
-	MainWindowController.cpp
+	MainWindowController.cpp \
+#    DB/DbController.cpp \
+#    DB/DbManager.cpp \
+#    SettingsTree/TreeItem.cpp \
+#    SettingsTree/TreeModel.cpp \
+#    SettingsTree/TreeWidgetDelegate.cpp \
+    Tabs/MapTabWidget.cpp \
+    Tabs/MapTabWidgetController.cpp
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \
 	arm_od_view.ui \
-	TabMap.ui \
 	Tabs/Solver/SolverWidget.ui \
 	MapInterface/MapWidget.ui \
-	NIIPP/NiippWidget.ui
+	NIIPP/NiippWidget.ui \
+    MapTabWidget.ui
 

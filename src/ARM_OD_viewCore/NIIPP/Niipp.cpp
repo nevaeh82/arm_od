@@ -7,7 +7,7 @@ const double m_zoneDir[28] = {2.5, 3, 4, 5,
 					   6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20,
 					   22, 26, 29, 33, 37, 41, 47, 52, 57, 62, 68, 72, 76};
 
-Niipp::Niipp(int id, QString name, QPointF latlon, IRouter* router, MapController* mapController, ITabManager* parentTab)
+Niipp::Niipp(int id, QString name, QPointF latlon, MapController* mapController, ITabManager* parentTab)
 	: m_numberCommand("0200")
 	, m_antenaType(0)
 	, m_widthAngle(25)
@@ -17,7 +17,6 @@ Niipp::Niipp(int id, QString name, QPointF latlon, IRouter* router, MapControlle
 	m_name = name;
 	m_latlon = latlon;
 	m_parentTab = parentTab;
-	m_router = router;
 	m_mapController = mapController;
 	m_radiusSector = 0;
 	m_radiusCircle = 0;

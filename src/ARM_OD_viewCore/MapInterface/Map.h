@@ -7,7 +7,7 @@
 
 #include "IMapController.h"
 #include "../Tabs/Tree/IDBManager.h"
-#include "../Tabs/TabsProperty.h"
+#include "Station.h"
 
 #include "MapClient1.h"
 
@@ -19,7 +19,7 @@ public:
 	Map();
 	~Map();
 
-	void init(QMap<int, TabsProperty *> map_settings, IDBManager* db_bla, IDBManager* db_evil, PwGisWidget* pwwidget);
+	void init(QMap<int, Station *> map_settings, IDBManager* db_bla, IDBManager* db_evil, PwGisWidget* pwwidget);
 
 	void setMapManager(Pw::Gis::IMapManager* mapManager);
 	void setProfileManager(Pw::Gis::IProfileManager* profileManager);
@@ -37,7 +37,7 @@ private:
 	Pw::Gis::IProfileManager    *m_profileManager;
 
 	QMap<int, IMapClient *>     m_mapClients;
-	QMap<int, TabsProperty *>   m_mapSettings;
+	QMap<int, Station*>   m_mapSettings;
 
 	QMap<int, QString>          _map_layers;
 	Pw::Gis::ILayerManager      *m_layerManager;

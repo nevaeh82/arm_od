@@ -19,7 +19,7 @@ public:
 	};
 
 public:
-	Niipp(int id, QString name, QPointF latlon, IRouter *router, MapController* mapController, ITabManager* parentTab);
+	Niipp(int id, QString name, QPointF latlon, MapController* mapController, ITabManager* parentTab);
 	~Niipp();
 
 	void create();
@@ -66,7 +66,6 @@ private:
 
 	ITabManager*    m_parentTab;
 	MapController*  m_mapController;
-	IRouter*        m_router;
 };
 
 #endif // NIIPPCONTROLMODEL_H

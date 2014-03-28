@@ -6,7 +6,7 @@
 
 //#include "MainTab.h"
 
-class TabsProperty
+/*class TabsProperty
 {
 public:
     TabsProperty();
@@ -33,6 +33,13 @@ public:
     void set_name(QString name);
     void set_latitude(double lat);
     void set_longitude(double lon);
-};
+};*/
+
+typedef struct Station{
+	int id;
+	QString name;
+	double latitude;
+	double longitude;
+}Station;
 
 #endif // TABSPROPERTY_H

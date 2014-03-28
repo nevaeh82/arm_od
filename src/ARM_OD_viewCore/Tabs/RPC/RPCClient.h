@@ -15,7 +15,7 @@
 #include "../../Common/IMessage.h"
 #include "../../Common/CommandMessage.h"
 
-#include "../TabsProperty.h"
+#include "Station.h"
 #include "../Tree/DBManager.h"
 #include "../ITabMap.h"
 #include "../../MapInterface/IMapController.h"
@@ -136,21 +136,14 @@ typedef struct A_Pos_Ans_msg
     double quality;
 }A_Pos_Ans_msg;
 
-//struct DataFly {
-//    QString height;
-//    QString latitute;
-//    QString longinude;
-//    QString speed;
-//    QString namePlane;
-//    QString course;
-//};
+
 
 class RPCClient : public QObject, public IRPC
 {
     Q_OBJECT
 public:
-    RPCClient(TabsProperty *prop, IDBManager *db_manager, IDBManager *db_manager_target, IMapController* map_controller, ITabMap *parent_tab, ITabManager* tab_manager);
-    ~RPCClient();
+	RPCClient(Station* station, IDBManager *db_manager, IDBManager *db_manager_target, IMapController* map_controller, ITabMap *parent_tab, ITabManager* tab_manager);
+	virtual ~RPCClient();
 
 
 private slots:
@@ -170,7 +163,7 @@ private:
 	IMessageOld*           _command_msg;
     IDBManager*         _db_manager;
     IDBManager*         _db_manager_target;
-    TabsProperty*       _tab_property;
+	Station*				m_station;
     ITabMap*            _parent_tab;
     ITabManager*        _tab_manager;
     IMapController*     _map_controller;

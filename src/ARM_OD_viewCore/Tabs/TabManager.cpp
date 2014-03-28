@@ -5,243 +5,120 @@
 TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
 	QObject(parent)
 {
+	m_currentWidget = NULL;
+
 	m_tabWidget = tabWidget;
 
-    _map_controller = new MapController();
-    _router = new Router();
+	_db_manager_bla = new DBManager(this);
+	_db_manager_evil = new DBManager(this);
 
-
-    _map_niipp = new QMap<int, QDockWidget *>;
-
-    _db_manager_bla = new DBManager(this);
-    _db_manager_evil = new DBManager(this);
-
-
-
-//    this->setGeometry(QRect(10, 10, 300, 250));
-//    _layout = new QVBoxLayout();
-//    _layout->alignment();
-//    this->setLayout(_layout);
-
-//    _model_controller = new Controller();
-
+	connect(this, SIGNAL(currentChanged(int)), this, SLOT(changeTabSlot(int)));
 }
 
 TabManager::~TabManager()
 {
-    disconnect(this, SIGNAL(currentChanged(int)), this, SLOT(_slot_change_tab(int)));
-    if(_map_settings.count() > 0)
-    {
-        QMap<int, TabsProperty *>::iterator it;
-        for(it = _map_settings.begin(); it != _map_settings.end(); ++it)
-        {
-            delete it.value();
-        }
-    }
-    if(_map_tabs.count() > 0)
-    {
-        QMap<int, TabMap *>::iterator its;
-        for(its = _map_tabs.begin(); its != _map_tabs.end(); ++its)
-        {
-            delete its.value();
-        }
-    }
-    if(_map_controller != NULL)
-    {
-        delete _map_controller;
-    }
-
-    if(_router != NULL)
-    {
-        delete _router;
-    }
-
-    delete _map_niipp;
-
-//    delete _db_manager_bla;
-//    delete _db_manager_evil;
 }
 
-MapController *TabManager::get_map_controller()
-{
-    return _map_controller;
-}
-
-void TabManager::set_dbs(IDBManager *db_bla, IDBManager *db_evil)
-{
-}
 
 void TabManager::send_data_niipp_control(int id, QByteArray ba)
 {
-    emit signalSendToNIIPPControl(id, ba);
+	emit signalSendToNIIPPControl(id, ba);
 
 }
 
-int TabManager::start()
-{
-    connect(this, SIGNAL(currentChanged(int)), this, SLOT(_slot_change_tab(int)));
-
-	 _current_tab_widget  = static_cast<TabMap* >(m_tabWidget->currentWidget());
-     _current_tab_widget->start();
-//    _map_settings.value(this->currentIndex());
-    return 0;
-}
-
-int TabManager::stop()
-{
-    return 0;
-}
-
-void TabManager::show()
+void TabManager::start()
 {
 
+	changeTabSlot(m_tabWidget->currentIndex());
+
+
+
+	//	_current_tab_widget  = static_cast<MapTabWidget* >(m_tabWidget->currentWidget());
+	//	_current_tab_widget->start();
 }
 
-void TabManager::hide()
+
+int TabManager::createSubModules(const QString& settingsFile)
 {
+	int count = readSettings(settingsFile);
 
+	foreach (Station* station, m_stationsMap) {
+
+		MapTabWidgetController* tabWidgetController = new MapTabWidgetController(station, m_stationsMap, this, _db_manager_bla, _db_manager_evil);
+		MapTabWidget* tabWidget = new MapTabWidget(m_tabWidget);
+
+		tabWidgetController->appendView(tabWidget);
+
+		connect(this, SIGNAL(signalSendToNIIPPControl(int,QByteArray)), tabWidgetController, SLOT(_slot_send_data_to_niipp_control(int,QByteArray)));
+		connect(this, SIGNAL(openAtlasSignal()), tabWidgetController, SLOT(openAtlasSlot()));
+		connect(this, SIGNAL(openMapSignal()), tabWidgetController, SLOT(openMapSlot()));
+
+		m_tabWidget->addTab(tabWidget, station->name);
+
+		m_tabWidgetsMap.insert(station->name, tabWidgetController);
+	}
+
+	return count;
 }
 
-int TabManager::createSubModules(QString path_to_ini_file)
+
+/// BUG
+void TabManager::send_data(int index, IMessageOld *msg)
 {
+	MapTabWidgetController* controller = m_tabWidgetsMap.value(m_tabWidget->tabText(index), NULL);
 
-    int count = _read_settings(path_to_ini_file);
-    /// create map controller
-    _map_controller->init(_map_settings, _db_manager_bla, _db_manager_evil);
-//    /// create common database manager for spectrum tabs
-//    _db_manager_spectrum = new DBManager(this);
-//    /// create common model for spectrum tabs
-//    QStringList headers;
-//    headers << tr("Название") << tr("Свойство");
-//    _model_spectrum = new TreeModel(headers);
+	if (NULL == controller) {
+		return;
+	}
 
-//    _db_manager_spectrum->set_model(_model_spectrum);
-//    _model_spectrum->set_db(_db_manager_spectrum);
-
-
-    QPointF latlon1;
-    latlon1.setX(42.511183);
-    latlon1.setY(41.6905);
-	NiippController* _niipp1 = new NiippController(100, tr("СПИП ДД-1"), latlon1, _router, _map_controller, this);
-
-    QPointF latlon2;
-    latlon2.setX(42.634183);
-    latlon2.setY(41.912167);
-	NiippController* _niipp2 = new NiippController(101, tr("СПИП ДД-2"), latlon2, _router, _map_controller, this);
-
-    QDockWidget* dock_niipp1 = new QDockWidget(tr("СПИП ДД-1"));
-	dock_niipp1->setWidget(_niipp1->getControlWidget());
-
-    QDockWidget* dock_niipp2 = new QDockWidget(tr("СПИП ДД-2"));
-	dock_niipp2->setWidget(_niipp2->getControlWidget());
-
-
-    _map_niipp->insert(1, dock_niipp1);
-    _map_niipp->insert(2, dock_niipp2);
-
-    connect(this, SIGNAL(signalSendToNIIPPControl(int,QByteArray)), this, SLOT(_slot_send_data_to_niipp_control(int,QByteArray)));
-
-    connect(dock_niipp1, SIGNAL(visibilityChanged(bool)), this, SLOT(_slot_show_niipp1(bool)));
-
-    QMap<int, TabsProperty* >::iterator it;
-    for(it = _map_settings.begin(); it != _map_settings.end(); ++it)
-    {
-        TabMap* tab_sp = new TabMap(it.value(), _router, this, _map_niipp, _db_manager_bla, _db_manager_evil);
-		m_tabWidget->addTab(tab_sp, it.value()->get_name());
-        _map_tabs.insert(it.key(), tab_sp);
-    }
-
-
-
-    return count;
+	controller->set_command(msg);
 }
 
-QString TabManager::getStationName(int id)
-{
-    _mux.lock();
-    TabsProperty *t = _map_settings.value(id);
-    _mux.unlock();
-    return t->get_name();
-}
-
-/// call this method when data in tree has changed
-void TabManager::send_data(int pid, IMessageOld *msg)
-{
-	TabMap* tab_sp = static_cast<TabMap* >(m_tabWidget->widget(pid));
-    tab_sp->set_command(msg);
-}
 
 /// slot tab change
-void TabManager::_slot_change_tab(int index)
+void TabManager::changeTabSlot(int index)
 {
-    _current_tab_widget->stop();
+	MapTabWidgetController* controller = m_tabWidgetsMap.value(m_tabWidget->tabText(index), NULL);
 
-	_current_tab_widget = static_cast<TabMap* >(m_tabWidget->widget(index));
-    _current_tab_widget->start();
-    TabsProperty *prop = _current_tab_widget->get_tab_property();
-//    qDebug() << "cur id = " << prop->get_id();
+	if (NULL == controller) {
+		return;
+	}
 
-    //    _model_spectrum->fill_model(prop->get_id());
+	if  (NULL != m_currentWidget) {
+		m_currentWidget->stop();
+	}
+
+	m_currentWidget = controller;
+	m_currentWidget->start();
 }
 
-void TabManager::_slot_show_niipp1(bool state)
-{
-//    QDockWidget* dock = _map_niipp->value(1);
-//    NIIPPControl *n_control = static_cast<NIIPPControl* >(dock->widget());
-//    if(state == false && n_control->getState())
-//    {
-//        dock->show();
-
-//        dock->setWidget(n_control);
-//        dock->eventFilter()
-
-////        n_control->show();
-    //    }
-}
-
-void TabManager::_slot_send_data_to_niipp_control(int id, QByteArray data)
-{
-	NiippController* niip_contr;
-    switch(id)
-    {
-    case 100:
-		niip_contr = dynamic_cast<NiippController *>(_map_niipp->value(1)->widget());
-		niip_contr->setData(data);
-        break;
-    case 101:
-		niip_contr = dynamic_cast<NiippController *>(_map_niipp->value(2)->widget());
-		niip_contr->setData(data);        break;
-    default:
-        break;
-    }
-}
 
 /// read settings for generated submodules (tabs)
-int TabManager::_read_settings(QString path_to_ini_file)
+int TabManager::readSettings(const QString& settingsFile)
 {
-    int count = 0;
+	int count = 0;
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-    QSettings m_settings(path_to_ini_file, QSettings::IniFormat);
+	QSettings m_settings(settingsFile, QSettings::IniFormat);
 
-    m_settings.setIniCodec(codec);
+	m_settings.setIniCodec(codec);
 
-    QStringList childKeys = m_settings.childGroups();
-    foreach (const QString &childKey, childKeys)
-    {
-        qDebug() << "m_settings = " << childKey.toLatin1();
-        m_settings.beginGroup(childKey);
+	QStringList childKeys = m_settings.childGroups();
+	foreach (const QString &childKey, childKeys)
+	{
+		qDebug() << "m_settings = " << childKey.toLatin1();
+		m_settings.beginGroup(childKey);
 
-        TabsProperty *prop = new TabsProperty();
+		Station* station = new Station();
 
-        prop->set_id(m_settings.value("Id", 0).toInt());
-        prop->set_name(m_settings.value("Name", 0).toString());
-        prop->set_latitude(m_settings.value("Latitude", "0").toDouble());
-        prop->set_longitude(m_settings.value("Longitude", "0").toDouble());
+		station->id = m_settings.value("Id", 0).toInt();
+		station->name =  m_settings.value("Name", tr("Unknown")).toString();
+		station->latitude = m_settings.value("Latitude", "0").toDouble();
+		station->longitude = m_settings.value("Longitude", "0").toDouble();
 
-        _map_settings.insert(m_settings.value("Id", 0).toInt(), prop);
-        m_settings.endGroup();
-        count++;
-    }
+		m_stationsMap.insert(m_settings.value("Id", 0).toInt(), station);
+		m_settings.endGroup();
+		count++;
+	}
 
-    return count;
+	return count;
 }

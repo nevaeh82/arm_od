@@ -79,7 +79,7 @@ QObject* TcpManager::asQObject()
 	return this;
 }
 
-void TcpManager::onMessageReceived(const QString& device, const MessageSP argument)
+void TcpManager::onMessageReceived(const quint32 deviceType, const QString& device, const MessageSP argument)
 {
 	/// TODO : refactor it. It's bad.
 
