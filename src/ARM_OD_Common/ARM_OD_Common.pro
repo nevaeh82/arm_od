@@ -26,4 +26,5 @@ HEADERS += \
     Info/BaseSettings.h \
     Info/NIIPPSettings.h \
     Info/KTRSettings.h \
-    Info/AISSettings.h
+    Info/AISSettings.h \
+    Info/ArmrTcpClientSettings.h

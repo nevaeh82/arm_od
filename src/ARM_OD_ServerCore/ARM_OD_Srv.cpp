@@ -32,8 +32,9 @@ ARM_OD_Srv::ARM_OD_Srv()
 //    QObject::connect(_rpc_server, SIGNAL(finished()), &a, SLOT(quit()));
 //    QObject::connect(&a, SIGNAL(aboutToQuit()), _rpc_server, SLOT(aboutToQuitApp()));
 
-    _rpc_server = new RPCServer(_router);
-    _rpc_server->start();
+	_rpc_server = new RPCServer(this);
+	_rpc_server->setRouter(_router);
+	_rpc_server->start(24550, QHostAddress::Any);
 
 
 //	_read_settingsKTR();
@@ -79,6 +80,7 @@ ARM_OD_Srv::ARM_OD_Srv()
 		m_tcpManager->addTcpDevice(key, mapInfo.value(key));
 	}
 
+	_rpc_server->registerReceiver(m_tcpManager);
 //	m_tcpManager->addTcpDevice(NIIPP_TCP_DEVICE, "192.168.10.50", 6340);
 //	m_tcpManager->addTcpDevice(NIIPP_TCP_DEVICE, "192.168.245.51", 6340);
 //	m_tcpManager->addTcpDevice(KTR_TCP_DEVICE, "192.168.137.98", 64300);
@@ -91,7 +93,7 @@ ARM_OD_Srv::ARM_OD_Srv()
 ARM_OD_Srv::~ARM_OD_Srv()
 {
     signalFinishRPC();
-    delete _rpc_server;
+   // delete _rpc_server;
     delete _router;
 	delete _subscriber_up;
 

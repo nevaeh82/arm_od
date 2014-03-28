@@ -2,41 +2,32 @@
 
 #include <QDebug>
 
-RPCServer::RPCServer(IRouter* router/*, IRPC* r_client*/)
+RPCServer::RPCServer(QObject* parent) :
+	RpcServerBase(parent)
 {
-    _rpc_server = NULL;
-    _router = router;
-    _subscriber = router->get_subscriber();
-//    _r_client = r_client;
-
-//    qRegisterMetaType<QVector<QPointF> >("rpc_send_points_vector");
-//    qRegisterMetaType<QVector<QPointF> >("QVector<QPointF>");
-//    qRegisterMetaTypeStreamOperators<QVector<QPointF> >("QVector<QPointF>");
-//    qRegisterMetaType<quint32>("quint32");
 }
 
 RPCServer::~RPCServer()
 {
 }
 
-int RPCServer::start()
+bool RPCServer::start(quint16 port, QHostAddress address)
 {
-    _rpc_server = new QxtRPCPeer();
-    connect(_rpc_server, SIGNAL(clientConnected(quint64)), this, SLOT(_slotRPCConnetion(quint64)));
-    connect(_rpc_server, SIGNAL(serverError(QAbstractSocket::SocketError)), this, SLOT(_slotErrorRPCConnection(QAbstractSocket::SocketError)));
-    connect(_rpc_server, SIGNAL(clientDisconnected(quint64)), this, SLOT(_slotRPCDisconnected(quint64)));
+	connect(m_serverPeer, SIGNAL(clientConnected(quint64)), this, SLOT(_slotRPCConnetion(quint64)));
+	connect(m_serverPeer, SIGNAL(serverError(QAbstractSocket::SocketError)), this, SLOT(_slotErrorRPCConnection(QAbstractSocket::SocketError)));
+	connect(m_serverPeer, SIGNAL(clientDisconnected(quint64)), this, SLOT(_slotRPCDisconnected(quint64)));
 
+	m_serverPeer->attachSlot(RPC_SLOT_SET_CLIENT_ID, this, SLOT(rpc_slot_set_client_id(quint64,int)));
+	m_serverPeer->attachSlot(RPC_SLOT_SET_NIIPP_BPLA, this, SLOT(rpc_slot_set_niipp_data(quint64,QByteArray)));
+	m_serverPeer->attachSlot(RPC_SLOT_SET_SOLVER_DATA, this, SLOT(rpc_slot_set_solver_data(quint64, QByteArray)));
+	m_serverPeer->attachSlot(RPC_SLOT_SET_SOLVER_CLEAR, this, SLOT(rpc_slot_set_solver_clear(quint64,QByteArray)));
 
-    _rpc_server->attachSlot(RPC_SLOT_SET_CLIENT_ID, this, SLOT(rpc_slot_set_client_id(quint64,int)));
-    _rpc_server->attachSlot(RPC_SLOT_SET_NIIPP_BPLA, this, SLOT(rpc_slot_set_niipp_data(quint64,QByteArray)));
-    _rpc_server->attachSlot(RPC_SLOT_SET_SOLVER_DATA, this, SLOT(rpc_slot_set_solver_data(quint64, QByteArray)));
-	_rpc_server->attachSlot(RPC_SLOT_SET_SOLVER_CLEAR, this, SLOT(rpc_slot_set_solver_clear(quint64,QByteArray)));
+	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCBPLAPoints(QByteArray)), RPC_SLOT_SERVER_SEND_BPLA_POINTS);
+	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCBPLAPointsAuto(QByteArray)), RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO);
+	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCAtlantDirection(QByteArray)), RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION);
+	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCAtlantPosition(QByteArray)), RPC_SLOT_SERVER_SEND_ATLANT_POSITION);
 
-    if(!_rpc_server->listen(QHostAddress::Any, 24550))
-    {
-        qDebug() << "error";
-    }
-    return 0;
+	return RpcServerBase::start(port, address);
 }
 
 /// slot if have some error while connetiting
@@ -114,12 +105,7 @@ void RPCServer::rpc_slot_set_client_id(quint64 client, int id)
     _subscriber->add_subscription(ARM_R_SERVER_ATLANT_DIRECTION, cl);
     _subscriber->add_subscription(ARM_R_SERVER_ATLANT_POSITION, cl);
 
-    _subscriber->add_subscription(AIS_DATA, cl);
-//    _subscriber->add_subscription(FLAKON_FFT, cl);
-//    _subscriber->add_subscription(FLAKON_CORRELATION, cl);
-//    _subscriber->add_subscription(FLAKON_SIGNAL_TYPE, cl);
-    //    _subscriber->add_subscription(PRM_STATUS, cl);
-
+	_subscriber->add_subscription(AIS_DATA, cl);
 }
 
 void RPCServer::rpc_slot_set_niipp_data(quint64 client, QByteArray data)
@@ -136,9 +122,7 @@ void RPCServer::rpc_slot_set_niipp_data(quint64 client, QByteArray data)
 
 void RPCServer::rpc_slot_set_solver_data(quint64 client, QByteArray data)
 {
-
-//    RPCClient_R* client_r = dynamic_cast<RPCClient_R *>(_r_client);
-//    client_r->push_msg(data);
+	/*TODO: REMOVE subscriber usage*/
     QDataStream ds(&data, QIODevice::ReadOnly);
     int id = -1;
     ds >> id;
@@ -148,10 +132,15 @@ void RPCServer::rpc_slot_set_solver_data(quint64 client, QByteArray data)
 
 	QSharedPointer<IMessageOld> msg(new MessageOld(id, SOLVER_SET, ba));
     _subscriber->data_ready(SOLVER_SET, msg);
+
+	foreach (IRpcListener* listener, m_receiversList) {
+		listener->onMethodCalled(RPC_SLOT_SET_SOLVER_DATA, QVariant(data));
+	}
 }
 
 void RPCServer::rpc_slot_set_solver_clear(quint64 client, QByteArray data)
 {
+	/*TODO: REMOVE subscriber usage*/
     QDataStream ds(&data, QIODevice::ReadOnly);
     int id = -1;
     ds >> id;
@@ -162,63 +151,68 @@ void RPCServer::rpc_slot_set_solver_clear(quint64 client, QByteArray data)
 
 	QSharedPointer<IMessageOld> msg(new MessageOld(id, SOLVER_CLEAR, ba));
     _subscriber->data_ready(SOLVER_CLEAR, msg);
-}
 
-int RPCServer::stop()
-{
-    if(_rpc_server != NULL)
-    {
-        delete _rpc_server;
-    }
-    return 0;
+	foreach (IRpcListener* listener, m_receiversList) {
+		listener->onMethodCalled(RPC_SLOT_SET_SOLVER_CLEAR, QVariant(data));
+	}
 }
 
 quint64 RPCServer::get_client_id(IClient *client)
 {
-    return _map_clients.key(client);
+	return _map_clients.key(client);
+}
+
+void RPCServer::setRouter(IRouter* router)
+{
+	_router = router;
+	_subscriber = router->get_subscriber();
+}
+
+void RPCServer::sendDataByRpc(const QString &signalType, const QByteArray &data)
+{
+	if (signalType == RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION) {
+		emit signalSendToRPCAtlantDirection(data);
+	} else if (signalType == RPC_SLOT_SERVER_SEND_ATLANT_POSITION) {
+		emit signalSendToRPCAtlantPosition(data);
+	} else if (signalType == RPC_SLOT_SERVER_SEND_BPLA_POINTS) {
+		emit signalSendToRPCBPLAPoints(data);
+	} else if (signalType == RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO) {
+		emit signalSendToRPCBPLAPointsAuto(data);
+	}
 }
 
 ///// send bpla coords
 void RPCServer::rpc_slot_send_bla_points(quint64 client, int id, rpc_QPointF points, double alt, double speed, double course, int state)
 {
-    _rpc_server->call(client, RPC_SLOT_SERVER_SEND_BLA_POINTS, QVariant::fromValue(id), QVariant::fromValue(points), QVariant::fromValue(alt), QVariant::fromValue(speed), QVariant::fromValue(course), QVariant::fromValue(state));
+	m_serverPeer->call(client, RPC_SLOT_SERVER_SEND_BLA_POINTS, QVariant::fromValue(id), QVariant::fromValue(points), QVariant::fromValue(alt), QVariant::fromValue(speed), QVariant::fromValue(course), QVariant::fromValue(state));
 }
 
 void RPCServer::rpc_slot_send_ais_data(quint64 client, QByteArray *data)
 {
-    _rpc_server->call(client, RPC_SLOT_SERVER_SEND_AIS_DATA, QVariant::fromValue(*data));
+	m_serverPeer->call(client, RPC_SLOT_SERVER_SEND_AIS_DATA, QVariant::fromValue(*data));
 }
 
 void RPCServer::rpc_slot_send_bpla_points(quint64 client, QByteArray* data)
 {
-    _rpc_server->call(client, RPC_SLOT_SERVER_SEND_BPLA_POINTS, QVariant::fromValue(*data));
+	m_serverPeer->call(client, RPC_SLOT_SERVER_SEND_BPLA_POINTS, QVariant::fromValue(*data));
 }
 
 void RPCServer::rpc_slot_send_bpla_points_auto(quint64 client, QByteArray *data)
 {
-    _rpc_server->call(client, RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO, QVariant::fromValue(*data));
+	m_serverPeer->call(client, RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO, QVariant::fromValue(*data));
 }
 
 void RPCServer::rpc_slot_send_atlant_direction(quint64 client, QByteArray *data)
 {
-    _rpc_server->call(client, RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION, QVariant::fromValue(*data));
+	m_serverPeer->call(client, RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION, QVariant::fromValue(*data));
 }
 
 void RPCServer::rpc_slot_send_atlant_position(quint64 client, QByteArray *data)
 {
-    _rpc_server->call(client, RPC_SLOT_SERVER_SEND_ATLANT_POSITION, QVariant::fromValue(*data));
+	m_serverPeer->call(client, RPC_SLOT_SERVER_SEND_ATLANT_POSITION, QVariant::fromValue(*data));
 }
 
 void RPCServer::rpc_slot_send_NIIPP_data(quint64 client, QByteArray *data)
 {
-    _rpc_server->call(client, RPC_SLOT_SERVER_SEND_NIIPP_DATA, QVariant::fromValue(*data));
-}
-
-//void RPCServer::rpc_slot_send_bla_point(quint64 client, int id, rpc_QPointF point, double alt)
-//{
-//    _rpc_server->call(client, RPC_SLOT_SERVER_SEND_BLA_POINTS, QVariant::fromValue(id), QVariant::fromValue(point), QVariant::fromValue(alt));
-//}b
-
-void RPCServer::aboutToQuitApp()
-{
+	m_serverPeer->call(client, RPC_SLOT_SERVER_SEND_NIIPP_DATA, QVariant::fromValue(*data));
 }

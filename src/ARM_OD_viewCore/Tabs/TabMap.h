@@ -9,6 +9,7 @@
 #include <QGridLayout>
 #include <QHeaderView>
 #include <QThread>
+#include <QSettings>
 
 #include <QDockWidget>
 
@@ -35,6 +36,8 @@
 #include "Tree/BLAWidgetDelegate.h"
 
 #include "../UAV/BLAPerehvatDialog.h"
+
+#define DEFAULT_RPC_PORT		24500
 
 namespace Ui {
 	class TabMap;
@@ -82,6 +85,8 @@ private:
     BLAWidgetDelegate*          _delegate_BLA;
 
 
+	QString m_rpcHostAddress;
+	int m_rpcHostPort;
 //    BLAPerehvatDialog*          _bla_perehvat;
 
 
@@ -98,6 +103,7 @@ public:
 
 private:
     int _init();
+	void readSettings();
 
 public:
     TabsProperty *get_tab_property();

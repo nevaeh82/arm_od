@@ -8,6 +8,7 @@ enum BaseSettingsType
 	TypeNIIPP = 1,
 	TypeKTR = 2,
 	TypeAIS = 3,
+	TypeArmrTcpClient = 4,
 	typeUnknown = 0
 };
 

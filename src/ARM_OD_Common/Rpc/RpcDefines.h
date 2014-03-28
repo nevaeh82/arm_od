@@ -45,6 +45,34 @@
 #define RPC_SLOT_SET_DATA_TO_SOLVER                "rpc_slot_set_data_to_solver"
 #define RPC_SLOT_SET_CLEAR_TO_SOLVER               "rpc_slot_set_clear_to_solver"
 
+#define RPC_SLOT_SET_CLIENT_ID   "rpc_slot_set_client_id"
+
+///server
+#define RPC_SLOT_SERVER_SEND_BLA_POINTS               "rpc_slot_server_send_bla_points"
+
+/// AIS
+#define RPC_SLOT_SERVER_SEND_AIS_DATA                 "rpc_slot_server_send_ais_data"
+
+/// from ARM_R
+#define RPC_SLOT_SERVER_SEND_BPLA_POINTS              "rpc_slot_server_send_bpla_point_from_arm_r"
+#define RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO         "rpc_slot_server_send_bpla_point_from_arm_r_auto"
+
+/// NIIPP
+#define RPC_SLOT_SERVER_SEND_NIIPP_DATA                "rpc_slot_server_send_NIIPP_data"
+
+/// to NIIPP
+#define RPC_SLOT_SET_NIIPP_BPLA                         "rpc_slot_set_niipp_data"
+
+/// to SOLVER
+#define RPC_SLOT_SET_SOLVER_DATA    "rpc_slot_set_solver_data"
+#define RPC_SLOT_SET_SOLVER_CLEAR   "rpc_slot_set_solver_clear"
+
+/// from ARM_R Atlant direction
+#define RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION           "rpc_slot_server_send_atlant_direction"
+#define RPC_SLOT_SERVER_SEND_ATLANT_POSITION            "rpc_slot_server_send_atlant_position"
+
+///PRM to RPC client
+//#define RPC_SLOT_SERVER_PRM_STATUS                   "rpc_slot_server_prm_status"
 #include <QObject>
 
 typedef struct A_Dir_Ans_msg
