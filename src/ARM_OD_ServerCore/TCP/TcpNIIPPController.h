@@ -3,12 +3,20 @@
 
 #include <Tcp/BaseTcpDeviceController.h>
 
+#include <QSettings>
+#include <QDataStream>
+
 #include "TcpDevicesDefines.h"
 #include "TcpNIIPPCoder.h"
+#include "Info/BaseSettings.h"
+#include "Info/NIIPPSettings.h"
 
 class TcpNIIPPController : public BaseTcpDeviceController
 {
 	Q_OBJECT
+
+private:
+	NIIPPSettings m_NIIPPSettingStruct;
 
 public:
 	explicit TcpNIIPPController(QObject* parent = NULL);
@@ -18,6 +26,8 @@ public:
 	// ITcpDeviceController interface
 public:
 	virtual void createTcpDeviceCoder();
+	virtual bool init();
+	virtual QByteArray getFullInfo();
 
 signals:
 	void createTcpNIIPPCoderInternalSignal();

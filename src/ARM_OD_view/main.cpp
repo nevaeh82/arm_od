@@ -10,15 +10,15 @@
 #include "MainWindow.h"
 #include "MainWindowController.h"
 
-#define PWLOGGERINIT_AGENTCONFNAME ("ARM_OD_view.log4qt")
+#include <Logger.h>
 
 typedef QVector<QPointF>         rpc_send_points_vector;
 
 int main(int argc, char *argv[])
 {
-	Pw::Logger::PwLoggerFactory::Instance()->Configure(PWLOGGERINIT_AGENTCONFNAME);
 
     QApplication a(argc, argv);
+	Logger::setupLogger("./logs/ArmOD.log");
 
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 	QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
