@@ -10,7 +10,8 @@
 #include <Interfaces/Tcp/ITcpManager.h>
 #include <Logger.h>
 
-#include "Common/Defines.h"#include "Interfaces/Tcp/ITcpManager.h"
+#include "Common/Defines.h"
+#include "Interfaces/Tcp/ITcpManager.h"
 #include "Interfaces/Tcp/ITcpServer.h"
 
 #include "TcpDevicesDefines.h"
