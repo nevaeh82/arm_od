@@ -8,7 +8,7 @@ NiippController::NiippController(int id, QString name, QPointF latlon, IRouter *
 {
 
 	connect(this, SIGNAL(angleChanged(double)), this, SLOT(changeAngel(double)));
-	map_controller->get_map_client(1)->set_niipp_controller(this);
+	map_controller->get_map_client(1)->setNiippController(this);
 	m_controlModel->create();
 
 	connect(m_controlView, SIGNAL(complexEnabled(bool)), this, SLOT(enableComplex(bool)));

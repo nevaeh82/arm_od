@@ -1,4 +1,4 @@
-#include "ZInterception.h"
+﻿#include "ZInterception.h"
 
 ZInterception::ZInterception(IMapClient* client)
 {
@@ -126,7 +126,7 @@ void ZInterception::mainProcessing()
             decartToGeogr(aTempInterceptionCoord, aIntcCoords, mCoordCurrentAim);
 
 //            emit signal_sendInterceptionPoint(aIntcCoords, aCurrentHgtInt, aRadius, i, aCurrentAngle, mMaxSpd);
-            _client->perehvat_point(_bla, _bpla, aIntcCoords, aCurrentHgtInt, aRadius, i, aCurrentAngle, mMaxSpd);
+            _client->addPerehvatPoint(_bla, _bpla, aIntcCoords, aCurrentHgtInt, aRadius, i, aCurrentAngle, mMaxSpd);
             //РџСЂРёСЃРІРѕРµРЅРёРµ РІСЂРµРјРµРЅРё РґР»СЏ РІС‹С…РѕРґР° РёР· С†РёРєР»Р°
             i=aAllTime+10;
         }

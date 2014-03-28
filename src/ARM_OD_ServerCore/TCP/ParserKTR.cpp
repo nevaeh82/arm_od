@@ -79,7 +79,7 @@ void ParserKTR::parsing(QByteArray data)
     IMapClient *m_client = _router->get_map_controller()->get_map_client(1);
     if(m_client)
     {
-        m_client->slot_add_BLA(_id, point, _altitude);
+        m_client->addBLA(_id, point, _altitude);
     }
 }
 

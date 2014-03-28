@@ -1,4 +1,4 @@
-#include "BLAPerehvatDialog.h"
+﻿#include "BLAPerehvatDialog.h"
 #include "ui_blaperehvatdialog.h"
 
 BLAPerehvatDialog::BLAPerehvatDialog(IMapClient* map_client) :
@@ -105,7 +105,7 @@ void BLAPerehvatDialog::_slot_item_changed(QTreeWidgetItem *item, int id)
         if(id_in_tree != 0)
         {
             _db_bla->delete_bla_property(_id, id_in_tree);
-            _map_client->remove_perehvat(_id, id_in_tree);
+            _map_client->removePerehvat(_id, id_in_tree);
         }
 
 //        qDebug() << g->value("value");
@@ -134,7 +134,7 @@ void BLAPerehvatDialog::_slot_item_changed(QTreeWidgetItem *item, int id)
         data->insert("state", QVariant::fromValue(1));
 
         _db_bla->set_property(0, data);
-        _map_client->add_perehvat(_id, id_bpla);
+        _map_client->addPerehvat(_id, id_bpla);
     }
 
 

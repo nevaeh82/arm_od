@@ -1,4 +1,4 @@
-#include "RPCClient.h"
+﻿#include "RPCClient.h"
 
 #include <QDebug>
 
@@ -275,7 +275,7 @@ void RPCClient::rpc_send_bla_points(int id, QPointF point, double alt, double sp
     ds << course;
     ds << state;
 
-    _map_controller->get_map_client(1)->slot_add_BLA(id, ddd);
+    _map_controller->get_map_client(1)->addBLA(id, ddd);
     QMap<QString, QVariant>* rec = new QMap<QString, QVariant>;
 
     rec->insert("id", QVariant::fromValue(id));
@@ -387,7 +387,7 @@ void RPCClient::rpc_slot_server_send_ais_data(QByteArray data)
 //    rpc_data_fly vec;
     ds >> map1;
 
-    _map_controller->get_map_client(1)->slot_add_ais(map1);
+    _map_controller->get_map_client(1)->addAis(map1);
 
 }
 
@@ -476,12 +476,12 @@ void RPCClient::rpc_send_niipp_data(QByteArray data)
 
     if(mode == 01)
     {
-        _map_controller->get_map_client(1)->slot_niipp_power_cicle(id, m_zone[zone], ba);
+        _map_controller->get_map_client(1)->updateNiippPowerCicle(id, m_zone[zone], ba);
     }
 
     if(mode == 10)
     {
-        _map_controller->get_map_client(1)->slot_update_sector(id, m_zoneDir[zone], course, NULL);
+        _map_controller->get_map_client(1)->updateNiippPowerSector(id, m_zoneDir[zone], course, NULL);
     }
 
         qDebug() << "MMMMMMMMMMMMMMMMMMMMMMMMMMMMM = " << mode << course << zone;
@@ -527,7 +527,7 @@ void RPCClient::rpc_slot_server_send_atlant_direction(QByteArray data)
 
 
 
-    _map_controller->get_map_client(1)->slot_peleng(msg.sourceId, id_post, msg.postLatitude, msg.postLongitude, msg.direction);
+    _map_controller->get_map_client(1)->updatePeleng(msg.sourceId, id_post, msg.postLatitude, msg.postLongitude, msg.direction);
 
 }
 
@@ -560,7 +560,7 @@ void RPCClient::rpc_slot_server_send_atlant_position(QByteArray data)
 
     qDebug() << "ID = " << _map_peleng_evil_ids.size() << _peleng_evil_ids << _map_peleng_evil_ids.value(msg.sourceId);
 
-    _map_controller->get_map_client(1)->slot_add_evil(_map_peleng_evil_ids.value(msg.sourceId), ba1);
+    _map_controller->get_map_client(1)->addEvil(_map_peleng_evil_ids.value(msg.sourceId), ba1);
 
 }
 
@@ -603,7 +603,7 @@ void RPCClient::_send_bpla_points(QByteArray data)
     {
         _rds_evil_ids = 50;
     }
-    _map_controller->get_map_client(1)->slot_add_evil(_rds_evil_ids, data);
+    _map_controller->get_map_client(1)->addEvil(_rds_evil_ids, data);
 
     QMap<QString, QVariant>* rec = new QMap<QString, QVariant>;
 
