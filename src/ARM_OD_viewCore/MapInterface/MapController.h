@@ -40,22 +40,22 @@ class MapController : public QObject, public IMapController
 public:
 	MapController();
 	~MapController();
-	void init(QMap<int, TabsProperty *> map_settings, IDBManager* db_bla, IDBManager* db_evil);
+	void init( QMap<int, TabsProperty *> map_settings, IDBManager* db_bla, IDBManager* db_evil );
 
-	PwGisWidget *get_pwwidget();
-	QWidget     *get_widget();
-	QWidget     *get_panel_widget();
+	PwGisWidget* get_pwwidget();
+	QWidget* get_widget();
+	QWidget* get_panel_widget();
 
-	virtual IMapClient  *get_map_client(int id);
+	virtual IMapClient* get_map_client( int id );
 
-	void addMarkerLayer(int id, QString name);
+	void addMarkerLayer( int id, QString name );
 
 private:
 	MapControllerWidget* m_controllerWidget;
-	Map*                 m_mapModel;
+	Map* m_mapModel;
 
 private:
-	bool eventFilter(QObject *obj, QEvent *e);
+	bool eventFilter( QObject* obj, QEvent* e );
 
 public slots:
 	void openMapFromAtlas();
@@ -63,14 +63,13 @@ public slots:
 	void onMapReady();
 
 private slots:
-	void _slot_station_visible(bool state);
+	void _slot_station_visible( bool state );
 
 signals:
 	void mapOpened();
 	void controllerShowBLAtree();
 	void controllerShowBPLAtree();
 	void controllerShowNIIPP();
-
 };
 
 #endif // MAPCONTROLLER_H

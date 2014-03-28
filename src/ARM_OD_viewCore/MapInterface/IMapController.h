@@ -3,11 +3,12 @@
 
 #include "IMapClient.h"
 
+
 class IMapController
 {
 public:
-    virtual ~IMapController(){};
-    virtual IMapClient  *get_map_client(int id) = 0;
+	virtual ~IMapController(){};
+	virtual IMapClient  *get_map_client( int id ) = 0;
 };
 
 #endif // IMAPCONTROLLER_H

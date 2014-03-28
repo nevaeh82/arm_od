@@ -18,17 +18,17 @@ class MapControllerWidget : public QWidget
 	Q_OBJECT
 
 public:
-	explicit MapControllerWidget(MapController *controller, QWidget *parent = 0);
+	explicit MapControllerWidget( MapController* controller, QWidget* parent = 0 );
 	~MapControllerWidget();
 
 	QWidget* getWidget();
 	PwGisWidget* getPwGis();
 	QWidget*getPanelWidget();
 private:
-	Ui::MapControllerWidget *ui;
+	Ui::MapControllerWidget* ui;
 
-	MapController *_controller;
-	void mouseMoveEvent(QMouseEvent* event);
+	MapController* _controller;
+	void mouseMoveEvent( QMouseEvent* event );
 
 signals:
 	void showBLAtree();

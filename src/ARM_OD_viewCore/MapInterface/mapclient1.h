@@ -47,228 +47,142 @@
 
 #include "../UAV/ZInterception.h"
 
-//typedef struct tt
-//{
-//    QPointF *point;
-//    double alt;
-//    double speed;
-//    double course;
-//    int state;
-//}tt;
+#include "MapFeatures/AisFeature.h"
+#include "MapFeatures/NiippFeature.h"
+#include "MapFeatures/PelengatorFeature.h"
+#include "MapFeatures/PerehvatFeature.h"
+#include "MapFeatures/BlaFeature.h"
+#include "MapFeatures/BplaFeature.h"
+#include "MapFeatures/StationFeature.h"
 
-//typedef struct niipp_point
-//{
-//    QString id;
-//    QString caption;
-//    PwGisLonLat pwll;
-
-//}niipp_point;
 
 class MapClient1 : public IMapClient
 {
-    Q_OBJECT
+	Q_OBJECT
+
 public:
-    MapClient1(PwGisWidget *pwwidget, TabsProperty *property, IDBManager* db_bla, IDBManager* db_evil);
-    ~MapClient1();
+	MapClient1( PwGisWidget* pwwidget, TabsProperty* property,
+		IDBManager* dbBla, IDBManager* dbEvil );
+	~MapClient1();
 
-    virtual void set_niipp_controller(INiiPPController *niipp_controller);
+	virtual void setNiippController( INiiPPController* niippController );
 
-    virtual void show_layer(int index, bool state);
+	virtual void showLayer( int index, bool state );
 
-    virtual void add_perehvat(int bla_id, int bpla_id);
-    virtual void remove_perehvat(int bla_id, int bpla_id);
+	virtual void addPerehvat( int blaId, int bplaId );
+	virtual void removePerehvat( int blaId, int bplaId );
 
-    virtual void perehvat_point(int bla_id, int bpla_id, QPointF aCoord, float aHgt, float aRadius, int aTime, float aIntcCourse, float aIntcSpeed);
+	virtual void addPerehvatPoint( int blaId, int bplaId, QPointF coord,
+		float hgt, float radius, int time, float intcCourse, float intcSpeed );
 
-    virtual void slot_remove_point_uvoda();
-
-
-
-private:
-    /// layers
-
-//    PwGisStyle*                 _pelengStyle;
-
-    IDBManager*         _db_bla;
-    IDBManager*         _db_evil;
-
+	virtual void removePointUvoda();
 
 private:
-    void _add_niipp_layer(QString id);
+	IDBManager* m_dbBla;
+	IDBManager* m_dbEvil;
 
-    int _niipp_layer_id;
-    QMap<int, IMapObjectInfo*>      _map_objects;
+	int m_niippLayerId;
+	QMap<int, IMapObjectInfo*> m_mapObjects;
 
-    Sector*                         _peleng;
-    Sector*                         _sector;
-    Circle*                         _cicle;
+	ZInterception* m_perehvat;
 
-    QMap<int, Sector* >             _map_sector;
-    QMap<int, Circle* >             _map_circle;
+	QMap<int, INiiPPController* > m_mapNiippController;
 
-//    QMap<int, int>              _map_peleng_id;
-    QMap<QString, PwGisLonLat *>         _map_peleng;
-    QMap<QString, PwGisLonLat *>         _map_niip_sector;
-    QMap<QString, PwGisLonLat *>         _map_niip_circle;
+	PwGisWidget* m_pwwidget;
+	Pw::Gis::IMapBounds* m_mapBounds;
+	TabsProperty* m_property;
 
-	QMap<int, QVector<QString> >		_map_ais;
+	QMap<int, QByteArray> m_mapCurPoints;
 
+	QMap<int, int> m_mapBattle;
 
+	QPointF m_pointUvodaNiipp;
 
-    QMap<int, int>                      _map_peleng_point;
+	double m_mainLatitude;
+	double m_mainLongitude;
+	QMap< int, PwGisPointList* > *m_lastCoord;
 
-    ZInterception*                      _perehvat;
+	QMutex m_mux;
 
+	QTimer* m_uiTimer;
+	QTimer* m_uiTimerSlice;
+	QTimer* m_updateTimer;
+	QTimer* m_TimerSimulator;
 
-    QMap<int, INiiPPController* >               _map_niipp_Controller;
-//    bool                        _ready;
+	QMap<int, QString> m_mapLayers;
+	Pw::Gis::ILayerManager* m_layerManager;
+	int m_layersCounter;
 
-    double  _bis123;
+	double m_circleRadius;
+	bool m_circleChanged;
+	bool m_sliceChanged;
 
+	QString m_niippLayerName;
+
+	AisFeature* m_AisFeature;
+	NiippFeature* m_NiippFeature;
+	PelengatorFeature* m_PelengatorFeature;
+	PerehvatFeature* m_PerehvatFeature;
+	BlaFeature* m_BlaFeature;
+	BplaFeature* m_BplaFeature;
+	StationFeature* m_StationFeature;
+
+	void addNiippLayer( QString id );
+	void addMarkerLayer( int id, QString name );
+	void removeAis();
 
 public slots:
-    virtual void set_Point();
-    virtual void center_map();
-    virtual void justify_map();
+	virtual void setPoint();
+	virtual void centerMap();
+	virtual void justifyMap();
 
+	void addBLA( int id, QByteArray data );
+	void addEvil( int id, QByteArray data );
+	void addAis( QMap<int, QVector<QString> > vec );
 
+	virtual void updateNiippPowerSector( int id, double radius, double bis, QByteArray ba );
+	void updateNiippPowerCicle( int id, double radius, QByteArray ba );
 
+	virtual void updatePeleng( int id, int idPost, double lat, double lon, double direction );
 
-//    void slotAddBLA_evil(int id_BE, QPointF point);
-    void slot_add_BLA(int id, QByteArray data);
-    void slot_add_evil(int id, QByteArray data);
-
-    void slot_add_ais(QMap<int, QVector<QString> > vec);
-
-    void slot_niipp_power_cicle(int id, double radius, QByteArray ba);
-
-
-//    virtual void slot_create_niipp_sector(int id, QString name, double lon, double lat, double angel);
-    virtual void slot_update_sector(int id, double radius, double bis, QByteArray ba);
-
-    virtual void slot_peleng(int id, int id_post, double lat, double lon, double direction);
-//    virtual void slot_peleng_evil(int id, double lat, double lon);
 private slots:
-    void _slot_set_point_bla(int id, QPointF point, double alt, double speed, double course, int state);
-    void _slot_set_point_evil(int id, QByteArray data);
-    void _slot_set_point_evil_peleng(int id, QPointF point);
+	void setPointBla( int id, QPointF point, double alt, double speed, double course, int state );
+	void setPointEvil( int id, QByteArray data );
+	void setPointEvilPeleng( int id, QPointF point );
 
-    void _slot_set_ais_data(QMap<int, QVector<QString> > vec);
+	void setCurrentPoint( int id, QByteArray data );
+	void setAisData( QMap<int, QVector<QString> > vec );
+	void updatePoints();
+	void updateSimulator();
+	void updatePelengData( int id, int postId, double lat, double lon, double direction );
+	void updateSector( int id, double radius, double bis, QByteArray ba );
+	void updateCicle( int id, double radius, QByteArray ba );
 
-    void _slot_set_cur_point(int id, QByteArray data);
-    void _slot_update_points();
-    void _slot_simulator();
+	void addPerehvatData( int bla_id, int bpla_id );
+	void removePerehvatData( int bla_id, int bpla_id );
+	void addPerehvatPointData( int blaId, int bplaId, QPointF coord,
+		float hgt, float radius, int time, float intcCourse, float intcSpeed );
 
-    void _slot_update_peleng(int id, int post_id, double lat, double lon, double direction);
-//    void _slot_update_peleng_evil(int id, double lat, double lon);
+	void updateCircle();
+	void updateSlice();
+	void onMapReady();
 
-
-    void _slot_update_sector(int id, double radius, double bis, QByteArray ba);
-    void _slot_update_cicle(int id, double radius, QByteArray ba);
-
-    void _slot_add_perehvat(int bla_id, int bpla_id);
-    void _slot_remove_perehvat(int bla_id, int bpla_id);
-
-    void _slot_perehvat_point(int bla_id, int bpla_id, QPointF aCoord, float aHgt, float aRadius, int aTime, float aIntcCourse, float aIntcSpeed);
-
-
-    void updateCircle();
-    void updateSlice();
-    void onMapReady();
-
-    void _slot_mouse_clicked(double, double);
-private:
-    PwGisWidget             *_pwwidget;
-    Pw::Gis::IMapBounds     *_mapBounds;
-    TabsProperty            *_property;
-
-    QMap<int, QByteArray>      _map_cur_points;
-
-    QMap<int, int>          _map_battle;
-
-    QPointF                 _point_uvoda_niipp;
-
-private:
-    double _main_latitude;
-    double _main_longitude;
-    QMap<int, PwGisPointList *>  *_last_coord;
-//    PwGisPointList *p;
-//    QVector<PwGisLonLat> vec;
-
-//    double lat1;
-//    double lon1;
-    QMap<int, QVector<int> *>              _map_path;
-    QMap<int, QVector<QPointF> *>          _map_path_line;
-    int                                     _line_id;
-//    bool            _temp;
-
-
-    QMutex _mux;
-
-    QTimer                                  *_uiTimer;
-    QTimer                                  *_uiTimerslice;
-    QTimer                                  *_update_timer;
-    QTimer                                  *_timer_simulator;
-
-
-
-    QMap<int, QString>          _map_layers;
-    Pw::Gis::ILayerManager      *_layerManager;
-    int                         _layersCounter;
-
-
-
-    int _rad;
-
-    double _circleRadius;
-    bool   _circleChanged;
-    bool   _circleExists;
-
-    double _sliceRadius;
-    bool   _sliceChanged;
-    bool   _sliceExists;
-
-//    double _radius;
-    double _bis;
-
-
-    QString                                 _niipp_layer_name;
+	void mapMouseClicked( double, double );
 
 signals:
-    void signalNewBPLA(QString bpla);
-    void signal_new_coord_bla(int id, QByteArray data);
-    void signal_new_coord_evil(int id, QByteArray data);
-    void signalUpdateTumeOut();
-    void signalTimeoutSimulator();
+	void signalAddBla( int id, QByteArray data );
+	void signalAddEvil( int id, QByteArray data );
+	void signalAddAis( QMap<int, QVector<QString> > vec );
 
-    void signal_new_ais_data(QMap<int, QVector<QString> > vec);
+	void signalUpdateCicle( int, double, QByteArray );
+	void signalUpdateSector( int,double,double, QByteArray );
+	void signalUpdatePeleng( int id, int post_id, double lat, double lon, double direction );
 
-    void signalUpdateCicle(int, double, QByteArray);
-    void signalUpdateSector(int,double,double, QByteArray);
+	void signalAddPerehvat( int blaId, int bplaId );
+	void signalRemovePerehvat( int bla_id, int bpla_id );
 
-
-    void signal_peleng(int id, int post_id, double lat, double lon, double direction);
-    void signal_peleng_evil(int id, double lat, double lon);
-
-    void signalAddPerehvat(int bla_id, int bpla_id);
-    void signalRemovePerehvat(int bla_id, int bpla_id);
-
-    void signalPerehvatPoint(int bla_id, int bpla_id, QPointF aCoord, float aHgt, float aRadius, int aTime, float aIntcCourse, float aIntcSpeed);
-
-
-
-private:
-    int _read_settings(QString path_to_ini_file);
-
-    int _read_settings1(QString path_to_ini_file);
-
-
-    void _addMarkerLayer(int id, QString name);
-
-	void _remove_ais();
-
-
-
+	void signalAddPerehvatPoint( int bla_id, int bpla_id, QPointF aCoord,
+		float aHgt, float aRadius, int aTime, float aIntcCourse, float aIntcSpeed );
 };
 
 #endif // MAPCLIENT1_H
