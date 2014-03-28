@@ -95,7 +95,7 @@ private:
 
 //    TCPController   _tcp_controller;
 
-	MapController   *_map_contr;
+    MapController   *_map_contr;
 
     ControlPanelWidgets *_control_widget;
 

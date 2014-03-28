@@ -29,10 +29,13 @@ MessageSP TcpKTRCoder::encode(const QByteArray& data)
 	QString inputDataAsString(data.constData());
 
 	QStringList dl1 = inputDataAsString.split("$KTPGA,");
-	QString ddt = dl1.at(1);
-	if (ddt.contains("END")) {
-		debug("CASE ONE");
-		return parseLocationFromKTR(data);
+	if (dl1.size() > 1) {
+
+		QString ddt = dl1.at(1);
+		if (ddt.contains("END")) {
+			debug("CASE ONE");
+			return parseLocationFromKTR(data);
+		}
 	}
 
 	//parseLocationFromBoard
@@ -68,9 +71,39 @@ QByteArray TcpKTRCoder::decode(const MessageSP message)
 	/**
 	 * TCP_KTR_REQUEST_GET_BOARD_LIST
 	 * "user link command ctrl" as Ascii in QByteArray
+	 *
+	 * TCP_KTR_REQUEST_COMMAND_TO_BPLA
+	 *
+	 * case 1:
+	 * "user link command b" + QString::number(_id) + " d" +QString::number(_dev);
+	 *
+	 * case 2:
+	 * "user link command b" + QString::number(_id) + " d" +QString::number(622);
 	 **/
 
-	return message->data();
+	QString messageType = message->type();
+
+	QString command = "user link command ";
+	QByteArray dataToSend;
+
+	if (messageType == TCP_KTR_REQUEST_GET_BOARD_LIST) {
+		command += "ctrl";
+	} else if (messageType == TCP_KTR_REQUEST_COMMAND_TO_BPLA) {
+
+		QByteArray inputByteArray = message->data();
+		QDataStream inputDataStream(&inputByteArray, QIODevice::ReadOnly);
+
+		quint16 id = 0;
+		quint32 dev = 0;
+
+		inputDataStream >> id >> dev;
+
+		command += "b" + QString::number(id) + " d" + QString::number(dev);
+	}
+
+	dataToSend.append(command.toAscii());
+	debug(command);
+	return dataToSend;
 }
 
 MessageSP TcpKTRCoder::parseLocationFromBoard(const QByteArray& data)

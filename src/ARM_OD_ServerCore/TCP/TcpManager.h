@@ -5,15 +5,15 @@
 #include <QThread>
 #include <QMap>
 
-#include <Interfaces/Tcp/ITcpListener.h>
 #include <Interfaces/IRpcListener.h>
+#include <Interfaces/Tcp/ITcpListener.h>
+#include <Interfaces/Tcp/ITcpManager.h>
 #include <Logger.h>
-
-#include "Interfaces/ITcpManager.h"
 
 #include "TcpDevicesDefines.h"
 #include "TcpNIIPPController.h"
 #include "TcpKTRController.h"
+#include "TcpAISController.h"
 
 #include "Rpc/RPCServer.h"
 
@@ -40,14 +40,15 @@ public:
 
 	// ITcpManager interface
 public:
-	virtual void addTcpDevice(const QString& deviceType, const QString& host, const quint32& port);
-	virtual void removeTcpDevice(const QString& deviceType, const QString& host, const quint32& port);
+	virtual void addTcpDevice(const QString& deviceName, const quint32& deviceType);
+	virtual void removeTcpDevice(const QString& deviceName);
 	virtual void setRpcServer(IRPC* rpcServer);
 	virtual QObject* asQObject();
+	virtual void setTcpServer(ITcpServer* tcpServer);
 
 	// ITcpListener interface
 public:
-	virtual void onMessageReceived(const QString& device, const MessageSP argument);
+	virtual void onMessageReceived(const quint32 deviceType, const QString& deviceName, const MessageSP argument);
 
 	// IRpcListener interface
 public:
@@ -60,6 +61,8 @@ signals:
 private slots:
 	void onMethodCalledInternalSlot(const QString &method, const QVariant &argument);
 
+
+	// ITcpManager interface
 };
 
 #endif // TCPMANAGER_H

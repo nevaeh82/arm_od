@@ -2,10 +2,10 @@
 
 #include <QDebug>
 
-const double m_zone[24] = {1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5,
+const double _zone[24] = {1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5,
                        5, 6, 7, 8, 9, 10, 11, 12, 14, 16,
                        18, 20, 22, 24, 28, 30};
-const double m_zoneDir[28] = {2.5, 3, 4, 5,
+const double _zone_dir[28] = {2.5, 3, 4, 5,
                        6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20,
                        22, 26, 29, 33, 37, 41, 47, 52, 57, 62, 68, 72, 76};
 
@@ -476,12 +476,12 @@ void RPCClient::rpc_send_niipp_data(QByteArray data)
 
     if(mode == 01)
     {
-        _map_controller->get_map_client(1)->slot_niipp_power_cicle(id, m_zone[zone], ba);
+        _map_controller->get_map_client(1)->slot_niipp_power_cicle(id, _zone[zone], ba);
     }
 
     if(mode == 10)
     {
-        _map_controller->get_map_client(1)->slot_update_sector(id, m_zoneDir[zone], course, NULL);
+        _map_controller->get_map_client(1)->slot_update_sector(id, _zone_dir[zone], course, NULL);
     }
 
         qDebug() << "MMMMMMMMMMMMMMMMMMMMMMMMMMMMM = " << mode << course << zone;

@@ -131,7 +131,7 @@ void MainTab::_set_map_widget()
 
     _state = false;
 
-	connect(_map_contr, SIGNAL(mapOpened()), this, SLOT(slotShowMap()));
+    connect(_map_contr, SIGNAL(signalOpenedMap()), this, SLOT(slotShowMap()));
 //    connect(_tcp_client, SIGNAL(signalCoord(int, QPointF)), _map_contr->get_map_client(_id_spectra), SLOT(slotAddBLA_evil(int, QPointF)));
     connect(_map_contr->get_map_client(_id_spectra), SIGNAL(signalNewBPLA(QString)), this, SLOT(slotSetBPLAItem(QString)));
 }
