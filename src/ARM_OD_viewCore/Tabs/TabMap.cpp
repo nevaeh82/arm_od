@@ -29,11 +29,11 @@ TabMap::TabMap(TabsProperty* prop, IRouter* router, ITabManager* tab_manager, QM
     _db_manager = static_cast<DBManager *>(db_bla);//new DBManager(_tab_manager);
 
     QStringList headers_BLA;
-    headers_BLA << tr("Название") << tr("Свойство2");
+	headers_BLA << tr("Name") << tr("Property2");
     _model_BLA = new TreeModel(headers_BLA);
 
     QStringList headers;
-    headers << tr("Название") << tr("Свойство1");
+	headers << tr("Name") << tr("Property1");
     _model = new TreeModel(headers);
     _db_manager_target = static_cast<DBManager *>(db_evil);//new DBManager(_tab_manager);
 
@@ -175,7 +175,7 @@ int TabMap::createView(QWidget* view)
 int TabMap::createTree()
 {
     QStringList headers;
-    headers << tr("Название") << tr("Свойство");
+	headers << tr("Name") << tr("Property");
 	_tree_view_BLA = new TreeView();
 
     _tree_view_BLA->setMinimumWidth(250);
@@ -193,7 +193,7 @@ int TabMap::createTree()
 
     _tree_view_BLA->get_tree()->setItemDelegate(_delegate_BLA);
 
-    _dock_tree_BLA = new QDockWidget(tr("Список БЛА"));
+	_dock_tree_BLA = new QDockWidget(tr("UAV list"));
     _dock_tree_BLA->setWidget(_tree_view_BLA);
 
     connect(_tree_view_BLA->get_tree(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(_slot_tree_bla_double_clicked(QModelIndex)));
@@ -219,7 +219,7 @@ int TabMap::createTree()
 
     _tree_view->get_tree()->setModel(_model);
 
-    _dock_tree_view = new QDockWidget(tr("Список целей"));
+	_dock_tree_view = new QDockWidget(tr("Target list"));
     _dock_tree_view->setWidget(_tree_view);
 
     _vboxlayout->addWidget(_dock_tree_view, 0, Qt::AlignJustify);

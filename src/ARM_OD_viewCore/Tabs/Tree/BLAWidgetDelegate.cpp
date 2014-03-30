@@ -200,13 +200,13 @@ bool BLAWidgetDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, co
 {
     QModelIndex ind = index.sibling(index.row(), 0);
     QString name = ind.data(Qt::DisplayRole).toString();
-    if(name == tr("Центр f (МГц)"))
+	if(name == tr("Center f (MHz)"))
         _cur_view = 1;
     else
-    if(name == tr("Фильтр (кГц)"))
+	if(name == tr("Filter (kHz)"))
         _cur_view = 2;
     else
-    if(name == tr("Сдвиг (кГц)"))
+	if(name == tr("Offset (kHz)"))
         _cur_view = 3;
     else
         _cur_view = 1;

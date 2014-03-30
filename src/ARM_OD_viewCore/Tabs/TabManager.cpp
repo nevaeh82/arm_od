@@ -122,17 +122,17 @@ int TabManager::createSubModules(QString path_to_ini_file)
     QPointF latlon1;
     latlon1.setX(42.511183);
     latlon1.setY(41.6905);
-	NiippController* _niipp1 = new NiippController(100, tr("СПИП ДД-1"), latlon1, _router, _map_controller, this);
+	NiippController* _niipp1 = new NiippController(100, tr("SPIP DD-1"), latlon1, _router, _map_controller, this);
 
     QPointF latlon2;
     latlon2.setX(42.634183);
     latlon2.setY(41.912167);
-	NiippController* _niipp2 = new NiippController(101, tr("СПИП ДД-2"), latlon2, _router, _map_controller, this);
+	NiippController* _niipp2 = new NiippController(101, tr("SPIP DD-2"), latlon2, _router, _map_controller, this);
 
-    QDockWidget* dock_niipp1 = new QDockWidget(tr("СПИП ДД-1"));
+	QDockWidget* dock_niipp1 = new QDockWidget(tr("SPIP DD-1"));
 	dock_niipp1->setWidget(_niipp1->getControlWidget());
 
-    QDockWidget* dock_niipp2 = new QDockWidget(tr("СПИП ДД-2"));
+	QDockWidget* dock_niipp2 = new QDockWidget(tr("SPIP DD-2"));
 	dock_niipp2->setWidget(_niipp2->getControlWidget());
 
 

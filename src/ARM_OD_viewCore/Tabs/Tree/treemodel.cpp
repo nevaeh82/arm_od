@@ -201,9 +201,9 @@ TreeModel::TreeModel(const QStringList &headers, QObject *parent)
          switch(section)
          {
          case 0:
-             return tr("Название");
+			 return tr("Name");
          case 1:
-             return tr("Свойство");
+			 return tr("Property");
          default:
              break;
          }

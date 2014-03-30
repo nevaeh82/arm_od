@@ -40,9 +40,9 @@ void MapController::openMapFromLocalFile(/*const QString mapFile*/)
 {
 	QString filename = QFileDialog::getOpenFileName(
 		m_controllerWidget,
-		tr("Открыть карту"),
+		tr("Open atlas"),
 		QDir::currentPath(),
-		tr("Формат цифровых карт (*.chart *.sxf *.sit *.map *.gc *.gst);;Все файлы (*.*)") );
+		tr("Atlas files (*.chart *.sxf *.sit *.map *.gc *.gst);;All files (*.*)") );
 	if( !filename.isNull() )
 	{
 	}

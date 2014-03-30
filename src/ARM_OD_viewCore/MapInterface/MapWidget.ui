@@ -48,7 +48,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Список БЛА</string>
+         <string>UAV list</string>
         </property>
        </widget>
       </item>
@@ -61,7 +61,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Список целей</string>
+         <string>Target list</string>
         </property>
        </widget>
       </item>
@@ -74,7 +74,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>СПИП ДД</string>
+         <string>SPIP DD</string>
         </property>
        </widget>
       </item>
