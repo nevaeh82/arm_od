@@ -176,7 +176,7 @@ QByteArray KtrSimulator::encodeBplaList()
 	QByteArray data;
 	quint8 count = m_bplaList.count();
 
-	data.append( QString( 12, ' ' ) );
+	data.append( QString("control link") );
 	data.append( (char*) &count, 1 );
 	data.append( QString( 1, ' ' ) );
 

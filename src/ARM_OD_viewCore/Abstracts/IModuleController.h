@@ -6,7 +6,7 @@ class QString;
 class IModuleController
 {
 public:
-    virtual ~IModuleController(){};
+	virtual ~IModuleController(){}
     virtual int start()                                         = 0;
     virtual int stop()                                          = 0;
     virtual void show()                                         = 0;

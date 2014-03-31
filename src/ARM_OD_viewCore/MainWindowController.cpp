@@ -62,8 +62,8 @@ void MainWindowController::init()
 
 	m_solver = new SolverController(701, m_tabManager);
 
-	connect(m_view, SIGNAL(openAtlasSignal()), m_tabManager->get_map_controller(), SLOT(openMapFromAtlas()));
-	connect(m_view, SIGNAL(openMapSignal()), m_tabManager->get_map_controller(), SLOT(openMapFromLocalFile()));
+	connect(m_view, SIGNAL(openAtlasSignal()), m_tabManager, SIGNAL(openAtlasSignal()));
+	connect(m_view, SIGNAL(openMapSignal()), m_tabManager, SIGNAL(openMapSignal()));
 
 	connect(m_view, SIGNAL(setupKoordinatometriyaSignal()), m_solver, SLOT(show()));
 

@@ -7,7 +7,7 @@ const double m_zone[52] = {1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5,
 									   22, 26, 29, 33, 37, 41, 47, 52, 57, 62, 68, 72, 76};
 
 
-MapClient1::MapClient1(PwGisWidget *pwwidget, TabsProperty *property, IDBManager* db_bla, IDBManager* db_evil)
+MapClient1::MapClient1(PwGisWidget *pwwidget, Station *station, IDBManager* db_bla, IDBManager* db_evil)
 	:_mux(QMutex::Recursive),
 	  _niipp_layer_id(0),
 	_sector(NULL),
@@ -35,9 +35,9 @@ MapClient1::MapClient1(PwGisWidget *pwwidget, TabsProperty *property, IDBManager
 	_line_id = 0;
 	_pwwidget = pwwidget;
 	_mapBounds = _pwwidget->mapProvider()->mapBounds();
-	_property = property;
-	_main_latitude = _property->get_latitude();
-	_main_longitude = _property->get_longitude();
+	m_station = station;
+	_main_latitude = m_station->latitude;
+	_main_longitude = m_station->longitude;
 	//_set_Point();
 	_last_coord = new QMap<int, PwGisPointList *>;
 
