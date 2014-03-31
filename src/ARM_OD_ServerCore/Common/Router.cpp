@@ -2,6 +2,9 @@
 
 Router::Router()
 {
+	_queue = 0;
+	_tcp_controller = 0;
+	_subscriber = 0;
 }
 
 Router::~Router()

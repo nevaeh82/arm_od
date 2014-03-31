@@ -397,13 +397,13 @@ void PrmClient::slotError(QAbstractSocket::SocketError err)
 
 quint8 PrmClient::calcCRC(QVector<quint8> aForCrcCount)
 {
-    int i, aSize;
+    int aSize;
     quint8 c=0;
     aSize=aForCrcCount.size();
 
     if(aSize<=12)
     {
-        for(i=0; i<aSize; i++) c += aForCrcCount.at(i);
+        for(int i=0; i<aSize; i++) c += aForCrcCount.at(i);
         return c+1;
     } else return 0;
 }

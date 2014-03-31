@@ -40,7 +40,6 @@ void BLAPerehvatDialog::init(int id, DBManager *db_bla, DBManager *db_evil)
     QLineEdit* le_bla = new QLineEdit();
     le_bla->setText(tr("БЛА №") + QString::number(_id));
 
-    QHBoxLayout* hb = new QHBoxLayout();
     vb->addWidget(le_bla, Qt::AlignTop);
 
      _tr_bpla = new QTreeWidget();

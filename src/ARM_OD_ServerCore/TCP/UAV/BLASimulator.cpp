@@ -30,7 +30,6 @@ void BLASimulator::stop()
 void BLASimulator::_slot_simulation()
 {
     static double angle = 0;
-    static int count  = 0;
 
     static double alt = 1000;
     QPointF point;
@@ -38,7 +37,6 @@ void BLASimulator::_slot_simulation()
     if(angle >= 360)
     {
         angle = 0;
-        count = 0;
     }
 
     if(angle > 100 && angle < 200)

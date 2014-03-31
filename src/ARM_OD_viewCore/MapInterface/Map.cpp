@@ -3,6 +3,11 @@
 Map::Map()
 {
 	m_layersCounter = 0;
+	m_dbBla = 0;
+	m_dbEvil = 0;
+	m_mapManager = 0;
+	m_profileManager = 0;
+	m_layerManager = 0;
 }
 
 Map::~Map()

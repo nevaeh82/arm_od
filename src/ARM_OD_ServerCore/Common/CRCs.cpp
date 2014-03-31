@@ -99,13 +99,13 @@ unsigned short CRCs::crc16(unsigned char *data, int len)
 
 quint8 CRCs::calcCRC(QVector<quint8> aForCrcCount)
 {
-    int i, aSize;
+    int aSize;
     quint8 c = 0;
     aSize = aForCrcCount.size();
 
     if(aSize <= 12)
     {
-        for(i = 0; i < aSize; i++)
+        for(int i = 0; i < aSize; i++)
         {
             c += aForCrcCount.at(i);
         }

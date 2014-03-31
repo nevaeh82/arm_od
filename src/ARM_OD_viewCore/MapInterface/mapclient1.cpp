@@ -370,7 +370,6 @@ void MapClient1::set_Point()
 
 	double step_x = 10/(111.111*cos(top/(180/3.14)));
 	double step_y = 10/(111.111);
-	int x = 0, y = 0;
 //    for( double i = left; i < rigth; i += step_x)
 //    {
 //        _pwwidget->addLine(QString("Grid_x_%1").arg(x++), i,top,i,bottom, QString(tr("Д_%1")).arg(x), "", "Grid");
@@ -392,9 +391,6 @@ void MapClient1::center_map()
 /// set justify map
 void MapClient1::justify_map()
 {
-	MapZoomInfo* info = _mapBounds->getMapZoomInfo();
-	GeoRectangle* rect = _mapBounds->getMapBounds();
-
 	int h = _pwwidget->maximumHeight();
 	int w = _pwwidget->maximumWidth();
 	_mapBounds->zoomMapTo(0, 0, w, h/*rect->getLeft(), rect->getBottom(), rect->getRight(), rect->getTop()*/);
@@ -1094,12 +1090,12 @@ int MapClient1::_read_settings(QString path_to_ini_file)
 	m_settings.setIniCodec(codec);
 
 	QString name;
-	double lat;
-	double lon;
 
 	QStringList childKeys = m_settings.childGroups();
 	foreach (const QString &childKey, childKeys)
 	{
+		double lat;
+		double lon;
 //        qDebug() << "m_settings = " << childKey.toLatin1();
 		m_settings.beginGroup(childKey);
 
@@ -1138,12 +1134,12 @@ int MapClient1::_read_settings1(QString path_to_ini_file)
 	m_settings.setIniCodec(codec);
 
 	QString name;
-	double lat;
-	double lon;
 
 	QStringList childKeys = m_settings.childGroups();
 	foreach (const QString &childKey, childKeys)
 	{
+		double lat;
+		double lon;
 //        qDebug() << "m_settings = " << childKey.toLatin1();
 		m_settings.beginGroup(childKey);
 

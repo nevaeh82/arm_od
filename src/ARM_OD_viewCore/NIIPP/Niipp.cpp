@@ -12,6 +12,10 @@ Niipp::Niipp(int id, QString name, QPointF latlon, MapController* mapController,
 	, m_antenaType(0)
 	, m_widthAngle(25)
 	, m_modeCurrentIndex(disabled)
+	, m_type(0)
+	, m_mode(0)
+	, m_antenaIndex(0)
+	, m_sbPowerValue(0)
 {
 	m_id = id;
 	m_name = name;

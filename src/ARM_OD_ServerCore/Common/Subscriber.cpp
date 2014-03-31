@@ -103,10 +103,7 @@ void Subscriber::data_ready(int type, QSharedPointer<IMessageOld> msg_ptr)
 void Subscriber::_slotGetData(int type, rpc_msg msg_ptr)
 {
 //    qDebug() << "Getting new data with type = " << type;
-    int type1 = 1;
     int id = 0;
-    IMessageOld *f = (msg_ptr.data());
-    QByteArray* dd = f->get(id, type1);
 //    QDataStream ds(*dd);
 //    double r;
 //    ds >> r;

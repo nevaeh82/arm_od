@@ -4,7 +4,8 @@ NIIPPController::NIIPPController(IRouter *router):
     _id(101),
     _ip("192.168.10.50"),
     _port(6340),
-    _type(-1)
+    _type(-1),
+	_parser(0)
 {
     _router = router;
     _subscriber = _router->get_subscriber();

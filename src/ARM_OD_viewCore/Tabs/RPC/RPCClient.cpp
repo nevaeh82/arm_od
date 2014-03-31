@@ -40,9 +40,9 @@ bool RPCClient::start(quint16 port, QHostAddress ipAddress)
 	m_clientPeer->attachSignal(this, SIGNAL(signalSetSolverData(QByteArray)), RPC_SLOT_SET_SOLVER_DATA);
 	m_clientPeer->attachSignal(this, SIGNAL(signalSetSolverDataClear(QByteArray)), RPC_SLOT_SET_SOLVER_CLEAR);
 
-	connect(this, SIGNAL(signalReconnection()), this, SLOT(_slotReconnection()));
+    connect(this, SIGNAL(signalReconnection()), this, SLOT(_slotReconnection()));
 	connect(m_clientPeer, SIGNAL(disconnectedFromServer()), this, SLOT(_slotRPCDisconnection()));
-	qDebug() << this->thread();
+    qDebug() << this->thread();
 
 	///server
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BLA_POINTS, this, SLOT(rpcSendBlaPoints(int,QPointF,double,double,double,int)));
@@ -56,7 +56,7 @@ bool RPCClient::start(quint16 port, QHostAddress ipAddress)
 
 	debug("Start RPCClient");
 	return RpcClientBase::start(port, ipAddress);
-}
+    }
 
 void RPCClient::setCommand(IMessageOld *msg)
 {
@@ -148,7 +148,7 @@ void RPCClient::rpcSendBlaPoints(int id, QPointF point, double alt, double speed
             rec_p->insert("id", QVariant::fromValue(map_p->at(i).value("id").toInt()));
             break;
         }
-	}
+    }
 
 	m_dbManager->set_property(0, rec_p);
 
@@ -181,7 +181,7 @@ void RPCClient::rpcSendBlaPoints(int id, QPointF point, double alt, double speed
     rec_p2->insert("pid", QVariant::fromValue(id));
     rec_p2->insert("name", QVariant::fromValue(s_prop));
     rec_p2->insert("value", QVariant::fromValue(alt));
-	rec_p2->insert("state", QVariant::fromValue(1));
+    rec_p2->insert("state", QVariant::fromValue(1));
 
 	QVector<QMap<QString, QVariant> >* map_p2 = m_dbManager->get(id, 0);
 
@@ -203,7 +203,7 @@ void RPCClient::rpcSlotServerSendAisData(QByteArray data)
     QDataStream ds(&data, QIODevice::ReadOnly);
     int id;
     ds >> id;
-	QMap<int, QVector<QString> > map1;
+    QMap<int, QVector<QString> > map1;
     ds >> map1;
 
 	m_mapController->get_map_client(1)->slot_add_ais(map1);
@@ -289,7 +289,7 @@ void RPCClient::rpcSendNiippData(QByteArray data)
 		m_mapController->get_map_client(1)->slot_update_sector(id, m_zoneDir[zone], course, NULL);
     }
 
-	qDebug() << "MMMMMMMMMMMMMMMMMMMMMMMMMMMMM = " << mode << course << zone;
+        qDebug() << "MMMMMMMMMMMMMMMMMMMMMMMMMMMMM = " << mode << course << zone;
 
     QByteArray ba1;
     QDataStream ds2(&ba1, QIODevice::WriteOnly);
@@ -327,7 +327,7 @@ void RPCClient::rpcSlotServerSendAtlantPosition(QByteArray data)
 {
 //    qDebug() << "GOT DATA FROM ATLANT!";
     QDataStream ds(&data, QIODevice::ReadWrite);
-    A_Pos_Ans_msg msg;
+	A_Pos_Ans_msg msg = {0, 0, 0, 0, 0, 0};
     ds >> msg.requestId;
     ds >> msg.sourceId;
     ds >> msg.dateTime;
@@ -427,7 +427,7 @@ void RPCClient::sendBplaPoints(QByteArray data)
             rec_p->insert("id", QVariant::fromValue(map_p->at(i).value("id").toInt()));
             break;
         }
-	}
+    }
 
 	m_dbManagerTarget->set_property(1, rec_p);
 

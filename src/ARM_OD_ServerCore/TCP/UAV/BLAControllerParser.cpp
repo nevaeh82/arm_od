@@ -4,6 +4,7 @@
 BLAControllerParser::BLAControllerParser(IBLAController *controller)
 {
     _controller = controller;
+	_router = 0;
 }
 
 BLAControllerParser::~BLAControllerParser()

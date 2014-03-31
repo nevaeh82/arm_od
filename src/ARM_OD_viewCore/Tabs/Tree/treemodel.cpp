@@ -3,6 +3,7 @@
 
 TreeModel::TreeModel(const QStringList &headers, QObject *parent)
      : QAbstractItemModel(parent)
+	 , _db_manager = 0
  {
      QVector<QVariant> rootHeaders;
      foreach (QString header, headers)
@@ -271,7 +272,7 @@ TreeModel::TreeModel(const QStringList &headers, QObject *parent)
 
  bool TreeModel::removeColumns(int position, int columns, const QModelIndex &parent)
  {
-     bool success;
+     bool success = true;
 
      beginRemoveColumns(parent, position, position + columns - 1);
 //     success = _rootItem->removeColumns(position, columns);
@@ -286,10 +287,9 @@ TreeModel::TreeModel(const QStringList &headers, QObject *parent)
  bool TreeModel::removeRows(int position, int rows, const QModelIndex &parent)
  {
      TreeItem *parentItem = static_cast<TreeItem *>(parent.internalPointer());
-     bool success = true;
 
      beginRemoveRows(parent, position, position + rows - 1);
-     success = parentItem->removeChildren(position, rows);
+     bool success = parentItem->removeChildren(position, rows);
      endRemoveRows();
 
      return success;
@@ -346,7 +346,7 @@ TreeModel::TreeModel(const QStringList &headers, QObject *parent)
      if (role != Qt::DisplayRole || orientation != Qt::Horizontal)
          return false;
 
-     bool result;// = _rootItem->setData(section, value);
+     bool result = true;// = _rootItem->setData(section, value);
 
      if (result)
          emit headerDataChanged(orientation, section, section);
@@ -371,8 +371,6 @@ TreeModel::TreeModel(const QStringList &headers, QObject *parent)
 
  bool TreeModel::addChild(QMap<QString, QVariant> *data, int role)
  {
-     int index = _rootItem->childCount();
-
 //     qDebug() << data->value("id");
      int id = data->value("id").toInt();
      int pid = data->value("pid").toInt();
