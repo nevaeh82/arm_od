@@ -43,6 +43,11 @@ QTreeView *MapTabWidget::getBplaTreeView() const
 	return ui->bplaTreeView;
 }
 
+ControlPanel *MapTabWidget::getControlPanelWidget() const
+{
+	return ui->controlPanelWidget;
+}
+
 void MapTabWidget::changeBlaTreeVisibility()
 {
 	if (!ui->blaDockWidget->isVisible()){

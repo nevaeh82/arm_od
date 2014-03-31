@@ -6,6 +6,7 @@
 
 #include "MapInterface/MapWidget.h"
 #include "NIIPP/NiippWidget.h"
+#include "ControlPanel/ControlPanel.h"
 
 namespace Ui {
 class MapTabWidget;
@@ -23,6 +24,7 @@ public:
 
 	QTreeView* getBlaTreeView() const;
 	QTreeView* getBplaTreeView() const;
+	ControlPanel* getControlPanelWidget() const;
 
 	void changeBlaTreeVisibility();
 	void changeBplaTreeVisibility();

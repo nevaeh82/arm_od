@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout" rowstretch="10,0" columnstretch="0,10,0">
+  <layout class="QGridLayout" name="gridLayout" rowstretch="0,10,0" columnstretch="0,10,0">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -26,15 +26,27 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <property name="spacing">
-    <number>0</number>
+   <property name="verticalSpacing">
+    <number>6</number>
    </property>
-   <item row="1" column="2">
-    <widget class="QDockWidget" name="spipDD2DockWidget">
-     <widget class="NiippWidget" name="spipDD2Widget"/>
+   <item row="0" column="0" rowspan="2">
+    <widget class="QDockWidget" name="blaDockWidget">
+     <property name="windowTitle">
+      <string>BLA List</string>
+     </property>
+     <widget class="QWidget" name="dockWidgetContents">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QTreeView" name="blaTreeView"/>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
-   <item row="0" column="2">
+   <item row="0" column="1">
+    <widget class="ControlPanel" name="controlPanelWidget" native="true"/>
+   </item>
+   <item row="0" column="2" rowspan="2">
     <widget class="QDockWidget" name="bplaDockWidget">
      <property name="windowTitle">
       <string>BPLA List</string>
@@ -48,12 +60,7 @@
      </widget>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QDockWidget" name="spipDD1DockWidget">
-     <widget class="NiippWidget" name="spipDD1Widget"/>
-    </widget>
-   </item>
-   <item row="0" column="1" rowspan="2">
+   <item row="1" column="1" rowspan="2">
     <widget class="MapWidget" name="mapWidget" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -63,18 +70,14 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="0">
-    <widget class="QDockWidget" name="blaDockWidget">
-     <property name="windowTitle">
-      <string>BLA List</string>
-     </property>
-     <widget class="QWidget" name="dockWidgetContents">
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QTreeView" name="blaTreeView"/>
-       </item>
-      </layout>
-     </widget>
+   <item row="2" column="0">
+    <widget class="QDockWidget" name="spipDD1DockWidget">
+     <widget class="NiippWidget" name="spipDD1Widget"/>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QDockWidget" name="spipDD2DockWidget">
+     <widget class="NiippWidget" name="spipDD2Widget"/>
     </widget>
    </item>
   </layout>
@@ -90,6 +93,12 @@
    <class>NiippWidget</class>
    <extends>QWidget</extends>
    <header>Niipp/NiippWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ControlPanel</class>
+   <extends>QWidget</extends>
+   <header>ControlPanel/ControlPanel.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

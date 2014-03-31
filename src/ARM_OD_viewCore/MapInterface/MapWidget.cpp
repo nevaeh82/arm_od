@@ -8,10 +8,6 @@ MapWidget::MapWidget(QWidget *parent) :
 	, ui(new Ui::MapWidget)
 {
 	ui->setupUi(this);
-
-	connect(ui->pb_show_BLA_tree, SIGNAL(clicked()), this, SIGNAL(showBLAtree()));
-	connect(ui->pb_show_BPLA_tree, SIGNAL(clicked()), this, SIGNAL(showBPLAtree()));
-	connect(ui->pb_show_NiiPP, SIGNAL(clicked()), this, SIGNAL(showNIIPP()));
 }
 
 MapWidget::~MapWidget()

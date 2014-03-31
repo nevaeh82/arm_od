@@ -70,9 +70,6 @@ private slots:
 
 signals:
 	void mapOpened();
-	void controllerShowBLAtree();
-	void controllerShowBPLAtree();
-	void controllerShowNIIPP();
 
 };
 

@@ -27,11 +27,6 @@ public:
 private:
 	Ui::MapWidget *ui;
 
-
-signals:
-	void showBLAtree();
-	void showBPLAtree();
-	void showNIIPP();
 };
 
 #endif // MAPCONTROLLERWIDGET_H

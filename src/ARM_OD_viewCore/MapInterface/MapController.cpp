@@ -25,9 +25,6 @@ void MapController::init(QMap<int, Station*> map_settings, IDBManager* db_bla, I
 	connect(m_mapModel, SIGNAL(modelMapReady()), this, SLOT(onMapReady()));
 
 	m_view->getPwGis()->enableDebugger(false);
-	connect(m_view, SIGNAL(showBLAtree()), this, SIGNAL(controllerShowBLAtree()));
-	connect(m_view, SIGNAL(showBPLAtree()), this, SIGNAL(controllerShowBPLAtree()));
-	connect(m_view, SIGNAL(showNIIPP()), this, SIGNAL(controllerShowNIIPP()));
 
 	m_mapModel->init(map_settings, db_bla, db_evil, m_view->getPwGis());
 }

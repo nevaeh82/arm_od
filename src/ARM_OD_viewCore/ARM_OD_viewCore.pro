@@ -93,7 +93,8 @@ HEADERS += \
     Interfaces/ISettingsChangedListener.h \
     Tabs/MapTabWidget.h \
     Station.h \
-    Tabs/MapTabWidgetController.h
+    Tabs/MapTabWidgetController.h \
+    ControlPanel/ControlPanel.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -129,7 +130,8 @@ SOURCES += \
 #    SettingsTree/TreeModel.cpp \
 #    SettingsTree/TreeWidgetDelegate.cpp \
     Tabs/MapTabWidget.cpp \
-    Tabs/MapTabWidgetController.cpp
+    Tabs/MapTabWidgetController.cpp \
+    ControlPanel/ControlPanel.cpp
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \
@@ -137,5 +139,6 @@ FORMS += \
 	Tabs/Solver/SolverWidget.ui \
 	MapInterface/MapWidget.ui \
 	NIIPP/NiippWidget.ui \
-    MapTabWidget.ui
+    MapTabWidget.ui \
+    ControlPanel/ControlPanel.ui
 

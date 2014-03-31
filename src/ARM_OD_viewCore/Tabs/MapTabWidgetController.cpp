@@ -134,9 +134,9 @@ int MapTabWidgetController::createTree()
 	m_view->getBplaTreeView()->setModel(m_bplaModel);
 	m_view->getBplaTreeView()->setItemDelegate(m_treeDelegate);
 
-	connect(m_mapController, SIGNAL(controllerShowBLAtree()), this, SLOT(onShowBlaTree()));
-	connect(m_mapController, SIGNAL(controllerShowBPLAtree()), this, SLOT(onShowBplaTree()));
-	connect(m_mapController, SIGNAL(controllerShowNIIPP()), this, SLOT(onShowNiipp()));
+	connect(m_view->getControlPanelWidget(), SIGNAL(showBlaClicked()), this, SLOT(onShowBlaTree()));
+	connect(m_view->getControlPanelWidget(), SIGNAL(showBplaClicked()), this, SLOT(onShowBplaTree()));
+	connect(m_view->getControlPanelWidget(), SIGNAL(showNiippClicked()), this, SLOT(onShowNiipp()));
 
 	return 0;
 }
