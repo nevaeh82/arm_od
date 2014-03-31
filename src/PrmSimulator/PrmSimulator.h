@@ -34,7 +34,7 @@ private:
 
 public:
 	explicit PrmSimulator( const uint& port, QObject *parent = 0 );
-	~PrmSimulator();
+	virtual ~PrmSimulator();
 
 	bool start( quint16 port = 0, QHostAddress ipAddress = QHostAddress::Any );
 

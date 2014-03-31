@@ -81,6 +81,9 @@ ARM_OD_Srv::ARM_OD_Srv()
 	}
 
 	_rpc_server->registerReceiver(m_tcpManager);
+
+	 emit signalStartRPC();
+
 //	m_tcpManager->addTcpDevice(NIIPP_TCP_DEVICE, "192.168.10.50", 6340);
 //	m_tcpManager->addTcpDevice(NIIPP_TCP_DEVICE, "192.168.245.51", 6340);
 //	m_tcpManager->addTcpDevice(KTR_TCP_DEVICE, "192.168.137.98", 64300);

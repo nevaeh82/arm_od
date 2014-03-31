@@ -43,7 +43,6 @@ HEADERS += \
     TCP/TcpManager.h \
     TCP/TcpAISClient.h \
     TCP/TcpAISCoder.h \
-    TCP/TcpManager.h \
     TCP/UAV/IBLAController.h \
     TCP/TcpArmrClientController.h \
     TCP/TcpArmrClientCoder.h \

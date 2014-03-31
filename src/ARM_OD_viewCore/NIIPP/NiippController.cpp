@@ -2,21 +2,17 @@
 
 #include <QDebug>
 
-NiippController::NiippController(int id, QString name, QPointF latlon, IRouter *router, MapController* map_controller, ITabManager* parent_tab)
-	: m_controlView( new NiippWidget() )
-	, m_controlModel( new Niipp(id, name, latlon, router, map_controller, parent_tab) )
+NiippController::NiippController(int id, QString name, QPointF latlon, MapController* map_controller, ITabManager* parent_tab,  QObject* parent)
+	: QObject(parent),
+	 m_controlModel( new Niipp(id, name, latlon, map_controller, parent_tab) )
 {
+	m_view = NULL;
 
 	connect(this, SIGNAL(angleChanged(double)), this, SLOT(changeAngel(double)));
 	map_controller->get_map_client(1)->set_niipp_controller(this);
 	m_controlModel->create();
 
-	connect(m_controlView, SIGNAL(complexEnabled(bool)), this, SLOT(enableComplex(bool)));
-	connect(m_controlView, SIGNAL(valuePowerChanged(int)), this, SLOT(changeValuePower(int)));
-	connect(m_controlView, SIGNAL(stopClicked()), this, SLOT(stopClicked()));
-	connect(m_controlView, SIGNAL(antennaTypeChanged(int)), this, SLOT(set_antenna_type(int)));
-	connect(m_controlView, SIGNAL(modeChanged(int)), this, SLOT(changeMode(int)));
-	connect(m_controlView, SIGNAL(cleared()), this, SLOT(clear()));
+
 }
 
 NiippController::~NiippController()
@@ -25,7 +21,7 @@ NiippController::~NiippController()
 
 bool NiippController::getState()
 {
-	return m_controlView->getEnableComplexState();
+	return m_view->getEnableComplexState();
 }
 
 void NiippController::setData(QByteArray data)
@@ -35,7 +31,7 @@ void NiippController::setData(QByteArray data)
 
 	ds >> mode;
 
-	m_controlView->setStatusText(mode);
+	m_view->setStatusText(mode);
 
 }
 
@@ -57,7 +53,7 @@ void NiippController::clear()
 void NiippController::changeValuePower(int value)
 {
 	m_controlModel->changeValuePower(value);
-	m_controlView->changeValuePower( value, m_controlModel->getRadiusCircle()
+	m_view->changeValuePower( value, m_controlModel->getRadiusCircle()
 									, m_controlModel->getRadiusSector(), m_controlModel->getAntenaType() );
 }
 
@@ -77,11 +73,11 @@ void NiippController::set_switch_on(bool state)
 void NiippController::set_antenna_type(int value)
 {
 	if(value == 1) {
-		m_controlModel->setMode(m_controlView->getModeIndex());
+		m_controlModel->setMode(m_view->getModeIndex());
 	}
 	m_controlModel->setAntennaType(value);
 
-	m_controlView->setAntennaType(value, getModeCurrentIndex());
+	m_view->setAntennaType(value, getModeCurrentIndex());
 }
 
 int NiippController::get_id()
@@ -94,20 +90,20 @@ void NiippController::set_point(QPointF coord)
 	m_controlModel->setPoint(coord);
 
 	QString lat_s = QString::number(coord.x(), 'f', 4);
-	m_controlView->setLatText(lat_s);
+	m_view->setLatText(lat_s);
 	QString lon_s = QString::number(coord.y(), 'f', 4);
-	m_controlView->setLonText(lon_s);
+	m_view->setLonText(lon_s);
 }
 
 void NiippController::send_evil(QPointF point, QPointF point_uvoda, double alt, double bearing)
 {
-	if(!m_controlView->getStartState())
+	if(!m_view->getStartState())
 	{
 		return;
 	}
 
-	m_controlModel->setAntenaIndex(m_controlView->getAntenaIndex());
-	m_controlModel->setSBpowerValue(m_controlView->getSbPowerValue());
+	m_controlModel->setAntenaIndex(m_view->getAntenaIndex());
+	m_controlModel->setSBpowerValue(m_view->getSbPowerValue());
 
 	m_controlModel->sendEvil(point, point_uvoda, alt, bearing);
 
@@ -148,7 +144,14 @@ Niipp::WorkMode NiippController::getModeCurrentIndex()
 	return m_controlModel->getModeCurrentIndex();
 }
 
-QWidget* NiippController::getControlWidget()
+void NiippController::appendView(NiippWidget *view)
 {
-	return m_controlView;
+	m_view = view;
+
+	connect(m_view, SIGNAL(complexEnabled(bool)), this, SLOT(enableComplex(bool)));
+	connect(m_view, SIGNAL(valuePowerChanged(int)), this, SLOT(changeValuePower(int)));
+	connect(m_view, SIGNAL(stopClicked()), this, SLOT(stopClicked()));
+	connect(m_view, SIGNAL(antennaTypeChanged(int)), this, SLOT(set_antenna_type(int)));
+	connect(m_view, SIGNAL(modeChanged(int)), this, SLOT(changeMode(int)));
+	connect(m_view, SIGNAL(cleared()), this, SLOT(clear()));
 }

@@ -15,7 +15,7 @@
 #include "Common/IMessage.h"
 #include "Common/CommandMessage.h"
 
-#include "Tabs/TabsProperty.h"
+#include "Station.h"
 #include "Tabs/Tree/DBManager.h"
 #include "Tabs/ITabMap.h"
 #include "MapInterface/IMapController.h"
@@ -32,7 +32,7 @@ private:
 	IMessageOld*        m_commandMsg;
 	IDBManager*         m_dbManager;
 	IDBManager*         m_dbManagerTarget;
-	TabsProperty*       m_tabProperty;
+	Station	*			m_station;
 	ITabMap*            m_parentTab;
 	ITabManager*        m_tabManager;
 	IMapController*     m_mapController;
@@ -44,7 +44,7 @@ private:
 	bool                m_solverAuto;
 
 public:
-	RPCClient(TabsProperty *prop, IDBManager *db_manager, IDBManager *db_manager_target,
+	RPCClient(Station *station, IDBManager *db_manager, IDBManager *db_manager_target,
 			  IMapController* map_controller, ITabMap *parent_tab, ITabManager* tab_manager, QObject *parent);
     ~RPCClient();
 

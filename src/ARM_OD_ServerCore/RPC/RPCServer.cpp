@@ -27,6 +27,8 @@ bool RPCServer::start(quint16 port, QHostAddress address)
 	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCAtlantDirection(QByteArray)), RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION);
 	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCAtlantPosition(QByteArray)), RPC_SLOT_SERVER_SEND_ATLANT_POSITION);
 
+	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCBLAPoints(int,QPointF,double,double,double,int)), RPC_SLOT_SERVER_SEND_BLA_POINTS);
+
 	return RpcServerBase::start(port, address);
 }
 
@@ -178,6 +180,18 @@ void RPCServer::sendDataByRpc(const QString &signalType, const QByteArray &data)
 		emit signalSendToRPCBPLAPoints(data);
 	} else if (signalType == RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO) {
 		emit signalSendToRPCBPLAPointsAuto(data);
+	} else if (signalType == RPC_SLOT_SERVER_SEND_BLA_POINTS) {
+
+		QByteArray inputData(data);
+		QDataStream inputDataStream(&inputData, QIODevice::ReadOnly);
+		int id = 0;
+		int state = 0;
+		QPointF points;
+		double alt;
+		double speed = 0.0;
+		double course = 0.0;
+		inputDataStream >> points >> alt;
+		emit signalSendToRPCBLAPoints(id, points, alt, speed, course, state);
 	}
 }
 

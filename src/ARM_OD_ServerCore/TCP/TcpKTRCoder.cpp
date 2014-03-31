@@ -98,7 +98,7 @@ QByteArray TcpKTRCoder::decode(const MessageSP message)
 
 		inputDataStream >> id >> dev;
 
-		command += "b" + QString::number(id) + " d" + QString::number(dev);
+		command += "b" + QString::number(id) + "d" + QString::number(dev);
 	}
 
 	dataToSend.append(command.toAscii());

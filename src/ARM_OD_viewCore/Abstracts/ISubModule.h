@@ -7,14 +7,13 @@ class QString;
 class ISubModule
 {
 public:
-    virtual ~ISubModule(){};
+	virtual ~ISubModule(){}
     virtual int start()                             = 0;
     virtual int stop()                              = 0;
     virtual void show()                             = 0;
     virtual void hide()                             = 0;
     virtual int createRPC()                         = 0;
     virtual int closeRPC()                          = 0;
-    virtual int createView(QWidget *view)           = 0;
     virtual int createTree()                        = 0;
 };
 

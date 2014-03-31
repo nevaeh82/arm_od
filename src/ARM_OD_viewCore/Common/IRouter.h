@@ -18,7 +18,6 @@ class IRouter
 public:
     virtual ~IRouter(){};
 //    virtual void set_tcp_controller(ITCPController *tcp_controller)     = 0;
-    virtual void set_models_controller(int id_tree, ITreeModel *models_controller)  = 0;
 //    virtual ITCPController          *get_tcp_controller()               = 0;
     virtual ITreeModel             *get_models_controller(int id_tree)            = 0;
 };

@@ -19,6 +19,13 @@ void TcpManager::addTcpDevice(const QString& deviceName, const quint32& deviceTy
 
 	BaseTcpDeviceController* controller = NULL;
 
+//	/// Recheck map on existing device
+//	controller = m_controllersMap.value(uavTcpDeviceName, NULL);
+//	if (controller != NULL) {
+//		debug(QString("Controller %1 %2 already exists").arg(deviceName).arg(deviceType));
+//		return;
+//	}
+
 	switch(deviceType)
 	{
 		case DeviceTypes::NIIPP_TCP_DEVICE:
@@ -139,22 +146,51 @@ void TcpManager::onMessageReceived(const quint32 deviceType, const QString& devi
 
 				foreach (quint16 boardID, boardList) {
 					{
-						quint32 dev = 1;
+						quint32 device = 1;
 						QByteArray dataToSend;
 						QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
-						dataStream << boardID << dev;
-						controller->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_COMMAND_TO_BPLA, dataToSend)));
+						dataStream << boardID << device;
+
+//						///Recheck map on exist device
+
+
+//						/// We need in new controller - UAV controller
+//						QString uavTcpDeviceName = QString::number(boardID) + QString(":") + QString::number(device);
+//						quint32 uavTcpDeviceType = DeviceTypes::KTR_TCP_DEVICE;
+//						addTcpDevice(uavTcpDeviceName, uavTcpDeviceType);
+
+//						BaseTcpDeviceController* uavController = m_controllersMap.value(uavTcpDeviceName, NULL);
+//						if (uavController != NULL) {
+//							uavController->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_COMMAND_TO_BPLA, dataToSend)));
+//						}
+//						debug(QString("Something wrong with controller %1 %2").arg(uavTcpDeviceName).arg(uavTcpDeviceType));
+
+
 					}
 					{
-						quint32 dev = 622;
+						quint32 device = 622;
 						QByteArray dataToSend;
 						QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
-						dataStream << boardID << dev;
+						dataStream << boardID << device;
 						controller->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_COMMAND_TO_BPLA, dataToSend)));
+
+
+//						/// We need in new controller - UAV controller
+//						QString uavTcpDeviceName = QString::number(boardID) + QString(":") + QString::number(device);
+//						quint32 uavTcpDeviceType = DeviceTypes::KTR_TCP_DEVICE;
+//						addTcpDevice(uavTcpDeviceName, uavTcpDeviceType);
+
+//						BaseTcpDeviceController* uavController = m_controllersMap.value(uavTcpDeviceName, NULL);
+//						if (uavController != NULL) {
+//							uavController->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_COMMAND_TO_BPLA, dataToSend)));
+//						}
+//						debug(QString("Something wrong with controller %1 %2").arg(uavTcpDeviceName).arg(uavTcpDeviceType));
+
+
 					}
 				}
 			} else if (messageType == TCP_KTR_ANSWER_BPLA){
-//				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_BLA_POINTS, messageData);
+				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_BLA_POINTS, messageData);
 			}
 			break;
 		case DeviceTypes::AIS_TCP_DEVICE:

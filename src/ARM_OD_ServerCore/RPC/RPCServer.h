@@ -84,6 +84,8 @@ signals:
 	void signalSendToRPCBPLAPointsAuto(QByteArray);
 	void signalSendToRPCAtlantDirection(QByteArray);
 	void signalSendToRPCAtlantPosition(QByteArray);
+
+	void signalSendToRPCBLAPoints(int, QPointF, double, double, double, int);
 };
 
 #endif // RPCSERVER_H
