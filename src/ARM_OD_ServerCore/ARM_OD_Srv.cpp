@@ -81,6 +81,7 @@ ARM_OD_Srv::ARM_OD_Srv()
 	}
 
 	_rpc_server->registerReceiver(m_tcpManager);
+	m_tcpManager->setRpcServer(_rpc_server);
 
 	 emit signalStartRPC();
 

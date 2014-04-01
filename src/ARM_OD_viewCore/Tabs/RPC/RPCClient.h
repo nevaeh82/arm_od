@@ -25,6 +25,8 @@
 #include "Rpc/RpcDefines.h"
 #include "Rpc/RpcClientBase.h"
 
+#include "UAVDefines.h"
+
 class RPCClient : public RpcClientBase
 {
     Q_OBJECT
@@ -62,7 +64,7 @@ private:
 
 public slots:
     ///rpc_server
-	void rpcSendBlaPoints(int id, QPointF point, double alt, double speed, double course, int state);
+	void rpcSendBlaPoints(QByteArray data);
 	void rpcSlotServerSendAisData(QByteArray data);
 	void rpcSendBplaPoints(QByteArray data);
 	void rpcSendBplaPointsAuto(QByteArray data);
