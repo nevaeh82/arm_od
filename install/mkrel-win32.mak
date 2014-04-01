@@ -27,9 +27,7 @@ copy-bin:
 	$(cp) -rudf $(foreach name,$(DEPLOY), $(BinDir)/$(name)) $(TmpRel)/bin
 	$(rm) $(TmpRel)/bin/*d.*
 	$(rm) $(TmpRel)/bin/*debug.dll
-	$(cp) -rudf $(BinDir)/libiomp5md.dll $(TmpRel)/bin
 	$(cp) -rudf $(BinDir)/plugins $(TmpRel)/bin
-	$(cp) -rudf $(BinDir)/DB $(TmpRel)/bin
 	$(cp) -rudf $(BinDir)/Tabs $(TmpRel)/bin
 	$(cp) -rudf $(BinDir)/RDS $(TmpRel)/bin
 	$(cp) -rudf $(BinDir)/TCP $(TmpRel)/bin
