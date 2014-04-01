@@ -29,7 +29,6 @@ copy-bin:
 	$(rm) $(TmpRel)/bin/*debug.dll
 	$(cp) -rudf $(BinDir)/plugins $(TmpRel)/bin
 	$(cp) -rudf $(BinDir)/Tabs $(TmpRel)/bin
-	$(cp) -rudf $(BinDir)/RDS $(TmpRel)/bin
 	$(cp) -rudf $(BinDir)/TCP $(TmpRel)/bin
 
 
