@@ -141,7 +141,7 @@ void DBController::set_bla(QMap<QString, QVariant> *data)
     req_fields.append(data->value("id").toString());
 
     QSqlQuery query;
-    bool err = query.exec(req_fields.join(""));
+    query.exec(req_fields.join(""));
 
     bool err1 = query.next();
     if(err1)
@@ -216,7 +216,7 @@ void DBController::set_bla_property(QMap<QString, QVariant> *data)
 
 
     QSqlQuery query;
-    bool err = query.exec(req_fields.join(""));
+    query.exec(req_fields.join(""));
 
     bool err1 = query.next();
     if(err1)
@@ -289,7 +289,7 @@ void DBController::set_bpla(QMap<QString, QVariant> *data)
     req_fields.append(data->value("id").toString());
 
     QSqlQuery query;
-    bool err = query.exec(req_fields.join(""));
+    query.exec(req_fields.join(""));
 
     bool err1 = query.next();
     if(err1)
@@ -364,7 +364,7 @@ void DBController::set_bpla_property(QMap<QString, QVariant> *data)
     req_fields.append(data->value("id").toString());
 
     QSqlQuery query;
-    bool err = query.exec(req_fields.join(""));
+    query.exec(req_fields.join(""));
 
     bool err1 = query.next();
     if(err1)
