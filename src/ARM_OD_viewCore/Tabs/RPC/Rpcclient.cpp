@@ -133,7 +133,7 @@ void RPCClient::rpcSendBlaPoints(int id, QPointF point, double alt, double speed
     QMap<QString, QVariant>* rec_p = new QMap<QString, QVariant>;
 
     QString s_prop;
-    s_prop = tr("Широта");
+    s_prop = tr("Latitude");
     rec_p->insert("pid", QVariant::fromValue(id));
     rec_p->insert("name", QVariant::fromValue(s_prop));
     rec_p->insert("value", QVariant::fromValue(point.x()));
@@ -154,7 +154,7 @@ void RPCClient::rpcSendBlaPoints(int id, QPointF point, double alt, double speed
 
     QMap<QString, QVariant>* rec_p1 = new QMap<QString, QVariant>;
 
-    s_prop = tr("Долгота");
+    s_prop = tr("Longitude");
     rec_p1->insert("pid", QVariant::fromValue(id));
     rec_p1->insert("name", QVariant::fromValue(s_prop));
     rec_p1->insert("value", QVariant::fromValue(point.y()));
@@ -177,7 +177,7 @@ void RPCClient::rpcSendBlaPoints(int id, QPointF point, double alt, double speed
 
     QMap<QString, QVariant>* rec_p2 = new QMap<QString, QVariant>;
 
-    s_prop = tr("Высота");
+    s_prop = tr("Height");
     rec_p2->insert("pid", QVariant::fromValue(id));
     rec_p2->insert("name", QVariant::fromValue(s_prop));
     rec_p2->insert("value", QVariant::fromValue(alt));
@@ -412,7 +412,7 @@ void RPCClient::sendBplaPoints(QByteArray data)
     QMap<QString, QVariant>* rec_p = new QMap<QString, QVariant>;
 
     QString s_prop;
-    s_prop = tr("Широта");
+    s_prop = tr("Latitude");
 	rec_p->insert("pid", QVariant::fromValue(m_rdsEvilIds));
     rec_p->insert("name", QVariant::fromValue(s_prop));
     rec_p->insert("value", QVariant::fromValue(track.at(track.size()-1).x()));
@@ -433,7 +433,7 @@ void RPCClient::sendBplaPoints(QByteArray data)
 
     QMap<QString, QVariant>* rec_p1 = new QMap<QString, QVariant>;
 
-    s_prop = tr("Долгота");
+    s_prop = tr("Longitude");
 	rec_p1->insert("pid", QVariant::fromValue(m_rdsEvilIds));
     rec_p1->insert("name", QVariant::fromValue(s_prop));
     rec_p1->insert("value", QVariant::fromValue(track.at(track.size()-1).y()));
@@ -456,7 +456,7 @@ void RPCClient::sendBplaPoints(QByteArray data)
 
     QMap<QString, QVariant>* rec_p2 = new QMap<QString, QVariant>;
 
-    s_prop = tr("Высота");
+    s_prop = tr("Height");
 	rec_p2->insert("pid", QVariant::fromValue(m_rdsEvilIds));
     rec_p2->insert("name", QVariant::fromValue(s_prop));
     rec_p2->insert("value", QVariant::fromValue(alt));

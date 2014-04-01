@@ -140,7 +140,7 @@ void MapClient1::set_Point()
 	StationStyle->setProperty( PwGisStyle::graphicWidth, "40" );
 	StationStyle->setProperty( PwGisStyle::graphicHeight, "40" );
 
-	this->_addMarkerLayer(0, tr("ОП"));
+	this->_addMarkerLayer(0, tr("OP"));
 
 	StationStyle->setProperty( PwGisStyle::layer, _map_layers.value(0));
 
@@ -158,7 +158,7 @@ void MapClient1::set_Point()
 	BPLAStyle->setProperty( PwGisStyle::graphicHeight, "60" );
 	BPLAStyle->setProperty( PwGisStyle::strokeColor, "blue" );
 
-	this->_addMarkerLayer(1, tr("БПЛА"));
+	this->_addMarkerLayer(1, tr("UAV_"));
 
 	BPLAStyle->setProperty( PwGisStyle::layer, _map_layers.value(1));
 
@@ -176,7 +176,7 @@ void MapClient1::set_Point()
 //    BLAStyle->setProperty( PwGisStyle::graphicXOffset, "0");
 	BLAStyle->setProperty( PwGisStyle::strokeColor, "red" );
 
-	this->_addMarkerLayer(2, tr("БЛА"));
+	this->_addMarkerLayer(2, tr("UAV"));
 	QString t = _map_layers.value(2);
 
 	BLAStyle->setProperty( PwGisStyle::layer, _map_layers.value(2));
@@ -195,7 +195,7 @@ void MapClient1::set_Point()
 
 //    BLAStyle->setProperty( PwGisStyle::graphicXOffset, "10");
 
-	this->_addMarkerLayer(3, tr("Атлант"));
+	this->_addMarkerLayer(3, tr("Atlant"));
 
 	pelengStyle->setProperty( PwGisStyle::layer, _map_layers.value(3));
 	pelengStyle->apply();
@@ -212,7 +212,7 @@ void MapClient1::set_Point()
 
 //    BLAStyle->setProperty( PwGisStyle::graphicXOffset, "10");
 
-	this->_addMarkerLayer(4, tr("Атлант Цель"));
+	this->_addMarkerLayer(4, tr("Atlant target"));
 
 	pelengPointStyle->setProperty( PwGisStyle::layer, _map_layers.value(4));
 	pelengPointStyle->apply();
@@ -230,7 +230,7 @@ void MapClient1::set_Point()
 
 //    BLAStyle->setProperty( PwGisStyle::graphicXOffset, "10");
 
-	this->_addMarkerLayer(5, tr("Сетка"));
+	this->_addMarkerLayer(5, tr("Grid"));
 
 	gridStyle->setProperty( PwGisStyle::layer, _map_layers.value(5));
 
@@ -248,7 +248,7 @@ void MapClient1::set_Point()
 	pointsStyle->setProperty( PwGisStyle::strokeColor, "black" );
 
 
-	this->_addMarkerLayer(6, tr("Контрольные точки"));
+	this->_addMarkerLayer(6, tr("Checkpoints"));
 
 	pointsStyle->setProperty( PwGisStyle::layer, _map_layers.value(6));
 
@@ -267,7 +267,7 @@ void MapClient1::set_Point()
 
 //    BLAStyle->setProperty( PwGisStyle::graphicXOffset, "10");
 
-	this->_addMarkerLayer(7, tr("Точка перехвата"));
+	this->_addMarkerLayer(7, tr("Interception point"));
 
 	perehvatStyle->setProperty( PwGisStyle::layer, _map_layers.value(7));
 	perehvatStyle->apply();
@@ -284,7 +284,7 @@ void MapClient1::set_Point()
 
 //    BLAStyle->setProperty( PwGisStyle::graphicXOffset, "10");
 
-	this->_addMarkerLayer(8, tr("Гражданские суда"));
+	this->_addMarkerLayer(8, tr("Civil ships"));
 
 	AISStyle->setProperty( PwGisStyle::layer, _map_layers.value(8));
 	AISStyle->apply();
@@ -301,7 +301,7 @@ void MapClient1::set_Point()
 
 //    BLAStyle->setProperty( PwGisStyle::graphicXOffset, "10");
 
-	this->_addMarkerLayer(9, tr("Точки увода"));
+	this->_addMarkerLayer(9, tr("Diversion points"));
 
 	NIPPPointStyle->setProperty( PwGisStyle::layer, _map_layers.value(9));
 	NIPPPointStyle->apply();
@@ -319,7 +319,7 @@ void MapClient1::set_Point()
 
 //    BLAStyle->setProperty( PwGisStyle::graphicXOffset, "10");
 
-	this->_addMarkerLayer(10, tr("СПИП ДД"));
+	this->_addMarkerLayer(10, tr("SPIP DD"));
 
 	NiiPPStyle->setProperty( PwGisStyle::layer, _map_layers.value(10));
 	NiiPPStyle->apply();
@@ -520,11 +520,11 @@ void MapClient1::_slot_set_point_bla(int id, QPointF point, double alt, double s
 	QString name;
 	if(id == 1044)
 	{
-	   name  = "БЛА-Ц";
+	   name  = tr("UAV-C");
 	}
 	else
 	{
-		name = "БЛА (№" + QString::number(id) + ")";
+		name = tr("UAV (#") + QString::number(id) + ")";
 	}
 //    name.append(QString::number(point.x(), 'f', 4));
 //    name.append("\\n");
@@ -822,7 +822,7 @@ void MapClient1::_slot_set_point_evil(int id, QByteArray data)
 	if (!track.size()) return;
 
 	QString name;
-	name = "БПЛА (№" + QString::number(id) + ")\\n";
+	name = tr("UAV (#") + QString::number(id) + ")\\n";
 	name.append(QString::number(alt, 'f', 1));
 	name.append("\\n");
 	double sko1 = qSqrt(sko.x()*sko.x() + sko.y()*sko.y());
@@ -884,7 +884,7 @@ void MapClient1::_slot_set_point_evil_peleng(int id, QPointF point)
 		_last_coord->insert(id, p);
 	}
 	QString name;
-	name = "БПЛА Атлант(№" + QString::number(id) + ")\\n";
+	name = tr("UAV Atlant(#") + QString::number(id) + ")\\n";
 //    name.append(QString::number(point.x(), 'f', 4));
 //    name.append("\\n");
 //    name.append(QString::number(point.y(), 'f', 4));
@@ -1070,7 +1070,7 @@ void MapClient1::onMapReady()
 void MapClient1::_slot_mouse_clicked(double lon, double lat)
 {
 	QString caption;
-	caption.append(tr("Точка увода"));
+	caption.append(tr("Diversion point"));
 	caption.append("\\n");
 	caption.append(QString::number(lat, 'f', 4));
 	caption.append("\\n");
@@ -1113,7 +1113,7 @@ int MapClient1::_read_settings(QString path_to_ini_file)
 
 
 //        _layerManager->
-		if(name != tr("Ингур"))
+		if(name != tr("Ingur"))
 		{
 			_pwwidget->addMarker(name,  lon, lat, "ОП " + name, "", 0, "stations");
 		}
@@ -1210,10 +1210,10 @@ void MapClient1::_slot_perehvat_point(int bla_id, int bpla_id, QPointF aCoord, f
 {
 	QString point_id = QString::number(bla_id) + "-" + QString::number(bpla_id);
 
-	QString caption = tr("Высота = ")  + QString::number(aHgt) + "\\n";
-	caption.append(tr("Радиус = ")  + QString::number(aRadius) + "\\n");
-	caption.append(tr("Курс = ")  + QString::number(aIntcCourse) + "\\n");
-	caption.append(tr("Скорость = ")  + QString::number(aIntcSpeed));// + "\\n";
+	QString caption = tr("Height = ")  + QString::number(aHgt) + "\\n";
+	caption.append(tr("Radius = ")  + QString::number(aRadius) + "\\n");
+	caption.append(tr("Course = ")  + QString::number(aIntcCourse) + "\\n");
+	caption.append(tr("Speed = ")  + QString::number(aIntcSpeed));// + "\\n";
 
 
 	_pwwidget->addCircle(point_id, aCoord.y(), aCoord.x(), aRadius, caption, "", "Perehvat");
