@@ -77,7 +77,7 @@ HEADERS += \
     UAV/BLAPerehvatDialog.h \
     UAV/ZInterception.h \
     MainWindow.h \
-    MainWindowController.h
+    MainWindowController.h \
     Tabs/DbBla/DbBlaController.h \
     Tabs/DbBla/IDbBlaController.h \
     Tabs/DbBla/Defines.h
@@ -106,8 +106,7 @@ SOURCES += \
     UAV/BLAPerehvatDialog.cpp \
     UAV/ZInterception.cpp \
     MainWindow.cpp \
-    MainWindowController.cpp
-
+    MainWindowController.cpp \
     Tabs/DbBla/DbBlaController.cpp
 
 FORMS += \
