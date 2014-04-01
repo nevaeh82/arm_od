@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Station *> map_settings, ITabManager* tabManager, IDBManager* db_bla, IDBManager* db_evil, QObject* parent) :
+MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Station *> map_settings, ITabManager* tabManager, DBManager* db_bla, DBManager* db_evil, QObject* parent) :
 	QObject(parent)
 {
 	m_view = NULL;
@@ -24,17 +24,14 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 	m_bplaModel = new TreeModel(headers);
 
 	/// TODO: refactor
-	m_bplaDbManager = static_cast<DBManager *>(db_evil);
-	m_blaDbManager = static_cast<DBManager *>(db_bla);
+	m_bplaDbManager = db_evil;
+	m_blaDbManager = db_bla;
 
 	/// TODO: refactor
 	m_blaDbManager->set_model(m_blaModel);
 	m_bplaDbManager->set_model(m_bplaModel);
 
 	m_mapSettings = map_settings;
-
-	m_bplaModel->set_db(m_bplaDbManager);
-	m_blaModel->set_db(m_blaDbManager);
 
 	m_treeDelegate = new BLAWidgetDelegate();
 
@@ -156,7 +153,7 @@ void MapTabWidgetController::appendView(MapTabWidget *view)
 	m_view = view;
 
 	m_mapController->appendView(m_view->getMapWidget());
-	m_mapController->init(m_mapSettings, m_blaDbManager, m_bplaDbManager);
+	m_mapController->init(m_mapSettings);
 
 	/// WTF?
 	QPointF latlon1;
@@ -190,6 +187,8 @@ void MapTabWidgetController::onBlaTreeItemDoubleClicked(QModelIndex index)
 {
 	BLAPerehvatDialog *b = new BLAPerehvatDialog(m_mapController->get_map_client(1));
 	b->init((index.data()).toInt(), m_blaDbManager, m_bplaDbManager);
+
+	/// TODO: This dialog should be modal
 	b->show();
 	qDebug() << "Got double click!";
 }

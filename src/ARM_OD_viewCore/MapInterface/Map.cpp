@@ -10,16 +10,14 @@ Map::~Map()
 	m_mapManager->closeMap();
 }
 
-void Map::init(QMap<int, Station*> map_settings, IDBManager* db_bla, IDBManager* db_evil, PwGisWidget* pwwidget)
+void Map::init(QMap<int, Station*> map_settings, PwGisWidget* pwwidget)
 {
-	m_dbBla = db_bla;
-	m_dbEvil = db_evil;
 	m_mapSettings = map_settings;
 
 	QMap<int, Station*>::iterator it;
 	for (it = m_mapSettings.begin(); it != m_mapSettings.end(); ++it)
 	{
-		m_mapClients[(it.value())->id] = new MapClient1(pwwidget, it.value(), m_dbBla, m_dbEvil);
+		m_mapClients[(it.value())->id] = new MapClient1(pwwidget, it.value());
 	}
 }
 

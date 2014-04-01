@@ -19,13 +19,9 @@ BLAWidgetDelegate::BLAWidgetDelegate(QObject *parent) :
     _pm_round_red = new QPixmap(":/images/signals/images/bullet_red.png");
     _pm_round_green = new QPixmap(":/images/signals/images/bullet_green.png");
 
-    QDir dir;
-    dir = QDir::currentPath();
-    qDebug() << QDir::currentPath();
     QFile file("Styles/stylesheet.qcss");
     file.open(QFile::ReadOnly);
-    if(file.isOpen())
-    {
+	if(file.isOpen()) {
         _styleSheet = QLatin1String(file.readAll());
         file.close();
     }
