@@ -78,6 +78,9 @@ HEADERS += \
     UAV/ZInterception.h \
     MainWindow.h \
     MainWindowController.h
+    Tabs/DbBla/DbBlaController.h \
+    Tabs/DbBla/IDbBlaController.h \
+    Tabs/DbBla/Defines.h
 
 SOURCES += \
     Common/CommandMessage.cpp \
@@ -104,6 +107,8 @@ SOURCES += \
     UAV/ZInterception.cpp \
     MainWindow.cpp \
     MainWindowController.cpp
+
+    Tabs/DbBla/DbBlaController.cpp
 
 FORMS += \
     Tabs/Solver/Solver.ui \
