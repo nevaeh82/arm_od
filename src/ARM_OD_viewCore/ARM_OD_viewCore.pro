@@ -94,7 +94,10 @@ HEADERS += \
     Tabs/MapTabWidget.h \
     Station.h \
     Tabs/MapTabWidgetController.h \
-    ControlPanel/ControlPanel.h
+    ControlPanel/ControlPanel.h \
+    Tabs/DbBla/DbBlaController.h \
+    Tabs/DbBla/IDbBlaController.h \
+    Tabs/DbBla/Defines.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -131,7 +134,8 @@ SOURCES += \
 #    SettingsTree/TreeWidgetDelegate.cpp \
     Tabs/MapTabWidget.cpp \
     Tabs/MapTabWidgetController.cpp \
-    ControlPanel/ControlPanel.cpp
+    ControlPanel/ControlPanel.cpp \
+    Tabs/DbBla/DbBlaController.cpp
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \
