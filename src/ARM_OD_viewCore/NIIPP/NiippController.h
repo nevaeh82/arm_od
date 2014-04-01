@@ -8,13 +8,16 @@
 #include "Niipp.h"
 
 #include "NIIPPParser.h"
+#include <Interfaces/IController.h>
 
-class NiippController : public QWidget, public INiiPPController
+class NiippController : public QObject, public IController<NiippWidget>, public INiiPPController
 {
 	Q_OBJECT
 public:
-	NiippController(int id, QString name, QPointF latlon, IRouter *router, MapController* map_controller, ITabManager * parent_tab);
-	~NiippController();
+	NiippController(int id, QString name, QPointF latlon, MapController* map_controller, ITabManager * parent_tab, QObject* parent = NULL);
+	virtual ~NiippController();
+
+	void appendView(NiippWidget* view);
 
 	void create();
 
@@ -33,7 +36,7 @@ private:
 
 private:
 
-	NiippWidget *m_controlView;
+	NiippWidget *m_view;
 	Niipp  *m_controlModel;
 
 signals:
