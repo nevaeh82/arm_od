@@ -18,11 +18,6 @@ TreeModel::TreeModel(const QStringList &headers, QObject *parent)
      delete _rootItem;
  }
 
- void TreeModel::set_db(IDBManager *db_manager)
- {
-     _db_manager = db_manager;
- }
-
  int TreeModel::columnCount(const QModelIndex & /* parent */) const
  {
      return 2;//_rootItem->columnCount();

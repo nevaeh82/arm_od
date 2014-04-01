@@ -95,9 +95,7 @@ HEADERS += \
     Station.h \
     Tabs/MapTabWidgetController.h \
     ControlPanel/ControlPanel.h \
-    Tabs/DbBla/DbBlaController.h \
-    Tabs/DbBla/IDbBlaController.h \
-    Tabs/DbBla/Defines.h
+    Interfaces/IBlaDbChangedListener.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -112,7 +110,6 @@ SOURCES += \
 	NIIPP/Niipp.cpp \
 	NIIPP/NiippParser.cpp \
 	NIIPP/NiippWidget.cpp \
-	Tabs/RPC/rpcclient.cpp \
 	Tabs/Solver/Solver.cpp \
 	Tabs/Solver/SolverWidget.cpp \
 	Tabs/Solver/SolverController.cpp \
@@ -135,7 +132,7 @@ SOURCES += \
     Tabs/MapTabWidget.cpp \
     Tabs/MapTabWidgetController.cpp \
     ControlPanel/ControlPanel.cpp \
-    Tabs/DbBla/DbBlaController.cpp
+    Tabs/RPC/Rpcclient.cpp
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \

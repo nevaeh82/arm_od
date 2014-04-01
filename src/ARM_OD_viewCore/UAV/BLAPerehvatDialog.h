@@ -40,18 +40,10 @@ private:
     DBManager*          _db_bla;
     DBManager*          _db_evil;
 
-    QComboBox*      _cb_bla;
-    QComboBox*      _cb_evil;
-
-    QTreeView*      _tr_bla;
-    QTreeView*      _tr_evil;
-
-    QTreeWidget*    _tr_bpla;
-
     IMapClient*     _map_client;
 
 private slots:
-    void _slot_item_changed(QTreeWidgetItem* item, int id);
+    void treeItemChangedSlot(QTreeWidgetItem* item, int id);
 };
 
 #endif // BLAPEREHVATDIALOG_H

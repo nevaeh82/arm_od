@@ -7,7 +7,7 @@ const double m_zone[52] = {1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5,
 									   22, 26, 29, 33, 37, 41, 47, 52, 57, 62, 68, 72, 76};
 
 
-MapClient1::MapClient1(PwGisWidget *pwwidget, Station *station, IDBManager* db_bla, IDBManager* db_evil)
+MapClient1::MapClient1(PwGisWidget *pwwidget, Station *station)
 	:_mux(QMutex::Recursive),
 	  _niipp_layer_id(0),
 	_sector(NULL),
@@ -17,8 +17,6 @@ MapClient1::MapClient1(PwGisWidget *pwwidget, Station *station, IDBManager* db_b
 
 	_point_uvoda_niipp.setX(0);
 	_point_uvoda_niipp.setY(0);
-	_db_bla = db_bla;
-	_db_evil = db_evil;
 	_peleng = NULL;
 	_cicle = NULL;
 	_circleRadius = 0;

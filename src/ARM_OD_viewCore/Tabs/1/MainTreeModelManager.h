@@ -1,24 +1,24 @@
-#ifndef TreeModel_H
-#define TreeModel_H
+#ifndef MAINTREEMODELMANAGER_H
+#define MAINTREEMODELMANAGER_H
 
 #include <QtGui>
 #include <QAbstractItemModel>
 #include <QModelIndex>
 #include <QVariant>
 
-class TreeItem;
+#include "../Interfaces/core/IExchangeMainTreeItem.h"
 
-#include "ITreeModel.h"
+ class MainTreeItem;
 
-//#include "IModelController.h"
-
- class TreeModel : public QAbstractItemModel, public ITreeModel
+ class MainTreeModelManager : public QAbstractItemModel
  {
      Q_OBJECT
 
  public:
-     TreeModel(const QStringList &headers, QObject *parent = 0);
-     ~TreeModel();
+     MainTreeModelManager(const QStringList &headers, QObject *parent = 0);
+     ~MainTreeModelManager();
+
+     void set_exchanger(IExchangeMainTreeItem *exchanger);
 
      QVariant data(const QModelIndex &index, int role) const;
      QVariant headerData(int section, Qt::Orientation orientation,
@@ -37,40 +37,42 @@ class TreeItem;
      bool setHeaderData(int section, Qt::Orientation orientation,
                         const QVariant &value, int role = Qt::EditRole);
 
-//     bool insertColumns(int position, int columns,
-//                        const QModelIndex &parent = QModelIndex());
+     bool insertColumns(int position, int columns,
+                        const QModelIndex &parent = QModelIndex());
      bool removeColumns(int position, int columns,
                         const QModelIndex &parent = QModelIndex());
-//     bool insertRows(int position, int rows,
-//                     const QModelIndex &parent = QModelIndex());
+     bool insertRows(int position, int rows,
+                     const QModelIndex &parent = QModelIndex());
      bool removeRows(int position, int rows,
                      const QModelIndex &parent = QModelIndex());
 
      bool setItemData(const QModelIndex &index, const QMap<int, QVariant> &roles);
 //     QMap<int, QVariant>  itemData(const QModelIndex &index) const;
-     virtual bool addChild(QMap<QString, QVariant> *data, int role);
-
-     virtual void removeChild(int pid, int id, int role);
+//     bool addChild(const QModelIndex &index, const QVariant &value, int role);
 //     void addItemChild(MainTreeItem *parent, int position, int count, int columns, QVector<QVariant> columnData, int role);
 
 //     bool addChildProperty(const QModelIndex &index, const QVariant &ID, const QVariant &Property, int role);
 
-//     TreeItem *get_root_item();
+     MainTreeItem *get_root_item();
 
 //     void set_id(unsigned int id);
-//     MainTreeItem *getItem(const QModelIndex &index) const;
-//      void fill_model(int pid);
- private:
-//     void _updateItem(QVector<QVariant> *data);
+     MainTreeItem *getItem(const QModelIndex &index) const;
+
+//     void updateItem(QString name, QVariant value);
 //     QModelIndex get_toot_index(QString id_name);
 
-     void _refreshModel();
+     void refreshModel();
 
  private:
-     void setupModelData(const QStringList &lines, TreeItem *parent);
+     void setupModelData(const QStringList &lines, MainTreeItem *parent);
 
 
-     TreeItem*      _rootItem;
+     MainTreeItem *_rootItem;
+
+//     IExchangeMainTreeItem  *_exchanger;
+
+     unsigned int _id;
+
  };
 
-#endif // TreeModel_H
+#endif // MAINTREEMODELMANAGER_H

@@ -19,9 +19,13 @@ BLAWidgetDelegate::BLAWidgetDelegate(QObject *parent) :
     _pm_round_red = new QPixmap(":/images/signals/images/bullet_red.png");
     _pm_round_green = new QPixmap(":/images/signals/images/bullet_green.png");
 
+    QDir dir;
+    dir = QDir::currentPath();
+    qDebug() << QDir::currentPath();
     QFile file("Styles/stylesheet.qcss");
     file.open(QFile::ReadOnly);
-	if(file.isOpen()) {
+    if(file.isOpen())
+    {
         _styleSheet = QLatin1String(file.readAll());
         file.close();
     }
@@ -196,13 +200,13 @@ bool BLAWidgetDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, co
 {
     QModelIndex ind = index.sibling(index.row(), 0);
     QString name = ind.data(Qt::DisplayRole).toString();
-    if(name == tr("Ð¦ÐµÐ½Ñ‚Ñ€ f (ÐœÐ“Ñ†)"))
+    if(name == tr("Öåíòð f (ÌÃö)"))
         _cur_view = 1;
     else
-    if(name == tr("Ð¤Ð¸Ð»ÑŒÑ‚Ñ€ (ÐºÐ“Ñ†)"))
+    if(name == tr("Ôèëüòð (êÃö)"))
         _cur_view = 2;
     else
-    if(name == tr("Ð¡Ð´Ð²Ð¸Ð³ (ÐºÐ“Ñ†)"))
+    if(name == tr("Ñäâèã (êÃö)"))
         _cur_view = 3;
     else
         _cur_view = 1;

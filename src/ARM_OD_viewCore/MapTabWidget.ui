@@ -72,11 +72,17 @@
    </item>
    <item row="2" column="0">
     <widget class="QDockWidget" name="spipDD1DockWidget">
+     <property name="windowTitle">
+      <string>Niipp 1</string>
+     </property>
      <widget class="NiippWidget" name="spipDD1Widget"/>
     </widget>
    </item>
    <item row="2" column="2">
     <widget class="QDockWidget" name="spipDD2DockWidget">
+     <property name="windowTitle">
+      <string>Niipp 2</string>
+     </property>
      <widget class="NiippWidget" name="spipDD2Widget"/>
     </widget>
    </item>

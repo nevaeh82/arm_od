@@ -68,7 +68,7 @@ class MapClient1 : public IMapClient
 {
     Q_OBJECT
 public:
-	MapClient1(PwGisWidget *pwwidget, Station* station, IDBManager* db_bla, IDBManager* db_evil);
+	MapClient1(PwGisWidget *pwwidget, Station* station);
 	virtual ~MapClient1();
 
     virtual void set_niipp_controller(INiiPPController *niipp_controller);
@@ -88,9 +88,6 @@ private:
     /// layers
 
 //    PwGisStyle*                 _pelengStyle;
-
-    IDBManager*         _db_bla;
-    IDBManager*         _db_evil;
 
 
 private:

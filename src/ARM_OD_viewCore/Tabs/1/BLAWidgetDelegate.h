@@ -11,17 +11,21 @@ class BLAWidgetDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-
     BLAWidgetDelegate(QObject *parent = 0);
+
+    void setUserData();
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
     bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
 
+//    QImage defaultIcon() const;
+//    void setDefaultIcon(const QImage & img);
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+//    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 private:
     QPixmap *_pm_round_red;
