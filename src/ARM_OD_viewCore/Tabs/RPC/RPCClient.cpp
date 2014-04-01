@@ -9,7 +9,7 @@ const double m_zoneDir[28] = {2.5, 3, 4, 5,
                        6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20,
                        22, 26, 29, 33, 37, 41, 47, 52, 57, 62, 68, 72, 76};
 
-RPCClient::RPCClient(TabsProperty *prop, IDBManager *db_manager, IDBManager* db_manager_targer,
+RPCClient::RPCClient(Station *station, IDBManager *db_manager, IDBManager* db_manager_targer,
 					 IMapController* map_controller, ITabMap* parent_tab, ITabManager* tab_manager, QObject *parent)
 	: RpcClientBase(parent)
 {
@@ -17,7 +17,7 @@ RPCClient::RPCClient(TabsProperty *prop, IDBManager *db_manager, IDBManager* db_
 	m_solverAuto = false;
 	m_mapController = map_controller;
 	m_parentTab = parent_tab;
-	m_tabProperty = prop;
+	m_station = station;
 	m_dbManager = db_manager;
 	m_dbManagerTarget = db_manager_targer;
 	m_pelengEvilIds = 0;
@@ -107,7 +107,7 @@ void RPCClient::setSolverAuto(QByteArray ba)
 void RPCClient::slotRCPConnetion()
 {
     qDebug() << "Connection complete!";
-	emit signalSetClientId(m_tabProperty->get_id());
+	emit signalSetClientId(m_station->id);
 }
 
 void RPCClient::rpcSendBlaPoints(int id, QPointF point, double alt, double speed, double course, int state)
