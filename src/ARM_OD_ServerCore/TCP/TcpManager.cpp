@@ -6,6 +6,8 @@ TcpManager::TcpManager(QObject* parent) :
 	m_rpcServer = NULL;
 
 	connect(this, SIGNAL(onMethodCalledInternalSignal(QString,QVariant)), this, SLOT(onMethodCalledInternalSlot(QString,QVariant)));
+
+	m_ktrManager = new TcpKTRManager(this);
 }
 
 TcpManager::~TcpManager()
@@ -145,50 +147,10 @@ void TcpManager::onMessageReceived(const quint32 deviceType, const QString& devi
 				inputDataStream >> boardList;
 
 				foreach (quint16 boardID, boardList) {
-					{
-						quint32 device = 1;
-						QByteArray dataToSend;
-						QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
-						dataStream << boardID << device;
-
-//						///Recheck map on exist device
-
-
-//						/// We need in new controller - UAV controller
-//						QString uavTcpDeviceName = QString::number(boardID) + QString(":") + QString::number(device);
-//						quint32 uavTcpDeviceType = DeviceTypes::KTR_TCP_DEVICE;
-//						addTcpDevice(uavTcpDeviceName, uavTcpDeviceType);
-
-//						BaseTcpDeviceController* uavController = m_controllersMap.value(uavTcpDeviceName, NULL);
-//						if (uavController != NULL) {
-//							uavController->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_COMMAND_TO_BPLA, dataToSend)));
-//						}
-//						debug(QString("Something wrong with controller %1 %2").arg(uavTcpDeviceName).arg(uavTcpDeviceType));
-
-
-					}
-					{
-						quint32 device = 622;
-						QByteArray dataToSend;
-						QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
-						dataStream << boardID << device;
-						controller->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_COMMAND_TO_BPLA, dataToSend)));
-
-
-//						/// We need in new controller - UAV controller
-//						QString uavTcpDeviceName = QString::number(boardID) + QString(":") + QString::number(device);
-//						quint32 uavTcpDeviceType = DeviceTypes::KTR_TCP_DEVICE;
-//						addTcpDevice(uavTcpDeviceName, uavTcpDeviceType);
-
-//						BaseTcpDeviceController* uavController = m_controllersMap.value(uavTcpDeviceName, NULL);
-//						if (uavController != NULL) {
-//							uavController->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_COMMAND_TO_BPLA, dataToSend)));
-//						}
-//						debug(QString("Something wrong with controller %1 %2").arg(uavTcpDeviceName).arg(uavTcpDeviceType));
-
-
-					}
+					m_ktrManager->connectToBoard(boardID, KTR_DEVICE_AUTOPILOT);
 				}
+				m_ktrManager->connectToBoard(KTR_BOARD_BROADCAST, KTR_DEVICE_KTRGA622);
+
 			} else if (messageType == TCP_KTR_ANSWER_BPLA){
 				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_BLA_POINTS, messageData);
 			}

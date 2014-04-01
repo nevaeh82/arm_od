@@ -75,10 +75,10 @@ QByteArray TcpKTRCoder::decode(const MessageSP message)
 	 * TCP_KTR_REQUEST_COMMAND_TO_BPLA
 	 *
 	 * case 1:
-	 * "user link command b" + QString::number(_id) + " d" +QString::number(_dev);
+	 * "user link command b" + QString::number(_id) + "d" +QString::number(_dev);
 	 *
 	 * case 2:
-	 * "user link command b" + QString::number(_id) + " d" +QString::number(622);
+	 * "user link command b" + QString::number(_id) + "d" +QString::number(622);
 	 **/
 
 	QString messageType = message->type();
