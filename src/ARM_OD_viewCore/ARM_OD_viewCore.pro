@@ -94,7 +94,8 @@ HEADERS += \
     Tabs/MapTabWidget.h \
     Station.h \
     Tabs/MapTabWidgetController.h \
-    ControlPanel/ControlPanel.h
+    ControlPanel/ControlPanel.h \
+    Interfaces/IBlaDbChangedListener.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -109,7 +110,6 @@ SOURCES += \
 	NIIPP/Niipp.cpp \
 	NIIPP/NiippParser.cpp \
 	NIIPP/NiippWidget.cpp \
-	Tabs/RPC/rpcclient.cpp \
 	Tabs/Solver/Solver.cpp \
 	Tabs/Solver/SolverWidget.cpp \
 	Tabs/Solver/SolverController.cpp \
@@ -131,7 +131,8 @@ SOURCES += \
 #    SettingsTree/TreeWidgetDelegate.cpp \
     Tabs/MapTabWidget.cpp \
     Tabs/MapTabWidgetController.cpp \
-    ControlPanel/ControlPanel.cpp
+    ControlPanel/ControlPanel.cpp \
+    Tabs/RPC/Rpcclient.cpp
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \

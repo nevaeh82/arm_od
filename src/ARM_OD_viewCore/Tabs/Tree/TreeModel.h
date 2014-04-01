@@ -6,8 +6,7 @@
 #include <QModelIndex>
 #include <QVariant>
 
- class TreeItem;
-#include "IDBManager.h"
+class TreeItem;
 
 #include "ITreeModel.h"
 
@@ -20,8 +19,6 @@
  public:
      TreeModel(const QStringList &headers, QObject *parent = 0);
      ~TreeModel();
-
-     void set_db(IDBManager *db_manager);
 
      QVariant data(const QModelIndex &index, int role) const;
      QVariant headerData(int section, Qt::Orientation orientation,
@@ -74,7 +71,6 @@
 
 
      TreeItem*      _rootItem;
-     IDBManager*     _db_manager;
  };
 
 #endif // TreeModel_H

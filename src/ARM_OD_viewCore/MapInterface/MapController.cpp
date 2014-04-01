@@ -17,7 +17,7 @@ MapController::~MapController()
 {
 }
 
-void MapController::init(QMap<int, Station*> map_settings, IDBManager* db_bla, IDBManager* db_evil)
+void MapController::init(QMap<int, Station*> map_settings)
 {
 	m_mapModel->setMapManager(m_view->getPwGis()->mapProvider()->mapManager());
 	m_mapModel->setProfileManager(m_view->getPwGis()->mapProvider()->profileManager());
@@ -26,7 +26,7 @@ void MapController::init(QMap<int, Station*> map_settings, IDBManager* db_bla, I
 
 	m_view->getPwGis()->enableDebugger(false);
 
-	m_mapModel->init(map_settings, db_bla, db_evil, m_view->getPwGis());
+	m_mapModel->init(map_settings, m_view->getPwGis());
 }
 
 void MapController::openMapFromAtlas()

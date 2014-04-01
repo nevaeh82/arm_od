@@ -27,8 +27,6 @@
 #include "MapClient1.h"
 #include "IMapController.h"
 
-#include "../Tabs/Tree/IDBManager.h"
-
 #include "../UAV/ZInterception.h"
 
 #include <Interfaces/IController.h>
@@ -42,7 +40,7 @@ class MapController : public QObject, public IMapController, public IController<
 public:
 	MapController(QObject* parent =NULL);
 	~MapController();
-	void init(QMap<int, Station *> map_settings, IDBManager* db_bla, IDBManager* db_evil);
+	void init(QMap<int, Station *> map_settings);
 
 	PwGisWidget *get_pwwidget();
 	QWidget     *get_widget();

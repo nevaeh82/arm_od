@@ -40,8 +40,8 @@ class MapTabWidgetController: public QObject, public ISubModule, public IControl
 {
 	Q_OBJECT
 public:
-	MapTabWidgetController(Station* station, QMap<int, Station*> map_settings, ITabManager* tabManager, IDBManager* db_bla,
-				 IDBManager* db_evil, QObject* parent = NULL);
+	MapTabWidgetController(Station* station, QMap<int, Station*> map_settings, ITabManager* tabManager, DBManager* db_bla,
+				 DBManager* db_evil, QObject* parent = NULL);
 	virtual ~MapTabWidgetController();
 
 private:
