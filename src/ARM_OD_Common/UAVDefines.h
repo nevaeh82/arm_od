@@ -11,6 +11,7 @@ typedef struct UAVPositionData {
 	UAVPositionData()
 	{
 		boardID		= 0;
+		device		= 0;
 		latitude	= 0.0;
 		longitude	= 0.0;
 		altitude	= 0.0;
@@ -23,6 +24,7 @@ typedef struct UAVPositionData {
 	UAVPositionData(const UAVPositionData& data)
 	{
 		boardID		= data.boardID;
+		device		= data.device;
 		latitude	= data.latitude;
 		longitude	= data.longitude;
 		altitude	= data.altitude;
@@ -33,6 +35,7 @@ typedef struct UAVPositionData {
 	}
 
 	quint16		boardID;
+	quint32		device;
 	double		latitude;
 	double		longitude;
 	double		altitude;
@@ -44,7 +47,7 @@ typedef struct UAVPositionData {
 
 inline QDataStream& operator<<(QDataStream& out, const UAVPositionData& object)
 {
-	return out << object.boardID << object.latitude
+	return out << object.boardID << object.device << object.latitude
 			   << object.longitude << object.altitude
 			   << object.speed << object.course
 			   << object.state << object.dateTime;
@@ -53,6 +56,7 @@ inline QDataStream& operator<<(QDataStream& out, const UAVPositionData& object)
 inline QDataStream& operator>>(QDataStream& in, UAVPositionData& object)
 {
 	quint16		boardID;
+	quint32		device;
 	double		latitude;
 	double		longitude;
 	double		altitude;
@@ -62,12 +66,13 @@ inline QDataStream& operator>>(QDataStream& in, UAVPositionData& object)
 	QDateTime	dateTime;
 
 
-	in >> boardID >> latitude
+	in >> boardID >> device >> latitude
 		>> longitude >> altitude
 		>> speed >> course
 		>> state >> dateTime;
 
 	object.boardID		= boardID;
+	object.device		= device;
 	object.latitude		= latitude;
 	object.longitude	= longitude;
 	object.altitude		= altitude;

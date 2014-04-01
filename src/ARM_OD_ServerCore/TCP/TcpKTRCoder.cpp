@@ -153,11 +153,6 @@ MessageSP TcpKTRCoder::parseLocationFromBoard(const QByteArray& data)
 	point.setX(latitude);
 	point.setY(longitude);
 
-//	QByteArray dataToSend;
-//	QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
-
-//	dataStream << point;
-//	dataStream << m_altitude;
 
 	if(m_logFile.isOpen()) {
 		QString dataString;
@@ -251,23 +246,12 @@ MessageSP TcpKTRCoder::parseLocationFromKTR(const QByteArray& data)
 		lon_f /= 60;
 		lon_f += deg1;
 
-//		QPointF point(lat_f, lon_f);
-
 		UAVPositionData positionData;
 		positionData.latitude = lat_f;
 		positionData.longitude = lon_f;
 
 		positionDataVector.push_back(positionData);
 	}
-
-//	QByteArray dataToSend;
-//	QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
-
-//	dataStream << vec_points;
-//	double alt = 0;
-//	dataStream << alt;
-
-
 
 	QByteArray dataToSend;
 	QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);

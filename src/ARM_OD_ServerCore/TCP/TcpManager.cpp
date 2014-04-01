@@ -21,6 +21,7 @@ void TcpManager::addTcpDevice(const QString& deviceName, const quint32& deviceTy
 
 	BaseTcpDeviceController* controller = NULL;
 
+	/// TODO: recheck following
 //	/// Recheck map on existing device
 //	controller = m_controllersMap.value(uavTcpDeviceName, NULL);
 //	if (controller != NULL) {
@@ -169,6 +170,7 @@ void TcpManager::onMessageReceived(const quint32 deviceType, const QString& devi
 					 */
 					QStringList deviceNameInfo = deviceName.split(":");
 					positionData.boardID = deviceNameInfo.at(2).toUShort();
+					positionData.device = deviceNameInfo.at(3).toUInt();
 					positionDataVector.replace(i, positionData);
 				}
 
