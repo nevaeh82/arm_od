@@ -5,7 +5,9 @@
 #include <QSqlDatabase>
 #include "IDbBlaController.h"
 
-class DbBlaController : public QObject, public IDbBlaController
+#include "Db/DbControllerBase.h"
+
+class DbBlaController : public DbControllerBase, public IDbBlaController
 {
 	Q_OBJECT
 private:

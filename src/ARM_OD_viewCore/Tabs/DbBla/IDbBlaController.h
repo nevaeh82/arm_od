@@ -12,7 +12,6 @@ class IDbBlaController
 {
 	public:
 		virtual ~IDbBlaController(){}
-		virtual bool connectToDB(const DBConnectionStruct& parameters) = 0;
 
 		virtual bool addBla(const Bla&) = 0;
 		virtual bool addBla(const Bla&, const BlaInfo&) = 0;
