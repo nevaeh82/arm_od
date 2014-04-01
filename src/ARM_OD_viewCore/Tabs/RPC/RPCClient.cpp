@@ -397,9 +397,7 @@ void RPCClient::sendBplaPoints(QByteArray data)
     }
 	m_mapController->get_map_client(1)->slot_add_evil(m_rdsEvilIds, data);
 
-    QMap<QString, QVariant>* rec = new QMap<QString, QVariant>;
-
-	rec = m_dbManagerTarget->get_bpla_fields(m_rdsEvilIds);
+	QMap<QString, QVariant>* rec = m_dbManagerTarget->get_bpla_fields(m_rdsEvilIds);
     if(rec->count() == 0)
     {
 		rec->insert("id", QVariant::fromValue(m_rdsEvilIds));

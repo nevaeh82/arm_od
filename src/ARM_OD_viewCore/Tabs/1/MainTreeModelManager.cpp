@@ -3,7 +3,7 @@
 
 MainTreeModelManager::MainTreeModelManager(const QStringList &headers, QObject *parent)
      : QAbstractItemModel(parent)
-	 , _id = 0;
+	 , _id(0)
  {
      QVector<QVariant> rootHeaders;
      foreach (QString header, headers)
