@@ -18,6 +18,7 @@
 #include "TcpNIIPPController.h"
 #include "TcpKTRController.h"
 #include "TcpAISController.h"
+#include "TcpKTRManager.h"
 
 #include "TcpArmrClientController.h"
 
@@ -41,7 +42,7 @@ private:
 	 *
 	 **/
 
-
+	ITcpKTRManager* m_ktrManager; //UAV connections
 public:
 	explicit TcpManager(QObject* parent = NULL);
 	virtual ~TcpManager();

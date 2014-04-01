@@ -6,6 +6,8 @@ TcpManager::TcpManager(QObject* parent) :
 	m_rpcServer = NULL;
 
 	connect(this, SIGNAL(onMethodCalledInternalSignal(QString,QVariant)), this, SLOT(onMethodCalledInternalSlot(QString,QVariant)));
+
+	m_ktrManager = new TcpKTRManager(this, this);
 }
 
 TcpManager::~TcpManager()
@@ -19,6 +21,7 @@ void TcpManager::addTcpDevice(const QString& deviceName, const quint32& deviceTy
 
 	BaseTcpDeviceController* controller = NULL;
 
+	/// TODO: recheck following
 //	/// Recheck map on existing device
 //	controller = m_controllersMap.value(uavTcpDeviceName, NULL);
 //	if (controller != NULL) {
@@ -55,8 +58,6 @@ void TcpManager::addTcpDevice(const QString& deviceName, const quint32& deviceTy
 		debug(QString("Unable to create %1 with type %2").arg(QString(deviceName)).arg(QString::number(deviceType)));
 		return;
 	}
-
-	controller->registerReceiver(this);
 
 	QThread* controllerThread = new QThread;
 	connect(controller->asQObject(), SIGNAL(destroyed()), controllerThread, SLOT(terminate()));
@@ -123,7 +124,7 @@ void TcpManager::onMessageReceived(const quint32 deviceType, const QString& devi
 	switch (deviceType) {
 		case DeviceTypes::NIIPP_TCP_DEVICE:
 			if (messageType == TCP_NIIPP_ANSWER) {
-//				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_NIIPP_DATA, messageData);
+				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_NIIPP_DATA, messageData);
 			}
 			break;
 		case DeviceTypes::KTR_TCP_DEVICE:
@@ -145,57 +146,44 @@ void TcpManager::onMessageReceived(const quint32 deviceType, const QString& devi
 				inputDataStream >> boardList;
 
 				foreach (quint16 boardID, boardList) {
-					{
-						quint32 device = 1;
-						QByteArray dataToSend;
-						QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
-						dataStream << boardID << device;
-
-//						///Recheck map on exist device
-
-
-//						/// We need in new controller - UAV controller
-//						QString uavTcpDeviceName = QString::number(boardID) + QString(":") + QString::number(device);
-//						quint32 uavTcpDeviceType = DeviceTypes::KTR_TCP_DEVICE;
-//						addTcpDevice(uavTcpDeviceName, uavTcpDeviceType);
-
-//						BaseTcpDeviceController* uavController = m_controllersMap.value(uavTcpDeviceName, NULL);
-//						if (uavController != NULL) {
-//							uavController->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_COMMAND_TO_BPLA, dataToSend)));
-//						}
-//						debug(QString("Something wrong with controller %1 %2").arg(uavTcpDeviceName).arg(uavTcpDeviceType));
-
-
-					}
-					{
-						quint32 device = 622;
-						QByteArray dataToSend;
-						QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
-						dataStream << boardID << device;
-						controller->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_COMMAND_TO_BPLA, dataToSend)));
-
-
-//						/// We need in new controller - UAV controller
-//						QString uavTcpDeviceName = QString::number(boardID) + QString(":") + QString::number(device);
-//						quint32 uavTcpDeviceType = DeviceTypes::KTR_TCP_DEVICE;
-//						addTcpDevice(uavTcpDeviceName, uavTcpDeviceType);
-
-//						BaseTcpDeviceController* uavController = m_controllersMap.value(uavTcpDeviceName, NULL);
-//						if (uavController != NULL) {
-//							uavController->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_COMMAND_TO_BPLA, dataToSend)));
-//						}
-//						debug(QString("Something wrong with controller %1 %2").arg(uavTcpDeviceName).arg(uavTcpDeviceType));
-
-
-					}
+					m_ktrManager->connectToBoard(controller->getHost(), boardID, KTR_DEVICE_AUTOPILOT);
+					m_ktrManager->connectToBoard(controller->getHost(), boardID, KTR_DEVICE_KTRGA622);
 				}
+				/// To future:
+//				m_ktrManager->connectToBoard(controller->getHost(), KTR_BOARD_BROADCAST, KTR_DEVICE_KTRGA622);
+//				m_ktrManager->connectToBoard(controller->getHost(), KTR_BOARD_BROADCAST, KTR_DEVICE_KTRGA623);
+
 			} else if (messageType == TCP_KTR_ANSWER_BPLA){
-				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_BLA_POINTS, messageData);
+
+				QVector<UAVPositionData> positionDataVector;
+				QDataStream inputDataStream(&messageData, QIODevice::ReadOnly);
+				inputDataStream >> positionDataVector;
+
+				for (quint64 i = 0; i < positionDataVector.size(); ++i) {
+					UAVPositionData positionData = positionDataVector.at(i);
+					/**
+					 * deviceNameInfo:
+					 *		host
+					 *		port
+					 *		boardID
+					 *		device
+					 */
+					QStringList deviceNameInfo = deviceName.split(":");
+					positionData.boardID = deviceNameInfo.at(2).toUShort();
+					positionData.device = deviceNameInfo.at(3).toUInt();
+					positionDataVector.replace(i, positionData);
+				}
+
+				QByteArray dataToSend;
+				QDataStream outputDataStream(&dataToSend, QIODevice::WriteOnly);
+				outputDataStream << positionDataVector;
+
+				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_BLA_POINTS, dataToSend);
 			}
 			break;
 		case DeviceTypes::AIS_TCP_DEVICE:
 			if (messageType == TCP_AIS_ANSWER_DATA) {
-//				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_AIS_DATA, messageData);
+				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_AIS_DATA, messageData);
 			}
 			break;
 		case DeviceTypes::ARMR_TCP_CLIENT:

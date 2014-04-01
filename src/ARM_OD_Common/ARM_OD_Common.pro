@@ -27,4 +27,5 @@ HEADERS += \
     Info/NIIPPSettings.h \
     Info/KTRSettings.h \
     Info/AISSettings.h \
-    Info/ArmrTcpClientSettings.h
+    Info/ArmrTcpClientSettings.h \
+    UAVDefines.h

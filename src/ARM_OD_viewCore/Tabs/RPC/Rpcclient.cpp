@@ -45,7 +45,7 @@ bool RPCClient::start(quint16 port, QHostAddress ipAddress)
 	qDebug() << this->thread();
 
 	///server
-	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BLA_POINTS, this, SLOT(rpcSendBlaPoints(int,QPointF,double,double,double,int)));
+	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BLA_POINTS, this, SLOT(rpcSendBlaPoints(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_AIS_DATA, this, SLOT(rpcSlotServerSendAisData(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_POINTS, this, SLOT(rpcSendBplaPoints(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO, this, SLOT(rpcSendBplaPointsAuto(QByteArray)));
@@ -110,8 +110,31 @@ void RPCClient::slotRCPConnetion()
 	emit signalSetClientId(m_station->id);
 }
 
-void RPCClient::rpcSendBlaPoints(int id, QPointF point, double alt, double speed, double course, int state)
+void RPCClient::rpcSendBlaPoints(QByteArray data)
 {
+//	debug("Get data from server");
+	QDataStream inputDataStream(&data, QIODevice::ReadOnly);
+	QVector<UAVPositionData> positionDataVector;
+
+	inputDataStream >> positionDataVector;
+
+	if (positionDataVector.size() < 1) {
+		debug("Size uavpositiondata vector < 1");
+		return;
+	}
+
+	/// Now we take first point, but we need to take more than 1 point
+	UAVPositionData positionData = positionDataVector.at(0);
+
+	int id = positionData.boardID; /// need quint16
+	QPointF point;
+	point.setX(positionData.latitude);
+	point.setY(positionData.longitude);
+	double alt = positionData.altitude;
+	double speed = positionData.speed;
+	double course = positionData.course;
+	quint32 state = positionData.state;
+
     QByteArray ddd;
     QDataStream ds(&ddd, QIODevice::WriteOnly);
     ds << point;
