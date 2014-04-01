@@ -179,7 +179,7 @@ void MapClient1::set_Point()
 	BLAStyle->setProperty( PwGisStyle::strokeColor, "red" );
 
 	this->_addMarkerLayer(2, tr("БЛА"));
-	QString t = _map_layers.value(2);
+	//QString t = _map_layers.value(2);
 
 	BLAStyle->setProperty( PwGisStyle::layer, _map_layers.value(2));
 
@@ -501,7 +501,7 @@ void MapClient1::_slot_update_points()
 }
 
 /// set point in this thread
-void MapClient1::_slot_set_point_bla(int id, QPointF point, double alt, double speed, double course, int state)
+void MapClient1::_slot_set_point_bla(int id, const QPointF& point, double alt, double speed, double course, int state)
 {
 	QMutexLocker lock(&_mux);
 	PwGisPointList *p;
@@ -843,7 +843,7 @@ void MapClient1::_slot_set_point_evil(int id, QByteArray data)
 //    PwGisLonLat *platlon = new PwGisLonLat(y, x, this);
 
 //    p->append(platlon);
-	QString path_id = "path_" + QString::number(id);
+//	QString path_id = "path_" + QString::number(id);
 //    if ( p->length() > 100 )
 //    {
 //        p->removeFirst();
@@ -894,7 +894,6 @@ void MapClient1::_slot_set_point_evil_peleng(int id, QPointF point)
 	PwGisLonLat *platlon = new PwGisLonLat(y, x, this);
 
 	p->append(platlon);
-	QString path_id = "path_" + QString::number(id);
 	if ( p->length() > 100 )
 	{
 		p->removeFirst();

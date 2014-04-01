@@ -149,9 +149,9 @@ public slots:
     virtual void slot_peleng(int id, int id_post, double lat, double lon, double direction);
 //    virtual void slot_peleng_evil(int id, double lat, double lon);
 private slots:
-    void _slot_set_point_bla(int id, QPointF point, double alt, double speed, double course, int state);
+	void _slot_set_point_bla(int id, const QPointF& point, double alt, double speed, double course, int state);
     void _slot_set_point_evil(int id, QByteArray data);
-    void _slot_set_point_evil_peleng(int id, QPointF point);
+	void _slot_set_point_evil_peleng(int id, const QPointF& point);
 
     void _slot_set_ais_data(QMap<int, QVector<QString> > vec);
 

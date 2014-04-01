@@ -192,7 +192,7 @@ void Niipp::setAntennaType(int value)
 	}
 }
 
-void Niipp::sendEvil(QPointF point, QPointF point_uvoda, double alt, double bearing)
+void Niipp::sendEvil(const QPointF& point, const QPointF& point_uvoda, double alt, double bearing)
 {
 	QByteArray ba;
 	QDataStream ds(&ba, QIODevice::ReadWrite);
@@ -337,7 +337,7 @@ void Niipp::setSBpowerValue(int value)
 	m_sbPowerValue = value;
 }
 
-void Niipp::setPoint(QPointF coord)
+void Niipp::setPoint(const QPointF& coord)
 {
 	 m_pointUvodeNiipp = coord;
 }
