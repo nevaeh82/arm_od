@@ -3,7 +3,7 @@
 
 TreeModel::TreeModel(const QStringList &headers, QObject *parent)
      : QAbstractItemModel(parent)
-	 , _db_manager = 0
+	 , _db_manager(0)
  {
      QVector<QVariant> rootHeaders;
      foreach (QString header, headers)
