@@ -177,7 +177,7 @@ void MapClient1::set_Point()
 	BLAStyle->setProperty( PwGisStyle::strokeColor, "red" );
 
 	this->_addMarkerLayer(2, tr("БЛА"));
-	QString t = _map_layers.value(2);
+	//QString t = _map_layers.value(2);
 
 	BLAStyle->setProperty( PwGisStyle::layer, _map_layers.value(2));
 
@@ -368,7 +368,6 @@ void MapClient1::set_Point()
 
 	double step_x = 10/(111.111*cos(top/(180/3.14)));
 	double step_y = 10/(111.111);
-	int x = 0, y = 0;
 //    for( double i = left; i < rigth; i += step_x)
 //    {
 //        _pwwidget->addLine(QString("Grid_x_%1").arg(x++), i,top,i,bottom, QString(tr("Д_%1")).arg(x), "", "Grid");
@@ -390,9 +389,6 @@ void MapClient1::center_map()
 /// set justify map
 void MapClient1::justify_map()
 {
-	MapZoomInfo* info = _mapBounds->getMapZoomInfo();
-	GeoRectangle* rect = _mapBounds->getMapBounds();
-
 	int h = _pwwidget->maximumHeight();
 	int w = _pwwidget->maximumWidth();
 	_mapBounds->zoomMapTo(0, 0, w, h/*rect->getLeft(), rect->getBottom(), rect->getRight(), rect->getTop()*/);
@@ -503,7 +499,7 @@ void MapClient1::_slot_update_points()
 }
 
 /// set point in this thread
-void MapClient1::_slot_set_point_bla(int id, QPointF point, double alt, double speed, double course, int state)
+void MapClient1::_slot_set_point_bla(int id, const QPointF& point, double alt, double speed, double course, int state)
 {
 	QMutexLocker lock(&_mux);
 	PwGisPointList *p;
@@ -845,7 +841,7 @@ void MapClient1::_slot_set_point_evil(int id, QByteArray data)
 //    PwGisLonLat *platlon = new PwGisLonLat(y, x, this);
 
 //    p->append(platlon);
-	QString path_id = "path_" + QString::number(id);
+//	QString path_id = "path_" + QString::number(id);
 //    if ( p->length() > 100 )
 //    {
 //        p->removeFirst();
@@ -871,7 +867,7 @@ void MapClient1::_slot_set_point_evil(int id, QByteArray data)
 
 }
 
-void MapClient1::_slot_set_point_evil_peleng(int id, QPointF point)
+void MapClient1::_slot_set_point_evil_peleng(int id, const QPointF& point)
 {
 	PwGisPointList *p;
 	if(_last_coord->contains(id))
@@ -896,7 +892,6 @@ void MapClient1::_slot_set_point_evil_peleng(int id, QPointF point)
 	PwGisLonLat *platlon = new PwGisLonLat(y, x, this);
 
 	p->append(platlon);
-	QString path_id = "path_" + QString::number(id);
 	if ( p->length() > 100 )
 	{
 		p->removeFirst();
@@ -1092,12 +1087,12 @@ int MapClient1::_read_settings(QString path_to_ini_file)
 	m_settings.setIniCodec(codec);
 
 	QString name;
-	double lat;
-	double lon;
 
 	QStringList childKeys = m_settings.childGroups();
 	foreach (const QString &childKey, childKeys)
 	{
+		double lat;
+		double lon;
 //        qDebug() << "m_settings = " << childKey.toLatin1();
 		m_settings.beginGroup(childKey);
 
@@ -1136,12 +1131,12 @@ int MapClient1::_read_settings1(QString path_to_ini_file)
 	m_settings.setIniCodec(codec);
 
 	QString name;
-	double lat;
-	double lon;
 
 	QStringList childKeys = m_settings.childGroups();
 	foreach (const QString &childKey, childKeys)
 	{
+		double lat;
+		double lon;
 //        qDebug() << "m_settings = " << childKey.toLatin1();
 		m_settings.beginGroup(childKey);
 

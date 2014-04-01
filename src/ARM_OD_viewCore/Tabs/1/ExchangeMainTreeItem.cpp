@@ -6,6 +6,7 @@ ExchangeMainTreeItem::ExchangeMainTreeItem(IRouter *router, QMap<int, TabsProper
 {
     _router = router;
     _map_settings = map_settings;
+	_id = 0;
 }
 
 ExchangeMainTreeItem::~ExchangeMainTreeItem()

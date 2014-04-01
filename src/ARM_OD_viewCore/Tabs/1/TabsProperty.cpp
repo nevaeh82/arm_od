@@ -3,6 +3,11 @@
 TabsProperty::TabsProperty()
 {
     _grafic_widget = NULL;
+	_id = 0;
+	_port = 0;
+	_port_Flakon = 0;
+	_latitude = 0;
+	_longitude = 0;
 }
 
 void TabsProperty::destroy()

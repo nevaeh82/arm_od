@@ -27,7 +27,7 @@ QVector<int> DBController::get_list_bla()
 //    req_fields.append(QString::number(id));
 
     QSqlQuery query;
-    bool err = query.exec(req_fields.join(""));
+    query.exec(req_fields.join(""));
     QSqlRecord rec = query.record();
     QVector<int> map_result;
     while(query.next())
@@ -52,7 +52,7 @@ QVector<int> DBController::get_list_bpla()
     req_fields.append(table_name);
 
     QSqlQuery query;
-    bool err = query.exec(req_fields.join(""));
+    query.exec(req_fields.join(""));
     QSqlRecord rec = query.record();
     QVector<int> map_result;
     while(query.next())
@@ -80,7 +80,7 @@ QVector<QMap<QString, QVariant> > *DBController::get_property_bla(int pid)
     req_fields.append(QString::number(pid));
 
     QSqlQuery query;
-    bool err = query.exec(req_fields.join(""));
+    query.exec(req_fields.join(""));
     QSqlRecord rec;// = query.record();
     /*QMap<QString, QVariant> map_result;*/// = new QMap<QString, QVariant>;
     while(query.next())
@@ -110,7 +110,7 @@ QVector<QMap<QString, QVariant> > *DBController::get_property_bpla(int pid)
     req_fields.append(QString::number(pid));
 
     QSqlQuery query;
-    bool err = query.exec(req_fields.join(""));
+    query.exec(req_fields.join(""));
     QSqlRecord rec;// = query.record();
     /*QMap<QString, QVariant> map_result;*/// = new QMap<QString, QVariant>;
     while(query.next())
@@ -141,7 +141,7 @@ void DBController::set_bla(QMap<QString, QVariant> *data)
     req_fields.append(data->value("id").toString());
 
     QSqlQuery query;
-    bool err = query.exec(req_fields.join(""));
+    query.exec(req_fields.join(""));
 
     bool err1 = query.next();
     if(err1)
@@ -171,7 +171,7 @@ void DBController::set_bla(QMap<QString, QVariant> *data)
 //        update_string.append(" AND ");
         update_string.append("id=");
         update_string.append(data->value("id").toString());
-        err = query.exec(update_string);
+        query.exec(update_string);
 //        qDebug() << err;
     }
     else
@@ -196,7 +196,7 @@ void DBController::set_bla(QMap<QString, QVariant> *data)
         insert_string.append(values);
         insert_string.append(")");
 
-        err = query.exec(insert_string);
+        query.exec(insert_string);
     }
 }
 
@@ -216,7 +216,7 @@ void DBController::set_bla_property(QMap<QString, QVariant> *data)
 
 
     QSqlQuery query;
-    bool err = query.exec(req_fields.join(""));
+    query.exec(req_fields.join(""));
 
     bool err1 = query.next();
     if(err1)
@@ -246,7 +246,7 @@ void DBController::set_bla_property(QMap<QString, QVariant> *data)
         update_string.append(" AND ");
         update_string.append("id=");
         update_string.append(data->value("id").toString());
-        err = query.exec(update_string);
+        query.exec(update_string);
 //        qDebug() << err;
     }
     else
@@ -271,7 +271,7 @@ void DBController::set_bla_property(QMap<QString, QVariant> *data)
         insert_string.append(values);
         insert_string.append(")");
 
-        err = query.exec(insert_string);
+        query.exec(insert_string);
     }
 }
 
@@ -289,7 +289,7 @@ void DBController::set_bpla(QMap<QString, QVariant> *data)
     req_fields.append(data->value("id").toString());
 
     QSqlQuery query;
-    bool err = query.exec(req_fields.join(""));
+    query.exec(req_fields.join(""));
 
     bool err1 = query.next();
     if(err1)
@@ -319,7 +319,7 @@ void DBController::set_bpla(QMap<QString, QVariant> *data)
 //        update_string.append(" AND ");
         update_string.append("id=");
         update_string.append(data->value("id").toString());
-        err = query.exec(update_string);
+        query.exec(update_string);
 //        qDebug() << err;
     }
     else
@@ -344,7 +344,7 @@ void DBController::set_bpla(QMap<QString, QVariant> *data)
         insert_string.append(values);
         insert_string.append(")");
 
-        err = query.exec(insert_string);
+        query.exec(insert_string);
     }
 
 }
@@ -364,7 +364,7 @@ void DBController::set_bpla_property(QMap<QString, QVariant> *data)
     req_fields.append(data->value("id").toString());
 
     QSqlQuery query;
-    bool err = query.exec(req_fields.join(""));
+    query.exec(req_fields.join(""));
 
     bool err1 = query.next();
     if(err1)
@@ -394,7 +394,7 @@ void DBController::set_bpla_property(QMap<QString, QVariant> *data)
         update_string.append(" AND ");
         update_string.append("id=");
         update_string.append(data->value("id").toString());
-        err = query.exec(update_string);
+        query.exec(update_string);
 //        qDebug() << err;
     }
     else
@@ -419,7 +419,7 @@ void DBController::set_bpla_property(QMap<QString, QVariant> *data)
         insert_string.append(values);
         insert_string.append(")");
 
-        err = query.exec(insert_string);
+        query.exec(insert_string);
     }
 
 }
@@ -436,7 +436,7 @@ void DBController::delete_bla(int id)
     req_fields.append(QString::number(id));
 
     QSqlQuery query;
-    bool err = query.exec(req_fields.join(""));
+    query.exec(req_fields.join(""));
 }
 
 void DBController::delete_bpla(int id)
@@ -451,7 +451,7 @@ void DBController::delete_bpla(int id)
     req_fields.append(QString::number(id));
 
     QSqlQuery query;
-    bool err = query.exec(req_fields.join(""));
+    query.exec(req_fields.join(""));
 }
 
 void DBController::delete_bla_property(int pid, int id)
@@ -468,7 +468,7 @@ void DBController::delete_bla_property(int pid, int id)
     req_fields.append(QString::number(pid));
 
     QSqlQuery query;
-    bool err = query.exec(req_fields.join(""));
+    query.exec(req_fields.join(""));
 }
 
 void DBController::delete_bpla_property(int pid, int id)
@@ -485,7 +485,7 @@ void DBController::delete_bpla_property(int pid, int id)
     req_fields.append(QString::number(pid));
 
     QSqlQuery query;
-    bool err = query.exec(req_fields.join(""));
+    query.exec(req_fields.join(""));
 }
 
 int DBController::_set_db()
@@ -639,7 +639,7 @@ QMap<QString, QVariant> *DBController::get_bla_fields(int id)
     req_fields.append(QString::number(id));
 
     QSqlQuery query;
-    bool err = query.exec(req_fields.join(""));
+    query.exec(req_fields.join(""));
     QSqlRecord rec = query.record();
     QMap<QString, QVariant>* map_result = new QMap<QString, QVariant>;
     while(query.next())
@@ -665,7 +665,7 @@ QMap<QString, QVariant> *DBController::get_bpla_fields(int id)
     req_fields.append(QString::number(id));
 
     QSqlQuery query;
-    bool err = query.exec(req_fields.join(""));
+    query.exec(req_fields.join(""));
     QSqlRecord rec = query.record();
     QMap<QString, QVariant>* map_result = new QMap<QString, QVariant>;
     while(query.next())

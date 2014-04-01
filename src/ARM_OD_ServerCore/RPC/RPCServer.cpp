@@ -2,8 +2,10 @@
 
 #include <QDebug>
 
-RPCServer::RPCServer(QObject* parent) :
-	RpcServerBase(parent)
+RPCServer::RPCServer(QObject* parent) 
+	: RpcServerBase(parent)
+	, _router(0)
+	, _subscriber(0)
 {
 }
 

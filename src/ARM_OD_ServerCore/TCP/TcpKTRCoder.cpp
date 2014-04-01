@@ -144,9 +144,9 @@ MessageSP TcpKTRCoder::parseLocationFromBoard(const QByteArray& data)
 	lon /= 60;
 	lon += deg;
 
-	latitude = (int) (lat * 100000);
+	//latitude = (int) (lat * 100000);
 	latitude = lat;
-	longitude = (int) (lon * 100000);
+	//longitude = (int) (lon * 100000);
 	longitude = lon;
 
 	QPointF point;

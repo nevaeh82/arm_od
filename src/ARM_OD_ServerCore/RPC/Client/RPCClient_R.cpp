@@ -191,7 +191,7 @@ void RPCClient_R::_slotErrorRPCConnection(QAbstractSocket::SocketError socketErr
 
 void RPCClient_R::_slotReconnection()
 {
-    QIODevice *dev = _rpc_client->takeDevice();
+    //QIODevice *dev = _rpc_client->takeDevice();
     _rpc_client->connect(_ip_RPC, _port_RPC);
 }
 

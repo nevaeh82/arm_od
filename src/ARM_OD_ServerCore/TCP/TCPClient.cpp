@@ -201,7 +201,6 @@ void TCPClientOld::onSocketReadyRead()
 void TCPClientOld::_slotWrite(QByteArray data)
 {
     int writesize = -1;
-    bool connected = false;
     do
     {
         _mutex.lock();

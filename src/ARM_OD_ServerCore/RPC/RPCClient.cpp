@@ -49,9 +49,6 @@ void RPCClient::_slotGetData(rpc_msg msg_ptr)
     QByteArray* dd = f->get(id, type1);
     QDataStream ds(*dd);
     quint64 cid = _server->get_client_id(this);
-    QVector<QPointF> points;
-    QString str;
-    int id_temp = 0;
 
     QPointF point;
     double  alt;

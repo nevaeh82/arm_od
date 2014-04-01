@@ -8,21 +8,21 @@ TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
 	m_currentWidget = NULL;
 
 	m_tabWidget = tabWidget;
-
-	_db_manager_bla = new DBManager(this);
-	_db_manager_evil = new DBManager(this);
+	
+    _db_manager_bla = new DBManager(this);
+    _db_manager_evil = new DBManager(this);
 
 	connect(this, SIGNAL(currentChanged(int)), this, SLOT(changeTabSlot(int)));
 }
 
 TabManager::~TabManager()
 {
-}
+        }
 
 
 void TabManager::send_data_niipp_control(int id, QByteArray ba)
 {
-	emit signalSendToNIIPPControl(id, ba);
+    emit signalSendToNIIPPControl(id, ba);
 
 }
 
@@ -56,9 +56,9 @@ int TabManager::createSubModules(const QString& settingsFile)
 		m_tabWidget->addTab(tabWidget, station->name);
 
 		m_tabWidgetsMap.insert(station->name, tabWidgetController);
-	}
+    }
 
-	return count;
+    return count;
 }
 
 
@@ -69,7 +69,7 @@ void TabManager::send_data(int index, IMessageOld *msg)
 
 	if (NULL == controller) {
 		return;
-	}
+}
 
 	controller->set_command(msg);
 }
@@ -82,31 +82,31 @@ void TabManager::changeTabSlot(int index)
 
 	if (NULL == controller) {
 		return;
-	}
+}
 
 	if  (NULL != m_currentWidget) {
 		m_currentWidget->stop();
-	}
+}
 
 	m_currentWidget = controller;
 	m_currentWidget->start();
-}
+    }
 
 
 /// read settings for generated submodules (tabs)
 int TabManager::readSettings(const QString& settingsFile)
 {
-	int count = 0;
+    int count = 0;
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	QSettings m_settings(settingsFile, QSettings::IniFormat);
 
-	m_settings.setIniCodec(codec);
+    m_settings.setIniCodec(codec);
 
-	QStringList childKeys = m_settings.childGroups();
-	foreach (const QString &childKey, childKeys)
-	{
-		qDebug() << "m_settings = " << childKey.toLatin1();
-		m_settings.beginGroup(childKey);
+    QStringList childKeys = m_settings.childGroups();
+    foreach (const QString &childKey, childKeys)
+    {
+        qDebug() << "m_settings = " << childKey.toLatin1();
+        m_settings.beginGroup(childKey);
 
 		Station* station = new Station();
 
@@ -116,9 +116,9 @@ int TabManager::readSettings(const QString& settingsFile)
 		station->longitude = m_settings.value("Longitude", "0").toDouble();
 
 		m_stationsMap.insert(m_settings.value("Id", 0).toInt(), station);
-		m_settings.endGroup();
-		count++;
-	}
+        m_settings.endGroup();
+        count++;
+    }
 
-	return count;
+    return count;
 }

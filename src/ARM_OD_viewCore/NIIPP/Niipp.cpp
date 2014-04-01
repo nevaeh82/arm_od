@@ -12,6 +12,10 @@ Niipp::Niipp(int id, QString name, QPointF latlon, MapController* mapController,
 	, m_antenaType(0)
 	, m_widthAngle(25)
 	, m_modeCurrentIndex(disabled)
+	, m_type(0)
+	, m_mode(0)
+	, m_antenaIndex(0)
+	, m_sbPowerValue(0)
 {
 	m_id = id;
 	m_name = name;
@@ -188,7 +192,7 @@ void Niipp::setAntennaType(int value)
 	}
 }
 
-void Niipp::sendEvil(QPointF point, QPointF point_uvoda, double alt, double bearing)
+void Niipp::sendEvil(const QPointF& point, const QPointF& point_uvoda, double alt, double bearing)
 {
 	QByteArray ba;
 	QDataStream ds(&ba, QIODevice::ReadWrite);
@@ -333,7 +337,7 @@ void Niipp::setSBpowerValue(int value)
 	m_sbPowerValue = value;
 }
 
-void Niipp::setPoint(QPointF coord)
+void Niipp::setPoint(const QPointF& coord)
 {
 	 m_pointUvodeNiipp = coord;
 }
