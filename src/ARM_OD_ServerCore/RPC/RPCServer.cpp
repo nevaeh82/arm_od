@@ -27,7 +27,9 @@ bool RPCServer::start(quint16 port, QHostAddress address)
 	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCAtlantDirection(QByteArray)), RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION);
 	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCAtlantPosition(QByteArray)), RPC_SLOT_SERVER_SEND_ATLANT_POSITION);
 
-	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCBLAPoints(int,QPointF,double,double,double,int)), RPC_SLOT_SERVER_SEND_BLA_POINTS);
+	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCBLAPoints(QByteArray)), RPC_SLOT_SERVER_SEND_BLA_POINTS);
+	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCAISData(QByteArray)), RPC_SLOT_SERVER_SEND_AIS_DATA);
+	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCNIIPPData(QByteArray)), RPC_SLOT_SERVER_SEND_NIIPP_DATA);
 
 	return RpcServerBase::start(port, address);
 }
@@ -66,7 +68,7 @@ void RPCServer::_slotRPCConnetion(quint64 client)
     }
     RPCClient* cl = new RPCClient(_router, this);
     _map_clients.insert(client, cl);
-    connect(cl, SIGNAL(signalSendToRPCBLAPoints(quint64,int,rpc_QPointF,double,double,double,int)), this, SLOT(rpc_slot_send_bla_points(quint64,int,rpc_QPointF,double,double,double,int)));
+//    connect(cl, SIGNAL(signalSendToRPCBLAPoints(quint64,int,rpc_QPointF,double,double,double,int)), this, SLOT(rpc_slot_send_bla_points(quint64,int,rpc_QPointF,double,double,double,int)));
     connect(cl, SIGNAL(signalSendToRPCAISData(quint64,QByteArray*)), this, SLOT(rpc_slot_send_ais_data(quint64,QByteArray*)));
     connect(cl, SIGNAL(signalSendToRPCBPLAPoints(quint64,QByteArray*)), this, SLOT(rpc_slot_send_bpla_points(quint64,QByteArray*)));
     connect(cl, SIGNAL(signalSendToRPCBPLAPointsAuto(quint64,QByteArray*)), this, SLOT(rpc_slot_send_bpla_points_auto(quint64,QByteArray*)));
@@ -181,17 +183,11 @@ void RPCServer::sendDataByRpc(const QString &signalType, const QByteArray &data)
 	} else if (signalType == RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO) {
 		emit signalSendToRPCBPLAPointsAuto(data);
 	} else if (signalType == RPC_SLOT_SERVER_SEND_BLA_POINTS) {
-
-		QByteArray inputData(data);
-		QDataStream inputDataStream(&inputData, QIODevice::ReadOnly);
-		int id = 0;
-		int state = 0;
-		QPointF points;
-		double alt;
-		double speed = 0.0;
-		double course = 0.0;
-		inputDataStream >> points >> alt;
-		emit signalSendToRPCBLAPoints(id, points, alt, speed, course, state);
+		emit signalSendToRPCBLAPoints(data);
+	} else if (signalType == RPC_SLOT_SERVER_SEND_AIS_DATA) {
+		emit signalSendToRPCAISData(data);
+	} else if (signalType == RPC_SLOT_SERVER_SEND_NIIPP_DATA) {
+		emit signalSendToRPCNIIPPData(data);
 	}
 }
 

@@ -1,7 +1,6 @@
 #ifndef TCPKTRMANAGER_H
 #define TCPKTRMANAGER_H
 
-#include "Interfaces/ITcpKTRManager.h"
 
 #include <QObject>
 #include <QMap>
@@ -9,7 +8,10 @@
 #include <QSignalMapper>
 #include <QMutex>
 #include <QMutexLocker>
+#include <QThread>
+#include <Interfaces/Tcp/ITcpListener.h>
 
+#include "Interfaces/ITcpKTRManager.h"
 #include "TcpKTRController.h"
 
 /// 5 minutes = 300000 msec
@@ -24,21 +26,28 @@ class TcpKTRManager : public QObject, public ITcpKTRManager
 	Q_OBJECT
 
 private:
+	ITcpListener* m_tcpManagerAsListener;
+
 	QMap<QString, BaseTcpDeviceController*> m_connectionMap;
 	QMap<QString, QTimer*> m_lifeTimerMap;
 
 	QSignalMapper* m_timeoutSignalMapper;
 
 	QMutex m_deleteMutex;
+
 public:
-	explicit TcpKTRManager(QObject* parent = NULL);
+	explicit TcpKTRManager(ITcpListener* tcpManager, QObject* parent = NULL);
 	virtual ~TcpKTRManager();
 
-	void connectToBoard(const quint16& board, const quint32& device);
+	// ITcpKTRManager interface
+public:
+	virtual void connectToBoard(const QString& hostPort, const quint16& board, const quint32& device);
 //	void disconnectFromBoard(const quint16& board);
 
 private slots:
 	void timeoutSlot(const QString& key);
+
+
 
 };
 
