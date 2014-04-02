@@ -58,7 +58,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Height</string>
+      <string>Altitude</string>
      </property>
     </widget>
    </item>

@@ -449,21 +449,21 @@
 <context>
     <name>RPCClient</name>
     <message>
-        <location filename="Tabs/RPC/Rpcclient.cpp" line="136"/>
-        <location filename="Tabs/RPC/Rpcclient.cpp" line="415"/>
+        <location filename="Tabs/RPC/Rpcclient.cpp" line="159"/>
+        <location filename="Tabs/RPC/Rpcclient.cpp" line="438"/>
         <source>Latitude</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Tabs/RPC/Rpcclient.cpp" line="157"/>
-        <location filename="Tabs/RPC/Rpcclient.cpp" line="436"/>
-        <source>Longitude</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="Tabs/RPC/Rpcclient.cpp" line="180"/>
         <location filename="Tabs/RPC/Rpcclient.cpp" line="459"/>
-        <source>Height</source>
+        <source>Longitude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/RPC/Rpcclient.cpp" line="203"/>
+        <location filename="Tabs/RPC/Rpcclient.cpp" line="482"/>
+        <source>Altitude</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -487,7 +487,7 @@
     </message>
     <message>
         <location filename="Tabs/Solver/SolverWidget.ui" line="61"/>
-        <source>Height</source>
+        <source>Altitude</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

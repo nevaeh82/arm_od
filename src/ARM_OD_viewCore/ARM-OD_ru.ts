@@ -46,7 +46,7 @@
     <message>
         <location filename="arm_od_view.ui" line="79"/>
         <source>Koordinatometriya parameters</source>
-        <translation type="unfinished">Параметры координатометрии</translation>
+        <translation>Параметры координатометрии</translation>
     </message>
 </context>
 <context>
@@ -563,22 +563,26 @@
 <context>
     <name>RPCClient</name>
     <message>
-        <location filename="Tabs/RPC/Rpcclient.cpp" line="136"/>
-        <location filename="Tabs/RPC/Rpcclient.cpp" line="415"/>
+        <location filename="Tabs/RPC/Rpcclient.cpp" line="159"/>
+        <location filename="Tabs/RPC/Rpcclient.cpp" line="438"/>
         <source>Latitude</source>
         <translation>Широта</translation>
     </message>
     <message>
-        <location filename="Tabs/RPC/Rpcclient.cpp" line="157"/>
-        <location filename="Tabs/RPC/Rpcclient.cpp" line="436"/>
+        <location filename="Tabs/RPC/Rpcclient.cpp" line="180"/>
+        <location filename="Tabs/RPC/Rpcclient.cpp" line="459"/>
         <source>Longitude</source>
         <translation>Долгота</translation>
     </message>
     <message>
-        <location filename="Tabs/RPC/Rpcclient.cpp" line="180"/>
-        <location filename="Tabs/RPC/Rpcclient.cpp" line="459"/>
-        <source>Height</source>
+        <location filename="Tabs/RPC/Rpcclient.cpp" line="203"/>
+        <location filename="Tabs/RPC/Rpcclient.cpp" line="482"/>
+        <source>Altitude</source>
         <translation>Высота</translation>
+    </message>
+    <message>
+        <source>Height</source>
+        <translation type="obsolete">Высота</translation>
     </message>
 </context>
 <context>
@@ -605,19 +609,23 @@
         <translation>Число отсчетов</translation>
     </message>
     <message>
+        <location filename="Tabs/Solver/SolverWidget.ui" line="61"/>
+        <source>Altitude</source>
+        <translation>Высота</translation>
+    </message>
+    <message>
         <location filename="Tabs/Solver/SolverWidget.ui" line="68"/>
         <source>Automatic mode</source>
         <translation>Автоматический режим</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverWidget.ui" line="61"/>
         <source>Height</source>
-        <translation>Высота</translation>
+        <translation type="obsolete">Высота</translation>
     </message>
     <message>
         <location filename="Tabs/Solver/SolverWidget.ui" line="45"/>
         <source>Track length</source>
-        <translation>Длна трека</translation>
+        <translation>Длина трека</translation>
     </message>
     <message>
         <location filename="Tabs/Solver/SolverWidget.ui" line="77"/>
