@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>263</width>
-    <height>201</height>
+    <height>207</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,7 +26,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Число отсчетов</string>
+      <string>Samples count</string>
      </property>
     </widget>
    </item>
@@ -42,7 +42,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Длина трека</string>
+      <string>Track length</string>
      </property>
     </widget>
    </item>
@@ -58,14 +58,14 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Высота</string>
+      <string>Altitude</string>
      </property>
     </widget>
    </item>
    <item row="0" column="0">
     <widget class="QCheckBox" name="_chb_auto">
      <property name="text">
-      <string>Автоматический режим</string>
+      <string>Automatic mode</string>
      </property>
     </widget>
    </item>
@@ -74,21 +74,21 @@
      <item>
       <widget class="QPushButton" name="_accept">
        <property name="text">
-        <string>Принять</string>
+        <string>Accept</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="_cancel">
        <property name="text">
-        <string>Отклонить</string>
+        <string>Cancel</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="_pb_clear">
        <property name="text">
-        <string>Очистить</string>
+        <string>Clear</string>
        </property>
       </widget>
      </item>

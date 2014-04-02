@@ -32,7 +32,7 @@
    <item>
     <widget class="QPushButton" name="_pb_enable_complex">
      <property name="text">
-      <string>Включить комплекс</string>
+      <string>Turn complex on</string>
      </property>
     </widget>
    </item>
@@ -47,7 +47,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Зона</string>
+        <string>Area</string>
        </property>
       </widget>
      </item>
@@ -60,7 +60,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Радиус</string>
+        <string>Radius</string>
        </property>
       </widget>
      </item>
@@ -80,7 +80,7 @@
      <item row="1" column="2">
       <widget class="QPushButton" name="_pb_start">
        <property name="text">
-        <string>Пуск</string>
+        <string>Start</string>
        </property>
       </widget>
      </item>
@@ -98,14 +98,14 @@
      <item row="0" column="0">
       <widget class="QLabel" name="lbl_antena">
        <property name="text">
-        <string>Выбор антенны</string>
+        <string>Antenna type</string>
        </property>
       </widget>
      </item>
      <item row="0" column="2">
       <widget class="QLabel" name="lbl_mode">
        <property name="text">
-        <string>Режим работы</string>
+        <string>Work mode</string>
        </property>
       </widget>
      </item>
@@ -113,12 +113,12 @@
       <widget class="QComboBox" name="_cb_antena">
        <item>
         <property name="text">
-         <string>Направленная</string>
+         <string>Directed</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Ненаправленная</string>
+         <string>Undirected</string>
         </property>
        </item>
       </widget>
@@ -127,17 +127,17 @@
       <widget class="QComboBox" name="_cb_mode">
        <item>
         <property name="text">
-         <string>Облучение</string>
+         <string>Radiation</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Приведение</string>
+         <string>Adduction</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Круговой обзор</string>
+         <string>Round view</string>
         </property>
        </item>
       </widget>
@@ -145,14 +145,14 @@
      <item row="2" column="0">
       <widget class="QLabel" name="lbl_l1">
        <property name="text">
-        <string>Широта</string>
+        <string>Latitude</string>
        </property>
       </widget>
      </item>
      <item row="2" column="1" colspan="2">
       <widget class="QLabel" name="lbl_l2">
        <property name="text">
-        <string>Долгота</string>
+        <string>Longitude</string>
        </property>
       </widget>
      </item>
@@ -165,7 +165,7 @@
      <item row="3" column="3">
       <widget class="QPushButton" name="_clear_uvod">
        <property name="text">
-        <string>Очистить</string>
+        <string>Clear</string>
        </property>
       </widget>
      </item>
@@ -174,7 +174,7 @@
    <item>
     <widget class="QLabel" name="lbl_status">
      <property name="text">
-      <string>Статус</string>
+      <string>Status</string>
      </property>
     </widget>
    </item>
