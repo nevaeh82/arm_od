@@ -28,6 +28,12 @@ copy-bin:
 	$(rm) $(TmpRel)/bin/*d.*
 	$(rm) $(TmpRel)/bin/*debug.dll
 	$(cp) -rudf $(BinDir)/plugins $(TmpRel)/bin
+	$(cp) -rudf $(BinDir)/DB $(TmpRel)/bin
+	$(cp) -rudf $(BinDir)/images $(TmpRel)/bin
+	$(cp) -rudf $(BinDir)/KTR $(TmpRel)/bin
+	$(cp) -rudf $(BinDir)/Map $(TmpRel)/bin
+	$(cp) -rudf $(BinDir)/Rpc $(TmpRel)/bin
+	$(cp) -rudf $(BinDir)/Styles $(TmpRel)/bin
 	$(cp) -rudf $(BinDir)/Tabs $(TmpRel)/bin
 	$(cp) -rudf $(BinDir)/TCP $(TmpRel)/bin
 
