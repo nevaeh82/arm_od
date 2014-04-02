@@ -9,7 +9,7 @@ SolverWidget::SolverWidget(QWidget *parent)
 {
 	m_ui->setupUi(this);
 
-	setWindowIconText(tr("Обнаружитель"));
+	setWindowIconText(tr("Detector"));
 
 	m_ui->_chb_auto->setCheckState(Qt::Unchecked);
 

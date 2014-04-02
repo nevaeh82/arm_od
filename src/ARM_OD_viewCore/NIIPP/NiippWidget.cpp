@@ -26,7 +26,7 @@ NiippWidget::NiippWidget(QWidget *parent)
 	connect(ui->_sb_power, SIGNAL(valueChanged(int)), this, SIGNAL(valuePowerChanged(int)));
 
 	ui->_le_distance->setFont(*font);
-	ui->_le_distance->setText(tr("0 км"));
+	ui->_le_distance->setText(tr("0 km"));
 	ui->_le_distance->setFixedWidth(70);
 	ui->_le_distance->show();
 
@@ -51,7 +51,7 @@ NiippWidget::NiippWidget(QWidget *parent)
 	ui->_le_lon->setFixedWidth(70);
 
 	ui->_le_status->setReadOnly(true);
-	ui->_le_status->setText(tr("Простой"));
+	ui->_le_status->setText(tr("Simple"));
 
 	connect(ui->_clear_uvod, SIGNAL(clicked()), this, SLOT(clear()));
 	connect(ui->_clear_uvod, SIGNAL(clicked()), this, SIGNAL(cleared()));
@@ -84,15 +84,15 @@ void NiippWidget::changeValuePower(int value, double radiusCircle, double radius
 	ui->_sl_power->setValue(value);
 
 	if( antennaType == 0 ) {
-		ui->_le_distance->setText( QString("%1 км").arg(QString::number(radiusSector)) );
+		ui->_le_distance->setText( QString(tr("%1 km")).arg(QString::number(radiusSector)) );
 		if(ui->_pb_start->isChecked()) {
-			ui->_le_status->setText( tr("Облучение") );
+			ui->_le_status->setText( tr("Radiation") );
 		}
 	}
 	if( antennaType == 1 ) {
-		ui->_le_distance->setText( QString("%1 км").arg(QString::number(radiusCircle)) );
+		ui->_le_distance->setText( QString(tr("%1 km")).arg(QString::number(radiusCircle)) );
 		if(ui->_pb_start->isChecked()) {
-			ui->_le_status->setText( tr("Облучение") );
+			ui->_le_status->setText( tr("Radiation") );
 		}
 	}
 }
@@ -140,7 +140,7 @@ void NiippWidget::setAntennaType(int value, Niipp::WorkMode workMode)
 		ui->_sb_power->update();
 		if(ui->_pb_start->isChecked())
 		{
-			ui->_le_status->setText(tr("Облучение"));
+			ui->_le_status->setText(tr("Radiation"));
 		}
 	}
 	else {
@@ -154,7 +154,7 @@ void NiippWidget::setAntennaType(int value, Niipp::WorkMode workMode)
 		ui->_sb_power->update();
 		if(ui->_pb_start->isChecked())
 		{
-			ui->_le_status->setText(tr("Облучение"));
+			ui->_le_status->setText(tr("Radiation"));
 		}
 	}
 }
@@ -201,27 +201,27 @@ int NiippWidget::getSbPowerValue()
 void NiippWidget::setStatusText(int mode)
 {
 	switch(mode) {
-	case 00:
-		ui->_le_status->setText(tr("Простой"));
-		break;
-	case 01:
-		ui->_le_status->setText(tr("Облучение"));
-		break;
-	case 10:
-		ui->_le_status->setText(tr("Облучение"));
-		break;
-	case 11:
-		ui->_le_status->setText(tr("Авария"));
-		break;
-	case 55:
-		ui->_le_status->setText(tr("Нет координат"));
-		break;
-	case 99:
-		ui->_le_status->setText(tr("Обслуживание"));
-		break;
-	default:
-		ui->_le_status->setText(tr("Нет данных"));
-		break;
+		case 00:
+			ui->_le_status->setText(tr("Simple"));
+			break;
+		case 01:
+			ui->_le_status->setText(tr("Radiation"));
+			break;
+		case 10:
+			ui->_le_status->setText(tr("Radiation"));
+			break;
+		case 11:
+			ui->_le_status->setText(tr("Accident"));
+			break;
+		case 55:
+			ui->_le_status->setText(tr("No coordinates"));
+			break;
+		case 99:
+			ui->_le_status->setText(tr("Service"));
+			break;
+		default:
+			ui->_le_status->setText(tr("No data"));
+			break;
 	}
 }
 

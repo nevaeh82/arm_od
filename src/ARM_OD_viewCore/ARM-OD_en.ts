@@ -2,162 +2,128 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="en_US">
 <context>
-    <name>AtlantTabWidget</name>
+    <name>ARM_OD_view</name>
     <message>
-        <location filename="AtlantTabWidget.ui" line="14"/>
-        <source>Form</source>
+        <location filename="arm_od_view.ui" line="14"/>
+        <source>MainWindow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="AtlantTabWidget.ui" line="23"/>
-        <source>Adaptation</source>
+        <location filename="arm_od_view.ui" line="34"/>
+        <source>File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="AtlantTabWidget.ui" line="28"/>
-        <source>Watch</source>
+        <location filename="arm_od_view.ui" line="41"/>
+        <source>Map</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="AtlantTabWidget.ui" line="33"/>
-        <source>Check</source>
+        <location filename="arm_od_view.ui" line="48"/>
+        <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="AtlantTabWidget.ui" line="38"/>
-        <source>Work</source>
+        <location filename="arm_od_view.ui" line="59"/>
+        <source>New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="AtlantTabWidget.ui" line="76"/>
-        <source>Send</source>
+        <location filename="arm_od_view.ui" line="64"/>
+        <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Tabs/AtlantTabWidget.cpp" line="14"/>
-        <source>Atlant</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CommonSpectrumTabWidget</name>
-    <message>
-        <location filename="Tabs/CommonSpectrumTabWidget.ui" line="14"/>
-        <source>Form</source>
+        <location filename="arm_od_view.ui" line="69"/>
+        <source>Open Atlas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Tabs/CommonSpectrumTabWidget.cpp" line="15"/>
-        <source>Name</source>
+        <location filename="arm_od_view.ui" line="74"/>
+        <source>Open from file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Tabs/CommonSpectrumTabWidget.cpp" line="15"/>
-        <source>Property</source>
+        <location filename="arm_od_view.ui" line="79"/>
+        <source>Koordinatometriya parameters</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>ControlPanelWidget</name>
+    <name>BLAPerehvatDialog</name>
     <message>
-        <location filename="ControlPanel.ui" line="78"/>
-        <source>Form</source>
+        <location filename="UAV/blaperehvatdialog.ui" line="14"/>
+        <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ControlPanel.ui" line="103"/>
-        <source>-</source>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="27"/>
+        <source>UAV #</source>
+        <oldsource>UAV â</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ControlPanel.ui" line="129"/>
-        <source>Set panorama</source>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="31"/>
+        <source>UAV_: #%1</source>
+        <oldsource>UAV_: #1</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ControlPanel.ui" line="138"/>
-        <source>Autosearch</source>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="53"/>
+        <source>#</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ControlPanel.ui" line="145"/>
-        <source>Panorama</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ControlPanel.ui" line="186"/>
-        <source>Set common frequency</source>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="90"/>
+        <source>Target #</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>CorrelationGroupWidget</name>
+    <name>BLAWidgetDelegate</name>
     <message>
-        <location filename="Correlations/CorrelationGroupWidget.ui" line="14"/>
-        <source>Form</source>
+        <location filename="Tabs/Tree/BLAWidgetDelegate.cpp" line="199"/>
+        <source>Center f (MHz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Tree/BLAWidgetDelegate.cpp" line="202"/>
+        <source>Filter (kHz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Tree/BLAWidgetDelegate.cpp" line="205"/>
+        <source>Offset (kHz)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>CorrelationWidget</name>
+    <name>ControlPanel</name>
     <message>
-        <location filename="Correlations/CorrelationWidget.ui" line="14"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="14"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Correlations/CorrelationWidget.cpp" line="13"/>
-        <source>m</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CorrelationWidgetController</name>
-    <message>
-        <location filename="Correlations/CorrelationWidgetController.cpp" line="70"/>
-        <source>m</source>
+        <location filename="ControlPanel/ControlPanel.ui" line="20"/>
+        <source>BLA List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Correlations/CorrelationWidgetController.cpp" line="71"/>
-        <source>Level</source>
+        <location filename="ControlPanel/ControlPanel.ui" line="27"/>
+        <source>BPLA List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ControlPanel/ControlPanel.ui" line="34"/>
+        <source>SPIP DD</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.ui" line="14"/>
-        <source>MainWindow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MainWindow.ui" line="45"/>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MainWindow.ui" line="52"/>
-        <source>Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MainWindow.ui" line="62"/>
-        <source>New</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MainWindow.ui" line="67"/>
-        <source>Exit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MainWindow.ui" line="72"/>
-        <source>Atlant setup</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MainWindow.cpp" line="18"/>
+        <location filename="MainWindow.cpp" line="21"/>
         <source>Zaviruha</source>
         <translation type="unfinished"></translation>
     </message>
@@ -165,248 +131,409 @@
 <context>
     <name>MainWindowController</name>
     <message>
-        <location filename="MainWindowController.cpp" line="76"/>
+        <location filename="MainWindowController.cpp" line="74"/>
         <source>Unable to connect to server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindowController.cpp" line="76"/>
+        <location filename="MainWindowController.cpp" line="74"/>
         <source>Please try to restart application</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>SpectrumWidget</name>
+    <name>MapClient1</name>
     <message>
-        <location filename="SpectrumWidget.ui" line="14"/>
+        <location filename="MapInterface/mapclient1.cpp" line="179"/>
+        <source>UAV</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MapInterface/mapclient1.cpp" line="198"/>
+        <source>Atlant</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MapInterface/mapclient1.cpp" line="215"/>
+        <source>Atlant target</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MapInterface/mapclient1.cpp" line="233"/>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MapInterface/mapclient1.cpp" line="251"/>
+        <source>Checkpoints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MapInterface/mapclient1.cpp" line="270"/>
+        <source>Interception point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MapInterface/mapclient1.cpp" line="287"/>
+        <source>Civil ships</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MapInterface/mapclient1.cpp" line="304"/>
+        <source>Diversion points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MapInterface/mapclient1.cpp" line="1073"/>
+        <source>Diversion point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MapInterface/mapclient1.cpp" line="322"/>
+        <source>SPIP DD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MapInterface/mapclient1.cpp" line="143"/>
+        <source>OP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MapInterface/mapclient1.cpp" line="161"/>
+        <source>UAV_</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MapInterface/mapclient1.cpp" line="523"/>
+        <source>UAV-C</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MapInterface/mapclient1.cpp" line="527"/>
+        <location filename="MapInterface/mapclient1.cpp" line="825"/>
+        <source>UAV (#</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MapInterface/mapclient1.cpp" line="887"/>
+        <source>UAV Atlant(#</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MapInterface/mapclient1.cpp" line="1116"/>
+        <source>Ingur</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MapInterface/mapclient1.cpp" line="1213"/>
+        <source>Height = </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MapInterface/mapclient1.cpp" line="1214"/>
+        <source>Radius = </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MapInterface/mapclient1.cpp" line="1216"/>
+        <source>Speed = </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MapInterface/mapclient1.cpp" line="1215"/>
+        <source>Course = </source>
+        <oldsource>ÐÑÑÑ = </oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MapController</name>
+    <message>
+        <location filename="MapInterface/MapController.cpp" line="41"/>
+        <source>Open atlas</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MapInterface/MapController.cpp" line="43"/>
+        <source>Atlas files (*.chart *.sxf *.sit *.map *.gc *.gst);;All files (*.*)</source>
+        <oldsource>Ð¤Ð¾ÑÐ¼Ð°Ñ ÑÐ¸ÑÑÐ¾Ð²ÑÑ ÐºÐ°ÑÑ (*.chart *.sxf *.sit *.map *.gc *.gst);;ÐÑÐµ ÑÐ°Ð¹Ð»Ñ (*.*)</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MapTabWidget</name>
+    <message>
+        <location filename="MapTabWidget.ui" line="14"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="SpectrumWidget.ui" line="45"/>
-        <source>Autosearch</source>
+        <location filename="MapTabWidget.ui" line="35"/>
+        <source>BLA List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="SpectrumWidget.ui" line="52"/>
-        <source>Panorama</source>
+        <location filename="MapTabWidget.ui" line="52"/>
+        <source>BPLA List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="SpectrumWidget.ui" line="59"/>
-        <source>Threshold</source>
+        <location filename="MapTabWidget.ui" line="76"/>
+        <source>Niipp 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="SpectrumWidget.ui" line="66"/>
-        <source>Get spectrum</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SpectrumWidget.ui" line="73"/>
-        <source> Maximums</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SpectrumWidget.ui" line="80"/>
-        <source>PRM control</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SpectrumWidget.ui" line="89"/>
-        <source>Unknown</source>
+        <location filename="MapTabWidget.ui" line="84"/>
+        <source>Niipp 2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>SpectrumWidgetController</name>
+    <name>MapTabWidgetController</name>
     <message>
-        <location filename="SpectrumWidgetController.cpp" line="65"/>
-        <source>File error</source>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="21"/>
+        <source>Property</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="SpectrumWidgetController.cpp" line="65"/>
-        <source>Very small file or file not found</source>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="21"/>
+        <source>Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="SpectrumWidgetController.cpp" line="147"/>
-        <source>Level</source>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="162"/>
+        <source>SPIP DD-1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="SpectrumWidgetController.cpp" line="178"/>
-        <source>Attention!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SpectrumWidgetController.cpp" line="178"/>
-        <source>Signal was detected!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SpectrumWidgetController.cpp" line="249"/>
-        <source>Hz</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SpectrumWidgetController.cpp" line="252"/>
-        <source>Add to white list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SpectrumWidgetController.cpp" line="253"/>
-        <source>Add to black list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SpectrumWidgetController.cpp" line="254"/>
-        <source>Determine signal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SpectrumWidgetController.cpp" line="255"/>
-        <location filename="SpectrumWidgetController.cpp" line="344"/>
-        <source>Enable correlation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SpectrumWidgetController.cpp" line="256"/>
-        <source>Cleanup text fields</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SpectrumWidgetController.cpp" line="342"/>
-        <source>Disable correlation</source>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="167"/>
+        <source>SPIP DD-2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>Station</name>
+    <name>MapWidget</name>
     <message>
-        <location filename="Station.cpp" line="7"/>
-        <source>Unknown</source>
+        <location filename="MapInterface/MapWidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NiippWidget</name>
+    <message>
+        <location filename="NIIPP/NiippWidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.ui" line="35"/>
+        <source>Turn complex on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.ui" line="50"/>
+        <source>Area</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.ui" line="63"/>
+        <source>Radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.ui" line="83"/>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.ui" line="101"/>
+        <source>Antenna type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.ui" line="108"/>
+        <source>Work mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.ui" line="116"/>
+        <source>Directed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.ui" line="121"/>
+        <source>Undirected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.ui" line="135"/>
+        <source>Adduction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.ui" line="140"/>
+        <source>Round view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.ui" line="148"/>
+        <source>Latitude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.ui" line="155"/>
+        <source>Longitude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.ui" line="168"/>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.ui" line="177"/>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.ui" line="130"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="89"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="95"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="143"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="157"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="208"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="211"/>
+        <source>Radiation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.cpp" line="29"/>
+        <source>0 km</source>
+        <oldsource>0 ÐºÐ¼</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.cpp" line="54"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="205"/>
+        <source>Simple</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.cpp" line="87"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="93"/>
+        <source>%1 km</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.cpp" line="214"/>
+        <source>Accident</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.cpp" line="217"/>
+        <source>No coordinates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.cpp" line="220"/>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.cpp" line="223"/>
+        <source>No data</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RPCClient</name>
+    <message>
+        <location filename="Tabs/RPC/Rpcclient.cpp" line="136"/>
+        <location filename="Tabs/RPC/Rpcclient.cpp" line="415"/>
+        <source>Latitude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/RPC/Rpcclient.cpp" line="157"/>
+        <location filename="Tabs/RPC/Rpcclient.cpp" line="436"/>
+        <source>Longitude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/RPC/Rpcclient.cpp" line="180"/>
+        <location filename="Tabs/RPC/Rpcclient.cpp" line="459"/>
+        <source>Height</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SolverWidget</name>
+    <message>
+        <location filename="Tabs/Solver/SolverWidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverWidget.ui" line="29"/>
+        <source>Samples count</source>
+        <oldsource>Sample count</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverWidget.ui" line="45"/>
+        <source>Track length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverWidget.ui" line="61"/>
+        <source>Height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverWidget.ui" line="68"/>
+        <source>Automatic mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverWidget.ui" line="77"/>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverWidget.ui" line="84"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverWidget.ui" line="91"/>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverWidget.cpp" line="12"/>
+        <source>Detector</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TabManager</name>
     <message>
-        <location filename="Tabs/TabManager.cpp" line="65"/>
-        <source>Common</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Tabs/TabManager.cpp" line="72"/>
-        <source>Atlant</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>TabSpectrumWidget</name>
-    <message>
-        <location filename="TabSpectrumWidget.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>TabSpectrumWidgetController</name>
-    <message>
-        <location filename="Tabs/TabSpectrumWidgetController.cpp" line="25"/>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Tabs/TabSpectrumWidgetController.cpp" line="25"/>
-        <source>Property</source>
+        <location filename="Tabs/TabManager.cpp" line="114"/>
+        <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TreeModel</name>
     <message>
-        <location filename="SettingsTree/TreeModel.cpp" line="286"/>
-        <source>Frequency</source>
+        <location filename="Tabs/Tree/treemodel.cpp" line="199"/>
+        <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="SettingsTree/TreeModel.cpp" line="288"/>
-        <source>Selected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SettingsTree/TreeModel.cpp" line="290"/>
-        <source>Center</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SettingsTree/TreeModel.cpp" line="292"/>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SettingsTree/TreeModel.cpp" line="294"/>
-        <source>Stop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SettingsTree/TreeModel.cpp" line="296"/>
-        <source>Averaging</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SettingsTree/TreeModel.cpp" line="298"/>
-        <source>Leading OP</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SettingsTree/TreeModel.cpp" line="300"/>
-        <source>Panorama start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SettingsTree/TreeModel.cpp" line="302"/>
-        <source>Panorama end</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>TreeWidgetDelegate</name>
-    <message>
-        <location filename="SettingsTree/TreeWidgetDelegate.cpp" line="18"/>
-        <source>Gal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SettingsTree/TreeWidgetDelegate.cpp" line="19"/>
-        <source>Pichora</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SettingsTree/TreeWidgetDelegate.cpp" line="20"/>
-        <source>Nabakia</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SettingsTree/TreeWidgetDelegate.cpp" line="21"/>
-        <source>Taglan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SettingsTree/TreeWidgetDelegate.cpp" line="22"/>
-        <source>Ochamchir</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SettingsTree/TreeWidgetDelegate.cpp" line="23"/>
-        <source>Papinrhua</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="SettingsTree/TreeWidgetDelegate.cpp" line="24"/>
-        <source>Auto</source>
+        <location filename="Tabs/Tree/treemodel.cpp" line="201"/>
+        <source>Property</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
