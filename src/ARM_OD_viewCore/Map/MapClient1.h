@@ -40,13 +40,13 @@
 
 #include "UAV/ZInterception.h"
 
-#include "Map/Features/Ais.h"
-#include "Map/Features/Niipp.h"
-#include "Map/Features/Pelengator.h"
-#include "Map/Features/Interception.h"
-#include "Map/Features/FriendBpla.h"
-#include "Map/Features/EnemyBpla.h"
-#include "Map/Features/Station.h"
+#include "Map/Features/AisFeature.h"
+#include "Map/Features/NiippFeature.h"
+#include "Map/Features/PelengatorFeature.h"
+#include "Map/Features/InterceptionFeature.h"
+#include "Map/Features/FriendBplaFeature.h"
+#include "Map/Features/EnemyBplaFeature.h"
+#include "Map/Features/StationFeature.h"
 
 #include "IMapClient.h"
 

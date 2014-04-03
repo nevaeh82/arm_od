@@ -1,4 +1,4 @@
-#include "Map/Features/Niipp.h"
+#include "Map/Features/NiippFeature.h"
 
 namespace MapFeature {
 

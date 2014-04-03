@@ -1,4 +1,4 @@
-#include "FriendBpla.h"
+#include "Map/Features/FriendBplaFeature.h"
 
 namespace MapFeature {
 

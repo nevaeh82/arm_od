@@ -81,13 +81,7 @@ HEADERS += \
 	Map/MapController.h \
 	Map/Map.h \
 	Map/MapWidget.h \
-	Map/Features/Ais.h \
-	Map/Features/Niipp.h \
-	Map/Features/Pelengator.h \
-	Map/Features/Interception.h \
-	Map/Features/FriendBpla.h \
-	Map/Features/EnemyBpla.h \
-	Map/Features/Station.h \
+	Map/Features/AisFeature.h \
 #	DB/DbController.h \
 #	DB/DbManager.h \
 #	SettingsTree/TreeItem.h \
@@ -103,6 +97,12 @@ HEADERS += \
 	Tabs/MapTabWidgetController.h \
 	ControlPanel/ControlPanel.h \
 	Interfaces/IBlaDbChangedListener.h \
+	Map/Features/EnemyBplaFeature.h \
+	Map/Features/FriendBplaFeature.h \
+	Map/Features/InterceptionFeature.h \
+	Map/Features/NiippFeature.h \
+	Map/Features/PelengatorFeature.h \
+	Map/Features/StationFeature.h \
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -131,13 +131,7 @@ SOURCES += \
 	Map/MapController.cpp \
 	Map/Map.cpp \
 	Map/MapWidget.cpp \
-	Map/Features/Ais.cpp \
-	Map/Features/Niipp.cpp \
-	Map/Features/Pelengator.cpp \
-	Map/Features/Interception.cpp \
-	Map/Features/FriendBpla.cpp \
-	Map/Features/EnemyBpla.cpp \
-	Map/Features/Station.cpp \
+	Map/Features/AisFeature.cpp \
 #	DB/DbController.cpp \
 #	DB/DbManager.cpp \
 #	SettingsTree/TreeItem.cpp \
@@ -147,6 +141,12 @@ SOURCES += \
 	Tabs/MapTabWidget.cpp \
 	Tabs/MapTabWidgetController.cpp \
 	ControlPanel/ControlPanel.cpp \
+	Map/Features/EnemyBplaFeature.cpp \
+	Map/Features/FriendBplaFeature.cpp \
+	Map/Features/InterceptionFeature.cpp \
+	Map/Features/NiippFeature.cpp \
+	Map/Features/PelengatorFeature.cpp \
+	Map/Features/StationFeature.cpp \
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \
