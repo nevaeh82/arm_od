@@ -55,6 +55,40 @@ public:
 		delete dbBlaController;
 	}
 
+	void testAddBla()
+	{
+		DbBlaController* dbBlaController = new DbBlaController();
+		DBConnectionStruct parameters;
+
+		parameters.dbName = "BLA";
+		parameters.host = "127.0.0.1";
+		parameters.login = "root";
+		parameters.port = 3306;
+		parameters.password = "qwerty12345";
+		bool isConnected = dbBlaController->connectToDB(parameters);
+		TS_ASSERT_EQUALS(true, isConnected);
+
+		// GETTING BLA TYPE
+		BlaType blaType;
+		blaType.name = "testBlaType";
+
+		int blaTypeId = dbBlaController->getBlaTypeByName(blaType.name);
+		TS_ASSERT_DIFFERS(INVALID_INDEX, blaTypeId);
+
+
+		// ADDING BLA
+		Bla bla; // ;)
+		bla.blaId = 8000;
+		bla.ip = "10.11.12.134";
+		bla.name = "TEST_BLA";
+		bla.type = blaTypeId;
+
+		int newBlaId = dbBlaController->addBla(bla);
+		TS_ASSERT_DIFFERS(INVALID_INDEX, newBlaId);
+
+		delete dbBlaController;
+	}
+
 	void testAddTargetType()
 	{
 		DbBlaController* dbBlaController = new DbBlaController();
@@ -206,40 +240,6 @@ public:
 
 		int statusId = dbBlaController->addStatus(status);
 		TS_ASSERT_DIFFERS(INVALID_INDEX, statusId);
-
-		delete dbBlaController;
-	}
-
-	void testAddBla()
-	{
-		DbBlaController* dbBlaController = new DbBlaController();
-		DBConnectionStruct parameters;
-
-		parameters.dbName = "BLA";
-		parameters.host = "127.0.0.1";
-		parameters.login = "root";
-		parameters.port = 3306;
-		parameters.password = "qwerty12345";
-		bool isConnected = dbBlaController->connectToDB(parameters);
-		TS_ASSERT_EQUALS(true, isConnected);
-
-		// GETTING BLA TYPE
-		BlaType blaType;
-		blaType.name = "testBlaType";
-
-		int blaTypeId = dbBlaController->getBlaTypeByName(blaType.name);
-		TS_ASSERT_DIFFERS(INVALID_INDEX, blaTypeId);
-
-
-		// ADDING BLA
-		Bla bla; // ;)
-		bla.blaId = 8000;
-		bla.ip = "10.11.12.134";
-		bla.name = "TEST_BLA";
-		bla.type = blaTypeId;
-
-		int newBlaId = dbBlaController->addBla(bla);
-		TS_ASSERT_DIFFERS(INVALID_INDEX, newBlaId);
 
 		delete dbBlaController;
 	}

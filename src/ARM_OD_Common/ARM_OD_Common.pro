@@ -15,11 +15,13 @@ CONFIG += staticlib
 include(  ../../specs/project.pri )
 include(  ../../specs/qxt.pri )
 include(  ../../specs/logger.pri )
+include($$SolutionDir/specs/CISCommonLib.pri )
 
 INCLUDEPATH += $$PWD
 
 SOURCES += \
-    Rpc/RpcDefines.cpp
+    Rpc/RpcDefines.cpp \
+    DbBlaSettingsManager.cpp
 
 HEADERS += \
     Rpc/RpcDefines.h \
@@ -27,4 +29,6 @@ HEADERS += \
     Info/NIIPPSettings.h \
     Info/KTRSettings.h \
     Info/AISSettings.h \
-    Info/ArmrTcpClientSettings.h
+    Info/ArmrTcpClientSettings.h \
+    Interfaces/IDbBlaSettingsManager.h \
+    DbBlaSettingsManager.h

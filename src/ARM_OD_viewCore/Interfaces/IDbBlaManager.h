@@ -1,7 +1,8 @@
-#ifndef IDBBLACONTROLLER_H
-#define IDBBLACONTROLLER_H
+#ifndef IDBBLAMANAGER_H
+#define IDBBLAMANAGER_H
 
-#include <QString>
+#include <QList>
+class IDbBlaController;
 
 struct Bla;
 struct BlaInfo;
@@ -14,12 +15,12 @@ struct BlaType;
 struct DeviceType;
 struct Status;
 
-#define INVALID_INDEX -1
-
-class IDbBlaController
+class IDbBlaManager
 {
 	public:
-		virtual ~IDbBlaController(){}
+		virtual ~IDbBlaManager(){}
+
+		virtual void setDbController(IDbBlaController*) = 0;
 
 		virtual int addBla(const Bla&) = 0;
 		virtual int getBlaByBlaId(const uint blaId) = 0;
@@ -49,4 +50,4 @@ class IDbBlaController
 		virtual int getStatusByName(const QString&) = 0;
 };
 
-#endif // IDBBLACONTROLLER_H
+#endif // IDBBLAMANAGER_H

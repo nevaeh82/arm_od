@@ -31,6 +31,13 @@
 
 #include "MapTabWidgetController.h"
 
+#include "DbBla/DbBlaManager.h"
+#include "DbBla/DbBlaController.h"
+#include "Db/Defines.h"
+
+#include "Interfaces/IDbBlaSettingsManager.h"
+#include "DbBlaSettingsManager.h"
+
 class TabManager: public QObject, public ITabManager
 {
     Q_OBJECT
@@ -47,9 +54,11 @@ private:
 
 	QMap<QString, MapTabWidgetController* >    m_tabWidgetsMap;
 
+   // DBManager*                  _db_manager_bla;
+	IDbBlaSettingsManager* m_dbBlaSettingsManager;
+	DbBlaController* m_dbBlaController;
+	DbBlaManager* m_dbBlaManager;
 
-
-    DBManager*                  _db_manager_bla;
     DBManager*                  _db_manager_evil;
 
     TreeModel*                  _model_spectrum;
@@ -59,27 +68,20 @@ private:
     QMutex                      _mux;
 
 public:
-
-public:
 	void start();
 
 	int createSubModules(const QString& settingsFile);
 
-public:
     virtual void send_data(int pid, IMessageOld* msg);
-
-
     virtual void send_data_niipp_control(int id, QByteArray ba);
-
-
-
 
 private:
 	int readSettings(const QString &settingsFile);
 
+	DBConnectionStruct getDbBlaConnectionSettings();
+
 private slots:
 	void changeTabSlot(int index);
-
 
 signals:
     void signalSendToNIIPPControl(int,QByteArray);

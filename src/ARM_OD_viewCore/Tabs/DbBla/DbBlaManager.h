@@ -1,25 +1,23 @@
-#ifndef DBBLACONTROLLER_H
-#define DBBLACONTROLLER_H
+#ifndef DBBLAMANAGER_H
+#define DBBLAMANAGER_H
 
 #include <QObject>
-#include <QSqlDatabase>
-#include <QtSql/QSqlDatabase>
-#include <QtSql/QSqlError>
-#include <QtSql/QSqlQuery>
-#include <QtSql/QSqlRecord>
 
-#include "IDbBlaController.h"
-
-#include "Db/DbControllerBase.h"
-#include "Defines.h"
+#include "DbBlaController.h"
+#include "Interfaces/IDbBlaManager.h"
+#include "Interfaces/IBlaDbChangedListener.h"
 #include "BaseSubject.h"
 
-class DbBlaController : public DbControllerBase, public IDbBlaController
+class DbBlaManager : public QObject, public IDbBlaManager, BaseSubject<IBlaDbChangedListener>
 {
 	Q_OBJECT
+private:
+	IDbBlaController* m_dbController;
+
 public:
-	explicit DbBlaController(QObject *parent = 0);
-	virtual ~DbBlaController();
+	explicit DbBlaManager(QObject *parent = 0);
+
+	void setDbController(IDbBlaController*);
 
 	int addBla(const Bla&);
 	int getBlaByBlaId(const uint blaId);
@@ -48,10 +46,10 @@ public:
 	int addStatus(const Status&);
 	int getStatusByName(const QString&);
 
-private:
-	int addDictionaryRecord(const QString& dictionary, const QString& name);
-	int getDictionaryRecord(const QString& dictionary, const QString& name);
+signals:
+	
+public slots:
 	
 };
 
-#endif // DBBLACONTROLLER_H
+#endif // DBBLAMANAGER_H

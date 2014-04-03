@@ -70,11 +70,6 @@ int DbBlaController::getBlaByBlaId(const uint blaId)
 	return INVALID_INDEX;
 }
 
-int DbBlaController::addBla(const Bla&, const BlaInfo&)
-{
-	return INVALID_INDEX;
-}
-
 int DbBlaController::addBlaInfo(const BlaInfo& info)
 {
 	if(!m_db.isOpen()){
