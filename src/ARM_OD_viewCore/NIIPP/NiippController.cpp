@@ -9,7 +9,7 @@ NiippController::NiippController(int id, QString name, QPointF latlon, MapContro
 	m_view = NULL;
 
 	connect(this, SIGNAL(angleChanged(double)), this, SLOT(changeAngel(double)));
-	map_controller->get_map_client(1)->set_niipp_controller(this);
+	map_controller->getMapClient(1)->setNiippController(this);
 	m_controlModel->create();
 
 
@@ -62,15 +62,17 @@ void NiippController::changeAngel(double value)
 	m_controlModel->setAngel(value);
 }
 
-void NiippController::set_power(double value)
+void NiippController::setPower(double value)
 {
+	Q_UNUSED( value );
 }
 
-void NiippController::set_switch_on(bool state)
+void NiippController::setSwitchOn(bool state)
 {
+	Q_UNUSED( state );
 }
 
-void NiippController::set_antenna_type(int value)
+void NiippController::setAntennaType(int value)
 {
 	if(value == 1) {
 		m_controlModel->setMode(m_view->getModeIndex());
@@ -80,12 +82,12 @@ void NiippController::set_antenna_type(int value)
 	m_view->setAntennaType(value, getModeCurrentIndex());
 }
 
-int NiippController::get_id()
+int NiippController::getId()
 {
 	return m_controlModel->getId();
 }
 
-void NiippController::set_point(QPointF coord)
+void NiippController::setPoint(QPointF coord)
 {
 	m_controlModel->setPoint(coord);
 
@@ -95,7 +97,7 @@ void NiippController::set_point(QPointF coord)
 	m_view->setLonText(lon_s);
 }
 
-void NiippController::send_evil(QPointF point, QPointF point_uvoda, double alt, double bearing)
+void NiippController::sendEnemyBpla(QPointF point, QPointF point_uvoda, double alt, double bearing)
 {
 	if(!m_view->getStartState())
 	{
@@ -109,7 +111,7 @@ void NiippController::send_evil(QPointF point, QPointF point_uvoda, double alt, 
 
 }
 
-void NiippController::set_angle(double angle)
+void NiippController::setAngle(double angle)
 {
 	emit angleChanged(angle);
 }
@@ -151,7 +153,7 @@ void NiippController::appendView(NiippWidget *view)
 	connect(m_view, SIGNAL(complexEnabled(bool)), this, SLOT(enableComplex(bool)));
 	connect(m_view, SIGNAL(valuePowerChanged(int)), this, SLOT(changeValuePower(int)));
 	connect(m_view, SIGNAL(stopClicked()), this, SLOT(stopClicked()));
-	connect(m_view, SIGNAL(antennaTypeChanged(int)), this, SLOT(set_antenna_type(int)));
+	connect(m_view, SIGNAL(antennaTypeChanged(int)), this, SLOT(setAntennaType(int)));
 	connect(m_view, SIGNAL(modeChanged(int)), this, SLOT(changeMode(int)));
 	connect(m_view, SIGNAL(cleared()), this, SLOT(clear()));
 }

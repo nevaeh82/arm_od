@@ -107,10 +107,10 @@ void NIIPPParser::parsing(QByteArray data)
 
 //    if(mode == 01)
 //    {
-//        _router->get_map_controller()->get_map_client(1)->slot_niipp_power_cicle(0);
+//        _router->get_map_controller()->get_map_client(1)->updateNiippPowerCicle(0);
 //    }
 //    if(mode == 10)
 //    {
-//        _router->get_map_controller()->get_map_client(1)->slot_update_sector(0, /*_zone[zone]**/1000, course);
+//        _router->get_map_controller()->get_map_client(1)->updateNiippPowerSector(0, /*_zone[zone]**/1000, course);
 //    }
 }

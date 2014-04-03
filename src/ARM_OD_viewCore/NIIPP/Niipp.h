@@ -1,11 +1,11 @@
 #ifndef NIIPPCONTROLMODEL_H
 #define NIIPPCONTROLMODEL_H
 
-#include "../MapInterface/MapController.h"
-#include "../Interfaces/core/IRouter.h"
-#include "../Tabs/ITabManager.h"
+#include "Map/MapController.h"
+#include "Interfaces/core/IRouter.h"
+#include "Tabs/ITabManager.h"
 
-#include "../Common/CommandMessage.h"
+#include "Common/CommandMessage.h"
 
 class Niipp
 {
@@ -34,7 +34,7 @@ public:
 	void changeValuePower(int value);
 	void enableComplex(bool state);
 	void clear();
-	void sendEvil(QPointF point, QPointF point_uvoda, double alt, double bearing);
+	void sendEvil(QPointF point, QPointF diversionPoint, double alt, double bearing);
 	QByteArray encode(QStringList list);
 	void changeMode(int value);
 

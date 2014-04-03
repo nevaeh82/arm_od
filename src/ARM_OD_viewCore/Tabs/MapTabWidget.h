@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QTreeView>
 
-#include "MapInterface/MapWidget.h"
+#include "Map/MapWidget.h"
 #include "NIIPP/NiippWidget.h"
 #include "ControlPanel/ControlPanel.h"
 

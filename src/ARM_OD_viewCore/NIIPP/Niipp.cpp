@@ -32,7 +32,7 @@ void Niipp::create()
 	ds << m_latlon;
 	ds << m_widthAngle;
 
-	m_mapController->get_map_client(1)->slot_update_sector(m_id, 0, m_angel, ba);
+	m_mapController->getMapClient(1)->updateNiippPowerSector(m_id, 0, m_angel, ba);
 }
 
 void Niipp::setAngel(double value)
@@ -143,7 +143,7 @@ void Niipp::clear()
 	m_pointUvodeNiipp.setX(0);
 	m_pointUvodeNiipp.setY(0);
 
-	m_mapController->get_map_client(1)->slot_remove_point_uvoda();
+	m_mapController->getMapClient(1)->removePointUvoda();
 }
 
 void Niipp::changeValuePower(int value)
@@ -157,12 +157,12 @@ void Niipp::changeValuePower(int value)
 
 	if(m_antenaType == 0)
 	{
-		m_mapController->get_map_client(1)->slot_update_sector(m_id, m_zoneDir[value], m_angel, ba);
+		m_mapController->getMapClient(1)->updateNiippPowerSector(m_id, m_zoneDir[value], m_angel, ba);
 		m_radiusSector = m_zoneDir[value];
 	}
 	if(m_antenaType == 1)
 	{
-		m_mapController->get_map_client(1)->slot_niipp_power_cicle(m_id, m_zone[value], ba);
+		m_mapController->getMapClient(1)->updateNiippPowerCicle(m_id, m_zone[value], ba);
 		m_radiusCircle = m_zone[value];
 	}
 }
@@ -180,16 +180,18 @@ void Niipp::setAntennaType(int value)
 
 	if(m_antenaType == 1)
 	{
-		m_mapController->get_map_client(1)->slot_niipp_power_cicle(m_id, m_radiusCircle, ba);
+		m_mapController->getMapClient(1)->updateNiippPowerCicle(m_id, m_radiusCircle, ba);
 	}
 	else
 	{
-		m_mapController->get_map_client(1)->slot_update_sector(m_id, m_radiusSector, m_angel, ba);
+		m_mapController->getMapClient(1)->updateNiippPowerSector(m_id, m_radiusSector, m_angel, ba);
 	}
 }
 
-void Niipp::sendEvil(QPointF point, QPointF point_uvoda, double alt, double bearing)
+void Niipp::sendEvil(QPointF point, QPointF diversionPoint, double alt, double bearing)
 {
+	Q_UNUSED( diversionPoint );
+
 	QByteArray ba;
 	QDataStream ds(&ba, QIODevice::ReadWrite);
 	QDateTime dt = QDateTime::currentDateTime();

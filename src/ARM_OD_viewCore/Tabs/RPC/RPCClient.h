@@ -18,7 +18,7 @@
 #include "Station.h"
 #include "Tabs/Tree/DBManager.h"
 #include "Tabs/ITabMap.h"
-#include "MapInterface/IMapController.h"
+#include "Map/IMapController.h"
 
 #include "RadiolocationInterface.h"
 
@@ -39,7 +39,7 @@ private:
 	ITabManager*        m_tabManager;
 	IMapController*     m_mapController;
 
-	QMap<int, int>      m_mapPelengEvilIds;
+	QMap<int, int>      m_mapPelengEnemyIds;
 	int                 m_pelengEvilIds;
 	int                 m_rdsEvilIds;
 

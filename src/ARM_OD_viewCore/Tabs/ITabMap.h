@@ -5,7 +5,7 @@
 #include <QMap>
 #include <QVariant>
 
-#include "../Common/IMessage.h"
+#include "Common/IMessage.h"
 
 class ITabMap
 {

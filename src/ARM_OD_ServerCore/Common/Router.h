@@ -7,7 +7,7 @@
 #include "IRouter.h"
 #include "IQueue.h"
 #include "ISubscriber.h"
-#include "../TCP/ITCPController.h"
+#include "TCP/ITCPController.h"
 
 class Router : public QObject, public IRouter
 {

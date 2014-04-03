@@ -5,7 +5,7 @@
 #include <QComboBox>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include "../Tabs/Tree/DBManager.h"
+#include "Tabs/Tree/DBManager.h"
 
 #include <QTreeView>
 #include <QTreeWidget>
@@ -16,7 +16,7 @@
 
 #include <QVector>
 
-#include "../MapInterface/IMapClient.h"
+#include "Map/IMapClient.h"
 
 namespace Ui {
 class BLAPerehvatDialog;
@@ -37,10 +37,10 @@ private:
 
     int                 _id;
 
-    DBManager*          _db_bla;
-    DBManager*          _db_evil;
+    DBManager*          m_friendBplaDb;
+    DBManager*          m_enemyBplaDbl;
 
-    IMapClient*     _map_client;
+    IMapClient*     m_mapClient;
 
 private slots:
     void treeItemChangedSlot(QTreeWidgetItem* item, int id);

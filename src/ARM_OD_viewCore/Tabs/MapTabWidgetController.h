@@ -6,7 +6,7 @@
 #include <QThread>
 
 
-#include "../Abstracts/ISubModule.h"
+#include "Abstracts/ISubModule.h"
 
 #include "Station.h"
 
@@ -19,13 +19,13 @@
 
 #include "RPC/RPCClient.h"
 
-#include "../MapInterface/MapController.h"
+#include "Map/MapController.h"
 
-#include "../NIIPP/NIIPPController.h"
+#include "NIIPP/NIIPPController.h"
 
 #include "Tree/BLAWidgetDelegate.h"
 
-#include "../UAV/BLAPerehvatDialog.h"
+#include "UAV/BLAPerehvatDialog.h"
 
 #include <Interfaces/IController.h>
 #include "MapTabWidget.h"

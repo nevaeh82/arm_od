@@ -13,7 +13,7 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 	_tab_manager = tabManager;
 
 	/// create map controller
-	m_mapController = new MapController(this);
+	m_mapController = new MapController();
 
 	m_station = station;
 
@@ -185,7 +185,7 @@ void MapTabWidgetController::openMapSlot()
 
 void MapTabWidgetController::onBlaTreeItemDoubleClicked(QModelIndex index)
 {
-	BLAPerehvatDialog *b = new BLAPerehvatDialog(m_mapController->get_map_client(1));
+	BLAPerehvatDialog *b = new BLAPerehvatDialog(m_mapController->getMapClient(1));
 	b->init((index.data()).toInt(), m_blaDbManager, m_bplaDbManager);
 
 	/// TODO: This dialog should be modal

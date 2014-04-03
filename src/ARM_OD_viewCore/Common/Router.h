@@ -5,14 +5,14 @@
 #include <QThread>
 #include <QMap>
 
-//#include "../Interfaces/Core/IRouter.h"
-//#include "../Interfaces/Core/IQueue.h"
-////#include "../Interfaces/Core/IState.h"
-//#include "../Interfaces/core/ITCPController.h"
-//#include "../Interfaces/core/IController.h"
+//#include "Interfaces/Core/IRouter.h"
+//#include "Interfaces/Core/IQueue.h"
+////#include "Interfaces/Core/IState.h"
+//#include "Interfaces/core/ITCPController.h"
+//#include "Interfaces/core/IController.h"
 
 #include "IRouter.h"
-#include "../Tabs/Tree/ITreeModel.h"
+#include "Tabs/Tree/ITreeModel.h"
 
 
 class Router : public QObject, public IRouter

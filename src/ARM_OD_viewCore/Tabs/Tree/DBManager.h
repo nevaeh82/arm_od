@@ -13,56 +13,56 @@
 
 //#include "DBCache.h"
 
-#include "../../Common/CommandMessage.h"
-#include "../ITabManager.h"
+#include "Common/CommandMessage.h"
+#include "Tabs/ITabManager.h"
 
 class DBManager : public QObject, public IDBManager
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    DBManager(ITabManager* tab_manager);
-    ~DBManager();
-
-public:
-    void set_model(ITreeModel *model/*_bla, ITreeModel* model_bpla*/);
+	DBManager(ITabManager* tab_manager);
+	~DBManager();
 
 public:
-    virtual int set(int group, QMap<QString, QVariant>* data);
-    virtual int set_property(int group, QMap<QString, QVariant>* data);
+	void set_model(ITreeModel *model/*_bla, ITreeModel* model_bpla*/);
 
-    virtual QVector<QMap<QString, QVariant> >* get(int id, int group);
-    virtual QVector<int> get(int group);
+public:
+	virtual int set(int group, QMap<QString, QVariant>* data);
+	virtual int set_property(int group, QMap<QString, QVariant>* data);
 
-    virtual void removeItem(int id, int group);
+	virtual QVector<QMap<QString, QVariant> >* get(int id, int group);
+	virtual QVector<int> get(int group);
 
-    virtual QMap<QString, QVariant>* get_bla_fields(int id);
-    virtual QMap<QString, QVariant>* get_bpla_fields(int id);
+	virtual void removeItem(int id, int group);
 
-    virtual void delete_bla(int id);
-    virtual void delete_bpla(int id);
-    virtual void delete_bla_property(int pid, int id);
-    virtual void delete_bpla_property(int pid, int id);
+	virtual QMap<QString, QVariant>* get_bla_fields(int id);
+	virtual QMap<QString, QVariant>* getBplaFields(int id);
+
+	virtual void delete_bla(int id);
+	virtual void delete_bpla(int id);
+	virtual void delete_bla_property(int pid, int id);
+	virtual void delete_bpla_property(int pid, int id);
 
 
 
 private:
-    ITabManager*        _tab_manager;
-    DBController*       _db_controller;
-    ITreeModel*         _model/*_bla*/;
+	ITabManager*        _tab_manager;
+	DBController*       _db_controller;
+	ITreeModel*         _model/*_bla*/;
 //    ITreeModel*         _model_bpla;
 
 //    DBCache             _db_cache;
 
 signals:
-    void signalSetDataDBController(QMap<QString, QVariant> *);
-    void signalSetModel(ITreeModel* model);
-    void signalSet(int group, QMap<QString, QVariant>* data);
-    void signalSetPropertry(int group, QMap<QString, QVariant> *data);
+	void signalSetDataDBController(QMap<QString, QVariant> *);
+	void signalSetModel(ITreeModel* model);
+	void signalSet(int group, QMap<QString, QVariant>* data);
+	void signalSetPropertry(int group, QMap<QString, QVariant> *data);
 
 private slots:
-    void _slot_set_model(ITreeModel* model);
-    void _slot_set(int group, QMap<QString, QVariant>* data);
-    void _slot_set_property(int group, QMap<QString, QVariant> *data);
+	void _slot_set_model(ITreeModel* model);
+	void _slot_set(int group, QMap<QString, QVariant>* data);
+	void _slot_set_property(int group, QMap<QString, QVariant> *data);
 
 };
 

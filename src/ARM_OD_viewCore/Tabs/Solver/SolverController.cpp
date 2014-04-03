@@ -1,4 +1,4 @@
-#include "SolverController.h"
+#include "Tabs/Solver/SolverController.h"
 
 SolverController::SolverController(int id, ITabManager* tabManager)
 	: m_widget( new SolverWidget() )

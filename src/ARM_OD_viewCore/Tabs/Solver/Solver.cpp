@@ -68,5 +68,6 @@ void Solver::clear()
 
 void Solver::countTrack(int count)
 {
+	Q_UNUSED( count );
 }
 

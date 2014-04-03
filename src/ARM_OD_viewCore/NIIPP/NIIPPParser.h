@@ -2,8 +2,8 @@
 #define NIIPPPARSER_H
 
 #include <QObject>
-#include "../Interfaces/ITCPParser.h"
-#include "../Interfaces/core/IRouter.h"
+#include "Interfaces/ITCPParser.h"
+#include "Interfaces/core/IRouter.h"
 #include <QByteArray>
 
 class NIIPPParser : public QObject, public ITCPParser

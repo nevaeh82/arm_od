@@ -10,7 +10,7 @@
 #include <QVBoxLayout>
 #include <QMutex>
 
-#include "../Abstracts/IModuleController.h"
+#include "Abstracts/IModuleController.h"
 
 #include "Station.h"
 
@@ -23,11 +23,11 @@
 
 #include "ITabManager.h"
 
-#include "../MapInterface/MapController.h"
+#include "Map/MapController.h"
 
-#include "../Common/Router.h"
+#include "Common/Router.h"
 
-#include "../NIIPP/NIIPPController.h"
+#include "NIIPP/NIIPPController.h"
 
 #include "MapTabWidgetController.h"
 

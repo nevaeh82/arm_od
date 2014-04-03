@@ -1,8 +1,8 @@
 #ifndef TCPPARESERNIIPP_H
 #define TCPPARESERNIIPP_H
 
-#include "../Interfaces/ITCPParser.h"
-#include "../Interfaces/core/IRouter.h"
+#include "Interfaces/ITCPParser.h"
+#include "Interfaces/core/IRouter.h"
 #include <QByteArray>
 
 class TCPPareserNiiPP: public ITCPParser

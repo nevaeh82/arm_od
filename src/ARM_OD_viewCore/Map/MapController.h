@@ -7,10 +7,8 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QCheckBox>
-
 #include <QMenu>
 #include <QEvent>
-
 #include <QMap>
 
 #include <MapManager.h>
@@ -19,44 +17,41 @@
 #include <IMapManager.h>
 #include <IProfileManager.h>
 
-#include "MapWidget.h"
-#include "Map.h"
-
 #include "Station.h"
 
-#include "MapClient1.h"
-#include "IMapController.h"
+#include "Map/Map.h"
+#include "Map/MapWidget.h"
+#include "Map/MapClient1.h"
+#include "Map/IMapController.h"
 
-#include "../UAV/ZInterception.h"
+#include "Tabs/Tree/IDBManager.h"
 
-#include <Interfaces/IController.h>
+#include "UAV/ZInterception.h"
 
 class MapWidget;
 
-class MapController : public QObject, public IMapController, public IController<MapWidget>
+class MapController : public QObject, public IMapController
 {
 	Q_OBJECT
 
 public:
-	MapController(QObject* parent =NULL);
+	MapController();
 	~MapController();
-	void init(QMap<int, Station *> map_settings);
+	void init(QMap<int, Station*> mapSettings);
 
-	PwGisWidget *get_pwwidget();
-	QWidget     *get_widget();
+	PwGisWidget* getPwWidget();
+	QWidget* getWidget();
+	QWidget* getPanelWidget();
 
-	virtual IMapClient  *get_map_client(int id);
+	virtual IMapClient* getMapClient( int id );
 
-	void addMarkerLayer(int id, QString name);
+	void addMarkerLayer( int id, QString name );
 
 	void appendView(MapWidget* view);
 
 private:
 	MapWidget* m_view;
-	Map* m_mapModel;
-
-private:
-	bool eventFilter(QObject *obj, QEvent *e);
+	Map* m_map;
 
 public slots:
 	void openMapFromAtlas();
@@ -64,11 +59,13 @@ public slots:
 	void onMapReady();
 
 private slots:
-	void _slot_station_visible(bool state);
+	void setStationVisibility( bool state );
 
 signals:
 	void mapOpened();
-
+	void showFriendBplaTreeCliecked();
+	void showEnemyBplaTreeClicked();
+	void showNiippClicked();
 };
 
 #endif // MAPCONTROLLER_H

@@ -1,4 +1,4 @@
-#include "BLAPerehvatDialog.h"
+﻿#include "BLAPerehvatDialog.h"
 #include "ui_blaperehvatdialog.h"
 
 BLAPerehvatDialog::BLAPerehvatDialog(IMapClient* map_client) :
@@ -7,7 +7,7 @@ BLAPerehvatDialog::BLAPerehvatDialog(IMapClient* map_client) :
 {
 	ui->setupUi(this);
 
-	_map_client = map_client;
+	m_mapClient = map_client;
 
 }
 
@@ -19,17 +19,17 @@ BLAPerehvatDialog::~BLAPerehvatDialog()
 void BLAPerehvatDialog::init(int id, DBManager *db_bla, DBManager *db_evil)
 {
 	_id = id;
-	_db_bla = db_bla;
-	_db_evil = db_evil;
+	m_friendBplaDb = db_bla;
+	m_enemyBplaDbl = db_evil;
 
-	QVector<int> res_evil = _db_evil->get(1);
+	QVector<int> res_evil = m_enemyBplaDbl->get(1);
 
 	ui->blaLE->setText(tr("UAV #") + QString::number(_id));
 
 	QList<QTreeWidgetItem *> items;
 	for (int i = 0; i < res_evil.size(); ++i) {
 		QTreeWidgetItem *it = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString(tr("UAV_: #%1")).arg(res_evil.at(i))));
-		QMap<QString, QVariant>* res_evil_fields = _db_evil->get_bpla_fields(res_evil.at(i));
+		QMap<QString, QVariant>* res_evil_fields = m_enemyBplaDbl->getBplaFields(res_evil.at(i));
 
 
 		if(res_evil_fields->value("state").toInt() == 0) {
@@ -53,12 +53,12 @@ void BLAPerehvatDialog::treeItemChangedSlot(QTreeWidgetItem *item, int id)
 	ls = item->text(0).split(tr("#"));
 
 	int id_bpla = ls.at(1).toInt();
-	QMap<QString, QVariant>* db_bpla = _db_evil->get_bpla_fields(id_bpla);
+	QMap<QString, QVariant>* enemyBplaFields = m_enemyBplaDbl->getBplaFields(id_bpla);
 	QString ss = "";
 	if(item->checkState(0) == 0)
 	{
-		db_bpla->insert("state", 0);
-		QVector<QMap<QString, QVariant> >* g = _db_bla->get(_id, 0);
+		enemyBplaFields->insert("state", 0);
+		QVector<QMap<QString, QVariant> >* g = m_friendBplaDb->get(_id, 0);
 		int id_in_tree = 0;
 		for(int i = 0; i < g->size(); ++i) {
 			if(g->at(i).value("value").toInt() == id_bpla) {
@@ -67,14 +67,13 @@ void BLAPerehvatDialog::treeItemChangedSlot(QTreeWidgetItem *item, int id)
 		}
 
 		if(id_in_tree != 0) {
-			_db_bla->delete_bla_property(_id, id_in_tree);
-			_map_client->remove_perehvat(_id, id_in_tree);
+			m_friendBplaDb->delete_bla_property(_id, id_in_tree);
+			m_mapClient->removeInterception(_id, id_in_tree);
 		}
-	}
-	else {
-		db_bpla->insert("state", 1);
+	} else {
+		enemyBplaFields->insert("state", 1);
 
-		QVector<QMap<QString, QVariant> >* g = _db_bla->get(_id, 0);
+		QVector<QMap<QString, QVariant> >* g = m_friendBplaDb->get(_id, 0);
 		QString s = g->at(0).value("value").toString();
 		if(ss != "")
 		{
@@ -92,10 +91,7 @@ void BLAPerehvatDialog::treeItemChangedSlot(QTreeWidgetItem *item, int id)
 		data->insert("value", QVariant::fromValue(ss));
 		data->insert("state", QVariant::fromValue(1));
 
-		_db_bla->set_property(0, data);
-		_map_client->add_perehvat(_id, id_bpla);
+		m_friendBplaDb->set_property(0, data);
+		m_mapClient->addInterception(_id, id_bpla);
 	}
-
-	_db_evil->set(1, db_bpla);
-
 }

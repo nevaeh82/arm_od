@@ -18,7 +18,7 @@ public:
     virtual QVector<int> get(int group)                      = 0;
 
     virtual QMap<QString, QVariant>* get_bla_fields(int id)             = 0;
-    virtual QMap<QString, QVariant>* get_bpla_fields(int id)             = 0;
+    virtual QMap<QString, QVariant>* getBplaFields(int id)             = 0;
 
     virtual void delete_bla(int id) = 0;
     virtual void delete_bpla(int id) = 0;

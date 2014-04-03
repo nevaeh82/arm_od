@@ -4,8 +4,8 @@
 #include <QVector>
 #include <QSharedPointer>
 
-#include "../Common/IMessage.h"
-#include "../Common/IClient.h"
+#include "Common/IMessage.h"
+#include "Common/IClient.h"
 
 //#define RCP_BANDWIDTH_TYPE      101
 //#define RCP_SHIFT_TYPE          102

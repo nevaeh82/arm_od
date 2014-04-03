@@ -52,13 +52,13 @@ private slots:
 	void stopClicked();
 
 public slots:
-	virtual void set_power(double value);
-	virtual void set_switch_on(bool state);
-	virtual void set_antenna_type(int value);
-	virtual int get_id();
-	virtual void set_point(QPointF coord);
-	virtual void send_evil(QPointF point, QPointF point_uvoda, double alt, double bearing);
-	virtual void set_angle(double angle);
+	virtual void setPower(double);
+	virtual void setSwitchOn(bool state);
+	virtual void setAntennaType(int value);
+	virtual int getId();
+	virtual void setPoint(QPointF coord);
+	virtual void sendEnemyBpla(QPointF point, QPointF point_uvoda, double alt, double bearing);
+	virtual void setAngle(double angle);
 };
 
 #endif // NIIPPCONTROL_H

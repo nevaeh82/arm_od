@@ -13,13 +13,13 @@
 #include <QStringList>
 
 #include "IRPC_R.h"
-#include "../../Common/IMessage.h"
-//#include "../../Common/CommandMessage.h"
-#include "../../Common/IRouter.h"
-#include "../../Common/ISubscriber.h"
-#include "../../RPC/Message.h"
+#include "Common/IMessage.h"
+//#include "Common/CommandMessage.h"
+#include "Common/IRouter.h"
+#include "Common/ISubscriber.h"
+#include "RPC/Message.h"
 
-#include "../../Common/IClient.h"
+#include "Common/IClient.h"
 
 #include "Rpc/RpcDefines.h"
 

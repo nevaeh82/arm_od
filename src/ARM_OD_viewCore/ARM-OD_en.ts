@@ -74,7 +74,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="90"/>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="89"/>
         <source>Target #</source>
         <translation type="unfinished"></translation>
     </message>
@@ -142,121 +142,38 @@
     </message>
 </context>
 <context>
-    <name>MapClient1</name>
+    <name>MapController</name>
     <message>
-        <location filename="MapInterface/mapclient1.cpp" line="179"/>
-        <source>UAV</source>
+        <location filename="Map/MapController.cpp" line="43"/>
+        <source>ÐÑÐºÑÑÑÑ ÐºÐ°ÑÑÑ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MapInterface/mapclient1.cpp" line="198"/>
-        <source>Atlant</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MapInterface/mapclient1.cpp" line="215"/>
-        <source>Atlant target</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MapInterface/mapclient1.cpp" line="233"/>
-        <source>Grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MapInterface/mapclient1.cpp" line="251"/>
-        <source>Checkpoints</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MapInterface/mapclient1.cpp" line="270"/>
-        <source>Interception point</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MapInterface/mapclient1.cpp" line="287"/>
-        <source>Civil ships</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MapInterface/mapclient1.cpp" line="304"/>
-        <source>Diversion points</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MapInterface/mapclient1.cpp" line="1073"/>
-        <source>Diversion point</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MapInterface/mapclient1.cpp" line="322"/>
-        <source>SPIP DD</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MapInterface/mapclient1.cpp" line="143"/>
-        <source>OP</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MapInterface/mapclient1.cpp" line="161"/>
-        <source>UAV_</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MapInterface/mapclient1.cpp" line="523"/>
-        <source>UAV-C</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MapInterface/mapclient1.cpp" line="527"/>
-        <location filename="MapInterface/mapclient1.cpp" line="825"/>
-        <source>UAV (#</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MapInterface/mapclient1.cpp" line="887"/>
-        <source>UAV Atlant(#</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MapInterface/mapclient1.cpp" line="1116"/>
-        <source>Ingur</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MapInterface/mapclient1.cpp" line="1213"/>
-        <source>Height = </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MapInterface/mapclient1.cpp" line="1214"/>
-        <source>Radius = </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MapInterface/mapclient1.cpp" line="1216"/>
-        <source>Speed = </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MapInterface/mapclient1.cpp" line="1215"/>
-        <source>Course = </source>
-        <oldsource>ÐÑÑÑ = </oldsource>
+        <location filename="Map/MapController.cpp" line="45"/>
+        <source>Ð¤Ð¾ÑÐ¼Ð°Ñ ÑÐ¸ÑÑÐ¾Ð²ÑÑ ÐºÐ°ÑÑ (*.chart *.sxf *.sit *.map *.gc *.gst);;ÐÑÐµ ÑÐ°Ð¹Ð»Ñ (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>MapController</name>
+    <name>MapControllerWidget</name>
     <message>
-        <location filename="MapInterface/MapController.cpp" line="41"/>
-        <source>Open atlas</source>
+        <location filename="Map/MapWidget.ui" line="14"/>
+        <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="MapInterface/MapController.cpp" line="43"/>
-        <source>Atlas files (*.chart *.sxf *.sit *.map *.gc *.gst);;All files (*.*)</source>
-        <oldsource>Ð¤Ð¾ÑÐ¼Ð°Ñ ÑÐ¸ÑÑÐ¾Ð²ÑÑ ÐºÐ°ÑÑ (*.chart *.sxf *.sit *.map *.gc *.gst);;ÐÑÐµ ÑÐ°Ð¹Ð»Ñ (*.*)</oldsource>
+    <message utf8="true">
+        <location filename="Map/MapWidget.ui" line="51"/>
+        <source>Список БЛА</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="Map/MapWidget.ui" line="64"/>
+        <source>Список целей</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="Map/MapWidget.ui" line="77"/>
+        <source>СПИП ДД</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -308,14 +225,6 @@
     <message>
         <location filename="Tabs/MapTabWidgetController.cpp" line="167"/>
         <source>SPIP DD-2</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>MapWidget</name>
-    <message>
-        <location filename="MapInterface/MapWidget.ui" line="14"/>
-        <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -443,6 +352,94 @@
     <message>
         <location filename="NIIPP/NiippWidget.cpp" line="223"/>
         <source>No data</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="Map/Features/Interception.cpp" line="32"/>
+        <source>ÐÑÑÐ¾ÑÐ° = </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/Features/Interception.cpp" line="33"/>
+        <source>Ð Ð°Ð´Ð¸ÑÑ = </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/Features/Interception.cpp" line="34"/>
+        <source>ÐÑÑÑ = </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/Features/Interception.cpp" line="35"/>
+        <source>Ð¡ÐºÐ¾ÑÐ¾ÑÑÑ = </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/Features/Niipp.cpp" line="124"/>
+        <source>Ð¢Ð¾ÑÐºÐ° ÑÐ²Ð¾Ð´Ð°</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/Features/Station.cpp" line="44"/>
+        <source>ÐÐ½Ð³ÑÑ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/MapClient1.cpp" line="297"/>
+        <source>??</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/MapClient1.cpp" line="298"/>
+        <source>????</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/MapClient1.cpp" line="299"/>
+        <source>???</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/MapClient1.cpp" line="300"/>
+        <source>??????</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/MapClient1.cpp" line="301"/>
+        <source>?????? ????</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/MapClient1.cpp" line="302"/>
+        <source>?????</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/MapClient1.cpp" line="303"/>
+        <source>??????????? ?????</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/MapClient1.cpp" line="304"/>
+        <source>????? ?????????</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/MapClient1.cpp" line="305"/>
+        <source>??????????? ????</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/MapClient1.cpp" line="306"/>
+        <source>????? ?????</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/MapClient1.cpp" line="307"/>
+        <source>???? ??</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

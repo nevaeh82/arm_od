@@ -46,12 +46,6 @@ HEADERS += \
 	Interfaces/IExchangeMainTreeItem.h \
 	Interfaces/ITCPClient.h \
 	Interfaces/ITCPParser.h \
-	MapInterface/IMapClient.h \
-	MapInterface/IMapController.h \
-	MapInterface/mapclient1.h \
-	MapInterface/MapController.h \
-	MapInterface/Map.h \
-	MapInterface/MapWidget.h \
 	NIIPP/INiippController.h \
 	NIIPP/TCPPareserNiiPP.h \
 	NIIPP/Niipp.h \
@@ -81,30 +75,39 @@ HEADERS += \
 	UAV/ZInterception.h \
 	MainWindow.h \
 	MainWindowController.h \
-#    DB/DbController.h \
-#    DB/DbManager.h \
-#    SettingsTree/TreeItem.h \
-#    SettingsTree/TreeModel.h \
-#    SettingsTree/TreeWidgetDelegate.h \
-    Interfaces/IDbChangedListener.h \
-    Interfaces/IDbController.h \
-    Interfaces/IDbManager.h \
-    UiDefines.h \
-    Interfaces/ISettingsChangedListener.h \
-    Tabs/MapTabWidget.h \
-    Station.h \
-    Tabs/MapTabWidgetController.h \
-    ControlPanel/ControlPanel.h \
-    Interfaces/IBlaDbChangedListener.h
+	Map/IMapClient.h \
+	Map/IMapController.h \
+	Map/MapClient1.h \
+	Map/MapController.h \
+	Map/Map.h \
+	Map/MapWidget.h \
+	Map/Features/Ais.h \
+	Map/Features/Niipp.h \
+	Map/Features/Pelengator.h \
+	Map/Features/Interception.h \
+	Map/Features/FriendBpla.h \
+	Map/Features/EnemyBpla.h \
+	Map/Features/Station.h \
+#	DB/DbController.h \
+#	DB/DbManager.h \
+#	SettingsTree/TreeItem.h \
+#	SettingsTree/TreeModel.h \
+#	SettingsTree/TreeWidgetDelegate.h \
+	Interfaces/IDbChangedListener.h \
+	Interfaces/IDbController.h \
+	Interfaces/IDbManager.h \
+	UiDefines.h \
+	Interfaces/ISettingsChangedListener.h \
+	Tabs/MapTabWidget.h \
+	Station.h \
+	Tabs/MapTabWidgetController.h \
+	ControlPanel/ControlPanel.h \
+	Interfaces/IBlaDbChangedListener.h \
 
 SOURCES += \
 	Common/CommandMessage.cpp \
 	Common/Router.cpp \
 	Icons/IconsGenerator.cpp \
-	MapInterface/mapclient1.cpp \
-	MapInterface/MapController.cpp \
-	MapInterface/Map.cpp \
-	MapInterface/MapWidget.cpp \
 	NIIPP/TCPPareserNiiPP.cpp \
 	NIIPP/NiippController.cpp \
 	NIIPP/Niipp.cpp \
@@ -124,22 +127,33 @@ SOURCES += \
 	UAV/ZInterception.cpp \
 	MainWindow.cpp \
 	MainWindowController.cpp \
-#    DB/DbController.cpp \
-#    DB/DbManager.cpp \
-#    SettingsTree/TreeItem.cpp \
-#    SettingsTree/TreeModel.cpp \
-#    SettingsTree/TreeWidgetDelegate.cpp \
-    Tabs/MapTabWidget.cpp \
-    Tabs/MapTabWidgetController.cpp \
-    ControlPanel/ControlPanel.cpp \
-    Tabs/RPC/Rpcclient.cpp
+	Map/MapClient1.cpp \
+	Map/MapController.cpp \
+	Map/Map.cpp \
+	Map/MapWidget.cpp \
+	Map/Features/Ais.cpp \
+	Map/Features/Niipp.cpp \
+	Map/Features/Pelengator.cpp \
+	Map/Features/Interception.cpp \
+	Map/Features/FriendBpla.cpp \
+	Map/Features/EnemyBpla.cpp \
+	Map/Features/Station.cpp \
+#	DB/DbController.cpp \
+#	DB/DbManager.cpp \
+#	SettingsTree/TreeItem.cpp \
+#	SettingsTree/TreeModel.cpp \
+#	SettingsTree/TreeWidgetDelegate.cpp \
+	Tabs/RPC/Rpcclient.cpp \
+	Tabs/MapTabWidget.cpp \
+	Tabs/MapTabWidgetController.cpp \
+	ControlPanel/ControlPanel.cpp \
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \
 	arm_od_view.ui \
 	Tabs/Solver/SolverWidget.ui \
-	MapInterface/MapWidget.ui \
+	Map/MapWidget.ui \
 	NIIPP/NiippWidget.ui \
-    MapTabWidget.ui \
-    ControlPanel/ControlPanel.ui
+	MapTabWidget.ui \
+	ControlPanel/ControlPanel.ui
 

@@ -49,9 +49,9 @@ int TabManager::createSubModules(const QString& settingsFile)
 
 		tabWidgetController->appendView(tabWidget);
 
-		connect(this, SIGNAL(signalSendToNIIPPControl(int,QByteArray)), tabWidgetController, SLOT(_slot_send_data_to_niipp_control(int,QByteArray)));
-		connect(this, SIGNAL(openAtlasSignal()), tabWidgetController, SLOT(openAtlasSlot()));
-		connect(this, SIGNAL(openMapSignal()), tabWidgetController, SLOT(openMapSlot()));
+	connect(this, SIGNAL(signalSendToNIIPPControl(int,QByteArray)), tabWidgetController, SLOT(_slot_send_data_to_niipp_control(int,QByteArray)));
+	connect(this, SIGNAL(openAtlasSignal()), tabWidgetController, SLOT(openAtlasSlot()));
+	connect(this, SIGNAL(openMapSignal()), tabWidgetController, SLOT(openMapSlot()));
 
 		m_tabWidget->addTab(tabWidget, station->name);
 
