@@ -23,12 +23,9 @@ struct DataFly {
 	QString course;
 };
 
-class IMapClient: public QObject
+class IMapClient
 {
 public:
-	~IMapClient() {};
-
-public slots:
 	virtual void setPoint() = 0;
 	virtual void centerMap() = 0;
 	virtual void justifyMap() = 0;

@@ -8,18 +8,18 @@
 #include "../UAV/ZInterception.h"
 
 MapController::MapController() :
-	m_controllerWidget( new MapControllerWidget( this ) ),
-	m_mapModel( new Map() )
+	m_widget( new MapWidget( this ) ),
+	m_map( new Map() )
 {
-	m_mapModel->setMapManager( m_controllerWidget->getPwGis()->mapProvider()->mapManager() );
-	m_mapModel->setProfileManager( m_controllerWidget->getPwGis()->mapProvider()->profileManager() );
+	m_map->setMapManager( m_widget->getPwGis()->mapProvider()->mapManager() );
+	m_map->setProfileManager( m_widget->getPwGis()->mapProvider()->profileManager() );
 
-	QObject::connect( m_mapModel, SIGNAL( modelMapReady( )), this, SLOT( onMapReady() ) );
+	QObject::connect( m_map, SIGNAL( modelMapReady( )), this, SLOT( onMapReady() ) );
 
-	m_controllerWidget->getPwGis()->enableDebugger( false );
-	connect(m_controllerWidget, SIGNAL( showBLAtree() ), this, SIGNAL( controllerShowBLAtree() ) );
-	connect(m_controllerWidget, SIGNAL( showBPLAtree() ), this, SIGNAL( controllerShowBPLAtree() ) );
-	connect(m_controllerWidget, SIGNAL( showNIIPP() ), this, SIGNAL( controllerShowNIIPP() ) );
+	m_widget->getPwGis()->enableDebugger( false );
+	connect(m_widget, SIGNAL( showBLAtree() ), this, SIGNAL( controllerShowBLAtree() ) );
+	connect(m_widget, SIGNAL( showBPLAtree() ), this, SIGNAL( controllerShowBPLAtree() ) );
+	connect(m_widget, SIGNAL( showNIIPP() ), this, SIGNAL( controllerShowNIIPP() ) );
 }
 
 MapController::~MapController()
@@ -29,18 +29,18 @@ MapController::~MapController()
 void MapController::init( QMap<int, TabsProperty *> map_settings, IDBManager* db_bla,
 	IDBManager* db_evil )
 {
-	m_mapModel->init( map_settings, db_bla, db_evil, m_controllerWidget->getPwGis() );
+	m_map->init( map_settings, db_bla, db_evil, m_widget->getPwGis() );
 }
 
 void MapController::openMapFromAtlas()
 {
-	m_mapModel->openAtlas();
+	m_map->openAtlas();
 }
 
 void MapController::openMapFromLocalFile(/*const QString mapFile*/)
 {
 	QString filename = QFileDialog::getOpenFileName(
-		m_controllerWidget,
+		m_widget,
 		tr( "Открыть карту" ),
 		QDir::currentPath(),
 		tr( "Формат цифровых карт (*.chart *.sxf *.sit *.map *.gc *.gst);;Все файлы (*.*)" ) );
@@ -49,29 +49,29 @@ void MapController::openMapFromLocalFile(/*const QString mapFile*/)
 		return;
 	}
 
-	m_mapModel->openMap( filename );
+	m_map->openMap( filename );
 }
 
 void MapController::onMapReady()
 {
 	get_panel_widget()->setMouseTracking( true );
-	m_mapModel->setLayerManager( m_controllerWidget->getPwGis()->mapProvider()->layerManager() );
+	m_map->setLayerManager( m_widget->getPwGis()->mapProvider()->layerManager() );
 	emit mapOpened();
 }
 
 void MapController::_slot_station_visible( bool state )
 {
-	m_mapModel->setStationVisible( state );
+	m_map->setStationVisible( state );
 }
 
 PwGisWidget *MapController::get_pwwidget()
 {
-	return m_controllerWidget->getPwGis();
+	return m_widget->getPwGis();
 }
 
 QWidget *MapController::get_widget()
 {
-	return m_controllerWidget->getWidget();
+	return m_widget->getWidget();
 }
 
 bool MapController::eventFilter( QObject *obj, QEvent *e )
@@ -82,11 +82,11 @@ bool MapController::eventFilter( QObject *obj, QEvent *e )
 /// get map client by name
 IMapClient *MapController::get_map_client( int id )
 {
-	return m_mapModel->getMapClient(id);
+	return m_map->getMapClient(id);
 }
 
 /// get panel widget
 QWidget *MapController::get_panel_widget()
 {
-	return m_controllerWidget->getPanelWidget();
+	return m_widget->getPanelWidget();
 }

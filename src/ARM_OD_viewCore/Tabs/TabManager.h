@@ -56,7 +56,7 @@ private:
     QMutex                      _mux;
 
     ///Map
-    MapController*          _map_controller;
+    MapController*          m_mapController;
 
     Router*                 _router;
 //    NIIPPControl*           _niipp1;

@@ -31,7 +31,7 @@
 
 #include "../UAV/ZInterception.h"
 
-class MapControllerWidget;
+class MapWidget;
 
 class MapController : public QObject, public IMapController
 {
@@ -51,8 +51,8 @@ public:
 	void addMarkerLayer( int id, QString name );
 
 private:
-	MapControllerWidget* m_controllerWidget;
-	Map* m_mapModel;
+	MapWidget* m_widget;
+	Map* m_map;
 
 private:
 	bool eventFilter( QObject* obj, QEvent* e );

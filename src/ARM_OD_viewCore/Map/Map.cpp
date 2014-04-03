@@ -28,8 +28,7 @@ void Map::setMapManager( Pw::Gis::IMapManager* mapManager )
 	m_mapManager = mapManager;
 	m_mapManager->setProfile( "Zav" );
 
-	connect( &m_mapManager->events(), SIGNAL( mapReady() ),
-		this, SLOT( onMapReady() ) );
+	connect( &m_mapManager->events(), SIGNAL( mapReady() ), SLOT( onMapReady() ) );
 }
 
 void Map::setProfileManager( Pw::Gis::IProfileManager* profileManager )

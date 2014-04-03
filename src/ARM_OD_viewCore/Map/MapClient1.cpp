@@ -26,67 +26,20 @@ MapClient1::MapClient1( PwGisWidget* pwwidget, TabsProperty* property,
 	m_mainLongitude = m_property->get_longitude();
 	m_lastCoord = new QMap<int, PwGisPointList* >;
 
-
-	//define style
-	this->addMarkerLayer( 0, QObject::tr( "ОП" ) );//0 - stations
-	this->addMarkerLayer( 1, QObject::tr( "БПЛА" ) ); //1 - BPLA profile
-	this->addMarkerLayer( 2, QObject::tr( "БЛА" ) ); //2 - BLA profile
-	this->addMarkerLayer( 3, QObject::tr( "Атлант" ) ); //3 - Pelengators
-	this->addMarkerLayer( 4, QObject::tr( "Атлант Цель" ) ); //4 - PelengatorsPoint
-	this->addMarkerLayer( 5, QObject::tr( "Сетка" ) ); //5 - Grid
-	this->addMarkerLayer( 6, QObject::tr( "Контрольные точки" ) ); //6 - Control_points
-	this->addMarkerLayer( 7, QObject::tr( "Точка перехвата" ) ); //7 - Perehvat
-	this->addMarkerLayer( 8, QObject::tr( "Гражданские суда" ) ); //8 - AIS - civil plane
-	this->addMarkerLayer( 9, QObject::tr( "Точки увода" ) ); //9 - NIIPPPoint
-	this->addMarkerLayer( 10, QObject::tr( "СПИП ДД" ) ); //10 - NIIPP
-	//map features
-	m_AisFeature = new AisFeature( m_pwwidget, m_mapLayers.value(8) );
-	m_NiippFeature = new NiippFeature( m_pwwidget, m_mapLayers.value(10),
-		m_mapLayers.value(9) );
-	m_PelengatorFeature = new PelengatorFeature( m_pwwidget, m_lastCoord,
-		m_mapLayers.value(3), m_mapLayers.value(4) );
-	m_PerehvatFeature = new PerehvatFeature( m_pwwidget, m_mapLayers.value(7) );
-	m_BlaFeature = new BlaFeature( m_pwwidget, m_lastCoord, m_mapLayers.value(2) );
-	m_BplaFeature = new BplaFeature( m_pwwidget, m_mapLayers.value(1) );
-	m_StationFeature = new StationFeature( m_pwwidget, m_mapLayers.value(0) );
-
-	QString niippLayerId = m_niippLayerName + QString::number( m_niippLayerId );
-	addNiippLayer( niippLayerId );
-
-
 	m_updateTimer = new QTimer();
+	connect( m_updateTimer, SIGNAL( timeout() ), this, SLOT( updatePoints() ) );
 
-	connect( this, SIGNAL( signalAddBla( int,QByteArray ) ),
-		this, SLOT( setCurrentPoint( int,QByteArray ) ) );
+	connect( this, SIGNAL( friendBplaAdded( int,QByteArray ) ),
+			 this, SLOT( setCurrentPoint( int,QByteArray ) ) );
 
-	connect( this, SIGNAL( signalAddEvil( int,QByteArray ) ),
-		this, SLOT( setCurrentPoint( int,QByteArray ) ) );
+	connect( this, SIGNAL( enemyBplaAdded( int,QByteArray ) ),
+			 this, SLOT( setCurrentPoint( int,QByteArray ) ) );
 
-	connect( this, SIGNAL( signalAddAis( QMap<int, QVector<QString> >) ),
-		this, SLOT( setAisData( QMap<int, QVector<QString> > ) ) );
+	connect( this, SIGNAL( perehvatAdded( int, int ) ),
+			 this, SLOT( addPerehvatData( int, int ) ) );
 
-	connect( m_updateTimer, SIGNAL( timeout() ),
-		this, SLOT( updatePoints() ) );
-
-	connect( this, SIGNAL( signalUpdatePeleng( int, int, double, double, double ) ),
-		this, SLOT( updatePelengData( int, int, double, double, double ) ) );
-
-	connect( this, SIGNAL( signalUpdateSector( int, double, double, QByteArray ) ),
-		this, SLOT( updateSector( int, double, double, QByteArray ) ) );
-
-	connect( this, SIGNAL( signalUpdateCicle( int, double, QByteArray ) ),
-		this, SLOT( updateCicle( int, double, QByteArray ) ) );
-
-	connect( this, SIGNAL( signalAddPerehvat( int, int ) ),
-		this, SLOT( addPerehvatData( int, int ) ) );
-
-	connect( this, SIGNAL( signalRemovePerehvat( int, int ) ),
-		this, SLOT( removePerehvatData( int, int ) ) );
-
-
-	m_TimerSimulator = new QTimer();
-	connect( m_TimerSimulator, SIGNAL( timeout() ),
-		this, SLOT( updateSimulator() ) );
+	connect( this, SIGNAL( perehvatRemoved( int, int ) ),
+			 this, SLOT( removePerehvatData( int, int ) ) );
 
 	m_uiTimer = new QTimer( this );
 	connect( m_uiTimer, SIGNAL( timeout() ), this, SLOT( updateCircle() ) );
@@ -104,27 +57,25 @@ MapClient1::MapClient1( PwGisWidget* pwwidget, TabsProperty* property,
 
 	m_perehvat = new ZInterception( this );
 	QThread* thread = new QThread;
-	connect( m_perehvat, SIGNAL( finished() ),
-		thread, SLOT( quit() ) );
-	connect( m_perehvat, SIGNAL( finished() ),
-		m_perehvat, SLOT( deleteLater() ) );
-	connect( thread, SIGNAL( finished() ),
-		thread, SLOT( deleteLater() ) );
+	connect( m_perehvat, SIGNAL( finished() ), thread, SLOT( quit() ) );
+	connect( m_perehvat, SIGNAL( finished() ), m_perehvat, SLOT( deleteLater() ) );
+	connect( thread, SIGNAL( finished() ), thread, SLOT( deleteLater() ) );
 	m_perehvat->moveToThread( thread );
 	thread->start();
+
 	connect( this, SIGNAL( signalAddPerehvatPoint( int, int, QPointF, float, float, int, float, float) ),
 		this, SLOT( addPerehvatPointData( int, int, QPointF, float, float, int, float, float ) ) );
 }
 
 MapClient1::~MapClient1()
 {
-	delete m_AisFeature;
-	delete m_NiippFeature;
+	delete m_aisFeature;
+	delete m_niippFeature;
 	delete m_PelengatorFeature;
 	delete m_PerehvatFeature;
 	delete m_BlaFeature;
 	delete m_BplaFeature;
-	delete m_StationFeature;
+	delete m_stationFeature;
 }
 
 void MapClient1::setNiippController( INiiPPController* niippController )
@@ -145,7 +96,7 @@ void MapClient1::addBLA( int id, QByteArray data )
 {
 	QMutexLocker lock( &m_mux );
 
-	emit signalAddBla( id, data );
+	emit friendBplaAdded( id, data );
 }
 
 /// set point from another thread
@@ -153,7 +104,7 @@ void MapClient1::addEvil( int id, QByteArray data )
 {
 	QMutexLocker lock( &m_mux );
 
-	emit signalAddEvil( id, data );
+	emit enemyBplaAdded( id, data );
 }
 
 /// set cur point
@@ -168,38 +119,38 @@ void MapClient1::addAis( QMap<int, QVector<QString> > vec )
 {
 	QMutexLocker lock( &m_mux );
 
-	emit signalAddAis( vec );
+	emit aisAdded( vec );
 }
 
 void MapClient1::updateNiippPowerSector( int id, double radius, double bis, QByteArray ba )
 {
 	QMutexLocker lock( &m_mux );
 
-	emit signalUpdateSector( id, radius, bis, ba );
+	emit sectorUpdated( id, radius, bis, ba );
 }
 
 void MapClient1::updateNiippPowerCicle( int id, double radius, QByteArray ba )
 {
 	QMutexLocker lock( &m_mux );
 
-	emit signalUpdateCicle( id, radius, ba );
+	emit cicleUpdated( id, radius, ba );
 }
 
 void MapClient1::updatePeleng( int id, int idPost, double lat, double lon, double direction )
 {
 	QMutexLocker lock( &m_mux );
 
-	emit signalUpdatePeleng( id, idPost, lat, lon, direction );
+	emit pelengUpdated( id, idPost, lat, lon, direction );
 }
 
 void MapClient1::addPerehvat(int blaId, int bplaId )
 {
-	emit signalAddPerehvat( blaId, bplaId );
+	emit perehvatAdded( blaId, bplaId );
 }
 
 void MapClient1::removePerehvat(int blaId, int bplaId )
 {
-	emit signalRemovePerehvat( blaId, bplaId );
+	emit perehvatRemoved( blaId, bplaId );
 }
 
 void MapClient1::addPerehvatPoint(int blaId, int bplaId, QPointF coord,
@@ -243,7 +194,7 @@ void MapClient1::setPoint()
 	QString mapObjectsSettingFile = QCoreApplication::applicationDirPath();
 	mapObjectsSettingFile.append( "/Map/map_objects.ini" );
 	/// read settings for generated (positions)
-	m_StationFeature->readFromFile( mapObjectsSettingFile );
+	m_stationFeature->readFromFile( mapObjectsSettingFile );
 }
 
 void MapClient1::addMarkerLayer( int id, QString name )
@@ -323,21 +274,6 @@ void MapClient1::addPerehvatData( int bla_id, int bpla_id )
 	m_mapBattle.insert( bla_id, bpla_id );
 }
 
-void MapClient1::updateSimulator()
-{
-	static const double lats[23] = {60.075751,60.075123,60.074381,60.074096,60.073696,60.074153,60.075466,60.076722,60.078035,60.079120,60.080662,60.082089,60.082946,60.083574,60.084145,60.084659,60.085058,60.085515,60.085972,60.083345,60.079805,60.077236,60.076151};
-	static const double lons[23] = {30.623432,30.626887,30.629766,30.632990,30.635984,30.638978,30.640369,30.641627,30.642663,30.643584,30.644505,30.642563,30.640475,30.638057,30.635408,30.631493,30.628614,30.625045,30.622051,30.614911,30.615372,30.616408,30.620208};
-
-	int id6706 = 6706;
-	static int i6706;
-	if ( i6706 > 22 ) {
-		i6706 = 0;
-	}
-	QPointF point( lats[i6706], lons[i6706] );
-	setPointBla( id6706, point, 0, 0, 0, 0 );
-	i6706++;
-}
-
 //for timer
 void MapClient1::updateCircle()
 {
@@ -359,19 +295,59 @@ void MapClient1::updateSlice()
 
 void MapClient1::onMapReady()
 {
+
+	//define style
+	this->addMarkerLayer( 0, QObject::tr( "ОП" ) );//0 - stations
+	this->addMarkerLayer( 1, QObject::tr( "БПЛА" ) ); //1 - BPLA profile
+	this->addMarkerLayer( 2, QObject::tr( "БЛА" ) ); //2 - BLA profile
+	this->addMarkerLayer( 3, QObject::tr( "Атлант" ) ); //3 - Pelengators
+	this->addMarkerLayer( 4, QObject::tr( "Атлант Цель" ) ); //4 - PelengatorsPoint
+	this->addMarkerLayer( 5, QObject::tr( "Сетка" ) ); //5 - Grid
+	this->addMarkerLayer( 6, QObject::tr( "Контрольные точки" ) ); //6 - Control_points
+	this->addMarkerLayer( 7, QObject::tr( "Точка перехвата" ) ); //7 - Perehvat
+	this->addMarkerLayer( 8, QObject::tr( "Гражданские суда" ) ); //8 - AIS - civil plane
+	this->addMarkerLayer( 9, QObject::tr( "Точки увода" ) ); //9 - NIIPPPoint
+	this->addMarkerLayer( 10, QObject::tr( "СПИП ДД" ) ); //10 - NIIPP
+
+	//map features
+	m_aisFeature = new AisFeature( m_pwwidget, m_mapLayers.value(8) );
+	m_niippFeature = new NiippFeature( m_pwwidget, m_mapLayers.value(10), m_mapLayers.value(9) );
+	m_PelengatorFeature = new PelengatorFeature( m_pwwidget, m_lastCoord,
+												 m_mapLayers.value(3), m_mapLayers.value(4) );
+	m_PerehvatFeature = new PerehvatFeature( m_pwwidget, m_mapLayers.value(7) );
+	m_BlaFeature = new BlaFeature( m_pwwidget, m_lastCoord, m_mapLayers.value(2) );
+	m_BplaFeature = new BplaFeature( m_pwwidget, m_mapLayers.value(1) );
+	m_stationFeature = new StationFeature( m_pwwidget, m_mapLayers.value(0) );
+
+	QString niippLayerId = m_niippLayerName + QString::number( m_niippLayerId );
+	addNiippLayer( niippLayerId );
+
 	foreach( IMapObjectInfo* value, m_mapObjects ) {
 		dynamic_cast<Sector*>(value)->updateMap();
 	}
+
 	m_updateTimer->start( 1000 );
 
+	connect( this, SIGNAL( aisAdded( QMap<int, QVector<QString> >) ),
+			 this, SLOT( setAisData( QMap<int, QVector<QString> > ) ) );
+
+	connect( this, SIGNAL( pelengUpdated( int, int, double, double, double ) ),
+			 this, SLOT( updatePelengData( int, int, double, double, double ) ) );
+
+	connect( this, SIGNAL( sectorUpdated( int, double, double, QByteArray ) ),
+			 this, SLOT( updateSector( int, double, double, QByteArray ) ) );
+
+	connect( this, SIGNAL( cicleUpdated( int, double, QByteArray ) ),
+			 this, SLOT( updateCicle( int, double, QByteArray ) ) );
+
 	connect( m_pwwidget, SIGNAL( mapClicked( double, double ) ),
-		this, SLOT( mapMouseClicked( double, double ) ) );
+			 this, SLOT( mapMouseClicked( double, double ) ) );
 }
 
 /// get coordinates
 void MapClient1::mapMouseClicked( double lon, double lat )
 {
-	m_NiippFeature->addPoint( lon, lat );
+	m_niippFeature->addPoint( lon, lat );
 
 	m_pointUvodaNiipp.setX( lat );
 	m_pointUvodaNiipp.setY( lon );
@@ -379,9 +355,9 @@ void MapClient1::mapMouseClicked( double lon, double lat )
 	m_mapNiippController.value( 101 )->set_point( m_pointUvodaNiipp );
 }
 
-void MapClient1::removePerehvatData( int bla_id, int bpla_id )
+void MapClient1::removePerehvatData( int blaId, int bplaId )
 {
-	m_mapBattle.remove( bla_id );
+	m_mapBattle.remove( blaId );
 }
 
 
@@ -430,14 +406,14 @@ void MapClient1::setPointEvil( int id, QByteArray data )
 }
 
 //add AIS
-void MapClient1::setAisData( QMap<int, QVector<QString> > map1 )
+void MapClient1::setAisData( QMap<int, QVector<QString> > map )
 {
-	m_AisFeature->add( map1 );
+	m_aisFeature->add( map );
 }
 
 void MapClient1::removeAis()
 {
-	m_AisFeature->remove();
+	m_aisFeature->remove();
 }
 
 //add Pelengators
@@ -459,7 +435,7 @@ void MapClient1::setPointEvilPeleng( int id, QPointF point )
 //http://192.168.13.65/pulse/pulse4/index.php?page=task&id=5004&aspect=plan
 void MapClient1::updateSector( int id, double radius, double bis, QByteArray ba )
 {
-	m_NiippFeature->updateSector( id, radius, bis, ba );
+	m_niippFeature->updateSector( id, radius, bis, ba );
 }
 
 //add NIIPP-circle
@@ -468,7 +444,7 @@ void MapClient1::updateSector( int id, double radius, double bis, QByteArray ba 
 //http://192.168.13.65/pulse/pulse4/index.php?page=task&id=5004&aspect=plan
 void MapClient1::updateCicle( int id, double radius, QByteArray ba )
 {
-	m_NiippFeature->updateCicle( id, radius, ba );
+	m_niippFeature->updateCicle( id, radius, ba );
 }
 
 //add Perehvat
