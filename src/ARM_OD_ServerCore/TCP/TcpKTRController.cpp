@@ -4,13 +4,15 @@ TcpKTRController::TcpKTRController(QObject* parent) :
 	BaseTcpDeviceController(parent)
 {
 	m_tcpDeviceName = DeviceTypes::KTR_TCP_DEVICE;
-	debug(QString("Created %1").arg(m_tcpDeviceName));
+	m_deviceType = BaseSettingsType::TypeKTR;
+	log_debug(QString("Created %1").arg(m_tcpDeviceName));
 	connect(this, SIGNAL(createTcpKTRCoderInternalSignal()), this, SLOT(createTcpKTRCoderInternalSlot()));
 }
 
 TcpKTRController::TcpKTRController(const QString& tcpDeviceName, QObject* parent) :
 	BaseTcpDeviceController(tcpDeviceName, parent)
 {
+	m_deviceType = BaseSettingsType::TypeKTR;
 	init();
 	connect(this, SIGNAL(createTcpKTRCoderInternalSignal()), this, SLOT(createTcpKTRCoderInternalSlot()));
 }
@@ -26,7 +28,7 @@ void TcpKTRController::createTcpDeviceCoder()
 
 void TcpKTRController::createTcpKTRCoderInternalSlot()
 {
-	debug("Creating TcpKTRCoder...");
+	log_debug("Creating TcpKTRCoder...");
 	m_tcpDeviceCoder = new TcpKTRCoder(this);
 }
 
@@ -48,7 +50,7 @@ bool TcpKTRController::init()
 
 			m_host = m_KTRSettingStruct.host;
 			m_port = m_KTRSettingStruct.port;
-			m_deviceType = BaseSettingsType::TypeKTR;//m_flakonSettingStruct.type;
+//			m_deviceType = BaseSettingsType::TypeKTR;//m_flakonSettingStruct.type;
 
 			QByteArray baseInfo;
 			QDataStream dsBaseInfo(&baseInfo, QIODevice::WriteOnly);

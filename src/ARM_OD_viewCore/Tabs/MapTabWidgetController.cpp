@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Station *> map_settings, ITabManager* tabManager, DBManager* db_bla, DBManager* db_evil, QObject* parent) :
+MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Station *> map_settings, ITabManager* tabManager, DbBlaManager* db_bla, DBManager* db_evil, QObject* parent) :
 	QObject(parent)
 {
 	m_view = NULL;
@@ -28,7 +28,7 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 	m_blaDbManager = db_bla;
 
 	/// TODO: refactor
-	m_blaDbManager->set_model(m_blaModel);
+	//m_blaDbManager->set_model(m_blaModel);
 	m_bplaDbManager->set_model(m_bplaModel);
 
 	m_mapSettings = map_settings;
@@ -44,7 +44,7 @@ MapTabWidgetController::~MapTabWidgetController()
 
 	/// TODO: delete
 	delete m_treeDelegate;
-	delete m_blaDbManager;
+	//delete m_blaDbManager;
 	delete m_bplaDbManager;
 }
 
@@ -159,12 +159,12 @@ void MapTabWidgetController::appendView(MapTabWidget *view)
 	QPointF latlon1;
 	latlon1.setX(42.511183);
 	latlon1.setY(41.6905);
-	m_niipp1 = new NiippController(100, tr("СПИП ДД-1"), latlon1, m_mapController, _tab_manager);
+	m_niipp1 = new NiippController(100, tr("SPIP DD-1"), latlon1, m_mapController, _tab_manager);
 
 	QPointF latlon2;
 	latlon2.setX(42.634183);
 	latlon2.setY(41.912167);
-	m_niipp2 = new NiippController(101, tr("СПИП ДД-2"), latlon2, m_mapController, _tab_manager);
+	m_niipp2 = new NiippController(101, tr("SPIP DD-2"), latlon2, m_mapController, _tab_manager);
 
 	m_niipp1->appendView(m_view->getNiippWidget(1));
 	m_niipp2->appendView(m_view->getNiippWidget(2));

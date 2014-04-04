@@ -11,6 +11,8 @@
 
 #include "IDBController.h"
 
+#include "Logger.h"
+
 class DBController : public QObject, public IDBController
 {
     Q_OBJECT

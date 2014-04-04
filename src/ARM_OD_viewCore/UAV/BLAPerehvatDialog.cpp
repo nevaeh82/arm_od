@@ -8,7 +8,6 @@ BLAPerehvatDialog::BLAPerehvatDialog(IMapClient* map_client) :
 	ui->setupUi(this);
 
 	_map_client = map_client;
-
 }
 
 BLAPerehvatDialog::~BLAPerehvatDialog()
@@ -16,7 +15,7 @@ BLAPerehvatDialog::~BLAPerehvatDialog()
 	delete ui;
 }
 
-void BLAPerehvatDialog::init(int id, DBManager *db_bla, DBManager *db_evil)
+void BLAPerehvatDialog::init(int id, IDbBlaManager *db_bla, DBManager *db_evil)
 {
 	_id = id;
 	_db_bla = db_bla;
@@ -24,13 +23,12 @@ void BLAPerehvatDialog::init(int id, DBManager *db_bla, DBManager *db_evil)
 
 	QVector<int> res_evil = _db_evil->get(1);
 
-	ui->blaLE->setText(tr("BLA №") + QString::number(_id));
+	ui->blaLE->setText(tr("UAV #") + QString::number(_id));
 
 	QList<QTreeWidgetItem *> items;
 	for (int i = 0; i < res_evil.size(); ++i) {
-		QTreeWidgetItem *it = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString(tr("BPLA: №%1")).arg(res_evil.at(i))));
+		QTreeWidgetItem *it = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString(tr("UAV_: #%1")).arg(res_evil.at(i))));
 		QMap<QString, QVariant>* res_evil_fields = _db_evil->get_bpla_fields(res_evil.at(i));
-
 
 		if(res_evil_fields->value("state").toInt() == 0) {
 			it->setCheckState(0, Qt::Unchecked);
@@ -48,9 +46,10 @@ void BLAPerehvatDialog::init(int id, DBManager *db_bla, DBManager *db_evil)
 
 void BLAPerehvatDialog::treeItemChangedSlot(QTreeWidgetItem *item, int id)
 {
-	qDebug() << item->text(0) << id << item->checkState(0);
+	/*TODO: FINISH REFACTORING IDbBlaManager */
+	/*qDebug() << item->text(0) << id << item->checkState(0);
 	QStringList ls;
-	ls = item->text(0).split(tr("№"));
+	ls = item->text(0).split(tr("#"));
 
 	int id_bpla = ls.at(1).toInt();
 	QMap<QString, QVariant>* db_bpla = _db_evil->get_bpla_fields(id_bpla);
@@ -83,11 +82,9 @@ void BLAPerehvatDialog::treeItemChangedSlot(QTreeWidgetItem *item, int id)
 
 		ss += QString::number(id_bpla);
 
-
 		QMap<QString, QVariant>* data = new QMap<QString, QVariant>;
 		data->insert("pid", QVariant::fromValue(_id));
-		//    data->insert("id", QVariant::fromValue(0));
-		data->insert("name", QVariant::fromValue(tr("Цель №")));
+		data->insert("name", QVariant::fromValue(tr("Target #")));
 
 		data->insert("value", QVariant::fromValue(ss));
 		data->insert("state", QVariant::fromValue(1));
@@ -96,6 +93,6 @@ void BLAPerehvatDialog::treeItemChangedSlot(QTreeWidgetItem *item, int id)
 		_map_client->add_perehvat(_id, id_bpla);
 	}
 
-	_db_evil->set(1, db_bpla);
+	_db_evil->set(1, db_bpla);*/
 
 }

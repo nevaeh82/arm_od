@@ -1,9 +1,0 @@
-NSIS Crypto Plugin - VERSION HISTORY
-
-1.1 - May 6, 2004
-* Created Hash Calculator example
-* Improved documentation
-
-1.0 - April 7, 2004
-* Initial release
-* Supported algorithms: MD5|SHA1|MD2|MD4|MAC

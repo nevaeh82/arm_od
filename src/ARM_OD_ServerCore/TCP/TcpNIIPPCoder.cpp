@@ -83,7 +83,7 @@ MessageSP TcpNIIPPCoder::encode(const QByteArray& data)
 	ds << course;
 	ds << angle;
 
-	debug(QString("MMMMMMMMMMMMMMMMMMMMMM %1 %2 %3").arg(course).arg(angle).arg(mode));
+	log_debug(QString("MMMMMMMMMMMMMMMMMMMMMM %1 %2 %3").arg(course).arg(angle).arg(mode));
 	return MessageSP(new Message<QByteArray>(TCP_NIIPP_ANSWER, dataToSend));
 
 //	QSharedPointer<IMessageOld> msg(new MessageOld(_id, NIIPP_ANSWER, ba));

@@ -95,7 +95,12 @@ HEADERS += \
     Station.h \
     Tabs/MapTabWidgetController.h \
     ControlPanel/ControlPanel.h \
-    Interfaces/IBlaDbChangedListener.h
+    Interfaces/IBlaDbChangedListener.h \
+    Tabs/DbBla/DbBlaController.h \
+    Tabs/DbBla/Defines.h  \
+    Tabs/DbBla/IDbBlaController.h \
+    Tabs/DbBla/DbBlaManager.h \
+    Interfaces/IDbBlaManager.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -132,7 +137,9 @@ SOURCES += \
     Tabs/MapTabWidget.cpp \
     Tabs/MapTabWidgetController.cpp \
     ControlPanel/ControlPanel.cpp \
-    Tabs/RPC/Rpcclient.cpp
+    Tabs/RPC/Rpcclient.cpp \
+    Tabs/DbBla/DbBlaController.cpp \
+    Tabs/DbBla/DbBlaManager.cpp
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \

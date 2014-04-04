@@ -4,7 +4,7 @@ TcpAISController::TcpAISController(QObject *parent) :
 	BaseTcpDeviceController(parent)
 {
 	m_tcpDeviceName = DeviceTypes::AIS_TCP_DEVICE;
-	debug(QString("Created %1").arg(m_tcpDeviceName));
+	log_debug(QString("Created %1").arg(m_tcpDeviceName));
 
 	connect(this, SIGNAL(connectToHostAISInternalSignal(QString,quint32)), this, SLOT(connectToHostAISInternalSlot(QString,quint32)));
 	connect(this, SIGNAL(createTcpAISCoderInternalSignal()), this, SLOT(createTcpAISCoderInternalSlot()));
@@ -58,7 +58,7 @@ void TcpAISController::connectToHostAISInternalSlot(const QString& host, const q
 
 	QStringList stringList = host.split(":");
 	if (stringList.size() != 4) {
-		debug("Wrong square parametr");
+		log_debug("Wrong square parametr");
 		return;
 	}
 
@@ -75,13 +75,13 @@ void TcpAISController::connectToHostAISInternalSlot(const QString& host, const q
 
 void TcpAISController::createTcpAISCoderInternalSlot()
 {
-	debug("Creating TcpAISCoder...");
+	log_debug("Creating TcpAISCoder...");
 	m_tcpDeviceCoder = new TcpAISCoder(this);
 }
 
 void TcpAISController::createTcpAISClientInternalSlot()
 {
-	debug("Creating TcpAISClient...");
+	log_debug("Creating TcpAISClient...");
 	m_tcpClient = new TcpAISClient(this);
 	m_tcpClient->registerReceiver(this);
 }

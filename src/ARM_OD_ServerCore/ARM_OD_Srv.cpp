@@ -76,11 +76,12 @@ ARM_OD_Srv::ARM_OD_Srv()
 	QMap<QString, quint32> mapInfo = settingsManager->getAllInfo();
 
 	foreach(QString key, mapInfo.keys()) {
-		debug(QString(key));
+		log_debug(QString(key));
 		m_tcpManager->addTcpDevice(key, mapInfo.value(key));
 	}
 
 	_rpc_server->registerReceiver(m_tcpManager);
+	m_tcpManager->setRpcServer(_rpc_server);
 
 	 emit signalStartRPC();
 
