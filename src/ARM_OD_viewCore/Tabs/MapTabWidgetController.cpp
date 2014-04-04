@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Station *> map_settings, ITabManager* tabManager, DBManager* db_bla, DBManager* db_evil, QObject* parent) :
+MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Station *> map_settings, ITabManager* tabManager, DbBlaManager* db_bla, DBManager* db_evil, QObject* parent) :
 	QObject(parent)
 {
 	m_view = NULL;
@@ -28,7 +28,7 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 	m_blaDbManager = db_bla;
 
 	/// TODO: refactor
-	m_blaDbManager->set_model(m_blaModel);
+	//m_blaDbManager->set_model(m_blaModel);
 	m_bplaDbManager->set_model(m_bplaModel);
 
 	m_mapSettings = map_settings;
@@ -44,7 +44,7 @@ MapTabWidgetController::~MapTabWidgetController()
 
 	/// TODO: delete
 	delete m_treeDelegate;
-	delete m_blaDbManager;
+	//delete m_blaDbManager;
 	delete m_bplaDbManager;
 }
 

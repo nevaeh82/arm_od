@@ -9,7 +9,18 @@ TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
 
 	m_tabWidget = tabWidget;
 
-	_db_manager_bla = new DBManager(this);
+	//_db_manager_bla = new DBManager(this);
+	//Creating db bla settings manager
+	m_dbBlaSettingsManager = DbBlaSettingsManager::instance();
+
+	//Creating db bla controller
+	m_dbBlaController = new DbBlaController(this);
+	m_dbBlaController->connectToDB(getDbBlaConnectionSettings());
+
+	//Creating db bla manager and set its controller
+	m_dbBlaManager = new DbBlaManager(this);
+	m_dbBlaManager->setDbController(m_dbBlaController);
+
 	_db_manager_evil = new DBManager(this);
 
 	connect(this, SIGNAL(currentChanged(int)), this, SLOT(changeTabSlot(int)));
@@ -19,7 +30,6 @@ TabManager::~TabManager()
 {
 }
 
-
 void TabManager::send_data_niipp_control(int id, QByteArray ba)
 {
 	emit signalSendToNIIPPControl(id, ba);
@@ -28,15 +38,8 @@ void TabManager::send_data_niipp_control(int id, QByteArray ba)
 
 void TabManager::start()
 {
-
 	changeTabSlot(m_tabWidget->currentIndex());
-
-
-
-	//	_current_tab_widget  = static_cast<MapTabWidget* >(m_tabWidget->currentWidget());
-	//	_current_tab_widget->start();
 }
-
 
 int TabManager::createSubModules(const QString& settingsFile)
 {
@@ -44,7 +47,7 @@ int TabManager::createSubModules(const QString& settingsFile)
 
 	foreach (Station* station, m_stationsMap) {
 
-		MapTabWidgetController* tabWidgetController = new MapTabWidgetController(station, m_stationsMap, this, _db_manager_bla, _db_manager_evil);
+		MapTabWidgetController* tabWidgetController = new MapTabWidgetController(station, m_stationsMap, this, m_dbBlaManager, _db_manager_evil);
 		MapTabWidget* tabWidget = new MapTabWidget(m_tabWidget);
 
 		tabWidgetController->appendView(tabWidget);
@@ -121,4 +124,17 @@ int TabManager::readSettings(const QString& settingsFile)
 	}
 
 	return count;
+}
+
+DBConnectionStruct TabManager::getDbBlaConnectionSettings()
+{
+	DBConnectionStruct connectionStruct;
+
+	connectionStruct.dbName = m_dbBlaSettingsManager->getBlaDbName();
+	connectionStruct.host = m_dbBlaSettingsManager->getBlaDbHost();
+	connectionStruct.login = m_dbBlaSettingsManager->getBlaDbLogin();
+	connectionStruct.password = m_dbBlaSettingsManager->getBlaDbPassword();
+	connectionStruct.port = m_dbBlaSettingsManager->getBlaDbPort();
+
+	return connectionStruct;
 }

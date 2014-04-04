@@ -31,7 +31,7 @@ QMap<QString, quint32> TcpSettingsManager::getAllInfo()
 
 		if(type > 0)
 		{
-			info(QString("Name = %1, type =%2, %3").arg(QString(name)).arg(type).arg(childKey));
+			log_info(QString("Name = %1, type =%2, %3").arg(QString(name)).arg(type).arg(childKey));
 			mapInfo.insert(name, type);
 		}
 		m_settings.endGroup();

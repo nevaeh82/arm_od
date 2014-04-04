@@ -6,12 +6,13 @@ struct BlaInfo;
 
 class IBlaDbChangedListener{
 
-	virtual ~IBlaDbChangedListener(){}
+	public:
+		virtual ~IBlaDbChangedListener(){}
 
-	virtual void onBlaAdded(const Bla& bla) = 0;
-	virtual void onBlaRemoved(const Bla& bla) = 0;
+		virtual void onBlaAdded(const Bla& bla) = 0;
+		virtual void onBlaRemoved(const Bla& bla) = 0;
 
-	virtual void onBlaInfoChanged(const BlaInfo& blaInfo);
+		virtual void onBlaInfoChanged(const BlaInfo& blaInfo);
 };
 
 #endif // IBLADBCHANGEDLISTENER_H

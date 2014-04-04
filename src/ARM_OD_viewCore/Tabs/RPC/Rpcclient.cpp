@@ -9,7 +9,7 @@ const double m_zoneDir[28] = {2.5, 3, 4, 5,
                        6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20,
                        22, 26, 29, 33, 37, 41, 47, 52, 57, 62, 68, 72, 76};
 
-RPCClient::RPCClient(Station *station, IDBManager *db_manager, IDBManager* db_manager_targer,
+RPCClient::RPCClient(Station *station, IDbBlaManager *db_manager, IDBManager* db_manager_targer,
 					 IMapController* map_controller, ITabMap* parent_tab, ITabManager* tab_manager, QObject *parent)
 	: RpcClientBase(parent)
 {
@@ -18,7 +18,7 @@ RPCClient::RPCClient(Station *station, IDBManager *db_manager, IDBManager* db_ma
 	m_mapController = map_controller;
 	m_parentTab = parent_tab;
 	m_station = station;
-	m_dbManager = db_manager;
+	m_dbBlaManager = db_manager;
 	m_dbManagerTarget = db_manager_targer;
 	m_pelengEvilIds = 0;
 	m_rdsEvilIds = 50;
@@ -54,7 +54,7 @@ bool RPCClient::start(quint16 port, QHostAddress ipAddress)
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION, this, SLOT(rpcSlotServerSendAtlantDirection(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_ATLANT_POSITION, this, SLOT(rpcSlotServerSendAtlantPosition(QByteArray)));
 
-	debug("Start RPCClient");
+	log_debug("Start RPCClient");
 	return RpcClientBase::start(port, ipAddress);
 }
 
@@ -112,6 +112,56 @@ void RPCClient::slotRCPConnetion()
 
 void RPCClient::rpcSendBlaPoints(QByteArray data)
 {
+	int blaId = m_dbBlaManager->getBlaByBlaId(id);
+	if (blaId < 0){
+		int blaUnknownTypeId = m_dbBlaManager->getBlaTypeByName("UnknownBlaType");
+
+		if (blaUnknownTypeId < 0){
+			BlaType blaType;
+			blaType.name = "UnknownBlaType";
+			blaUnknownTypeId = m_dbBlaManager->addBlaType(blaType);
+		}
+
+		Bla bla;
+		bla.blaId = id;
+		bla.type = blaUnknownTypeId;
+
+		blaId = m_dbBlaManager->addBla(bla);
+	}
+
+	int statusUnknownId = m_dbBlaManager->getStatusByName("UnknownStatus");
+	int deviceUnknownId = -1;
+
+	QList<Devices> devices;
+	int unknownDeviceTypeId = m_dbBlaManager->getDeviceTypeByName("UnknownDeviceType");
+
+	if (unknownDeviceTypeId < 0){
+		DeviceType deviceType;
+		deviceType.name = "UnknownDeviceType";
+		unknownDeviceTypeId = m_dbBlaManager->addDeviceType(deviceType);
+	}
+
+	if (!m_dbBlaManager->getDevicesByType(unknownDeviceTypeId, devices)){
+		Devices device;
+		device.blaId = id;
+		device.deviceId = unknownDeviceTypeId;
+		deviceUnknownId = m_dbBlaManager->addDevice(device);
+	} else {
+		deviceUnknownId = devices.at(0).id;
+	}
+
+	BlaInfo blaInfo;
+	blaInfo.blaId = blaId; // FK
+	blaInfo.device = deviceUnknownId; // FK
+	blaInfo.lat = point.x();
+	blaInfo.lon = point.y();
+	blaInfo.alt = alt;
+	blaInfo.speed = speed;
+	blaInfo.yaw = course;
+	blaInfo.restTime = QTime(1, 0);
+	blaInfo.statusId = statusUnknownId; // FK
+	blaInfo.dateTime = QDateTime::currentDateTime();
+
 //	debug("Get data from server");
 	QDataStream inputDataStream(&data, QIODevice::ReadOnly);
 	QVector<UAVPositionData> positionDataVector;
@@ -133,9 +183,7 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
 	double alt = positionData.altitude;
 	double speed = positionData.speed;
 	double course = positionData.course;
-	quint32 state = positionData.state;
-
-    QByteArray ddd;
+	quint32 state = positionData.state;    QByteArray ddd;
     QDataStream ds(&ddd, QIODevice::WriteOnly);
     ds << point;
     ds << alt;
@@ -144,16 +192,16 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
     ds << state;
 
 	m_mapController->get_map_client(1)->slot_add_BLA(id, ddd);
-    QMap<QString, QVariant>* rec = new QMap<QString, QVariant>;
+	/*QMap<QString, QVariant>* rec = new QMap<QString, QVariant>;
 
     rec->insert("id", QVariant::fromValue(id));
 
     rec->insert("pid", QVariant::fromValue(0));
     rec->insert("name", QVariant::fromValue(id));
     rec->insert("state", QVariant::fromValue(1));
-	m_dbManager->set(0, rec);
+	m_dbBlaManager->set(0, rec);*/
 
-    QMap<QString, QVariant>* rec_p = new QMap<QString, QVariant>;
+   /* QMap<QString, QVariant>* rec_p = new QMap<QString, QVariant>;
 
     QString s_prop;
     s_prop = tr("Latitude");
@@ -162,7 +210,7 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
     rec_p->insert("value", QVariant::fromValue(point.x()));
     rec_p->insert("state", QVariant::fromValue(1));
 
-	QVector<QMap<QString, QVariant> >* map_p = m_dbManager->get(id, 0);
+	QVector<QMap<QString, QVariant> >* map_p = m_dbBlaManager->get(id, 0);
     for(int i = 0; i < map_p->count(); ++i)
     {
         QString nam = map_p->at(i).value("name").toString();
@@ -173,9 +221,9 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
         }
 	}
 
-	m_dbManager->set_property(0, rec_p);
+	m_dbBlaManager->set_property(0, rec_p);*/
 
-    QMap<QString, QVariant>* rec_p1 = new QMap<QString, QVariant>;
+	/*QMap<QString, QVariant>* rec_p1 = new QMap<QString, QVariant>;
 
     s_prop = tr("Longitude");
     rec_p1->insert("pid", QVariant::fromValue(id));
@@ -183,7 +231,7 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
     rec_p1->insert("value", QVariant::fromValue(point.y()));
     rec_p1->insert("state", QVariant::fromValue(1));
 
-	QVector<QMap<QString, QVariant> >* map_p1 = m_dbManager->get(id, 0);
+	QVector<QMap<QString, QVariant> >* map_p1 = m_dbBlaManager->get(id, 0);
 
     for(int i = 0; i < map_p1->count(); ++i)
     {
@@ -195,10 +243,10 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
         }
     }
 
-	m_dbManager->set_property(0, rec_p1);
+	m_dbBlaManager->set_property(0, rec_p1);*/
 
 
-    QMap<QString, QVariant>* rec_p2 = new QMap<QString, QVariant>;
+   /* QMap<QString, QVariant>* rec_p2 = new QMap<QString, QVariant>;
 
 	s_prop = tr("Altitude");
     rec_p2->insert("pid", QVariant::fromValue(id));
@@ -206,7 +254,7 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
     rec_p2->insert("value", QVariant::fromValue(alt));
 	rec_p2->insert("state", QVariant::fromValue(1));
 
-	QVector<QMap<QString, QVariant> >* map_p2 = m_dbManager->get(id, 0);
+	QVector<QMap<QString, QVariant> >* map_p2 = m_dbBlaManager->get(id, 0);
 
     for(int i = 0; i < map_p2->count(); ++i)
     {
@@ -218,7 +266,7 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
         }
     }
 
-	m_dbManager->set_property(0, rec_p2);
+	m_dbBlaManager->set_property(0, rec_p2);*/
 }
 
 void RPCClient::rpcSlotServerSendAisData(QByteArray data)
@@ -462,7 +510,9 @@ void RPCClient::sendBplaPoints(QByteArray data)
     rec_p1->insert("value", QVariant::fromValue(track.at(track.size()-1).y()));
     rec_p1->insert("state", QVariant::fromValue(1));
 
-	QVector<QMap<QString, QVariant> >* map_p1 = m_dbManager->get(m_rdsEvilIds, 1);
+	//TODO: shouldnt m_dbManager be m_dbManagerTarget?
+	//QVector<QMap<QString, QVariant> >* map_p1 = m_dbManager->get(m_rdsEvilIds, 1);
+	QVector<QMap<QString, QVariant> >* map_p1 = m_dbManagerTarget->get(m_rdsEvilIds, 1);
 
     for(int i = 0; i < map_p1->count(); ++i)
     {

@@ -5,7 +5,7 @@ TcpNIIPPController::TcpNIIPPController(QObject* parent) :
 {
 	/// What the fuck was going on?!
 	m_tcpDeviceName = DeviceTypes::NIIPP_TCP_DEVICE;
-	debug(QString("Created %1").arg(m_tcpDeviceName));
+	log_debug(QString("Created %1").arg(m_tcpDeviceName));
 	connect(this, SIGNAL(createTcpNIIPPCoderInternalSignal()), this, SLOT(createTcpNIIPPCoderInternalSlot()));
 }
 
@@ -27,7 +27,7 @@ void TcpNIIPPController::createTcpDeviceCoder()
 
 void TcpNIIPPController::createTcpNIIPPCoderInternalSlot()
 {
-	debug("Creating TcpNIIPPCoder...");
+	log_debug("Creating TcpNIIPPCoder...");
 	m_tcpDeviceCoder = new TcpNIIPPCoder(this);
 }
 

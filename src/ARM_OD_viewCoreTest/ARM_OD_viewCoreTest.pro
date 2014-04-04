@@ -1,7 +1,7 @@
 TARGET   = ARM_OD_viewCoreTest
 TEMPLATE = app
 
-QT     +=  core network
+QT     +=  core sql network
 QT     += gui
 CONFIG += console
 CONFIG += qtestlib
@@ -15,7 +15,8 @@ HEADERS += \
 
 include(../../specs/project.pri)
 include(../ARM_OD_viewCore/reference.pri)
-#include(../ARM_OD_Common/reference.pri)
+include(../ARM_OD_Common/reference.pri)
+include($$SolutionDir/specs/CISCommonLib.pri )
 include(../../specs/qxt.pri)
 include(../../specs/logger.pri )
 include(../TestShared/mksuite.pri)

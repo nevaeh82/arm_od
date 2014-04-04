@@ -4,7 +4,7 @@ TcpArmrClientController::TcpArmrClientController(QObject *parent) :
 	BaseTcpDeviceController(parent)
 {
 	m_tcpDeviceName = DeviceTypes::ARMR_TCP_CLIENT;
-	debug(QString("Created %1").arg(m_tcpDeviceName));
+	log_debug(QString("Created %1").arg(m_tcpDeviceName));
 
 	init();
 	connect(this, SIGNAL(createTcpArmrCoderInternalSignal()), this, SLOT(createTcpArmrCoderInternalSlot()));
@@ -65,6 +65,6 @@ QObject *TcpArmrClientController::asQObject()
 
 void TcpArmrClientController::createTcpArmrCoderInternalSlot()
 {
-	debug("Creating TcpArmrCoder...");
+	log_debug("Creating TcpArmrCoder...");
 	m_tcpDeviceCoder = new TcpArmrClientCoder(this);
 }
