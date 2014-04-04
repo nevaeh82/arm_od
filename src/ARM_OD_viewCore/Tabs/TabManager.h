@@ -9,6 +9,7 @@
 #include <QTextCodec>
 #include <QVBoxLayout>
 #include <QMutex>
+#include <QThread>
 
 #include "../Abstracts/IModuleController.h"
 

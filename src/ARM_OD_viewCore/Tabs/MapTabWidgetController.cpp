@@ -94,9 +94,15 @@ void MapTabWidgetController::hide()
 int MapTabWidgetController::createRPC()
 {
 	readSettings();
-	m_rpcClient = new RPCClient(m_station, m_blaDbManager, m_bplaDbManager, m_mapController, this, _tab_manager, this);
-	m_rpcClient->start(m_rpcHostPort, QHostAddress(m_rpcHostAddress));
+	m_rpcClient = new RPCClient(m_station, m_blaDbManager, m_bplaDbManager, m_mapController, this, _tab_manager);
+	//m_rpcClient->start(m_rpcHostPort, QHostAddress(m_rpcHostAddress));
 
+	QThread* rpcClientThread = new QThread;
+	connect(m_rpcClient, SIGNAL(destroyed()), rpcClientThread, SLOT(terminate()));
+	m_rpcClient->moveToThread(rpcClientThread);
+	rpcClientThread->start();
+
+	m_rpcClient->start(m_rpcHostPort, QHostAddress(m_rpcHostAddress));
 	/*
 		QThread *thread_rpc_client = new QThread;
 		qDebug() << "create thread for rpc client ";
