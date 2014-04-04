@@ -122,6 +122,7 @@ private:
 	void removeAis();
 
 public slots:
+	virtual void init();
 	virtual void setPoint();
 	virtual void centerMap();
 	virtual void justifyMap();
@@ -154,7 +155,6 @@ private slots:
 
 	void updateCircle();
 	void updateSlice();
-	void onMapReady();
 
 	void mapMouseClicked( double, double );
 

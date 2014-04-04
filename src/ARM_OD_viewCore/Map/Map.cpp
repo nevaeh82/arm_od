@@ -60,10 +60,12 @@ void Map::onMapReady()
 	QMap<int, IMapClient *>::iterator it;
 
 	for( it = m_clients.begin(); it != m_clients.end(); ++it ) {
-		if ( !it.value() ) {
-			continue;
-		}
-		( it.value() )->setPoint();
+		if ( !it.value() ) continue;
+
+		IMapClient *client = it.value();
+
+		client->init();
+		client->setPoint();
 	}
 
 	emit modelMapReady();

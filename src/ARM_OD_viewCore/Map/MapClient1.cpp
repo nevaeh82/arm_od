@@ -47,9 +47,6 @@ MapClient1::MapClient1(PwGisWidget* pwwidget, Station* station, QObject* parent)
 	connect( m_uiTimerSlice, SIGNAL( timeout() ), this, SLOT( updateSlice() ) );
 	m_uiTimerSlice->setInterval( 100 );
 
-	QObject::connect( &m_pwwidget->mapProvider()->mapManager()->events(),
-		SIGNAL( mapReady() ), this, SLOT( onMapReady() ) );
-
 	m_layerManager = m_pwwidget->mapProvider()->layerManager();
 
 	m_perehvat = new ZInterception( this );
@@ -290,7 +287,7 @@ void MapClient1::updateSlice()
 	}
 }
 
-void MapClient1::onMapReady()
+void MapClient1::init()
 {
 
 	//define style

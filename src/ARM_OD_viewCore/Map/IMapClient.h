@@ -26,6 +26,7 @@ struct DataFly {
 class IMapClient
 {
 public:
+	virtual void init() = 0;
 	virtual void setPoint() = 0;
 	virtual void centerMap() = 0;
 	virtual void justifyMap() = 0;

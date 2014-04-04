@@ -8,27 +8,21 @@
 #include "UAV/ZInterception.h"
 
 MapController::MapController() :
-	m_view( new MapWidget() ),
+	m_view( NULL ),
 	m_map( new Map() )
 {
-	m_map->setMapManager( m_view->getPwGis()->mapProvider()->mapManager() );
-	m_map->setProfileManager( m_view->getPwGis()->mapProvider()->profileManager() );
-
 	QObject::connect( m_map, SIGNAL( modelMapReady( )), this, SLOT( onMapReady() ) );
-
-	m_view->getPwGis()->enableDebugger( false );
-	connect(m_view, SIGNAL( showBLAtree() ), this, SIGNAL( showFriendBplaTreeCliecked() ) );
-	connect(m_view, SIGNAL( showBPLAtree() ), this, SIGNAL( showEnemyBplaTreeClicked() ) );
-	connect(m_view, SIGNAL( showNIIPP() ), this, SIGNAL( showNiippClicked() ) );
 }
 
 MapController::~MapController()
 {
 }
 
-void MapController::init(QMap<int, Station*> mapSettings)
+void MapController::init(QMap<int, Station*> stations)
 {
-	m_map->init( mapSettings, m_view->getPwGis() );
+	if( m_view == NULL ) return;
+
+	m_map->init( stations, m_view->getPwGis() );
 }
 
 void MapController::openMapFromAtlas()
@@ -38,6 +32,8 @@ void MapController::openMapFromAtlas()
 
 void MapController::openMapFromLocalFile(/*const QString mapFile*/)
 {
+	if( m_view == NULL ) return;
+
 	QString filename = QFileDialog::getOpenFileName(
 		m_view,
 		tr( "Открыть карту" ),
@@ -53,6 +49,8 @@ void MapController::openMapFromLocalFile(/*const QString mapFile*/)
 
 void MapController::onMapReady()
 {
+	if( m_view == NULL ) return;
+
 	getPanelWidget()->setMouseTracking( true );
 	m_map->setLayerManager( m_view->getPwGis()->mapProvider()->layerManager() );
 	emit mapOpened();
@@ -63,29 +61,43 @@ void MapController::setStationVisibility( bool state )
 	m_map->setStationVisible( state );
 }
 
-PwGisWidget *MapController::getPwWidget()
+PwGisWidget* MapController::getPwWidget()
 {
+	if( m_view == NULL ) return NULL;
+
 	return m_view->getPwGis();
 }
 
-QWidget *MapController::getWidget()
+QWidget* MapController::getWidget()
 {
+	if( m_view == NULL ) return NULL;
+
 	return m_view->getWidget();
 }
 
 /// get map client by name
-IMapClient *MapController::getMapClient( int id )
+IMapClient* MapController::getMapClient( int id )
 {
 	return m_map->getMapClient(id);
 }
 
 /// get panel widget
-QWidget *MapController::getPanelWidget()
+QWidget* MapController::getPanelWidget()
 {
+	if( m_view == NULL ) return NULL;
+
 	return m_view->getPanelWidget();
 }
 
 void MapController::appendView(MapWidget *view)
 {
 	m_view = view;
+
+	m_map->setMapManager( m_view->getPwGis()->mapProvider()->mapManager() );
+	m_map->setProfileManager( m_view->getPwGis()->mapProvider()->profileManager() );
+
+	m_view->getPwGis()->enableDebugger( false );
+	connect(m_view, SIGNAL( showBLAtree() ), this, SIGNAL( showFriendBplaTreeCliecked() ) );
+	connect(m_view, SIGNAL( showBPLAtree() ), this, SIGNAL( showEnemyBplaTreeClicked() ) );
+	connect(m_view, SIGNAL( showNIIPP() ), this, SIGNAL( showNiippClicked() ) );
 }
