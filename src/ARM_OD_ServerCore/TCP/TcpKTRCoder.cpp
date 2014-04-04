@@ -75,10 +75,10 @@ QByteArray TcpKTRCoder::decode(const MessageSP message)
 	 * TCP_KTR_REQUEST_COMMAND_TO_BPLA
 	 *
 	 * case 1:
-	 * "user link command b" + QString::number(_id) + " d" +QString::number(_dev);
+	 * "user link command b" + QString::number(_id) + "d" +QString::number(_dev);
 	 *
 	 * case 2:
-	 * "user link command b" + QString::number(_id) + " d" +QString::number(622);
+	 * "user link command b" + QString::number(_id) + "d" +QString::number(622);
 	 **/
 
 	QString messageType = message->type();
@@ -144,20 +144,15 @@ MessageSP TcpKTRCoder::parseLocationFromBoard(const QByteArray& data)
 	lon /= 60;
 	lon += deg;
 
-	latitude = (int) (lat * 100000);
+//	latitude = (int) (lat * 100000);
 	latitude = lat;
-	longitude = (int) (lon * 100000);
+//	longitude = (int) (lon * 100000);
 	longitude = lon;
 
 	QPointF point;
 	point.setX(latitude);
 	point.setY(longitude);
 
-	QByteArray dataToSend;
-	QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
-
-	dataStream << point;
-	dataStream << m_altitude;
 
 	if(m_logFile.isOpen()) {
 		QString dataString;
@@ -175,6 +170,20 @@ MessageSP TcpKTRCoder::parseLocationFromBoard(const QByteArray& data)
 		m_logFile.write(dataString.toStdString().c_str());
 		m_logFile.flush();
 	}
+
+	UAVPositionData positionData;
+	positionData.latitude = latitude;
+	positionData.longitude = longitude;
+	positionData.altitude = m_altitude;
+
+	QVector<UAVPositionData> positionDataVector;
+	positionDataVector.push_back(positionData);
+
+	QByteArray dataToSend;
+	QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
+
+	dataStream << positionDataVector;
+
 	return MessageSP(new Message<QByteArray>(TCP_KTR_ANSWER_BPLA, dataToSend));
 }
 
@@ -198,7 +207,7 @@ MessageSP TcpKTRCoder::parseLocationFromKTR(const QByteArray& data)
 		count_points = 1;
 	}
 
-	QVector<QPointF> vec_points;
+	QVector<UAVPositionData> positionDataVector;
 	for (int i = 0; i < count_points; ++i) {
 		QString f1 = dl3.at(i + 2);
 		QStringList l33 = f1.split("{");
@@ -237,16 +246,17 @@ MessageSP TcpKTRCoder::parseLocationFromKTR(const QByteArray& data)
 		lon_f /= 60;
 		lon_f += deg1;
 
-		QPointF point(lat_f, lon_f);
-		vec_points.push_back(point);
+		UAVPositionData positionData;
+		positionData.latitude = lat_f;
+		positionData.longitude = lon_f;
+
+		positionDataVector.push_back(positionData);
 	}
 
 	QByteArray dataToSend;
 	QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
 
-	dataStream << vec_points;
-	double alt = 0;
-	dataStream << alt;
+	dataStream << positionDataVector;
 
 	return MessageSP(new Message<QByteArray>(TCP_KTR_ANSWER_BPLA, dataToSend));
 }

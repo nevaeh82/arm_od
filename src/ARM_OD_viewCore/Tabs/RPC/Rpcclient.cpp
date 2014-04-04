@@ -45,7 +45,7 @@ bool RPCClient::start(quint16 port, QHostAddress ipAddress)
 	qDebug() << this->thread();
 
 	///server
-	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BLA_POINTS, this, SLOT(rpcSendBlaPoints(int,QPointF,double,double,double,int)));
+	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BLA_POINTS, this, SLOT(rpcSendBlaPoints(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_AIS_DATA, this, SLOT(rpcSlotServerSendAisData(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_POINTS, this, SLOT(rpcSendBplaPoints(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO, this, SLOT(rpcSendBplaPointsAuto(QByteArray)));
@@ -110,8 +110,31 @@ void RPCClient::slotRCPConnetion()
 	emit signalSetClientId(m_station->id);
 }
 
-void RPCClient::rpcSendBlaPoints(int id, QPointF point, double alt, double speed, double course, int state)
+void RPCClient::rpcSendBlaPoints(QByteArray data)
 {
+//	debug("Get data from server");
+	QDataStream inputDataStream(&data, QIODevice::ReadOnly);
+	QVector<UAVPositionData> positionDataVector;
+
+	inputDataStream >> positionDataVector;
+
+	if (positionDataVector.size() < 1) {
+		debug("Size uavpositiondata vector < 1");
+		return;
+	}
+
+	/// Now we take first point, but we need to take more than 1 point
+	UAVPositionData positionData = positionDataVector.at(0);
+
+	int id = positionData.boardID; /// need quint16
+	QPointF point;
+	point.setX(positionData.latitude);
+	point.setY(positionData.longitude);
+	double alt = positionData.altitude;
+	double speed = positionData.speed;
+	double course = positionData.course;
+	quint32 state = positionData.state;
+
     QByteArray ddd;
     QDataStream ds(&ddd, QIODevice::WriteOnly);
     ds << point;
@@ -133,7 +156,7 @@ void RPCClient::rpcSendBlaPoints(int id, QPointF point, double alt, double speed
     QMap<QString, QVariant>* rec_p = new QMap<QString, QVariant>;
 
     QString s_prop;
-    s_prop = tr("Широта");
+    s_prop = tr("Latitude");
     rec_p->insert("pid", QVariant::fromValue(id));
     rec_p->insert("name", QVariant::fromValue(s_prop));
     rec_p->insert("value", QVariant::fromValue(point.x()));
@@ -154,7 +177,7 @@ void RPCClient::rpcSendBlaPoints(int id, QPointF point, double alt, double speed
 
     QMap<QString, QVariant>* rec_p1 = new QMap<QString, QVariant>;
 
-    s_prop = tr("Долгота");
+    s_prop = tr("Longitude");
     rec_p1->insert("pid", QVariant::fromValue(id));
     rec_p1->insert("name", QVariant::fromValue(s_prop));
     rec_p1->insert("value", QVariant::fromValue(point.y()));
@@ -177,7 +200,7 @@ void RPCClient::rpcSendBlaPoints(int id, QPointF point, double alt, double speed
 
     QMap<QString, QVariant>* rec_p2 = new QMap<QString, QVariant>;
 
-    s_prop = tr("Высота");
+	s_prop = tr("Altitude");
     rec_p2->insert("pid", QVariant::fromValue(id));
     rec_p2->insert("name", QVariant::fromValue(s_prop));
     rec_p2->insert("value", QVariant::fromValue(alt));
@@ -412,7 +435,7 @@ void RPCClient::sendBplaPoints(QByteArray data)
     QMap<QString, QVariant>* rec_p = new QMap<QString, QVariant>;
 
     QString s_prop;
-    s_prop = tr("Широта");
+    s_prop = tr("Latitude");
 	rec_p->insert("pid", QVariant::fromValue(m_rdsEvilIds));
     rec_p->insert("name", QVariant::fromValue(s_prop));
     rec_p->insert("value", QVariant::fromValue(track.at(track.size()-1).x()));
@@ -433,7 +456,7 @@ void RPCClient::sendBplaPoints(QByteArray data)
 
     QMap<QString, QVariant>* rec_p1 = new QMap<QString, QVariant>;
 
-    s_prop = tr("Долгота");
+    s_prop = tr("Longitude");
 	rec_p1->insert("pid", QVariant::fromValue(m_rdsEvilIds));
     rec_p1->insert("name", QVariant::fromValue(s_prop));
     rec_p1->insert("value", QVariant::fromValue(track.at(track.size()-1).y()));
@@ -456,7 +479,7 @@ void RPCClient::sendBplaPoints(QByteArray data)
 
     QMap<QString, QVariant>* rec_p2 = new QMap<QString, QVariant>;
 
-    s_prop = tr("Высота");
+	s_prop = tr("Altitude");
 	rec_p2->insert("pid", QVariant::fromValue(m_rdsEvilIds));
     rec_p2->insert("name", QVariant::fromValue(s_prop));
     rec_p2->insert("value", QVariant::fromValue(alt));

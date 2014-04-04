@@ -10,6 +10,7 @@
 #include <QDataStream>
 
 #include "TcpDefines.h"
+#include "UAVDefines.h"
 
 class TcpKTRCoder : public BaseTcpDeviceCoder
 {
