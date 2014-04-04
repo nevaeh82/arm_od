@@ -116,7 +116,7 @@ void RPCClient::rpcSendBlaPoints(int id, QPointF point, double alt, double speed
 	if (blaId < 0){
 		int blaUnknownTypeId = m_dbBlaManager->getBlaTypeByName("UnknownBlaType");
 
-		if (blaTypeId < 0){
+		if (blaUnknownTypeId < 0){
 			BlaType blaType;
 			blaType.name = "UnknownBlaType";
 			blaUnknownTypeId = m_dbBlaManager->addBlaType(blaType);
@@ -145,7 +145,7 @@ void RPCClient::rpcSendBlaPoints(int id, QPointF point, double alt, double speed
 		Devices device;
 		device.blaId = id;
 		device.deviceId = unknownDeviceTypeId;
-		deviceUnknownId = m_dbBlaManager->addDevice(deviceType);
+		deviceUnknownId = m_dbBlaManager->addDevice(device);
 	} else {
 		deviceUnknownId = devices.at(0).id;
 	}
@@ -173,16 +173,16 @@ void RPCClient::rpcSendBlaPoints(int id, QPointF point, double alt, double speed
     ds << state;
 
 	m_mapController->get_map_client(1)->slot_add_BLA(id, ddd);
-    QMap<QString, QVariant>* rec = new QMap<QString, QVariant>;
+	/*QMap<QString, QVariant>* rec = new QMap<QString, QVariant>;
 
     rec->insert("id", QVariant::fromValue(id));
 
     rec->insert("pid", QVariant::fromValue(0));
     rec->insert("name", QVariant::fromValue(id));
     rec->insert("state", QVariant::fromValue(1));
-	m_dbBlaManager->set(0, rec);
+	m_dbBlaManager->set(0, rec);*/
 
-    QMap<QString, QVariant>* rec_p = new QMap<QString, QVariant>;
+   /* QMap<QString, QVariant>* rec_p = new QMap<QString, QVariant>;
 
     QString s_prop;
     s_prop = tr("Широта");
@@ -202,9 +202,9 @@ void RPCClient::rpcSendBlaPoints(int id, QPointF point, double alt, double speed
         }
 	}
 
-	m_dbBlaManager->set_property(0, rec_p);
+	m_dbBlaManager->set_property(0, rec_p);*/
 
-    QMap<QString, QVariant>* rec_p1 = new QMap<QString, QVariant>;
+	/*QMap<QString, QVariant>* rec_p1 = new QMap<QString, QVariant>;
 
     s_prop = tr("Долгота");
     rec_p1->insert("pid", QVariant::fromValue(id));
@@ -224,10 +224,10 @@ void RPCClient::rpcSendBlaPoints(int id, QPointF point, double alt, double speed
         }
     }
 
-	m_dbBlaManager->set_property(0, rec_p1);
+	m_dbBlaManager->set_property(0, rec_p1);*/
 
 
-    QMap<QString, QVariant>* rec_p2 = new QMap<QString, QVariant>;
+   /* QMap<QString, QVariant>* rec_p2 = new QMap<QString, QVariant>;
 
     s_prop = tr("Высота");
     rec_p2->insert("pid", QVariant::fromValue(id));
@@ -247,7 +247,7 @@ void RPCClient::rpcSendBlaPoints(int id, QPointF point, double alt, double speed
         }
     }
 
-	m_dbBlaManager->set_property(0, rec_p2);
+	m_dbBlaManager->set_property(0, rec_p2);*/
 }
 
 void RPCClient::rpcSlotServerSendAisData(QByteArray data)
@@ -493,6 +493,7 @@ void RPCClient::sendBplaPoints(QByteArray data)
 
 	//TODO: shouldnt m_dbManager be m_dbManagerTarget?
 	//QVector<QMap<QString, QVariant> >* map_p1 = m_dbManager->get(m_rdsEvilIds, 1);
+	QVector<QMap<QString, QVariant> >* map_p1 = m_dbManagerTarget->get(m_rdsEvilIds, 1);
 
     for(int i = 0; i < map_p1->count(); ++i)
     {

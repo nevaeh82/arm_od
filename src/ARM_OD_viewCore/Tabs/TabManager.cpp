@@ -125,3 +125,16 @@ int TabManager::readSettings(const QString& settingsFile)
 
 	return count;
 }
+
+DBConnectionStruct TabManager::getDbBlaConnectionSettings()
+{
+	DBConnectionStruct connectionStruct;
+
+	connectionStruct.dbName = m_dbBlaSettingsManager->getBlaDbName();
+	connectionStruct.host = m_dbBlaSettingsManager->getBlaDbHost();
+	connectionStruct.login = m_dbBlaSettingsManager->getBlaDbLogin();
+	connectionStruct.password = m_dbBlaSettingsManager->getBlaDbPassword();
+	connectionStruct.port = m_dbBlaSettingsManager->getBlaDbPort();
+
+	return connectionStruct;
+}

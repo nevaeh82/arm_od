@@ -15,7 +15,7 @@ TcpManager::~TcpManager()
 
 void TcpManager::addTcpDevice(const QString& deviceName, const quint32& deviceType)
 {
-	debug(QString("Creating %1 with type %2").arg(QString(deviceName)).arg(QString::number(deviceType)));
+	log_debug(QString("Creating %1 with type %2").arg(QString(deviceName)).arg(QString::number(deviceType)));
 
 	BaseTcpDeviceController* controller = NULL;
 
@@ -30,19 +30,19 @@ void TcpManager::addTcpDevice(const QString& deviceName, const quint32& deviceTy
 	{
 		case DeviceTypes::NIIPP_TCP_DEVICE:
 			controller = new TcpNIIPPController(deviceName);
-			debug(QString("Created TcpNIIPPController"));
+			log_debug(QString("Created TcpNIIPPController"));
 			break;
 		case DeviceTypes::KTR_TCP_DEVICE:
 			controller = new TcpKTRController(deviceName);
-			debug(QString("Created TcpKTRController"));
+			log_debug(QString("Created TcpKTRController"));
 			break;
 		case DeviceTypes::AIS_TCP_DEVICE:
 			controller = new TcpAISController(deviceName);
-			debug(QString("Created TcpAISController"));
+			log_debug(QString("Created TcpAISController"));
 			break;
 		case DeviceTypes::ARMR_TCP_CLIENT:
 			controller = new TcpArmrClientController(deviceName);
-			debug(QString("Created TcpArmrClientController"));
+			log_debug(QString("Created TcpArmrClientController"));
 			break;
 		default:
 			break;
@@ -52,7 +52,7 @@ void TcpManager::addTcpDevice(const QString& deviceName, const quint32& deviceTy
 	/// if something else, create new Tcp%Device%Controller with new name and/or class
 
 	if (controller == NULL) {
-		debug(QString("Unable to create %1 with type %2").arg(QString(deviceName)).arg(QString::number(deviceType)));
+		log_debug(QString("Unable to create %1 with type %2").arg(QString(deviceName)).arg(QString::number(deviceType)));
 		return;
 	}
 
@@ -78,13 +78,13 @@ void TcpManager::addTcpDevice(const QString& deviceName, const quint32& deviceTy
 		controller->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_GET_BOARD_LIST, QByteArray())));
 	}
 
-	debug(QString("Added device connection for %1 with %2").arg(deviceName).arg(deviceType));
+	log_debug(QString("Added device connection for %1 with %2").arg(deviceName).arg(deviceType));
 }
 
 void TcpManager::removeTcpDevice(const QString& deviceName)
 {
 	if (!m_controllersMap.contains(deviceName)) {
-		debug(QString("Map doesn't contain %1").arg(deviceName));
+		log_debug(QString("Map doesn't contain %1").arg(deviceName));
 		return;
 	}
 
@@ -130,13 +130,13 @@ void TcpManager::onMessageReceived(const quint32 deviceType, const QString& devi
 			if (messageType == TCP_KTR_ANSWER_BOARD_LIST) {
 
 				if (!m_controllersMap.contains(deviceName)) {
-					debug(QString("Map doesn't contain %1 %2").arg(deviceName).arg(deviceType));
+					log_debug(QString("Map doesn't contain %1 %2").arg(deviceName).arg(deviceType));
 					return;
 				}
 
 				BaseTcpDeviceController* controller = m_controllersMap.value(deviceName, NULL);
 				if (controller == NULL) {
-					debug(QString("Something wrong with controller %1 %2").arg(deviceName).arg(deviceType));
+					log_debug(QString("Something wrong with controller %1 %2").arg(deviceName).arg(deviceType));
 					return;
 				}
 

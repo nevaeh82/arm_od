@@ -21,10 +21,10 @@ MessageSP TcpAISCoder::encode(const QByteArray& data)
 	inputDataStream >> answer;
 
 	if (answer.size() == 0) {
-		debug("Empty answer");
+		log_debug("Empty answer");
 		return MessageSP(new Message<QByteArray>(TCP_EMPTY_MESSAGE, QByteArray()));
 	}
-	debug(answer);
+	log_debug(answer);
 
 	return filterData(answer);
 }

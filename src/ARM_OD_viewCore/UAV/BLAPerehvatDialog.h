@@ -13,10 +13,11 @@
 
 #include <QLineEdit>
 
-
 #include <QVector>
 
 #include "../MapInterface/IMapClient.h"
+
+#include "Tabs/DbBla/DbBlaManager.h"
 
 namespace Ui {
 class BLAPerehvatDialog;
@@ -30,14 +31,14 @@ public:
     explicit BLAPerehvatDialog(IMapClient* map_client);
     ~BLAPerehvatDialog();
 
-    void init(int id, DBManager* db_bla, DBManager* db_evil);
+	void init(int id, IDbBlaManager* db_bla, DBManager* db_evil);
     
 private:
     Ui::BLAPerehvatDialog *ui;
 
     int                 _id;
 
-    DBManager*          _db_bla;
+	IDbBlaManager*          _db_bla;
     DBManager*          _db_evil;
 
     IMapClient*     _map_client;

@@ -4,7 +4,7 @@ TcpKTRController::TcpKTRController(QObject* parent) :
 	BaseTcpDeviceController(parent)
 {
 	m_tcpDeviceName = DeviceTypes::KTR_TCP_DEVICE;
-	debug(QString("Created %1").arg(m_tcpDeviceName));
+	log_debug(QString("Created %1").arg(m_tcpDeviceName));
 	connect(this, SIGNAL(createTcpKTRCoderInternalSignal()), this, SLOT(createTcpKTRCoderInternalSlot()));
 }
 
@@ -26,7 +26,7 @@ void TcpKTRController::createTcpDeviceCoder()
 
 void TcpKTRController::createTcpKTRCoderInternalSlot()
 {
-	debug("Creating TcpKTRCoder...");
+	log_debug("Creating TcpKTRCoder...");
 	m_tcpDeviceCoder = new TcpKTRCoder(this);
 }
 
