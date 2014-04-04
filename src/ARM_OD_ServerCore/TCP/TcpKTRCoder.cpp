@@ -20,8 +20,6 @@ TcpKTRCoder::~TcpKTRCoder()
 
 MessageSP TcpKTRCoder::encode(const QByteArray& data)
 {
-	debug(QString("Parse data from KTR %1").arg(QString::fromAscii(data.constData(), data.size())));
-
 	//parseLocationFromKTR
 
 	//$KTPGA,OBJ_ID=1044,2X,P0={42*38'32.14"|41*38'7.81"},P1={42*35'1.21"|41*50'53.51"},END
@@ -33,7 +31,6 @@ MessageSP TcpKTRCoder::encode(const QByteArray& data)
 
 		QString ddt = dl1.at(1);
 		if (ddt.contains("END")) {
-			debug("CASE ONE");
 			return parseLocationFromKTR(data);
 		}
 	}
@@ -47,7 +44,6 @@ MessageSP TcpKTRCoder::encode(const QByteArray& data)
 	QString r3 = "N";
 
 	if ((f1 == r1.toAscii().at(0) && f2 == r2.toAscii().at(0))) {
-		debug("CASE TWO");
 		return parseLocationFromBoard(data);
 	}
 	else if (f2 == r3.toAscii().at(0)) {
@@ -57,7 +53,6 @@ MessageSP TcpKTRCoder::encode(const QByteArray& data)
 	//parseBoardList
 
 	if (data.mid(0, 12) == "control link") {
-		debug("CASE THREE");
 		return parseBoardList(data);
 	}
 
@@ -102,7 +97,6 @@ QByteArray TcpKTRCoder::decode(const MessageSP message)
 	}
 
 	dataToSend.append(command.toAscii());
-	debug(command);
 	return dataToSend;
 }
 
