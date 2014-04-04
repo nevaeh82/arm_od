@@ -39,7 +39,7 @@ void TcpKTRManager::connectToBoard(const QString& hostPort, const quint16& board
 		controller = new TcpKTRController(key);
 
 		if (controller == NULL) {
-			debug(QString("Unable to create %1 with type %2").arg(QString(key)).arg(QString::number(DeviceTypes::KTR_TCP_DEVICE)));
+			log_debug(QString("Unable to create %1 with type %2").arg(QString(key)).arg(QString::number(DeviceTypes::KTR_TCP_DEVICE)));
 			return;
 		}
 
@@ -60,7 +60,7 @@ void TcpKTRManager::connectToBoard(const QString& hostPort, const quint16& board
 
 		QStringList strList = hostPort.split(":");
 		if (strList.isEmpty()) {
-			debug("Everything is not ok... HostPort is empty");
+			log_debug("Everything is not ok... HostPort is empty");
 		}
 
 		controller->connectToHost(strList.at(0), strList.at(1).toUInt());

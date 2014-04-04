@@ -27,12 +27,15 @@
 
 #include "UAVDefines.h"
 
+#include "Interfaces/IDbBlaManager.h"
+#include "Tabs/DbBla/Defines.h"
+
 class RPCClient : public RpcClientBase
 {
     Q_OBJECT
 private:
 	IMessageOld*        m_commandMsg;
-	IDBManager*         m_dbManager;
+	IDbBlaManager*		m_dbBlaManager;
 	IDBManager*         m_dbManagerTarget;
 	Station	*			m_station;
 	ITabMap*            m_parentTab;
@@ -46,7 +49,7 @@ private:
 	bool                m_solverAuto;
 
 public:
-	RPCClient(Station *station, IDBManager *db_manager, IDBManager *db_manager_target,
+	RPCClient(Station *station, IDbBlaManager *db_manager, IDBManager *db_manager_target,
 			  IMapController* map_controller, ITabMap *parent_tab, ITabManager* tab_manager, QObject *parent);
     ~RPCClient();
 

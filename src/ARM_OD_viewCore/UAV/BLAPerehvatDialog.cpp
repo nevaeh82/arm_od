@@ -8,7 +8,6 @@ BLAPerehvatDialog::BLAPerehvatDialog(IMapClient* map_client) :
 	ui->setupUi(this);
 
 	_map_client = map_client;
-
 }
 
 BLAPerehvatDialog::~BLAPerehvatDialog()
@@ -16,7 +15,7 @@ BLAPerehvatDialog::~BLAPerehvatDialog()
 	delete ui;
 }
 
-void BLAPerehvatDialog::init(int id, DBManager *db_bla, DBManager *db_evil)
+void BLAPerehvatDialog::init(int id, IDbBlaManager *db_bla, DBManager *db_evil)
 {
 	_id = id;
 	_db_bla = db_bla;
@@ -30,7 +29,6 @@ void BLAPerehvatDialog::init(int id, DBManager *db_bla, DBManager *db_evil)
 	for (int i = 0; i < res_evil.size(); ++i) {
 		QTreeWidgetItem *it = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString(tr("UAV_: #%1")).arg(res_evil.at(i))));
 		QMap<QString, QVariant>* res_evil_fields = _db_evil->get_bpla_fields(res_evil.at(i));
-
 
 		if(res_evil_fields->value("state").toInt() == 0) {
 			it->setCheckState(0, Qt::Unchecked);
@@ -48,7 +46,8 @@ void BLAPerehvatDialog::init(int id, DBManager *db_bla, DBManager *db_evil)
 
 void BLAPerehvatDialog::treeItemChangedSlot(QTreeWidgetItem *item, int id)
 {
-	qDebug() << item->text(0) << id << item->checkState(0);
+	/*TODO: FINISH REFACTORING IDbBlaManager */
+	/*qDebug() << item->text(0) << id << item->checkState(0);
 	QStringList ls;
 	ls = item->text(0).split(tr("#"));
 
@@ -83,10 +82,8 @@ void BLAPerehvatDialog::treeItemChangedSlot(QTreeWidgetItem *item, int id)
 
 		ss += QString::number(id_bpla);
 
-
 		QMap<QString, QVariant>* data = new QMap<QString, QVariant>;
 		data->insert("pid", QVariant::fromValue(_id));
-		//    data->insert("id", QVariant::fromValue(0));
 		data->insert("name", QVariant::fromValue(tr("Target #")));
 
 		data->insert("value", QVariant::fromValue(ss));
@@ -96,6 +93,6 @@ void BLAPerehvatDialog::treeItemChangedSlot(QTreeWidgetItem *item, int id)
 		_map_client->add_perehvat(_id, id_bpla);
 	}
 
-	_db_evil->set(1, db_bpla);
+	_db_evil->set(1, db_bpla);*/
 
 }

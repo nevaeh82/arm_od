@@ -9,4 +9,5 @@ include $(SolutionDir)/specs/pwgis.mak
 include $(SolutionDir)/specs/settings.mak
 
 prebuild::
+	-$(cp) -ud ../ARM_OD_view/qt.conf $(DESTDIR)
 	$(call begin-build, Prebuild OK )
