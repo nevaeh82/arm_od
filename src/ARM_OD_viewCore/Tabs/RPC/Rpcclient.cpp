@@ -54,7 +54,7 @@ bool RPCClient::start(quint16 port, QHostAddress ipAddress)
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION, this, SLOT(rpcSlotServerSendAtlantDirection(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_ATLANT_POSITION, this, SLOT(rpcSlotServerSendAtlantPosition(QByteArray)));
 
-	debug("Start RPCClient");
+	log_debug("Start RPCClient");
 	return RpcClientBase::start(port, ipAddress);
 }
 
@@ -119,7 +119,7 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
 	inputDataStream >> positionDataVector;
 
 	if (positionDataVector.size() < 1) {
-		debug("Size uavpositiondata vector < 1");
+		log_debug("Size uavpositiondata vector < 1");
 		return;
 	}
 
