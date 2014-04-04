@@ -20,7 +20,7 @@ TcpKTRCoder::~TcpKTRCoder()
 
 MessageSP TcpKTRCoder::encode(const QByteArray& data)
 {
-	log_debug(QString("Parse data from KTR %1").arg(QString::fromAscii(data.constData(), data.size())));
+	//log_debug(QString("Parse data from KTR %1").arg(QString::fromAscii(data.constData(), data.size())));
 
 	//parseLocationFromKTR
 
@@ -33,7 +33,7 @@ MessageSP TcpKTRCoder::encode(const QByteArray& data)
 
 		QString ddt = dl1.at(1);
 		if (ddt.contains("END")) {
-			log_debug("CASE ONE");
+			//log_debug("CASE ONE");
 			return parseLocationFromKTR(data);
 		}
 	}
@@ -47,7 +47,7 @@ MessageSP TcpKTRCoder::encode(const QByteArray& data)
 	QString r3 = "N";
 
 	if ((f1 == r1.toAscii().at(0) && f2 == r2.toAscii().at(0))) {
-		log_debug("CASE TWO");
+		//log_debug("CASE TWO");
 		return parseLocationFromBoard(data);
 	}
 	else if (f2 == r3.toAscii().at(0)) {
@@ -57,7 +57,7 @@ MessageSP TcpKTRCoder::encode(const QByteArray& data)
 	//parseBoardList
 
 	if (data.mid(0, 12) == "control link") {
-		log_debug("CASE THREE");
+		//log_debug("CASE THREE");
 		return parseBoardList(data);
 	}
 
@@ -102,7 +102,7 @@ QByteArray TcpKTRCoder::decode(const MessageSP message)
 	}
 
 	dataToSend.append(command.toAscii());
-	log_debug(command);
+	//log_debug(command);
 	return dataToSend;
 }
 
@@ -273,7 +273,7 @@ MessageSP TcpKTRCoder::parseBoardList(const QByteArray& data)
 	for (int i = 0; i < count_bla; i++) {
 		quint16 id = ((quint8)inputData.at(3 + i*24) << 8) + (quint8)inputData.at(2 + i*24);
 		identificators.append(id);
-		log_debug(QString("ID = %1").arg(QString::number(id)));
+		//log_debug(QString("ID = %1").arg(QString::number(id)));
 	}
 
 	QByteArray dataToSend;

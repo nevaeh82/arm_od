@@ -47,8 +47,8 @@ public:
 	int getStatusByName(const QString&);
 
 signals:
-	
-public slots:
+
+private slots:
 	
 };
 

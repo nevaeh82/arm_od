@@ -17,12 +17,18 @@ TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
 	m_dbBlaSettingsManager->setIniFile("./DB/db_bla.ini");
 
 	//Creating db bla controller
-	m_dbBlaController = new DbBlaController(this);
+	m_dbBlaController = new DbBlaController();
 	m_dbBlaController->connectToDB(getDbBlaConnectionSettings());
 
 	//Creating db bla manager and set its controller
-	m_dbBlaManager = new DbBlaManager(this);
+	m_dbBlaManager = new DbBlaManager();
 	m_dbBlaManager->setDbController(m_dbBlaController);
+
+	//Moving db bla manager to another thread
+	QThread* dbBlaManagerThread = new QThread;
+	connect(m_dbBlaManager, SIGNAL(destroyed()), dbBlaManagerThread, SLOT(terminate()));
+	m_dbBlaManager->moveToThread(dbBlaManagerThread);
+	dbBlaManagerThread->start();
 
 	_db_manager_evil = new DBManager(this);
 

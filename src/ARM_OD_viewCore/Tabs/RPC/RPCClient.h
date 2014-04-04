@@ -50,7 +50,7 @@ private:
 
 public:
 	RPCClient(Station *station, IDbBlaManager *db_manager, IDBManager *db_manager_target,
-			  IMapController* map_controller, ITabMap *parent_tab, ITabManager* tab_manager, QObject *parent);
+			  IMapController* map_controller, ITabMap *parent_tab, ITabManager* tab_manager, QObject *parent = NULL);
     ~RPCClient();
 
 	bool start(quint16 port, QHostAddress ipAddress);
