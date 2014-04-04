@@ -21,7 +21,7 @@ public:
 		IDbControllerBase* dbBlaController = new DbBlaController(NULL);
 		DBConnectionStruct parameters;
 
-		parameters.dbName = "BLA";
+		parameters.dbName = "BLATEST";
 		parameters.host = "127.0.0.1";
 		parameters.login = "root";
 		parameters.port = 3306;
@@ -37,7 +37,7 @@ public:
 		DbBlaController* dbBlaController = new DbBlaController();
 		DBConnectionStruct parameters;
 
-		parameters.dbName = "BLA";
+		parameters.dbName = "BLATEST";
 		parameters.host = "127.0.0.1";
 		parameters.login = "root";
 		parameters.port = 3306;
@@ -60,7 +60,7 @@ public:
 		DbBlaController* dbBlaController = new DbBlaController();
 		DBConnectionStruct parameters;
 
-		parameters.dbName = "BLA";
+		parameters.dbName = "BLATEST";
 		parameters.host = "127.0.0.1";
 		parameters.login = "root";
 		parameters.port = 3306;
@@ -94,7 +94,7 @@ public:
 		DbBlaController* dbBlaController = new DbBlaController();
 		DBConnectionStruct parameters;
 
-		parameters.dbName = "BLA";
+		parameters.dbName = "BLATEST";
 		parameters.host = "127.0.0.1";
 		parameters.login = "root";
 		parameters.port = 3306;
@@ -117,7 +117,7 @@ public:
 		DbBlaController* db = new DbBlaController();
 		DBConnectionStruct parameters;
 
-		parameters.dbName = "BLA";
+		parameters.dbName = "BLATEST";
 		parameters.host = "127.0.0.1";
 		parameters.login = "root";
 		parameters.port = 3306;
@@ -143,7 +143,7 @@ public:
 		DbBlaController* db = new DbBlaController();
 		DBConnectionStruct parameters;
 
-		parameters.dbName = "BLA";
+		parameters.dbName = "BLATEST";
 		parameters.host = "127.0.0.1";
 		parameters.login = "root";
 		parameters.port = 3306;
@@ -178,7 +178,7 @@ public:
 		DbBlaController* dbBlaController = new DbBlaController();
 		DBConnectionStruct parameters;
 
-		parameters.dbName = "BLA";
+		parameters.dbName = "BLATEST";
 		parameters.host = "127.0.0.1";
 		parameters.login = "root";
 		parameters.port = 3306;
@@ -201,7 +201,7 @@ public:
 		DbBlaController* dbBlaController = new DbBlaController();
 		DBConnectionStruct parameters;
 
-		parameters.dbName = "BLA";
+		parameters.dbName = "BLATEST";
 		parameters.host = "127.0.0.1";
 		parameters.login = "root";
 		parameters.port = 3306;
@@ -226,7 +226,7 @@ public:
 		DbBlaController* dbBlaController = new DbBlaController();
 		DBConnectionStruct parameters;
 
-		parameters.dbName = "BLA";
+		parameters.dbName = "BLATEST";
 		parameters.host = "127.0.0.1";
 		parameters.login = "root";
 		parameters.port = 3306;
@@ -249,7 +249,7 @@ public:
 		DbBlaController* db = new DbBlaController();
 		DBConnectionStruct parameters;
 
-		parameters.dbName = "BLA";
+		parameters.dbName = "BLATEST";
 		parameters.host = "127.0.0.1";
 		parameters.login = "root";
 		parameters.port = 3306;

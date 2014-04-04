@@ -35,21 +35,21 @@ QString DbBlaSettingsManager::getBlaDbLogin()
 {
 	QMutexLocker mutexLocker(&m_mutex);
 	QSettings settings(m_settingsFile, QSettings::IniFormat);
-	return settings.value("BLADB/Login", "root").toUInt();
+	return settings.value("BLADB/Login", "root").toString();
 }
 
 QString DbBlaSettingsManager::getBlaDbPassword()
 {
 	QMutexLocker mutexLocker(&m_mutex);
 	QSettings settings(m_settingsFile, QSettings::IniFormat);
-	return settings.value("BLADB/Password", "qwerty12345").toUInt();
+	return settings.value("BLADB/Password", "qwerty12345").toString();
 }
 
 QString DbBlaSettingsManager::getBlaDbName()
 {
 	QMutexLocker mutexLocker(&m_mutex);
 	QSettings settings(m_settingsFile, QSettings::IniFormat);
-	return settings.value("BLADB/Name", "bla").toUInt();
+	return settings.value("BLADB/Name", "bla").toString();
 }
 
 QString DbBlaSettingsManager::getBplaDbHost()
@@ -70,19 +70,19 @@ QString DbBlaSettingsManager::getBplaDbLogin()
 {
 	QMutexLocker mutexLocker(&m_mutex);
 	QSettings settings(m_settingsFile, QSettings::IniFormat);
-	return settings.value("BPLADB/Login", "root").toUInt();
+	return settings.value("BPLADB/Login", "root").toString();
 }
 
 QString DbBlaSettingsManager::getBplaDbPassword()
 {
 	QMutexLocker mutexLocker(&m_mutex);
 	QSettings settings(m_settingsFile, QSettings::IniFormat);
-	return settings.value("BPLADB/Password", "qwerty12345").toUInt();
+	return settings.value("BPLADB/Password", "qwerty12345").toString();
 }
 
 QString DbBlaSettingsManager::getBplaDbName()
 {
 	QMutexLocker mutexLocker(&m_mutex);
 	QSettings settings(m_settingsFile, QSettings::IniFormat);
-	return settings.value("BPLADB/Name", "bpla").toUInt();
+	return settings.value("BPLADB/Name", "bpla").toString();
 }

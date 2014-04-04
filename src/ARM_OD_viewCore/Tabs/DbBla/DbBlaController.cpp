@@ -50,7 +50,7 @@ int DbBlaController::getBlaByBlaId(const uint blaId)
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare("SELECT * FROM bla WHERE idBLA=:blaId");
+	bool succeeded = query.prepare("SELECT * FROM bla WHERE idBLA = :id;");
 
 	if (!succeeded) {
 		QString er = query.lastError().text();
@@ -58,10 +58,15 @@ int DbBlaController::getBlaByBlaId(const uint blaId)
 		return INVALID_INDEX;
 	}
 
-	query.bindValue(":blaId", blaId);
+	query.bindValue(":id", blaId);
+
 
 	succeeded = query.exec();
-	query.next();
+	QString queryTxt = query.executedQuery();
+
+	if(!query.next()) {
+		return INVALID_INDEX;
+	}
 
 	if (succeeded){
 		return query.record().value(0).toUInt();
@@ -153,7 +158,7 @@ bool DbBlaController::getDevicesByType(const uint deviceTypeId, QList<Devices>& 
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare(QString("SELECT * FROM devices WHERE deviceID=:deviceTypeId"));
+	bool succeeded = query.prepare(QString("SELECT * FROM devices WHERE deviceID = :deviceTypeId;"));
 
 	if (!succeeded) {
 		QString er = query.lastError().text();
@@ -224,7 +229,7 @@ bool DbBlaController::getBlaMissionsByBlaId(const uint blaId, QList<BlaMission> 
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare(QString("SELECT * FROM blamission WHERE BLAid=:BLAid"));
+	bool succeeded = query.prepare(QString("SELECT * FROM blamission WHERE BLAid = :BLAid;"));
 
 	if (!succeeded) {
 		QString er = query.lastError().text();
@@ -298,7 +303,7 @@ bool DbBlaController::getTargetsByType(const uint targetTypeId, QList<Target> &t
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare(QString("SELECT * FROM target WHERE type=:targetTypeId"));
+	bool succeeded = query.prepare(QString("SELECT * FROM target WHERE type = :targetTypeId;"));
 
 	if (!succeeded) {
 		QString er = query.lastError().text();
@@ -405,7 +410,7 @@ int DbBlaController::getDictionaryRecord(const QString& dictionary, const QStrin
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare(QString("SELECT id FROM %1 WHERE name=:name").arg(dictionary));
+	bool succeeded = query.prepare(QString("SELECT id FROM %1 WHERE name = :name;").arg(dictionary));
 
 	if (!succeeded) {
 		QString er = query.lastError().text();
@@ -417,7 +422,10 @@ int DbBlaController::getDictionaryRecord(const QString& dictionary, const QStrin
 	query.bindValue(":name", name);
 
 	succeeded = query.exec();
-	query.next();
+
+	if(!query.next()) {
+		return INVALID_INDEX;
+	}
 
 	if (succeeded){
 		return query.record().value(0).toUInt();

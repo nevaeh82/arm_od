@@ -9,9 +9,12 @@ TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
 
 	m_tabWidget = tabWidget;
 
+	/*TODO: REMOVE NEXT STRING*/
 	//_db_manager_bla = new DBManager(this);
+
 	//Creating db bla settings manager
 	m_dbBlaSettingsManager = DbBlaSettingsManager::instance();
+	m_dbBlaSettingsManager->setIniFile("./DB/db_bla.ini");
 
 	//Creating db bla controller
 	m_dbBlaController = new DbBlaController(this);

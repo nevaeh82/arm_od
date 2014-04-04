@@ -112,7 +112,19 @@ void RPCClient::slotRCPConnetion()
 
 void RPCClient::rpcSendBlaPoints(QByteArray data)
 {
-	int blaId = m_dbBlaManager->getBlaByBlaId(id);
+	QDataStream inputDataStream(&data, QIODevice::ReadOnly);
+	QVector<UAVPositionData> positionDataVector;
+	inputDataStream >> positionDataVector;
+
+	if (positionDataVector.size() < 1) {
+		log_debug("Size uavpositiondata vector < 1");
+		return;
+	}
+
+	/// Now we take first point, but we need to take more than 1 point
+	UAVPositionData positionData = positionDataVector.at(0);
+
+	int blaId = m_dbBlaManager->getBlaByBlaId(positionData.boardID);
 	if (blaId < 0){
 		int blaUnknownTypeId = m_dbBlaManager->getBlaTypeByName("UnknownBlaType");
 
@@ -123,14 +135,19 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
 		}
 
 		Bla bla;
-		bla.blaId = id;
+		bla.blaId = positionData.boardID;
 		bla.type = blaUnknownTypeId;
+		bla.ip = "127.0.0.1";
 
 		blaId = m_dbBlaManager->addBla(bla);
 	}
 
 	int statusUnknownId = m_dbBlaManager->getStatusByName("UnknownStatus");
-	int deviceUnknownId = -1;
+	if (statusUnknownId < 0){
+		Status status;
+		status.status = "UnknownStatus";
+		statusUnknownId = m_dbBlaManager->addStatus(status);
+	}
 
 	QList<Devices> devices;
 	int unknownDeviceTypeId = m_dbBlaManager->getDeviceTypeByName("UnknownDeviceType");
@@ -141,9 +158,12 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
 		unknownDeviceTypeId = m_dbBlaManager->addDeviceType(deviceType);
 	}
 
-	if (!m_dbBlaManager->getDevicesByType(unknownDeviceTypeId, devices)){
+	m_dbBlaManager->getDevicesByType(unknownDeviceTypeId, devices);
+
+	int deviceUnknownId = -1;
+	if (0 == devices.count()){
 		Devices device;
-		device.blaId = id;
+		device.blaId = positionData.boardID;
 		device.deviceId = unknownDeviceTypeId;
 		deviceUnknownId = m_dbBlaManager->addDevice(device);
 	} else {
@@ -153,28 +173,18 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
 	BlaInfo blaInfo;
 	blaInfo.blaId = blaId; // FK
 	blaInfo.device = deviceUnknownId; // FK
-	blaInfo.lat = point.x();
-	blaInfo.lon = point.y();
-	blaInfo.alt = alt;
-	blaInfo.speed = speed;
-	blaInfo.yaw = course;
+	blaInfo.lat = positionData.latitude;
+	blaInfo.lon = positionData.longitude;
+	blaInfo.alt = positionData.altitude;
+	blaInfo.speed = positionData.speed;
+	blaInfo.yaw = positionData.course;
 	blaInfo.restTime = QTime(1, 0);
 	blaInfo.statusId = statusUnknownId; // FK
-	blaInfo.dateTime = QDateTime::currentDateTime();
+	blaInfo.dateTime = positionData.dateTime;
 
-//	debug("Get data from server");
-	QDataStream inputDataStream(&data, QIODevice::ReadOnly);
-	QVector<UAVPositionData> positionDataVector;
+	m_dbBlaManager->addBlaInfo(blaInfo);
 
-	inputDataStream >> positionDataVector;
-
-	if (positionDataVector.size() < 1) {
-		debug("Size uavpositiondata vector < 1");
-		return;
-	}
-
-	/// Now we take first point, but we need to take more than 1 point
-	UAVPositionData positionData = positionDataVector.at(0);
+//////
 
 	int id = positionData.boardID; /// need quint16
 	QPointF point;

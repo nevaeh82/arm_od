@@ -28,7 +28,9 @@
 #include "UAVDefines.h"
 
 #include "Interfaces/IDbBlaManager.h"
-#include "Tabs/DbBla/Defines.h"class RPCClient : public RpcClientBase
+#include "Tabs/DbBla/Defines.h"
+
+class RPCClient : public RpcClientBase
 {
     Q_OBJECT
 private:
