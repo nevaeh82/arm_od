@@ -7,7 +7,7 @@
 
 typedef struct Uav
 {
-	uint id; // PK
+	int id; // PK
 	uint uavId;
 	QString ip;
 	uint uavTypeId; // FK
@@ -23,14 +23,14 @@ typedef struct Uav
 
 typedef struct UavRole
 {
-	uint id; // PK
+	int id; // PK
 	QString code;
 	QString name;
 } UavRole;
 
 typedef struct UavInfo
 {
-	uint id; // PK
+	int id; // PK
 	uint uavId; // FK
 	uint device; // FK
 	double lat;
@@ -45,7 +45,7 @@ typedef struct UavInfo
 
 typedef struct Devices
 {
-	uint id; // PK
+	int id; // PK
 	uint deviceId; // FK
 	uint port;
 	uint uavId;
@@ -53,7 +53,7 @@ typedef struct Devices
 
 typedef struct UavMission
 {
-	uint id; // PK
+	int id; // PK
 	uint uavId; // FK
 	uint targetId; // FK
 	double regionCenterLat;
@@ -65,7 +65,7 @@ typedef struct UavMission
 
 typedef struct Target
 {
-	uint id; // PK
+	int id; // PK
 	QString ip;
 	uint port;
 	uint type; // FK
@@ -74,25 +74,25 @@ typedef struct Target
 // Dictionaries
 typedef struct Status
 {
-	uint id; // PK
+	int id; // PK
 	QString status;
 } Status;
 
 typedef struct TargetType
 {
-	uint id; // PK
+	int id; // PK
 	QString name;
 } TargetType;
 
 typedef struct UavType
 {
-	uint id; // PK
+	int id; // PK
 	QString name;
 } UavType;
 
 typedef struct DeviceType
 {
-	uint id; // PK
+	int id; // PK
 	QString name;
 } DeviceType;
 

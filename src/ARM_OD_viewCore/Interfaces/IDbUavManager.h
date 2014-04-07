@@ -7,6 +7,7 @@ class IDbUavController;
 
 struct Uav;
 struct UavInfo;
+struct UavRole;
 struct Devices;
 struct UavMission;
 struct Target;
@@ -50,6 +51,10 @@ class IDbUavManager
 
 		virtual int addStatus(const Status&) = 0;
 		virtual int getStatusByName(const QString&) = 0;
+
+		virtual int addUavRole(const UavRole&) = 0;
+		virtual UavRole getUavRoleByName(const QString&) = 0;
+		virtual UavRole getUavRoleByCode(const QString&) = 0;
 };
 
 #endif // IDBUAVMANAGER_H

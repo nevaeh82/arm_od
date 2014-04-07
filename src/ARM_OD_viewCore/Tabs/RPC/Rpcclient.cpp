@@ -132,66 +132,7 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
 
 	/// Now we take first point, but we need to take more than 1 point
 	UAVPositionData positionData = positionDataVector.at(0);
-
-	int uavId = m_dbUavManager->getUavByUavId(positionData.boardID);
-	if (uavId < 0){
-		int uavUnknownTypeId = m_dbUavManager->getUavTypeByName("UnknownUavType");
-
-		if (uavUnknownTypeId < 0){
-			UavType uavType;
-			uavType.name = "UnknownUavType";
-			uavUnknownTypeId = m_dbUavManager->addUavType(uavType);
-		}
-
-		Uav uav;
-		uav.uavId = positionData.boardID;
-		uav.uavTypeId = uavUnknownTypeId;
-		uav.ip = "127.0.0.1";
-
-		uavId = m_dbUavManager->addUav(uav);
-	}
-
-	int statusUnknownId = m_dbUavManager->getStatusByName("UnknownStatus");
-	if (statusUnknownId < 0){
-		Status status;
-		status.status = "UnknownStatus";
-		statusUnknownId = m_dbUavManager->addStatus(status);
-	}
-
-	QList<Devices> devices;
-	int unknownDeviceTypeId = m_dbUavManager->getDeviceTypeByName("UnknownDeviceType");
-
-	if (unknownDeviceTypeId < 0){
-		DeviceType deviceType;
-		deviceType.name = "UnknownDeviceType";
-		unknownDeviceTypeId = m_dbUavManager->addDeviceType(deviceType);
-	}
-
-	m_dbUavManager->getDevicesByType(unknownDeviceTypeId, devices);
-
-	int deviceUnknownId = -1;
-	if (0 == devices.count()){
-		Devices device;
-		device.uavId = positionData.boardID;
-		device.deviceId = unknownDeviceTypeId;
-		deviceUnknownId = m_dbUavManager->addDevice(device);
-	} else {
-		deviceUnknownId = devices.at(0).id;
-	}
-
-	UavInfo uavInfo;
-	uavInfo.uavId = uavId; // FK
-	uavInfo.device = deviceUnknownId; // FK
-	uavInfo.lat = positionData.latitude;
-	uavInfo.lon = positionData.longitude;
-	uavInfo.alt = positionData.altitude;
-	uavInfo.speed = positionData.speed;
-	uavInfo.yaw = positionData.course;
-	uavInfo.restTime = QTime(1, 0);
-	uavInfo.statusId = statusUnknownId; // FK
-	uavInfo.dateTime = positionData.dateTime;
-
-	m_dbUavManager->addUavInfo(uavInfo);
+	addFriendUavInfoToDb(positionData);
 
 //////
 
@@ -567,4 +508,75 @@ void RPCClient::sendBplaPoints(QByteArray data)
     }
 
 	m_dbManagerTarget->set_property(1, rec_p2);
+}
+
+void RPCClient::addFriendUavInfoToDb(const UAVPositionData& positionData)
+{
+	int uavId = m_dbUavManager->getUavByUavId(positionData.boardID);
+	if (uavId < 0){
+		int uavUnknownTypeId = m_dbUavManager->getUavTypeByName("UnknownUavType");
+
+		if (uavUnknownTypeId < 0){
+			UavType uavType;
+			uavType.name = "UnknownUavType";
+			uavUnknownTypeId = m_dbUavManager->addUavType(uavType);
+		}
+
+		Uav uav;
+		uav.uavId = positionData.boardID;
+		uav.uavTypeId = uavUnknownTypeId;
+		uav.ip = "127.0.0.1";
+
+		UavRole uavRole = m_dbUavManager->getUavRoleByCode("FRIEND");
+		if (uavRole.id < 0){
+			uavRole.code = "FRIEND";
+			uavRole.name = "FRIEND";
+			uavRole.id = m_dbUavManager->addUavRole(uavRole);
+		}
+		uav.roleId = uavRole.id;
+
+		uavId = m_dbUavManager->addUav(uav);
+	}
+
+	int statusUnknownId = m_dbUavManager->getStatusByName("UnknownStatus");
+	if (statusUnknownId < 0){
+		Status status;
+		status.status = "UnknownStatus";
+		statusUnknownId = m_dbUavManager->addStatus(status);
+	}
+
+	QList<Devices> devices;
+	int unknownDeviceTypeId = m_dbUavManager->getDeviceTypeByName("UnknownDeviceType");
+
+	if (unknownDeviceTypeId < 0){
+		DeviceType deviceType;
+		deviceType.name = "UnknownDeviceType";
+		unknownDeviceTypeId = m_dbUavManager->addDeviceType(deviceType);
+	}
+
+	m_dbUavManager->getDevicesByType(unknownDeviceTypeId, devices);
+
+	int deviceUnknownId = -1;
+	if (0 == devices.count()){
+		Devices device;
+		device.uavId = positionData.boardID;
+		device.deviceId = unknownDeviceTypeId;
+		deviceUnknownId = m_dbUavManager->addDevice(device);
+	} else {
+		deviceUnknownId = devices.at(0).id;
+	}
+
+	UavInfo uavInfo;
+	uavInfo.uavId = uavId; // FK
+	uavInfo.device = deviceUnknownId; // FK
+	uavInfo.lat = positionData.latitude;
+	uavInfo.lon = positionData.longitude;
+	uavInfo.alt = positionData.altitude;
+	uavInfo.speed = positionData.speed;
+	uavInfo.yaw = positionData.course;
+	uavInfo.restTime = QTime(1, 0);
+	uavInfo.statusId = statusUnknownId; // FK
+	uavInfo.dateTime = positionData.dateTime;
+
+	m_dbUavManager->addUavInfo(uavInfo);
 }

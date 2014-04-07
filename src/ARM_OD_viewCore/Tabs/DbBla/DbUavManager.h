@@ -8,7 +8,7 @@
 #include "Interfaces/IUavDbChangedListener.h"
 #include "BaseSubject.h"
 
-class DbUavManager : public QObject, public IDbUavManager, BaseSubject<IUavDbChangedListener>
+class DbUavManager : public QObject, public IDbUavManager, public BaseSubject<IUavDbChangedListener>
 {
 	Q_OBJECT
 private:
@@ -46,6 +46,9 @@ public:
 	int addStatus(const Status&);
 	int getStatusByName(const QString&);
 
+	int addUavRole(const UavRole&);
+	UavRole getUavRoleByName(const QString&);
+	UavRole getUavRoleByCode(const QString&);
 signals:
 
 private slots:

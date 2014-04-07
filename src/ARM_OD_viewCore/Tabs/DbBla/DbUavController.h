@@ -49,8 +49,8 @@ public:
 	int getStatusByName(const QString&);
 
 	int addUavRole(const UavRole&);
-	int getUavRoleByName(const QString&);
-	int getUavRoleByCode(const QString&);
+	UavRole getUavRoleByName(const QString&);
+	UavRole getUavRoleByCode(const QString&);
 
 private:
 	int addDictionaryRecord(const QString& dictionary, const QString& name);

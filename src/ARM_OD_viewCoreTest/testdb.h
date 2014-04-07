@@ -99,11 +99,11 @@ public:
 		bool isConnected = dbUavController->connectToDB(parameters);
 		TS_ASSERT_EQUALS(true, isConnected);
 
-		// GETTING UAV TYPE
+		// GETTING UAV ROLE
 		UavRole uavRole;
 		uavRole.code = "testEnemy";
 
-		int uavRoleId = dbUavController->getUavRoleByCode(uavRole.code);
+		int uavRoleId = dbUavController->getUavRoleByCode(uavRole.code).id;
 		TS_ASSERT_DIFFERS(INVALID_INDEX, uavRoleId);
 
 		// GETTING UAV TYPE

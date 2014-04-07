@@ -28,11 +28,11 @@ bool UavTreeModel::updateModelData(TreeItem *item)
 	return false;
 }
 
-void UavTreeModel::onBlaAdded(const Bla &bla)
+void UavTreeModel::onUavAdded(const Uav &uav)
 {
 	SettingsNode inSettingsNode;
-	inSettingsNode.object.id = bla.blaId;
-	inSettingsNode.object.name = bla.name;
+	inSettingsNode.object.id = uav.uavId;
+	inSettingsNode.object.name = uav.name;
 	inSettingsNode.object.isEditable = false;
 	inSettingsNode.object.pid = 0;
 	inSettingsNode.object.state = 0;
@@ -56,25 +56,25 @@ void UavTreeModel::onBlaAdded(const Bla &bla)
 	emit onItemAddedSignal();
 }
 
-void UavTreeModel::onBlaRemoved(const Bla &bla)
+void UavTreeModel::onUavRemoved(const Uav &uav)
 {
-	Q_UNUSED(bla);
+	Q_UNUSED(uav);
 }
 
-void UavTreeModel::onBlaInfoChanged(const BlaInfo &blaInfo)
+void UavTreeModel::onUavInfoChanged(const UavInfo &uavInfo)
 {
-	onPropertyChanged(blaInfo, "lat", blaInfo.lat);
-	onPropertyChanged(blaInfo, "lon", blaInfo.lon);
-	onPropertyChanged(blaInfo, "alt", blaInfo.alt);
+	onPropertyChanged(uavInfo, "lat", uavInfo.lat);
+	onPropertyChanged(uavInfo, "lon", uavInfo.lon);
+	onPropertyChanged(uavInfo, "alt", uavInfo.alt);
 
 	refreshModel();
 }
 
-void UavTreeModel::onPropertyChanged(const BlaInfo &blaInfo, const QString &name, const QVariant &value)
+void UavTreeModel::onPropertyChanged(const UavInfo &uavInfo, const QString &name, const QVariant &value)
 {
 	Property inProperty;
-	inProperty.pid = blaInfo.blaId;
-	inProperty.id = blaInfo.id;
+	inProperty.pid = uavInfo.uavId;
+	inProperty.id = uavInfo.id;
 	inProperty.isEditable = false;
 	inProperty.state = 0;
 	inProperty.name = name;

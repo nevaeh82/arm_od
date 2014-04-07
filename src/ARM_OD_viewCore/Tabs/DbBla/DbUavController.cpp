@@ -404,10 +404,13 @@ int DbUavController::addUavRole(const UavRole& uavRole)
 	return INVALID_INDEX;
 }
 
-int DbUavController::getUavRoleByName(const QString& name)
+UavRole DbUavController::getUavRoleByName(const QString& name)
 {
+	UavRole uavRole;
+	uavRole.id = INVALID_INDEX;
+
 	if(!m_db.isOpen()){
-		return INVALID_INDEX;
+		return uavRole;
 	}
 
 	QSqlQuery query(m_db);
@@ -416,7 +419,7 @@ int DbUavController::getUavRoleByName(const QString& name)
 	if (!succeeded) {
 		QString er = query.lastError().text();
 		log_debug("SQL is wrong! " + er);
-		return INVALID_INDEX;
+		return uavRole;
 	}
 
 	query.bindValue(":name", name);
@@ -424,20 +427,26 @@ int DbUavController::getUavRoleByName(const QString& name)
 	succeeded = query.exec();
 
 	if(!query.next()) {
-		return INVALID_INDEX;
+		return uavRole;
 	}
 
 	if (succeeded){
-		return query.record().value(0).toUInt();
+		uavRole.id = query.record().value(0).toUInt();
+		uavRole.code = query.record().value(1).toString();
+		uavRole.name = query.record().value(2).toString();
+		return uavRole;
 	}
 
-	return INVALID_INDEX;
+	return uavRole;
 }
 
-int DbUavController::getUavRoleByCode(const QString& code)
+UavRole DbUavController::getUavRoleByCode(const QString& code)
 {
+	UavRole uavRole;
+	uavRole.id = INVALID_INDEX;
+
 	if(!m_db.isOpen()){
-		return INVALID_INDEX;
+		return uavRole;
 	}
 
 	QSqlQuery query(m_db);
@@ -446,7 +455,7 @@ int DbUavController::getUavRoleByCode(const QString& code)
 	if (!succeeded) {
 		QString er = query.lastError().text();
 		log_debug("SQL is wrong! " + er);
-		return INVALID_INDEX;
+		return uavRole;
 	}
 
 	query.bindValue(":code", code);
@@ -454,14 +463,17 @@ int DbUavController::getUavRoleByCode(const QString& code)
 	succeeded = query.exec();
 
 	if(!query.next()) {
-		return INVALID_INDEX;
+		return uavRole;
 	}
 
 	if (succeeded){
-		return query.record().value(0).toUInt();
+		uavRole.id = query.record().value(0).toUInt();
+		uavRole.code = query.record().value(1).toString();
+		uavRole.name = query.record().value(2).toString();
+		return uavRole;
 	}
 
-	return INVALID_INDEX;
+	return uavRole;
 }
 
 int DbUavController::addDictionaryRecord(const QString& dictionary, const QString& name)

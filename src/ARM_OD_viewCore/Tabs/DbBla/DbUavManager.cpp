@@ -116,3 +116,18 @@ int DbUavManager::getStatusByName(const QString& name)
 {
 	return m_dbController->getStatusByName(name);
 }
+
+int DbUavManager::addUavRole(const UavRole& role)
+{
+	return m_dbController->addUavRole(role);
+}
+
+UavRole DbUavManager::getUavRoleByName(const QString& name)
+{
+	return m_dbController->getUavRoleByName(name);
+}
+
+UavRole DbUavManager::getUavRoleByCode(const QString& code)
+{
+	return m_dbController->getUavRoleByCode(code);
+}
