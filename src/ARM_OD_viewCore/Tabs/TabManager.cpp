@@ -37,6 +37,7 @@ TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
 
 TabManager::~TabManager()
 {
+
 }
 
 void TabManager::send_data_niipp_control(int id, QByteArray ba)

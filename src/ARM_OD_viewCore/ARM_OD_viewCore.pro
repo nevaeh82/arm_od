@@ -89,7 +89,7 @@ HEADERS += \
     Tabs/DbBla/IDbBlaController.h \
     Tabs/DbBla/DbBlaManager.h \
     Interfaces/IDbBlaManager.h \
-    Tabs/Tree/BlaTreeModel.h
+    Tabs/Tree/UavTreeModel.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -119,7 +119,7 @@ SOURCES += \
     Tabs/RPC/Rpcclient.cpp \
     Tabs/DbBla/DbBlaController.cpp \
     Tabs/DbBla/DbBlaManager.cpp \
-    Tabs/Tree/BlaTreeModel.cpp
+    Tabs/Tree/UavTreeModel.cpp
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \

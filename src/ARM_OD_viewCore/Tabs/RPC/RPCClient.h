@@ -80,6 +80,8 @@ private slots:
 	void slotRCPConnetion();
 	void slotSetCommand(IMessageOld* msg);
 
+	void startInternalSlot(quint16 port, QString ipAddress);
+
 signals:
 	void signalSetCommand(IMessageOld *msg);
 
@@ -88,6 +90,8 @@ signals:
 	void signalSetNIIPPBPLA(QByteArray data);
 	void signalSetSolverData(QByteArray data);
 	void signalSetSolverDataClear(QByteArray data);
+
+	void startInternalSignal(quint16 port, QString ipAddress);
 
 };
 

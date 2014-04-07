@@ -1,34 +1,34 @@
-#include "BlaTreeModel.h"
+#include "UavTreeModel.h"
 
 #include <TreeModel/TreeItem.h>
 #include <Settings/SettingsNode.h>
 
 #include "../DbBla/Defines.h"
 
-BlaTreeModel::BlaTreeModel(const QStringList &headers, QObject *parent) :
+UavTreeModel::UavTreeModel(const QStringList &headers, QObject *parent) :
 	TreeModelBase(headers, parent)
 {
 }
 
-BlaTreeModel::~BlaTreeModel()
+UavTreeModel::~UavTreeModel()
 {
 
 }
 
 
-QString BlaTreeModel::getTranslateItemNameFromReal(const QString &itemName) const
+QString UavTreeModel::getTranslateItemNameFromReal(const QString &itemName) const
 {
 	return itemName;
 }
 
-bool BlaTreeModel::updateModelData(TreeItem *item)
+bool UavTreeModel::updateModelData(TreeItem *item)
 {
 	Q_UNUSED(item)
 
 	return false;
 }
 
-void BlaTreeModel::onBlaAdded(const Bla &bla)
+void UavTreeModel::onBlaAdded(const Bla &bla)
 {
 	SettingsNode inSettingsNode;
 	inSettingsNode.object.id = bla.blaId;
@@ -56,12 +56,12 @@ void BlaTreeModel::onBlaAdded(const Bla &bla)
 	emit onItemAddedSignal();
 }
 
-void BlaTreeModel::onBlaRemoved(const Bla &bla)
+void UavTreeModel::onBlaRemoved(const Bla &bla)
 {
 	Q_UNUSED(bla);
 }
 
-void BlaTreeModel::onBlaInfoChanged(const BlaInfo &blaInfo)
+void UavTreeModel::onBlaInfoChanged(const BlaInfo &blaInfo)
 {
 	onPropertyChanged(blaInfo, "lat", blaInfo.lat);
 	onPropertyChanged(blaInfo, "lon", blaInfo.lon);
@@ -70,7 +70,7 @@ void BlaTreeModel::onBlaInfoChanged(const BlaInfo &blaInfo)
 	refreshModel();
 }
 
-void BlaTreeModel::onPropertyChanged(const BlaInfo &blaInfo, const QString &name, const QVariant &value)
+void UavTreeModel::onPropertyChanged(const BlaInfo &blaInfo, const QString &name, const QVariant &value)
 {
 	Property inProperty;
 	inProperty.pid = blaInfo.blaId;

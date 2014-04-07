@@ -59,8 +59,8 @@ void TcpManager::addTcpDevice(const QString& deviceName, const quint32& deviceTy
 		return;
 	}
 
-	controller->createTcpDeviceCoder();
 	controller->createTcpClient();
+	controller->createTcpDeviceCoder();
 
 	QThread* controllerThread = new QThread;
 	connect(controller->asQObject(), SIGNAL(destroyed()), controllerThread, SLOT(terminate()));

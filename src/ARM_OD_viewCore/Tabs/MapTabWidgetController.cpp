@@ -25,8 +25,8 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 	headers << tr("Property") << tr("Value");
 
 	//m_blaModel = new TreeModel(headers);
-	m_blaTreeModel =  new BlaTreeModel(headers, this);
-	m_blaDbManager->registerReceiver(m_blaTreeModel);
+	m_uavTreeModel =  new UavTreeModel(headers, this);
+	m_blaDbManager->registerReceiver(m_uavTreeModel);
 
 	//m_bplaModel = new TreeModel(headers);
 
@@ -98,27 +98,18 @@ void MapTabWidgetController::hide()
 int MapTabWidgetController::createRPC()
 {
 	readSettings();
-	m_rpcClient = new RPCClient(m_station, m_blaDbManager, m_bplaDbManager, m_mapController, this, _tab_manager, this);
+
+	///TODO: fix deleting
+
+	m_rpcClient = new RPCClient(m_station, m_blaDbManager, m_bplaDbManager, m_mapController, this, _tab_manager);
+	//m_rpcClient->start(m_rpcHostPort, QHostAddress(m_rpcHostAddress));
+
+	QThread* rpcClientThread = new QThread;
+	connect(m_rpcClient, SIGNAL(destroyed()), rpcClientThread, SLOT(terminate()));
+	m_rpcClient->moveToThread(rpcClientThread);
+	rpcClientThread->start();
+
 	m_rpcClient->start(m_rpcHostPort, QHostAddress(m_rpcHostAddress));
-
-	/*
-		QThread *thread_rpc_client = new QThread;
-		qDebug() << "create thread for rpc client ";
-
-		connect(thread_rpc_client, SIGNAL(started()), _rpc_client1, SLOT(slotInit()));
-
-		connect(this, SIGNAL(signalStartRPC()), _rpc_client1, SLOT(slotStart()));
-		connect(_rpc_client1, SIGNAL(signalFinished()), thread_rpc_client, SLOT(quit()));
-		connect(thread_rpc_client, SIGNAL(finished()), thread_rpc_client, SLOT(deleteLater()));
-
-		connect(_rpc_client1, SIGNAL(signalFinished()), _rpc_client1, SLOT(deleteLater()));
-		connect(this, SIGNAL(signalStopRPC()), _rpc_client1, SLOT(slotStop()));
-		connect(this, SIGNAL(signalFinishRPC()), _rpc_client1, SLOT(slotFinish()));
-
-		_rpc_client1->setParent(0);
-		_rpc_client1->moveToThread(thread_rpc_client);
-		thread_rpc_client->start();*/
-
 
 	return 0;
 }
@@ -132,7 +123,7 @@ int MapTabWidgetController::closeRPC()
 
 int MapTabWidgetController::createTree()
 {
-	m_view->getBlaTreeView()->setModel(m_blaTreeModel);
+	m_view->getBlaTreeView()->setModel(m_uavTreeModel);
 	m_view->getBlaTreeView()->setItemDelegate(m_treeDelegate);
 
 	connect(m_view->getBlaTreeView(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onBlaTreeItemDoubleClicked(QModelIndex)));
@@ -163,12 +154,12 @@ void MapTabWidgetController::appendView(MapTabWidget *view)
 	QPointF latlon1;
 	latlon1.setX(42.511183);
 	latlon1.setY(41.6905);
-	m_niipp1 = new NiippController(100, tr("СПИП ДД-1"), latlon1, m_mapController, _tab_manager);
+	m_niipp1 = new NiippController(100, tr("SPIP DD-1"), latlon1, m_mapController, _tab_manager);
 
 	QPointF latlon2;
 	latlon2.setX(42.634183);
 	latlon2.setY(41.912167);
-	m_niipp2 = new NiippController(101, tr("СПИП ДД-2"), latlon2, m_mapController, _tab_manager);
+	m_niipp2 = new NiippController(101, tr("SPIP DD-2"), latlon2, m_mapController, _tab_manager);
 
 	m_niipp1->appendView(m_view->getNiippWidget(1));
 	m_niipp2->appendView(m_view->getNiippWidget(2));

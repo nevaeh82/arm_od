@@ -71,6 +71,9 @@ ARM_OD_Srv::ARM_OD_Srv()
 	m_tcpManager->moveToThread(tcpManagerThread);
 	tcpManagerThread->start();
 
+	_rpc_server->registerReceiver(m_tcpManager);
+	m_tcpManager->setRpcServer(_rpc_server);
+
 	ITcpSettingsManager* settingsManager = new TcpSettingsManager(this);
 	settingsManager->setIniFile("./TCP/devices.ini");
 	QMap<QString, quint32> mapInfo = settingsManager->getAllInfo();
@@ -79,9 +82,6 @@ ARM_OD_Srv::ARM_OD_Srv()
 		log_debug(QString(key));
 		m_tcpManager->addTcpDevice(key, mapInfo.value(key));
 	}
-
-	_rpc_server->registerReceiver(m_tcpManager);
-	m_tcpManager->setRpcServer(_rpc_server);
 
 	 emit signalStartRPC();
 

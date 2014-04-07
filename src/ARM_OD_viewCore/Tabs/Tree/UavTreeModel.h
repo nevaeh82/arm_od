@@ -6,12 +6,12 @@
 
 #include "Interfaces/IBlaDbChangedListener.h"
 
-class BlaTreeModel : public TreeModelBase, public IBlaDbChangedListener
+class UavTreeModel : public TreeModelBase, public IBlaDbChangedListener
 {
 	Q_OBJECT
 public:
-	explicit BlaTreeModel(const QStringList& headers, QObject *parent = 0);
-	virtual ~BlaTreeModel();
+	explicit UavTreeModel(const QStringList& headers, QObject *parent = 0);
+	virtual ~UavTreeModel();
 
 protected:
 	virtual QString getTranslateItemNameFromReal(const QString &itemName) const;

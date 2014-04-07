@@ -22,6 +22,8 @@ RPCClient::RPCClient(Station *station, IDbBlaManager *db_manager, IDBManager* db
 	m_dbManagerTarget = db_manager_targer;
 	m_pelengEvilIds = 0;
 	m_rdsEvilIds = 50;
+
+	connect(this, SIGNAL(startInternalSignal(quint16, QString)), this, SLOT(startInternalSlot(quint16, QString)));
 }
 
 RPCClient::~RPCClient()
@@ -29,6 +31,24 @@ RPCClient::~RPCClient()
 }
 
 bool RPCClient::start(quint16 port, QHostAddress ipAddress)
+{
+	emit startInternalSignal(port, ipAddress.toString());
+
+	return true;
+}
+
+void RPCClient::setCommand(IMessageOld *msg)
+{
+    emit signalSetCommand(msg);
+}
+
+void RPCClient::slotSetCommand(IMessageOld *msg)
+{
+	m_commandMsg = msg;
+	formCommand(m_commandMsg);
+}
+
+void RPCClient::startInternalSlot(quint16 port, QString ipAddress)
 {
 	connect(m_clientPeer, SIGNAL(connectedToServer()), this, SLOT(slotRCPConnetion()));
 	connect(m_clientPeer, SIGNAL(serverError(QAbstractSocket::SocketError)), this, SLOT(_slotErrorRPCConnection(QAbstractSocket::SocketError)));
@@ -42,7 +62,7 @@ bool RPCClient::start(quint16 port, QHostAddress ipAddress)
 
 	connect(this, SIGNAL(signalReconnection()), this, SLOT(_slotReconnection()));
 	connect(m_clientPeer, SIGNAL(disconnectedFromServer()), this, SLOT(_slotRPCDisconnection()));
-	qDebug() << this->thread();
+	//qDebug() << this->thread();
 
 	///server
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BLA_POINTS, this, SLOT(rpcSendBlaPoints(QByteArray)));
@@ -55,18 +75,7 @@ bool RPCClient::start(quint16 port, QHostAddress ipAddress)
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_ATLANT_POSITION, this, SLOT(rpcSlotServerSendAtlantPosition(QByteArray)));
 
 	log_debug("Start RPCClient");
-	return RpcClientBase::start(port, ipAddress);
-}
-
-void RPCClient::setCommand(IMessageOld *msg)
-{
-    emit signalSetCommand(msg);
-}
-
-void RPCClient::slotSetCommand(IMessageOld *msg)
-{
-	m_commandMsg = msg;
-	formCommand(m_commandMsg);
+	RpcClientBase::start(port, QHostAddress(ipAddress));
 }
 
 void RPCClient::formCommand(IMessageOld *msg)

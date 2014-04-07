@@ -23,7 +23,7 @@
 #include "../NIIPP/NIIPPController.h"
 
 #include "Tree/BLAWidgetDelegate.h"
-#include "Tree/BlaTreeModel.h"
+#include "Tree/UavTreeModel.h"
 
 #include "../UAV/BLAPerehvatDialog.h"
 
@@ -56,7 +56,7 @@ private:
 
 //	TreeModel*          m_bplaModel;
 	//TreeModel*          m_blaModel;
-	BlaTreeModel*		m_blaTreeModel;
+	UavTreeModel*		m_uavTreeModel;
 
 	RPCClient*          m_rpcClient;
 
