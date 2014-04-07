@@ -35,6 +35,8 @@ private:
 
 	QMutex m_deleteMutex;
 
+	bool m_needToUpdateAfterDisconnect;
+
 public:
 	explicit TcpKTRManager(ITcpListener* tcpManager, QObject* parent = NULL);
 	virtual ~TcpKTRManager();
@@ -42,6 +44,7 @@ public:
 	// ITcpKTRManager interface
 public:
 	virtual void connectToBoard(const QString& hostPort, const quint16& board, const quint32& device);
+	virtual void needToUpdateAfterDisconnect(const bool& value);
 //	void disconnectFromBoard(const quint16& board);
 
 private slots:

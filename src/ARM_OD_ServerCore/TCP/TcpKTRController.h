@@ -24,6 +24,7 @@ public:
 
 	// ITcpDeviceController interface
 public:
+	virtual void createTcpClient();
 	virtual void createTcpDeviceCoder();
 	virtual bool init();
 	virtual QByteArray getFullInfo();
@@ -33,6 +34,7 @@ signals:
 
 private slots:
 	void createTcpKTRCoderInternalSlot();
+	void tcpConnectionStatusInternalSlot(int status);
 };
 
 #endif // TCPKTRCONTROLLER_H

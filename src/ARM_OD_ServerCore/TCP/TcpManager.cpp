@@ -76,10 +76,6 @@ void TcpManager::addTcpDevice(const QString& deviceName, const quint32& deviceTy
 
 	controller->connectToHost();
 
-	if (deviceType == DeviceTypes::KTR_TCP_DEVICE) {
-		controller->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_GET_BOARD_LIST, QByteArray())));
-	}
-
 	log_debug(QString("Added device connection for %1 with %2").arg(deviceName).arg(deviceType));
 }
 
@@ -129,7 +125,33 @@ void TcpManager::onMessageReceived(const quint32 deviceType, const QString& devi
 			}
 			break;
 		case DeviceTypes::KTR_TCP_DEVICE:
-			if (messageType == TCP_KTR_ANSWER_BOARD_LIST) {
+			if (messageType == TCP_KTR_ANSWER_CONNECTION_STATUS) {
+
+				if (deviceType == DeviceTypes::KTR_TCP_DEVICE) {
+
+					BaseTcpDeviceController* controller = m_controllersMap.value(deviceName, NULL);
+
+					if (controller == NULL) {
+						log_debug(QString("Something wrong with controller %1 %2").arg(deviceName).arg(deviceType));
+						return;
+					}
+
+					int connectionState;
+					QDataStream dataStream(&messageData, QIODevice::ReadOnly);
+					dataStream >> connectionState;
+
+					if (connectionState == TCP::Disconnected) {
+						m_ktrManager->needToUpdateAfterDisconnect(true);
+						log_debug("disconnect happen. need to update when connect will happen...");
+					} else if (connectionState == TCP::Connected) {
+						m_ktrManager->needToUpdateAfterDisconnect(true);
+						log_debug("requseting board list...");
+						controller->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_GET_BOARD_LIST, QByteArray())));
+					}
+
+				}
+
+			} else if (messageType == TCP_KTR_ANSWER_BOARD_LIST) {
 
 				if (!m_controllersMap.contains(deviceName)) {
 					log_debug(QString("Map doesn't contain %1 %2").arg(deviceName).arg(deviceType));
@@ -150,6 +172,8 @@ void TcpManager::onMessageReceived(const quint32 deviceType, const QString& devi
 					m_ktrManager->connectToBoard(controller->getHost(), boardID, KTR_DEVICE_AUTOPILOT);
 					m_ktrManager->connectToBoard(controller->getHost(), boardID, KTR_DEVICE_KTRGA622);
 				}
+
+				m_ktrManager->needToUpdateAfterDisconnect(false);
 				/// To future:
 //				m_ktrManager->connectToBoard(controller->getHost(), KTR_BOARD_BROADCAST, KTR_DEVICE_KTRGA622);
 //				m_ktrManager->connectToBoard(controller->getHost(), KTR_BOARD_BROADCAST, KTR_DEVICE_KTRGA623);
