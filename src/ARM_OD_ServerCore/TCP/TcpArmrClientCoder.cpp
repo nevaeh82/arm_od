@@ -16,6 +16,7 @@ MessageSP TcpArmrClientCoder::encode(const QByteArray &data)
 	Zaviruha::Packet packet;
 	if (packet.ParseFromArray(data.data() + TCP_ZAVIRUHA_PREAMBULA_LEN, data.size() - TCP_ZAVIRUHA_PREAMBULA_LEN)){
 		QString method = "";
+		QByteArray dataToSend = data;
 		switch (packet.command().action()){
 			case Zaviruha::sendAtlantDirection:
 				method = QString(ARM_R_SERVER_ATLANT_DIRECTION);
@@ -25,6 +26,7 @@ MessageSP TcpArmrClientCoder::encode(const QByteArray &data)
 				break;
 			case Zaviruha::sendBplaPoints:
 				method = QString(ARM_R_SERVER_BPLA_COORDS);
+				dataToSend = encodeToEnemyUav(data);
 				break;
 			case Zaviruha::sendBplaPointsAuto:
 				method = QString(ARM_R_SERVER_BPLA_COORDS_AUTO);
@@ -33,7 +35,7 @@ MessageSP TcpArmrClientCoder::encode(const QByteArray &data)
 				break;
 		}
 
-		return MessageSP(new Message<QByteArray>(method, data));
+		return MessageSP(new Message<QByteArray>(method, dataToSend));
 	}
 
 	return MessageSP();
@@ -85,4 +87,25 @@ QByteArray TcpArmrClientCoder::decode(const MessageSP message)
 QObject *TcpArmrClientCoder::asQObject()
 {
 	return this;
+}
+
+QByteArray TcpArmrClientCoder::encodeToEnemyUav(const QByteArray& data)
+{
+	QByteArray inputData = data;
+	QDataStream inputDataStream(&inputData, QIODevice::ReadOnly);
+
+	UAVPositionDataEnemy uav;
+	inputDataStream >> uav.time;
+	inputDataStream >> uav.state;
+	inputDataStream >> uav.pointStdDev;
+	inputDataStream >> uav.track;
+	inputDataStream >> uav.speed;
+	inputDataStream >> uav.altitude;
+	inputDataStream >> uav.course;
+
+	QByteArray dataToSend;
+	QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
+	dataStream << uav;
+
+	return dataToSend;
 }

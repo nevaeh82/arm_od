@@ -1,6 +1,8 @@
 #ifndef UAVDEFINES_H
 #define UAVDEFINES_H
 
+#include <QPointF>
+#include <QVector>
 #include <QtGlobal>
 #include <QDateTime>
 #include <QDataStream>
@@ -81,6 +83,56 @@ inline QDataStream& operator>>(QDataStream& in, UAVPositionData& object)
 	object.state		= state;
 	object.dateTime		= dateTime;
 
+	return in;
+}
+
+typedef struct UAVPositionDataEnemy
+{
+	UAVPositionDataEnemy()
+	{
+		altitude	= 0.0;
+		speed		= 0.0;
+		course		= 0.0;
+		state		= 0;
+		time	= QTime::currentTime();
+		pointStdDev	= QPointF(0.0, 0.0);
+	}
+
+	UAVPositionDataEnemy(const UAVPositionDataEnemy& object)
+	{
+		altitude	= object.altitude;
+		speed		= object.speed;
+		course		= object.course;
+		state		= object.state;
+		time	= object.time;
+		pointStdDev	= object.pointStdDev;
+		track		= object.track;
+	}
+
+	double		altitude;
+	double		speed;
+	double		course;
+	int			state;
+	QTime		time;
+	QPointF		pointStdDev;
+	QVector<QPointF>	track;
+
+} UAVPositionDataEnemy;
+
+inline QDataStream& operator<<(QDataStream& out, const UAVPositionDataEnemy& object)
+{
+	return out << object.altitude << object.speed
+			   << object.course << object.state
+			   << object.time << object.pointStdDev
+			   << object.track;
+}
+
+inline QDataStream& operator>>(QDataStream& in, UAVPositionDataEnemy& object)
+{
+	in >> object.altitude >> object.speed
+	   >> object.course >> object.state
+	   >> object.time >> object.pointStdDev
+	   >> object.track;
 	return in;
 }
 

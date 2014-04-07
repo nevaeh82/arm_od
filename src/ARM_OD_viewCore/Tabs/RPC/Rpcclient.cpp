@@ -464,22 +464,18 @@ void RPCClient::sendDataToSovler(QByteArray data)
 }
 
 void RPCClient::sendBplaPoints(QByteArray data)
-{
-    QDataStream ds(&data, QIODevice::ReadOnly);
-    QTime t;
-    int state;
-    QPointF pointStdDev;
-    double speed;
-    double alt;
-    double course;
-    QVector<QPointF> track;
-    ds >> t;
-    ds >> state;
-    ds >> pointStdDev;
-    ds >> track;
-    ds >> speed;
-    ds >> alt;
-    ds >> course;
+{	
+	QDataStream inputDataStream(&data, QIODevice::ReadOnly);
+	UAVPositionDataEnemy uavEnemy;
+	inputDataStream >> uavEnemy;
+
+	QTime t = uavEnemy.time;
+	int state = uavEnemy.state;
+	QPointF pointStdDev = uavEnemy.pointStdDev;
+	double speed = uavEnemy.speed;
+	double alt = uavEnemy.altitude;
+	double course = uavEnemy.course;
+	QVector<QPointF> track = uavEnemy.track;
 
 	if(m_rdsEvilIds > 99)
     {
