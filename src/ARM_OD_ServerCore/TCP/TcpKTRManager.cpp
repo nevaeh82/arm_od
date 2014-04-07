@@ -35,13 +35,15 @@ void TcpKTRManager::connectToBoard(const QString& hostPort, const quint16& board
 
 	if (controller == NULL && lifeTimer == NULL) {
 
-
 		controller = new TcpKTRController(key);
 
 		if (controller == NULL) {
 			log_debug(QString("Unable to create %1 with type %2").arg(QString(key)).arg(QString::number(DeviceTypes::KTR_TCP_DEVICE)));
 			return;
 		}
+
+		controller->createTcpClient();
+		controller->createTcpDeviceCoder();
 
 		QThread* controllerThread = new QThread;
 		connect(controller, SIGNAL(destroyed()), controllerThread, SLOT(terminate()));
@@ -55,8 +57,7 @@ void TcpKTRManager::connectToBoard(const QString& hostPort, const quint16& board
 
 		controller->registerReceiver(m_tcpManagerAsListener);
 
-		controller->createTcpDeviceCoder();
-		controller->createTcpClient();
+
 
 		QStringList strList = hostPort.split(":");
 		if (strList.isEmpty()) {

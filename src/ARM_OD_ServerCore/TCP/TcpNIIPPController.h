@@ -19,8 +19,7 @@ private:
 	NIIPPSettings m_NIIPPSettingStruct;
 
 public:
-	explicit TcpNIIPPController(QObject* parent = NULL);
-	explicit TcpNIIPPController(const QString& tcpDeviceName, QObject* parent = NULL);
+	explicit TcpNIIPPController(const QString& tcpDeviceName = BASE_TCP_DEVICE, QObject* parent = NULL);
 	virtual ~TcpNIIPPController();
 
 	// ITcpDeviceController interface

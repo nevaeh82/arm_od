@@ -1,14 +1,5 @@
 #include "TcpNIIPPController.h"
 
-TcpNIIPPController::TcpNIIPPController(QObject* parent) :
-	BaseTcpDeviceController(parent)
-{
-	/// What the fuck was going on?!
-	m_tcpDeviceName = DeviceTypes::NIIPP_TCP_DEVICE;
-	log_debug(QString("Created %1").arg(m_tcpDeviceName));
-	connect(this, SIGNAL(createTcpNIIPPCoderInternalSignal()), this, SLOT(createTcpNIIPPCoderInternalSlot()));
-}
-
 TcpNIIPPController::TcpNIIPPController(const QString& tcpDeviceName, QObject* parent) :
 	BaseTcpDeviceController(tcpDeviceName, parent)
 {
@@ -49,7 +40,7 @@ bool TcpNIIPPController::init()
 
 			m_host = m_NIIPPSettingStruct.host;
 			m_port = m_NIIPPSettingStruct.port;
-			m_deviceType = BaseSettingsType::TypeNIIPP;//m_flakonSettingStruct.type;
+			m_deviceType = TypeNIIPP;//m_flakonSettingStruct.type;
 
 			QByteArray baseInfo;
 			QDataStream dsBaseInfo(&baseInfo, QIODevice::WriteOnly);

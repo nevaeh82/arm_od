@@ -19,8 +19,7 @@ private:
 	KTRSettings m_KTRSettingStruct;
 
 public:
-	explicit TcpKTRController(QObject* parent = NULL);
-	explicit TcpKTRController(const QString& tcpDeviceName, QObject* parent = NULL);
+	explicit TcpKTRController(const QString& tcpDeviceName = BASE_TCP_DEVICE, QObject* parent = NULL);
 	virtual ~TcpKTRController();
 
 	// ITcpDeviceController interface

@@ -12,7 +12,6 @@
 
 
 #include "Tree/DBManager.h"
-#include "Tree/TreeModel.h"
 
 #include "ITabManager.h"
 #include "ITabMap.h"
@@ -24,6 +23,7 @@
 #include "../NIIPP/NIIPPController.h"
 
 #include "Tree/BLAWidgetDelegate.h"
+#include "Tree/UavTreeModel.h"
 
 #include "../UAV/BLAPerehvatDialog.h"
 
@@ -54,8 +54,9 @@ private:
 	NiippController* m_niipp1;
 	NiippController* m_niipp2;
 
-	TreeModel*          m_bplaModel;
-	TreeModel*          m_blaModel;
+//	TreeModel*          m_bplaModel;
+	//TreeModel*          m_blaModel;
+	UavTreeModel*		m_uavTreeModel;
 
 	RPCClient*          m_rpcClient;
 

@@ -2,7 +2,6 @@
 #define NIIPPCONTROLMODEL_H
 
 #include "../MapInterface/MapController.h"
-#include "../Interfaces/core/IRouter.h"
 #include "../Tabs/ITabManager.h"
 
 #include "../Common/CommandMessage.h"

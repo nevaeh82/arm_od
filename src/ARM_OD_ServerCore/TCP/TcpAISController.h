@@ -25,8 +25,7 @@ private:
 	ITcpAISZoneManager* m_zoneManager;
 
 public:
-	explicit TcpAISController(QObject* parent = NULL);
-	explicit TcpAISController(const QString& tcpDeviceName, QObject* parent = NULL);
+	explicit TcpAISController(const QString& tcpDeviceName = BASE_TCP_DEVICE, QObject* parent = NULL);
 	virtual ~TcpAISController();
 
 	// ITcpDeviceController interface

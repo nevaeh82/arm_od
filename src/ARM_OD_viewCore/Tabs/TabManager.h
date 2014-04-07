@@ -20,13 +20,11 @@
 //#include "Tree/Controller.h"
 
 #include "Tree/DBManager.h"
-#include "Tree/TreeModel.h"
+//#include "Tree/TreeModel.h"
 
 #include "ITabManager.h"
 
 #include "../MapInterface/MapController.h"
-
-#include "../Common/Router.h"
 
 #include "../NIIPP/NIIPPController.h"
 
@@ -61,8 +59,6 @@ private:
 	DbBlaManager* m_dbBlaManager;
 
     DBManager*                  _db_manager_evil;
-
-    TreeModel*                  _model_spectrum;
 
 	MapTabWidgetController*                m_currentWidget;
 

@@ -1,5 +1,7 @@
 #include "MainWindowController.h"
 
+#include <QMessageBox>
+
 #define SERVER_NAME "ARM_OD_Server"
 
 MainWindowController::MainWindowController(QObject *parent) :

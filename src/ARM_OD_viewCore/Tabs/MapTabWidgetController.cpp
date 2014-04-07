@@ -17,19 +17,23 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 
 	m_station = station;
 
-	QStringList headers;
-	headers << tr("Property") << tr("Value");
-
-	m_blaModel = new TreeModel(headers);
-	m_bplaModel = new TreeModel(headers);
-
 	/// TODO: refactor
 	m_bplaDbManager = db_evil;
 	m_blaDbManager = db_bla;
 
+	QStringList headers;
+	headers << tr("Property") << tr("Value");
+
+	//m_blaModel = new TreeModel(headers);
+	m_uavTreeModel =  new UavTreeModel(headers, this);
+	m_blaDbManager->registerReceiver(m_uavTreeModel);
+
+	//m_bplaModel = new TreeModel(headers);
+
+
 	/// TODO: refactor
 	//m_blaDbManager->set_model(m_blaModel);
-	m_bplaDbManager->set_model(m_bplaModel);
+	//m_bplaDbManager->set_model(m_bplaModel);
 
 	m_mapSettings = map_settings;
 
@@ -94,6 +98,9 @@ void MapTabWidgetController::hide()
 int MapTabWidgetController::createRPC()
 {
 	readSettings();
+
+	///TODO: fix deleting
+
 	m_rpcClient = new RPCClient(m_station, m_blaDbManager, m_bplaDbManager, m_mapController, this, _tab_manager);
 	//m_rpcClient->start(m_rpcHostPort, QHostAddress(m_rpcHostAddress));
 
@@ -103,24 +110,6 @@ int MapTabWidgetController::createRPC()
 	rpcClientThread->start();
 
 	m_rpcClient->start(m_rpcHostPort, QHostAddress(m_rpcHostAddress));
-	/*
-		QThread *thread_rpc_client = new QThread;
-		qDebug() << "create thread for rpc client ";
-
-		connect(thread_rpc_client, SIGNAL(started()), _rpc_client1, SLOT(slotInit()));
-
-		connect(this, SIGNAL(signalStartRPC()), _rpc_client1, SLOT(slotStart()));
-		connect(_rpc_client1, SIGNAL(signalFinished()), thread_rpc_client, SLOT(quit()));
-		connect(thread_rpc_client, SIGNAL(finished()), thread_rpc_client, SLOT(deleteLater()));
-
-		connect(_rpc_client1, SIGNAL(signalFinished()), _rpc_client1, SLOT(deleteLater()));
-		connect(this, SIGNAL(signalStopRPC()), _rpc_client1, SLOT(slotStop()));
-		connect(this, SIGNAL(signalFinishRPC()), _rpc_client1, SLOT(slotFinish()));
-
-		_rpc_client1->setParent(0);
-		_rpc_client1->moveToThread(thread_rpc_client);
-		thread_rpc_client->start();*/
-
 
 	return 0;
 }
@@ -134,13 +123,13 @@ int MapTabWidgetController::closeRPC()
 
 int MapTabWidgetController::createTree()
 {
-	m_view->getBlaTreeView()->setModel(m_blaModel);
+	m_view->getBlaTreeView()->setModel(m_uavTreeModel);
 	m_view->getBlaTreeView()->setItemDelegate(m_treeDelegate);
 
 	connect(m_view->getBlaTreeView(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onBlaTreeItemDoubleClicked(QModelIndex)));
 
-	m_view->getBplaTreeView()->setModel(m_bplaModel);
-	m_view->getBplaTreeView()->setItemDelegate(m_treeDelegate);
+	//m_view->getBplaTreeView()->setModel(m_bplaModel);
+	//m_view->getBplaTreeView()->setItemDelegate(m_treeDelegate);
 
 	connect(m_view->getControlPanelWidget(), SIGNAL(showBlaClicked()), this, SLOT(onShowBlaTree()));
 	connect(m_view->getControlPanelWidget(), SIGNAL(showBplaClicked()), this, SLOT(onShowBplaTree()));

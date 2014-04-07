@@ -1,18 +1,5 @@
 #include "TcpAISController.h"
 
-TcpAISController::TcpAISController(QObject *parent) :
-	BaseTcpDeviceController(parent)
-{
-	m_tcpDeviceName = DeviceTypes::AIS_TCP_DEVICE;
-	log_debug(QString("Created %1").arg(m_tcpDeviceName));
-
-	connect(this, SIGNAL(connectToHostAISInternalSignal(QString,quint32)), this, SLOT(connectToHostAISInternalSlot(QString,quint32)));
-	connect(this, SIGNAL(createTcpAISCoderInternalSignal()), this, SLOT(createTcpAISCoderInternalSlot()));
-	connect(this, SIGNAL(createTcpAISClientInternalSignal()), this, SLOT(createTcpAISClientInternalSlot()));
-
-	m_zoneManager = new TcpAISZoneManager(this);
-}
-
 TcpAISController::TcpAISController(const QString& tcpDeviceName, QObject* parent) :
 	BaseTcpDeviceController(tcpDeviceName, parent)
 {
@@ -109,7 +96,7 @@ bool TcpAISController::init()
 
 			m_host = m_AISSettingStruct.host;
 			m_port = m_AISSettingStruct.port;
-			m_deviceType = BaseSettingsType::TypeAIS;//m_flakonSettingStruct.type;
+			m_deviceType = TypeAIS;//m_flakonSettingStruct.type;
 
 			QByteArray baseInfo;
 			QDataStream dsBaseInfo(&baseInfo, QIODevice::WriteOnly);

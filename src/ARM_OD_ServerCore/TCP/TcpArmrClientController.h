@@ -19,8 +19,7 @@ private:
 	ArmrTcpClientSettings m_settings;
 
 public:
-	explicit TcpArmrClientController(QObject *parent = 0);
-	explicit TcpArmrClientController(const QString& tcpDeviceName, QObject* parent = NULL);
+	explicit TcpArmrClientController(const QString& tcpDeviceName = BASE_TCP_DEVICE, QObject* parent = NULL);
 	virtual ~TcpArmrClientController();
 
 	virtual bool init();
