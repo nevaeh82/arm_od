@@ -5,19 +5,33 @@
 #include <QTime>
 #include <QDateTime>
 
-typedef struct Bla
+typedef struct Uav
 {
 	uint id; // PK
-	uint blaId;
+	uint uavId;
 	QString ip;
-	uint type; // FK
+	uint uavTypeId; // FK
+	uint roleId; // FK
 	QString name;
-} Bla;
+	uint freqId;
 
-typedef struct BlaInfo
+	Uav(){
+		freqId = 0;
+	}
+
+} Uav;
+
+typedef struct UavRole
 {
 	uint id; // PK
-	uint blaId; // FK
+	QString code;
+	QString name;
+} UavRole;
+
+typedef struct UavInfo
+{
+	uint id; // PK
+	uint uavId; // FK
 	uint device; // FK
 	double lat;
 	double lon;
@@ -27,34 +41,33 @@ typedef struct BlaInfo
 	QTime restTime;
 	uint statusId; // FK
 	QDateTime dateTime;
-} BlaInfo;
+} UavInfo;
 
 typedef struct Devices
 {
 	uint id; // PK
 	uint deviceId; // FK
 	uint port;
-	uint blaId;
+	uint uavId;
 } Devices;
 
-typedef struct BlaMission
+typedef struct UavMission
 {
 	uint id; // PK
-	uint blaId; // FK
+	uint uavId; // FK
 	uint targetId; // FK
 	double regionCenterLat;
 	double regionCenterLon;
-	double regionCenterAtitude;
+	double regionCenterAltitude;
 	double regionRadius;
 	QTime timeToTarget;
-} BlaMission;
+} UavMission;
 
 typedef struct Target
 {
 	uint id; // PK
 	QString ip;
 	uint port;
-	uint targetId;
 	uint type; // FK
 } Target;
 
@@ -71,11 +84,11 @@ typedef struct TargetType
 	QString name;
 } TargetType;
 
-typedef struct BlaType
+typedef struct UavType
 {
 	uint id; // PK
 	QString name;
-} BlaType;
+} UavType;
 
 typedef struct DeviceType
 {

@@ -30,7 +30,7 @@
 #include <Interfaces/IController.h>
 #include "MapTabWidget.h"
 
-#include "DbBla/DbBlaManager.h"
+#include "DbBla/DbUavManager.h"
 
 #define DEFAULT_RPC_PORT		24500
 
@@ -42,7 +42,7 @@ class MapTabWidgetController: public QObject, public ISubModule, public IControl
 {
 	Q_OBJECT
 public:
-	MapTabWidgetController(Station* station, QMap<int, Station*> map_settings, ITabManager* tabManager, DbBlaManager* db_bla,
+	MapTabWidgetController(Station* station, QMap<int, Station*> map_settings, ITabManager* tabManager, DbUavManager* db_bla,
 				 DBManager* db_evil, QObject* parent = NULL);
 	virtual ~MapTabWidgetController();
 
@@ -60,7 +60,7 @@ private:
 
 	RPCClient*          m_rpcClient;
 
-	DbBlaManager*          m_blaDbManager;
+	DbUavManager*          m_uavDbManager;
 	DBManager*          m_bplaDbManager;
 
 	QMap<int, Station *> m_mapSettings;

@@ -9,7 +9,7 @@ class QVariant;
 class IDBController
 {
 public:
-    virtual ~IDBController(){};
+	virtual ~IDBController(){}
 
     virtual QVector<int> get_list_bla()                  = 0;
     virtual QVector<int> get_list_bpla()                 = 0;
