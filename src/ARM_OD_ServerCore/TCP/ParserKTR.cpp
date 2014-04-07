@@ -8,6 +8,9 @@ ParserKTR::ParserKTR(int id, IRouter *router)
     _longitude = 0;
     _altitude = 0;
     _router = router;
+	_type = 0;
+	_restLength = 0;
+	_subscriber = 0;
 }
 
 ParserKTR::~ParserKTR()

@@ -28,13 +28,13 @@ public:
 	void setAntenaIndex(int value);
 	void setSBpowerValue(int value);
 	void setAngel(double value);
-	void setPoint(QPointF coord);
+	void setPoint(const QPointF& coord);
 
 	void stopCommad();
 	void changeValuePower(int value);
 	void enableComplex(bool state);
 	void clear();
-	void sendEvil(QPointF point, QPointF point_uvoda, double alt, double bearing);
+	void sendEvil(const QPointF& point, const QPointF& point_uvoda, double alt, double bearing);
 	QByteArray encode(QStringList list);
 	void changeMode(int value);
 

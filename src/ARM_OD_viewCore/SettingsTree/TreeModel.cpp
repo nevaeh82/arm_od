@@ -152,10 +152,8 @@ QModelIndex TreeModel::parent(const QModelIndex &index) const
 bool TreeModel::removeRows(int position, int rows, const QModelIndex &parent)
 {
 	TreeItem *parentItem = static_cast<TreeItem *>(parent.internalPointer());
-	bool success = true;
-
 	beginRemoveRows(parent, position, position + rows - 1);
-	success = parentItem->removeChildren(position, rows);
+	bool success = parentItem->removeChildren(position, rows);
 	endRemoveRows();
 
 	return success;

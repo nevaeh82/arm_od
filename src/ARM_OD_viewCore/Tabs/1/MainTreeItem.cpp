@@ -9,6 +9,9 @@ MainTreeItem::MainTreeItem(const QVector<QVariant> &data, MainTreeItem *parent/*
     _isEditable[1] = false;
     _isCheckable[0] = false;
     _isCheckable[1] = false;
+	
+	_id = 0;
+	_checked = false;
 
 //    _exchanger = exchanger;
 

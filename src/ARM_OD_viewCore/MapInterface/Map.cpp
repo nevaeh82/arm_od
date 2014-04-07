@@ -3,6 +3,9 @@
 Map::Map()
 {
 	m_layersCounter = 0;
+	m_mapManager = 0;
+	m_profileManager = 0;
+	m_layerManager = 0;
 }
 
 Map::~Map()

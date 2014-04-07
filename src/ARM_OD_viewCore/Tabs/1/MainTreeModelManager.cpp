@@ -3,6 +3,7 @@
 
 MainTreeModelManager::MainTreeModelManager(const QStringList &headers, QObject *parent)
      : QAbstractItemModel(parent)
+	 , _id(0)
  {
      QVector<QVariant> rootHeaders;
      foreach (QString header, headers)
@@ -266,10 +267,9 @@ MainTreeModelManager::MainTreeModelManager(const QStringList &headers, QObject *
  bool MainTreeModelManager::removeRows(int position, int rows, const QModelIndex &parent)
  {
      MainTreeItem *parentItem = getItem(parent);
-     bool success = true;
 
      beginRemoveRows(parent, position, position + rows - 1);
-     success = parentItem->removeChildren(position, rows);
+     bool success = parentItem->removeChildren(position, rows);
      endRemoveRows();
 
      return success;

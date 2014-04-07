@@ -52,7 +52,7 @@ QList<QMap<QString, QVariant> > DBManager::get_data(QStringList list)
     req_fields.append(" FROM ");
     req_fields.append(_cur_table_name);
     QSqlQuery query;
-    bool err = query.exec(req_fields.join(""));
+    query.exec(req_fields.join(""));
     QSqlRecord rec = query.record();
     QList<QMap<QString, QVariant> >   list_result;
     while(query.next())
@@ -86,7 +86,7 @@ QList<QMap<QString, QVariant> > DBManager::get_data_cur_station(QStringList list
     req_fields.append(QString::number(pid));
 //    req_fields.append("")
     QSqlQuery query;
-    bool err = query.exec(req_fields);
+    query.exec(req_fields);
     QSqlRecord rec = query.record();
     QList<QMap<QString, QVariant> >   list_result;
     while(query.next())

@@ -7,6 +7,8 @@ NIIPPParser::NIIPPParser(int id, int type)
 {
     _id = id;
     _type = type;
+	_router = 0;
+	_subscriber = 0;
 }
 
 NIIPPParser::~NIIPPParser()

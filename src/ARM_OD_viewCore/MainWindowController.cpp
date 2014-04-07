@@ -10,6 +10,7 @@ MainWindowController::MainWindowController(QObject *parent) :
 	m_view = NULL;
 	m_tabManager = NULL;
 	m_solver = NULL;
+	m_serverHandler = 0;
 }
 
 MainWindowController::~MainWindowController()

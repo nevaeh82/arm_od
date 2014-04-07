@@ -91,7 +91,6 @@ void GraphicWidget::slotReadyReadADC()
                scene->update();
            }
            blockSize=0;
-           int mSec=Time1.msecsTo(QTime::currentTime());
 //            emit signalSendText(QString("Время приема=%1 мсек\n").arg(mSec));
        }
 
@@ -277,7 +276,7 @@ void GraphicWidget::SendGetFreqAtt()
     msg.SetAddr(0xFF);//addr);
     msg.SetSize(0x01);
     msg.SetType(0x04);
-    unsigned us = msg.CalcCRC();
+    msg.CalcCRC();
     SendMsgBuff.Add(msg);
   statSend++;
 }
@@ -290,7 +289,7 @@ void GraphicWidget::SendSetAtt(unsigned char att)
     msg.SetSize(0x02);
     msg.SetType(0x03);
     msg.SetBody(0,att);
-    unsigned us = msg.CalcCRC();
+    msg.CalcCRC();
     SendMsgBuff.Add(msg);
   statSend++;
 }
@@ -303,7 +302,7 @@ void GraphicWidget::SendSetAtt2(unsigned char att)
     msg.SetSize(0x02);
     msg.SetType(0x07);
     msg.SetBody(0,att);
-    unsigned us = msg.CalcCRC();
+    msg.CalcCRC();
     SendMsgBuff.Add(msg);
   statSend++;
 }
@@ -318,7 +317,7 @@ void GraphicWidget::SendSetFreq(unsigned short freq)
     msg.SetType(0x02);
     msg.SetBody(0,(freq>>8)&0xFF);
     msg.SetBody(1,freq&0xFF);
-    unsigned us = msg.CalcCRC();
+    msg.CalcCRC();
     SendMsgBuff.Add(msg);
   statSend++;
 }
@@ -326,16 +325,16 @@ void GraphicWidget::SendSetFreq(unsigned short freq)
 /// recv data from prm
 void GraphicWidget::Protocol()
 {
-    static unsigned ttt;
     QByteArray buffer;
     QByteArray send;
-    unsigned char byte;
-    unsigned counter=0;
-    unsigned numOfSend=0;
     NovomarMsg msgRecv;
-    int i;
     if(1)//stateSerial)
     {
+		unsigned char byte;
+		unsigned counter=0;
+		unsigned numOfSend=0;
+		int i;
+		
         long NumOfBytesSerial = qSocketPRM->bytesAvailable();
         if(!NumOfBytesSerial)
             isFree=1;
@@ -419,8 +418,7 @@ void GraphicWidget::Protocol()
 //	SendSetFreq(0xFF,0x1234);
 //	SendSetAtt(0xFF,0x57);
 //	SendGetFreqAtt(0xFF);
-    unsigned sizeSnd1 = SendMsgBuff.Used();
-    static unsigned short rcv_freq=0;
+	SendMsgBuff.Used();
 
     while(RecvMsgBuff.Used())
     {
@@ -443,15 +441,14 @@ void GraphicWidget::Protocol()
 //				rcv_freq = (msgRecv.Body(0)<<8) + msgRecv.Body(1);
                 break;
             case 0x04:
-//				for(i=0; i<6; i++) ucfa.uc[i] = msgRecv.Body(i);
                 m_frequ = (msgRecv.Body(0)<<8) + msgRecv.Body(1);
                 m_att = msgRecv.Body(2);
                 m_att2 = msgRecv.Body(4);
-                rcv_freq = (msgRecv.Body(0)<<8) + msgRecv.Body(1);
+                (msgRecv.Body(0)<<8) + msgRecv.Body(1);
                 qSpectrItem->SetPrmData(ipPrm300, isConnectedPRM, m_frequ, m_att*10, m_att2);
                 scene->update();
                 isModify=true;
-                rcv_freq = (msgRecv.Body(0)<<8) + msgRecv.Body(1);
+                (msgRecv.Body(0)<<8) + msgRecv.Body(1);
                 break;
             case 0x20:
                 break;
