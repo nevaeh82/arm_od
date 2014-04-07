@@ -33,6 +33,7 @@ signals:
 
 private slots:
 	void createTcpKTRCoderInternalSlot();
+	void tcpConnectionStatusInternalSlot(int status);
 };
 
 #endif // TCPKTRCONTROLLER_H

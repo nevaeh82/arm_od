@@ -76,9 +76,9 @@ void TcpManager::addTcpDevice(const QString& deviceName, const quint32& deviceTy
 
 	controller->connectToHost();
 
-	if (deviceType == DeviceTypes::KTR_TCP_DEVICE) {
-		controller->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_GET_BOARD_LIST, QByteArray())));
-	}
+//	if (deviceType == DeviceTypes::KTR_TCP_DEVICE) {
+//		controller->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_GET_BOARD_LIST, QByteArray())));
+//	}
 
 	log_debug(QString("Added device connection for %1 with %2").arg(deviceName).arg(deviceType));
 }
@@ -129,7 +129,21 @@ void TcpManager::onMessageReceived(const quint32 deviceType, const QString& devi
 			}
 			break;
 		case DeviceTypes::KTR_TCP_DEVICE:
-			if (messageType == TCP_KTR_ANSWER_BOARD_LIST) {
+			if (messageType == TCP_KTR_ANSWER_CONNECTION_STATUS) {
+
+				if (deviceType == DeviceTypes::KTR_TCP_DEVICE) {
+
+					BaseTcpDeviceController* controller = m_controllersMap.value(deviceName, NULL);
+
+					if (controller == NULL) {
+						log_debug(QString("Something wrong with controller %1 %2").arg(deviceName).arg(deviceType));
+						return;
+					}
+
+					controller->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_GET_BOARD_LIST, QByteArray())));
+				}
+
+			} else if (messageType == TCP_KTR_ANSWER_BOARD_LIST) {
 
 				if (!m_controllersMap.contains(deviceName)) {
 					log_debug(QString("Map doesn't contain %1 %2").arg(deviceName).arg(deviceType));
