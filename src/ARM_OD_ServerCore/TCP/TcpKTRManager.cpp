@@ -6,6 +6,8 @@ TcpKTRManager::TcpKTRManager(ITcpListener* tcpManager, QObject *parent) :
 	m_tcpManagerAsListener = tcpManager;
 	m_timeoutSignalMapper = new QSignalMapper(this);
 
+	m_needToUpdateAfterDisconnect = true; // As first connect
+
 	connect(m_timeoutSignalMapper, SIGNAL(mapped(const QString &)),
 			this, SLOT(timeoutSlot(const QString &)));
 }
@@ -74,14 +76,25 @@ void TcpKTRManager::connectToBoard(const QString& hostPort, const quint16& board
 
 		m_lifeTimerMap.insert(key, lifeTimer);
 
+
+	}
+
+	//Need to update lifetimer
+	lifeTimer->start(MAX_LIFE_TIME);
+
+	if (m_needToUpdateAfterDisconnect) {
+		// Need to register again
 		QByteArray dataToSend;
 		QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
 		dataStream << board << device;
 		controller->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_COMMAND_TO_BPLA, dataToSend)));
 	}
+}
 
-	//Need to update lifetimer
-	lifeTimer->start(MAX_LIFE_TIME);
+void TcpKTRManager::needToUpdateAfterDisconnect(const bool& value)
+{
+	QMutexLocker mutexLocker(&m_deleteMutex);
+	m_needToUpdateAfterDisconnect = value;
 }
 
 void TcpKTRManager::timeoutSlot(const QString& key)

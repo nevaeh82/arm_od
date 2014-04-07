@@ -39,6 +39,9 @@ KtrSimulator::KtrSimulator(const uint& port, const uint& bplaCount,
 	// start update timer
 	connect( &m_updateTimer, SIGNAL(timeout()), SLOT(update()) );
 	m_updateTimer.start( 100 );
+
+	connect(&m_uavListUpdateTimer, SIGNAL(timeout()), SLOT(updateUavList()));
+	m_uavListUpdateTimer.start(1000);
 }
 
 KtrSimulator::~KtrSimulator()
@@ -96,6 +99,7 @@ void KtrSimulator::disconnected()
 
 	m_buffers.remove(socket);
 	m_bplaConnections.remove(socket);
+	m_ktrConnections.remove(socket);
 
 	socket->deleteLater();
 	delete buffer;
@@ -127,8 +131,7 @@ void KtrSimulator::readyRead()
 				buffer->remove( 0, cmdRegExp.matchedLength() );
 				qDebug() << "Requested list of BPLA";
 
-				QByteArray data = encodeBplaList();
-				writeAndFlush( socket, data );
+				m_ktrConnections << socket;
 			}
 
 			// execute REGISTER BPLA LISTENER: user link command bXXdYY
@@ -286,6 +289,14 @@ void KtrSimulator::update()
 	}
 }
 
+void KtrSimulator::updateUavList()
+{
+	//Send uav list to each client
+	foreach (QTcpSocket* socket, m_ktrConnections) {
+		QByteArray data = encodeBplaList();
+		writeAndFlush( socket, data );
+	}
+}
 
 void KtrSimulator::rotatePoint( const double& cx, const double& cy,
 								 const double& angle, double& x, double& y )

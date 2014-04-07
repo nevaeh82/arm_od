@@ -24,6 +24,7 @@ public:
 
 	// ITcpDeviceController interface
 public:
+	virtual void createTcpClient();
 	virtual void createTcpDeviceCoder();
 	virtual bool init();
 	virtual QByteArray getFullInfo();

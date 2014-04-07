@@ -140,7 +140,19 @@ void TcpManager::onMessageReceived(const quint32 deviceType, const QString& devi
 						return;
 					}
 
-					controller->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_GET_BOARD_LIST, QByteArray())));
+					int connectionState;
+					QDataStream dataStream(&messageData, QIODevice::ReadOnly);
+					dataStream >> connectionState;
+
+					if (connectionState == TCP::Disconnected) {
+						m_ktrManager->needToUpdateAfterDisconnect(true);
+						log_debug("disconnect happen. need to update when connect will happen...");
+					} else if (connectionState == TCP::Connected) {
+						m_ktrManager->needToUpdateAfterDisconnect(true);
+						log_debug("requseting board list...");
+						controller->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_GET_BOARD_LIST, QByteArray())));
+					}
+
 				}
 
 			} else if (messageType == TCP_KTR_ANSWER_BOARD_LIST) {
@@ -164,6 +176,8 @@ void TcpManager::onMessageReceived(const quint32 deviceType, const QString& devi
 					m_ktrManager->connectToBoard(controller->getHost(), boardID, KTR_DEVICE_AUTOPILOT);
 					m_ktrManager->connectToBoard(controller->getHost(), boardID, KTR_DEVICE_KTRGA622);
 				}
+
+				m_ktrManager->needToUpdateAfterDisconnect(false);
 				/// To future:
 //				m_ktrManager->connectToBoard(controller->getHost(), KTR_BOARD_BROADCAST, KTR_DEVICE_KTRGA622);
 //				m_ktrManager->connectToBoard(controller->getHost(), KTR_BOARD_BROADCAST, KTR_DEVICE_KTRGA623);

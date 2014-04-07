@@ -55,8 +55,10 @@ private:
 
 	// set of connected sockets
 	QSet<QTcpSocket*> m_bplaConnections;
+	QSet<QTcpSocket*> m_ktrConnections;
 
 	QTimer m_updateTimer;
+	QTimer m_uavListUpdateTimer;
 
 	// base angle for calculate current position of every BPLA
 	double m_baseAngle;
@@ -96,6 +98,7 @@ public:
 
 protected slots:
 	void update();
+	void updateUavList();
 	void newConnection();
 	void readyRead();
 	void disconnected();

@@ -6,11 +6,17 @@ TcpKTRController::TcpKTRController(const QString& tcpDeviceName, QObject* parent
 	m_deviceType = TypeKTR;
 	init();
 	connect(this, SIGNAL(createTcpKTRCoderInternalSignal()), this, SLOT(createTcpKTRCoderInternalSlot()));
-	connect(m_tcpClient, SIGNAL(signalConnectedToHost(bool)), this, SLOT(tcpConnectionStatusInternalSlot(int)));
+
 }
 
 TcpKTRController::~TcpKTRController()
 {
+}
+
+void TcpKTRController::createTcpClient()
+{
+	BaseTcpDeviceController::createTcpClient();
+	connect(m_tcpClient, SIGNAL(signalConnectedToHost(int)), this, SLOT(tcpConnectionStatusInternalSlot(int)));
 }
 
 void TcpKTRController::createTcpDeviceCoder()
