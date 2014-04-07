@@ -1,37 +1,39 @@
-#ifndef IDBBLACONTROLLER_H
-#define IDBBLACONTROLLER_H
+#ifndef IDBUAVCONTROLLER_H
+#define IDBUAVCONTROLLER_H
 
 #include <QString>
 
-struct Bla;
-struct BlaInfo;
+struct Uav;
+struct UavInfo;
+struct UavRole;
 struct Devices;
-struct BlaMission;
+struct UavMission;
 struct Target;
-struct DBConnectionStruct;
 struct TargetType;
-struct BlaType;
+struct UavType;
 struct DeviceType;
 struct Status;
 
+struct DBConnectionStruct;
+
 #define INVALID_INDEX -1
 
-class IDbBlaController
+class IDbUavController
 {
 	public:
-		virtual ~IDbBlaController(){}
+		virtual ~IDbUavController(){}
 
-		virtual int addBla(const Bla&) = 0;
-		virtual int getBlaByBlaId(const uint blaId) = 0;
+		virtual int addUav(const Uav&) = 0;
+		virtual int getUavByUavId(const uint uavId) = 0;
 
-		virtual int addBlaInfo(const BlaInfo&) = 0;
-		virtual int getBlaInfoByBlaId(const uint blaId) = 0;
+		virtual int addUavInfo(const UavInfo&) = 0;
+		virtual int getUavInfoByUavId(const uint uavId) = 0;
 
 		virtual int addDevice(const Devices&) = 0;
 		virtual bool getDevicesByType(const uint deviceTypeId, QList<Devices>& devicesRecords) = 0;
 
-		virtual int addBlaMission(const BlaMission&) = 0;
-		virtual bool getBlaMissionsByBlaId(const uint blaId, QList<BlaMission>& missionsRecords) = 0;
+		virtual int addUavMission(const UavMission&) = 0;
+		virtual bool getUavMissionsByUavId(const uint uavId, QList<UavMission>& missionsRecords) = 0;
 
 		virtual int addTarget(const Target&) = 0;
 		virtual bool getTargetsByType(const uint targetTypeId, QList<Target>& targetsRecords) = 0;
@@ -39,14 +41,18 @@ class IDbBlaController
 		virtual int addTargetType(const TargetType&) = 0;
 		virtual int getTargetTypeByName(const QString&) = 0;
 
-		virtual int addBlaType(const BlaType&) = 0;
-		virtual int getBlaTypeByName(const QString&) = 0;
+		virtual int addUavType(const UavType&) = 0;
+		virtual int getUavTypeByName(const QString&) = 0;
 
 		virtual int addDeviceType(const DeviceType&) = 0;
 		virtual int getDeviceTypeByName(const QString&) = 0;
 
 		virtual int addStatus(const Status&) = 0;
 		virtual int getStatusByName(const QString&) = 0;
+
+		virtual int addUavRole(const UavRole&) = 0;
+		virtual int getUavRoleByName(const QString&) = 0;
+		virtual int getUavRoleByCode(const QString&) = 0;
 };
 
-#endif // IDBBLACONTROLLER_H
+#endif // IDBUAVCONTROLLER_H

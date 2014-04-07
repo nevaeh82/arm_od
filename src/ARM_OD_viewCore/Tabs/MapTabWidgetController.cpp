@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Station *> map_settings, ITabManager* tabManager, DbBlaManager* db_bla, DBManager* db_evil, QObject* parent) :
+MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Station *> map_settings, ITabManager* tabManager, DbUavManager* db_bla, DBManager* db_evil, QObject* parent) :
 	QObject(parent)
 {
 	m_view = NULL;
@@ -25,7 +25,7 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 
 	/// TODO: refactor
 	m_bplaDbManager = db_evil;
-	m_blaDbManager = db_bla;
+	m_uavDbManager = db_bla;
 
 	/// TODO: refactor
 	//m_blaDbManager->set_model(m_blaModel);
@@ -94,7 +94,7 @@ void MapTabWidgetController::hide()
 int MapTabWidgetController::createRPC()
 {
 	readSettings();
-	m_rpcClient = new RPCClient(m_station, m_blaDbManager, m_bplaDbManager, m_mapController, this, _tab_manager);
+	m_rpcClient = new RPCClient(m_station, m_uavDbManager, m_bplaDbManager, m_mapController, this, _tab_manager);
 	//m_rpcClient->start(m_rpcHostPort, QHostAddress(m_rpcHostAddress));
 
 	QThread* rpcClientThread = new QThread;
@@ -192,7 +192,7 @@ void MapTabWidgetController::openMapSlot()
 void MapTabWidgetController::onBlaTreeItemDoubleClicked(QModelIndex index)
 {
 	BLAPerehvatDialog *b = new BLAPerehvatDialog(m_mapController->get_map_client(1));
-	b->init((index.data()).toInt(), m_blaDbManager, m_bplaDbManager);
+	b->init((index.data()).toInt(), m_uavDbManager, m_bplaDbManager);
 
 	/// TODO: This dialog should be modal
 	b->show();

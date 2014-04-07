@@ -3,33 +3,33 @@
 
 #include <QObject>
 
-#include "DbBlaController.h"
-#include "Interfaces/IDbBlaManager.h"
-#include "Interfaces/IBlaDbChangedListener.h"
+#include "DbUavController.h"
+#include "Interfaces/IDbUavManager.h"
+#include "Interfaces/IUavDbChangedListener.h"
 #include "BaseSubject.h"
 
-class DbBlaManager : public QObject, public IDbBlaManager, BaseSubject<IBlaDbChangedListener>
+class DbUavManager : public QObject, public IDbUavManager, BaseSubject<IUavDbChangedListener>
 {
 	Q_OBJECT
 private:
-	IDbBlaController* m_dbController;
+	IDbUavController* m_dbController;
 
 public:
-	explicit DbBlaManager(QObject *parent = 0);
+	explicit DbUavManager(QObject *parent = 0);
 
-	void setDbController(IDbBlaController*);
+	void setDbController(IDbUavController*);
 
-	int addBla(const Bla&);
-	int getBlaByBlaId(const uint blaId);
+	int addUav(const Uav&);
+	int getUavByUavId(const uint uavId);
 
-	int addBlaInfo(const BlaInfo&);
-	int getBlaInfoByBlaId(const uint blaId);
+	int addUavInfo(const UavInfo&);
+	int getUavInfoByUavId(const uint uavId);
 
 	int addDevice(const Devices&);
 	bool getDevicesByType(const uint deviceTypeId, QList<Devices>& devicesRecords);
 
-	int addBlaMission(const BlaMission&);
-	bool getBlaMissionsByBlaId(const uint blaId, QList<BlaMission>& missionsRecords);
+	int addUavMission(const UavMission&);
+	bool getUavMissionsByUavId(const uint uavId, QList<UavMission>& missionsRecords);
 
 	int addTarget(const Target&);
 	bool getTargetsByType(const uint targetTypeId, QList<Target>& targetsRecords);
@@ -37,8 +37,8 @@ public:
 	int addTargetType(const TargetType&);
 	int getTargetTypeByName(const QString&);
 
-	int addBlaType(const BlaType&);
-	int getBlaTypeByName(const QString&);
+	int addUavType(const UavType&);
+	int getUavTypeByName(const QString&);
 
 	int addDeviceType(const DeviceType&);
 	int getDeviceTypeByName(const QString&);

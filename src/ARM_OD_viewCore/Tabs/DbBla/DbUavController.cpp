@@ -1,24 +1,24 @@
-#include "DbBlaController.h"
+#include "DbUavController.h"
 
-DbBlaController::DbBlaController(QObject *parent) :
+DbUavController::DbUavController(QObject *parent) :
 	DbControllerBase("DBBLACONNECTION", "QMYSQL", parent)
 {
 
 }
 
-DbBlaController::~DbBlaController()
+DbUavController::~DbUavController()
 {
 	m_db.close();
 }
 
-int DbBlaController::addBla(const Bla& bla)
+int DbUavController::addUav(const Uav& uav)
 {
 	if(!m_db.isOpen()){
 		return INVALID_INDEX;
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare("INSERT INTO bla (idBla, ip, type, name) VALUES(:blaId, :ip, :type, :name);");
+	bool succeeded = query.prepare("INSERT INTO uav (uavId, ip, uavTypeId, name, freqId) VALUES(:uavId, :ip, :uavTypeId, :name, :freqId);");
 
 	if (!succeeded){
 		QString er = query.lastError().text();
@@ -26,10 +26,11 @@ int DbBlaController::addBla(const Bla& bla)
 		return INVALID_INDEX;
 	}
 
-	query.bindValue(":blaId", bla.blaId);
-	query.bindValue(":ip", bla.ip);
-	query.bindValue(":type", bla.type);
-	query.bindValue(":name", bla.name);
+	query.bindValue(":uavId", uav.uavId);
+	query.bindValue(":ip", uav.ip);
+	query.bindValue(":uavTypeId", uav.uavTypeId);
+	query.bindValue(":name", uav.name);
+	query.bindValue(":freqId", uav.freqId);
 
 	succeeded = query.exec();
 
@@ -43,14 +44,14 @@ int DbBlaController::addBla(const Bla& bla)
 	return INVALID_INDEX;
 }
 
-int DbBlaController::getBlaByBlaId(const uint blaId)
+int DbUavController::getUavByUavId(const uint uavId)
 {
 	if(!m_db.isOpen()){
 		return INVALID_INDEX;
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare("SELECT * FROM bla WHERE idBLA = :id;");
+	bool succeeded = query.prepare("SELECT * FROM uav WHERE uavId = :id;");
 
 	if (!succeeded) {
 		QString er = query.lastError().text();
@@ -58,7 +59,7 @@ int DbBlaController::getBlaByBlaId(const uint blaId)
 		return INVALID_INDEX;
 	}
 
-	query.bindValue(":id", blaId);
+	query.bindValue(":id", uavId);
 
 
 	succeeded = query.exec();
@@ -75,14 +76,14 @@ int DbBlaController::getBlaByBlaId(const uint blaId)
 	return INVALID_INDEX;
 }
 
-int DbBlaController::addBlaInfo(const BlaInfo& info)
+int DbUavController::addUavInfo(const UavInfo& info)
 {
 	if(!m_db.isOpen()){
 		return INVALID_INDEX;
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare(QString("INSERT INTO info (BLA_id, device, latitude, longitude, altitude, speed, yaw, restTime, statusID, datetime)")
+	bool succeeded = query.prepare(QString("INSERT INTO info (uavId, device, latitude, longitude, altitude, speed, yaw, restTime, statusTypeId, datetime)")
 								   + QString("VALUES(:blaId, :device, :lat, :lon, :alt, :speed, :yaw, :restTime, :statusId, :dateTime);"));
 
 	if (!succeeded){
@@ -91,7 +92,7 @@ int DbBlaController::addBlaInfo(const BlaInfo& info)
 		return INVALID_INDEX;
 	}
 
-	query.bindValue(":blaId", info.blaId);
+	query.bindValue(":uavId", info.uavId);
 	query.bindValue(":device", info.device);
 	query.bindValue(":lat", info.lat);
 	query.bindValue(":lon", info.lon);
@@ -114,20 +115,20 @@ int DbBlaController::addBlaInfo(const BlaInfo& info)
 	return INVALID_INDEX;
 }
 
-int DbBlaController::getBlaInfoByBlaId(const uint blaId)
+int DbUavController::getUavInfoByUavId(const uint uavId)
 {
 	return INVALID_INDEX;
 }
 
-int DbBlaController::addDevice(const Devices& device)
+int DbUavController::addDevice(const Devices& device)
 {
 	if(!m_db.isOpen()){
 		return INVALID_INDEX;
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare(QString("INSERT INTO devices (deviceID, port, BLAID)")
-								   + QString("VALUES(:deviceID, :port, :BLAID);"));
+	bool succeeded = query.prepare(QString("INSERT INTO devices (deviceTypeId, port, uavId)")
+								   + QString("VALUES(:deviceTypeId, :port, :uavId);"));
 
 	if (!succeeded){
 		QString er = query.lastError().text();
@@ -135,9 +136,9 @@ int DbBlaController::addDevice(const Devices& device)
 		return INVALID_INDEX;
 	}
 
-	query.bindValue(":deviceID", device.deviceId);
+	query.bindValue(":deviceTypeId", device.deviceId);
 	query.bindValue(":port", device.port);
-	query.bindValue(":BLAID", device.blaId);
+	query.bindValue(":uavId", device.uavId);
 
 	succeeded = query.exec();
 
@@ -151,14 +152,14 @@ int DbBlaController::addDevice(const Devices& device)
 	return INVALID_INDEX;
 }
 
-bool DbBlaController::getDevicesByType(const uint deviceTypeId, QList<Devices>& devicesRecords)
+bool DbUavController::getDevicesByType(const uint deviceTypeId, QList<Devices>& devicesRecords)
 {
 	if(!m_db.isOpen()){
 		return false;
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare(QString("SELECT * FROM devices WHERE deviceID = :deviceTypeId;"));
+	bool succeeded = query.prepare(QString("SELECT * FROM devices WHERE deviceTypeId = :deviceTypeId;"));
 
 	if (!succeeded) {
 		QString er = query.lastError().text();
@@ -179,22 +180,22 @@ bool DbBlaController::getDevicesByType(const uint deviceTypeId, QList<Devices>& 
 		device.id = query.value(0).toUInt();
 		device.deviceId = query.value(1).toUInt();
 		device.port = query.value(2).toUInt();
-		device.blaId = query.value(3).toUInt();
+		device.uavId = query.value(3).toUInt();
 		devicesRecords.append(device);
 	}
 
 	return true;
 }
 
-int DbBlaController::addBlaMission(const BlaMission& mission)
+int DbUavController::addUavMission(const UavMission& mission)
 {
 	if(!m_db.isOpen()){
 		return INVALID_INDEX;
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare(QString("INSERT INTO blamission (BLAid, targetID, regionCenterLatitude, regionCenterLongitude, regionCenterAtitude, regionRadius, timeToTarget)")
-								   + QString("VALUES(:BLAid, :targetID, :rcLat, :rcLon, :rcAlt, :rRad, :timeToTarget);"));
+	bool succeeded = query.prepare(QString("INSERT INTO uavmission (uavId, targetID, regionCenterLatitude, regionCenterLongitude, regionCenterAltitude, regionRadius, timeToTarget)")
+								   + QString("VALUES(:uavId, :targetID, :rcLat, :rcLon, :rcAlt, :rRad, :timeToTarget);"));
 
 	if (!succeeded){
 		QString er = query.lastError().text();
@@ -202,11 +203,11 @@ int DbBlaController::addBlaMission(const BlaMission& mission)
 		return INVALID_INDEX;
 	}
 
-	query.bindValue(":BLAid", mission.blaId);
+	query.bindValue(":uavId", mission.uavId);
 	query.bindValue(":targetID", mission.targetId);
 	query.bindValue(":rcLat", mission.regionCenterLat);
 	query.bindValue(":rcLon", mission.regionCenterLon);
-	query.bindValue(":rcAlt", mission.regionCenterAtitude);
+	query.bindValue(":rcAlt", mission.regionCenterAltitude);
 	query.bindValue(":rRad", mission.regionRadius);
 	query.bindValue(":timeToTarget", mission.timeToTarget.toString("hh:mm:ss"));
 
@@ -222,14 +223,14 @@ int DbBlaController::addBlaMission(const BlaMission& mission)
 	return INVALID_INDEX;
 }
 
-bool DbBlaController::getBlaMissionsByBlaId(const uint blaId, QList<BlaMission> &missionsRecords)
+bool DbUavController::getUavMissionsByUavId(const uint uavId, QList<UavMission> &missionsRecords)
 {
 	if(!m_db.isOpen()){
 		return false;
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare(QString("SELECT * FROM blamission WHERE BLAid = :BLAid;"));
+	bool succeeded = query.prepare(QString("SELECT * FROM uavmission WHERE uavId = :uavId;"));
 
 	if (!succeeded) {
 		QString er = query.lastError().text();
@@ -237,7 +238,7 @@ bool DbBlaController::getBlaMissionsByBlaId(const uint blaId, QList<BlaMission> 
 		return false;
 	}
 
-	query.bindValue(":BLAid", blaId);
+	query.bindValue(":uavId", uavId);
 
 	succeeded = query.exec();
 
@@ -246,14 +247,14 @@ bool DbBlaController::getBlaMissionsByBlaId(const uint blaId, QList<BlaMission> 
 	}
 
 	while (query.next()){
-		BlaMission mission;
+		UavMission mission;
 
 		mission.id = query.value(0).toUInt();
-		mission.blaId = query.value(1).toUInt();
+		mission.uavId = query.value(1).toUInt();
 		mission.targetId = query.value(2).toUInt();
 		mission.regionCenterLat = query.value(3).toDouble();
 		mission.regionCenterLon = query.value(4).toDouble();
-		mission.regionCenterAtitude = query.value(5).toDouble();
+		mission.regionCenterAltitude = query.value(5).toDouble();
 		mission.regionRadius = query.value(6).toDouble();
 		mission.timeToTarget = QTime::fromString(query.value(7).toString());
 
@@ -263,15 +264,15 @@ bool DbBlaController::getBlaMissionsByBlaId(const uint blaId, QList<BlaMission> 
 	return true;
 }
 
-int DbBlaController::addTarget(const Target& target)
+int DbUavController::addTarget(const Target& target)
 {
 	if(!m_db.isOpen()){
 		return INVALID_INDEX;
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare(QString("INSERT INTO target (ip, port, targetID, type)")
-								   + QString("VALUES(:ip, :port, :targetID, :type);"));
+	bool succeeded = query.prepare(QString("INSERT INTO target (ip, port, targetTypeId)")
+								   + QString("VALUES(:ip, :port, :targetTypeId);"));
 
 	if (!succeeded){
 		QString er = query.lastError().text();
@@ -281,8 +282,7 @@ int DbBlaController::addTarget(const Target& target)
 
 	query.bindValue(":ip", target.ip);
 	query.bindValue(":port", target.port);
-	query.bindValue(":targetID", target.targetId);
-	query.bindValue(":type", target.type);
+	query.bindValue(":targetTypeId", target.type);
 
 	succeeded = query.exec();
 
@@ -296,14 +296,14 @@ int DbBlaController::addTarget(const Target& target)
 	return INVALID_INDEX;
 }
 
-bool DbBlaController::getTargetsByType(const uint targetTypeId, QList<Target> &targetsRecords)
+bool DbUavController::getTargetsByType(const uint targetTypeId, QList<Target> &targetsRecords)
 {
 	if(!m_db.isOpen()){
 		return false;
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare(QString("SELECT * FROM target WHERE type = :targetTypeId;"));
+	bool succeeded = query.prepare(QString("SELECT * FROM target WHERE targetTypeId = :targetTypeId;"));
 
 	if (!succeeded) {
 		QString er = query.lastError().text();
@@ -325,8 +325,7 @@ bool DbBlaController::getTargetsByType(const uint targetTypeId, QList<Target> &t
 		target.id = query.value(0).toUInt();
 		target.ip = query.value(1).toString();
 		target.port = query.value(2).toUInt();
-		target.targetId = query.value(3).toUInt();
-		target.type = query.value(4).toUInt();
+		target.type = query.value(3).toUInt();
 
 		targetsRecords.append(target);
 	}
@@ -334,47 +333,138 @@ bool DbBlaController::getTargetsByType(const uint targetTypeId, QList<Target> &t
 	return true;
 }
 
-int DbBlaController::addTargetType(const TargetType& targetType)
+int DbUavController::addTargetType(const TargetType& targetType)
 {
-	return addDictionaryRecord("targettypedictionary", targetType.name);
+	return addDictionaryRecord("targettypes", targetType.name);
 }
 
-int DbBlaController::getTargetTypeByName(const QString& name)
+int DbUavController::getTargetTypeByName(const QString& name)
 {
-	return getDictionaryRecord("targettypedictionary", name);
+	return getDictionaryRecord("targettypes", name);
 }
 
-int DbBlaController::addBlaType(const BlaType& blaType)
+int DbUavController::addUavType(const UavType &uavType)
 {
-	return addDictionaryRecord("typebladictionary", blaType.name);
+	return addDictionaryRecord("uavtypes", uavType.name);
 }
 
-int DbBlaController::getBlaTypeByName(const QString& name)
+int DbUavController::getUavTypeByName(const QString& name)
 {
-	return getDictionaryRecord("typebladictionary", name);
+	return getDictionaryRecord("uavtypes", name);
 }
 
-int DbBlaController::addDeviceType(const DeviceType& device)
+int DbUavController::addDeviceType(const DeviceType& device)
 {
-	return addDictionaryRecord("devicedictionary", device.name);
+	return addDictionaryRecord("devicetypes", device.name);
 }
 
-int DbBlaController::getDeviceTypeByName(const QString& name)
+int DbUavController::getDeviceTypeByName(const QString& name)
 {
-	return getDictionaryRecord("devicedictionary", name);
+	return getDictionaryRecord("devicetypes", name);
 }
 
-int DbBlaController::addStatus(const Status& status)
+int DbUavController::addStatus(const Status& status)
 {
-	return addDictionaryRecord("statusdictionary", status.status);
+	return addDictionaryRecord("statustypes", status.status);
 }
 
-int DbBlaController::getStatusByName(const QString& name)
+int DbUavController::getStatusByName(const QString& name)
 {
-	return getDictionaryRecord("statusdictionary", name);
+	return getDictionaryRecord("statustypes", name);
 }
 
-int DbBlaController::addDictionaryRecord(const QString& dictionary, const QString& name)
+int DbUavController::addUavRole(const UavRole& uavRole)
+{
+	if(!m_db.isOpen()){
+		return INVALID_INDEX;
+	}
+
+	QSqlQuery query(m_db);
+	bool succeeded = query.prepare(QString("INSERT INTO uavroles (code, name)")
+								   + QString("VALUES(:code, :name);"));
+
+	if (!succeeded){
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		return INVALID_INDEX;
+	}
+
+	query.bindValue(":code", uavRole.code);
+	query.bindValue(":name", uavRole.name);
+
+	succeeded = query.exec();
+
+	if (succeeded){
+		return query.lastInsertId().toUInt();
+	} else {
+		QString er = query.lastError().databaseText() + "\n" + query.lastError().driverText();
+		log_debug("SQL query is wrong! " + er);
+	}
+
+	return INVALID_INDEX;
+}
+
+int DbUavController::getUavRoleByName(const QString& name)
+{
+	if(!m_db.isOpen()){
+		return INVALID_INDEX;
+	}
+
+	QSqlQuery query(m_db);
+	bool succeeded = query.prepare("SELECT id FROM uavroles WHERE name = :name;");
+
+	if (!succeeded) {
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		return INVALID_INDEX;
+	}
+
+	query.bindValue(":name", name);
+
+	succeeded = query.exec();
+
+	if(!query.next()) {
+		return INVALID_INDEX;
+	}
+
+	if (succeeded){
+		return query.record().value(0).toUInt();
+	}
+
+	return INVALID_INDEX;
+}
+
+int DbUavController::getUavRoleByCode(const QString& code)
+{
+	if(!m_db.isOpen()){
+		return INVALID_INDEX;
+	}
+
+	QSqlQuery query(m_db);
+	bool succeeded = query.prepare("SELECT id FROM uavroles WHERE code = :code;");
+
+	if (!succeeded) {
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		return INVALID_INDEX;
+	}
+
+	query.bindValue(":code", code);
+
+	succeeded = query.exec();
+
+	if(!query.next()) {
+		return INVALID_INDEX;
+	}
+
+	if (succeeded){
+		return query.record().value(0).toUInt();
+	}
+
+	return INVALID_INDEX;
+}
+
+int DbUavController::addDictionaryRecord(const QString& dictionary, const QString& name)
 {
 	if(!m_db.isOpen()){
 		return INVALID_INDEX;
@@ -403,7 +493,7 @@ int DbBlaController::addDictionaryRecord(const QString& dictionary, const QStrin
 	return INVALID_INDEX;
 }
 
-int DbBlaController::getDictionaryRecord(const QString& dictionary, const QString& name)
+int DbUavController::getDictionaryRecord(const QString& dictionary, const QString& name)
 {
 	if(!m_db.isOpen()){
 		return INVALID_INDEX;

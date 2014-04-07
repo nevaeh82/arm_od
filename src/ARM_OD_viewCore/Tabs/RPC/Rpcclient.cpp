@@ -9,7 +9,7 @@ const double m_zoneDir[28] = {2.5, 3, 4, 5,
                        6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20,
                        22, 26, 29, 33, 37, 41, 47, 52, 57, 62, 68, 72, 76};
 
-RPCClient::RPCClient(Station *station, IDbBlaManager *db_manager, IDBManager* db_manager_targer,
+RPCClient::RPCClient(Station *station, IDbUavManager *db_manager, IDBManager* db_manager_targer,
 					 IMapController* map_controller, ITabMap* parent_tab, ITabManager* tab_manager, QObject *parent)
 	: RpcClientBase(parent)
 {
@@ -18,7 +18,7 @@ RPCClient::RPCClient(Station *station, IDbBlaManager *db_manager, IDBManager* db
 	m_mapController = map_controller;
 	m_parentTab = parent_tab;
 	m_station = station;
-	m_dbBlaManager = db_manager;
+	m_dbUavManager = db_manager;
 	m_dbManagerTarget = db_manager_targer;
 	m_pelengEvilIds = 0;
 	m_rdsEvilIds = 50;
@@ -124,65 +124,65 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
 	/// Now we take first point, but we need to take more than 1 point
 	UAVPositionData positionData = positionDataVector.at(0);
 
-	int blaId = m_dbBlaManager->getBlaByBlaId(positionData.boardID);
-	if (blaId < 0){
-		int blaUnknownTypeId = m_dbBlaManager->getBlaTypeByName("UnknownBlaType");
+	int uavId = m_dbUavManager->getUavByUavId(positionData.boardID);
+	if (uavId < 0){
+		int uavUnknownTypeId = m_dbUavManager->getUavTypeByName("UnknownUavType");
 
-		if (blaUnknownTypeId < 0){
-			BlaType blaType;
-			blaType.name = "UnknownBlaType";
-			blaUnknownTypeId = m_dbBlaManager->addBlaType(blaType);
+		if (uavUnknownTypeId < 0){
+			UavType uavType;
+			uavType.name = "UnknownUavType";
+			uavUnknownTypeId = m_dbUavManager->addUavType(uavType);
 		}
 
-		Bla bla;
-		bla.blaId = positionData.boardID;
-		bla.type = blaUnknownTypeId;
-		bla.ip = "127.0.0.1";
+		Uav uav;
+		uav.uavId = positionData.boardID;
+		uav.uavTypeId = uavUnknownTypeId;
+		uav.ip = "127.0.0.1";
 
-		blaId = m_dbBlaManager->addBla(bla);
+		uavId = m_dbUavManager->addUav(uav);
 	}
 
-	int statusUnknownId = m_dbBlaManager->getStatusByName("UnknownStatus");
+	int statusUnknownId = m_dbUavManager->getStatusByName("UnknownStatus");
 	if (statusUnknownId < 0){
 		Status status;
 		status.status = "UnknownStatus";
-		statusUnknownId = m_dbBlaManager->addStatus(status);
+		statusUnknownId = m_dbUavManager->addStatus(status);
 	}
 
 	QList<Devices> devices;
-	int unknownDeviceTypeId = m_dbBlaManager->getDeviceTypeByName("UnknownDeviceType");
+	int unknownDeviceTypeId = m_dbUavManager->getDeviceTypeByName("UnknownDeviceType");
 
 	if (unknownDeviceTypeId < 0){
 		DeviceType deviceType;
 		deviceType.name = "UnknownDeviceType";
-		unknownDeviceTypeId = m_dbBlaManager->addDeviceType(deviceType);
+		unknownDeviceTypeId = m_dbUavManager->addDeviceType(deviceType);
 	}
 
-	m_dbBlaManager->getDevicesByType(unknownDeviceTypeId, devices);
+	m_dbUavManager->getDevicesByType(unknownDeviceTypeId, devices);
 
 	int deviceUnknownId = -1;
 	if (0 == devices.count()){
 		Devices device;
-		device.blaId = positionData.boardID;
+		device.uavId = positionData.boardID;
 		device.deviceId = unknownDeviceTypeId;
-		deviceUnknownId = m_dbBlaManager->addDevice(device);
+		deviceUnknownId = m_dbUavManager->addDevice(device);
 	} else {
 		deviceUnknownId = devices.at(0).id;
 	}
 
-	BlaInfo blaInfo;
-	blaInfo.blaId = blaId; // FK
-	blaInfo.device = deviceUnknownId; // FK
-	blaInfo.lat = positionData.latitude;
-	blaInfo.lon = positionData.longitude;
-	blaInfo.alt = positionData.altitude;
-	blaInfo.speed = positionData.speed;
-	blaInfo.yaw = positionData.course;
-	blaInfo.restTime = QTime(1, 0);
-	blaInfo.statusId = statusUnknownId; // FK
-	blaInfo.dateTime = positionData.dateTime;
+	UavInfo uavInfo;
+	uavInfo.uavId = uavId; // FK
+	uavInfo.device = deviceUnknownId; // FK
+	uavInfo.lat = positionData.latitude;
+	uavInfo.lon = positionData.longitude;
+	uavInfo.alt = positionData.altitude;
+	uavInfo.speed = positionData.speed;
+	uavInfo.yaw = positionData.course;
+	uavInfo.restTime = QTime(1, 0);
+	uavInfo.statusId = statusUnknownId; // FK
+	uavInfo.dateTime = positionData.dateTime;
 
-	m_dbBlaManager->addBlaInfo(blaInfo);
+	m_dbUavManager->addUavInfo(uavInfo);
 
 //////
 
@@ -207,11 +207,11 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
     rec->insert("id", QVariant::fromValue(id));
 
     rec->insert("pid", QVariant::fromValue(0));
-    rec->insert("name", QVariant::fromValue(id));
+	rec->insert("name", QVariant::fromValue(id));
     rec->insert("state", QVariant::fromValue(1));
-	m_dbBlaManager->set(0, rec);*/
+	m_dbUavManager->set(0, rec);
 
-   /* QMap<QString, QVariant>* rec_p = new QMap<QString, QVariant>;
+	QMap<QString, QVariant>* rec_p = new QMap<QString, QVariant>;
 
     QString s_prop;
     s_prop = tr("Latitude");
@@ -220,7 +220,7 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
     rec_p->insert("value", QVariant::fromValue(point.x()));
     rec_p->insert("state", QVariant::fromValue(1));
 
-	QVector<QMap<QString, QVariant> >* map_p = m_dbBlaManager->get(id, 0);
+	QVector<QMap<QString, QVariant> >* map_p = m_dbUavManager->get(id, 0);
     for(int i = 0; i < map_p->count(); ++i)
     {
         QString nam = map_p->at(i).value("name").toString();
@@ -231,9 +231,9 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
         }
 	}
 
-	m_dbBlaManager->set_property(0, rec_p);*/
+	m_dbUavManager->set_property(0, rec_p);
 
-	/*QMap<QString, QVariant>* rec_p1 = new QMap<QString, QVariant>;
+	QMap<QString, QVariant>* rec_p1 = new QMap<QString, QVariant>;
 
     s_prop = tr("Longitude");
     rec_p1->insert("pid", QVariant::fromValue(id));
@@ -241,7 +241,7 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
     rec_p1->insert("value", QVariant::fromValue(point.y()));
     rec_p1->insert("state", QVariant::fromValue(1));
 
-	QVector<QMap<QString, QVariant> >* map_p1 = m_dbBlaManager->get(id, 0);
+	QVector<QMap<QString, QVariant> >* map_p1 = m_dbUavManager->get(id, 0);
 
     for(int i = 0; i < map_p1->count(); ++i)
     {
@@ -253,10 +253,10 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
         }
     }
 
-	m_dbBlaManager->set_property(0, rec_p1);*/
+	m_dbUavManager->set_property(0, rec_p1);
 
 
-   /* QMap<QString, QVariant>* rec_p2 = new QMap<QString, QVariant>;
+	QMap<QString, QVariant>* rec_p2 = new QMap<QString, QVariant>;
 
 	s_prop = tr("Altitude");
     rec_p2->insert("pid", QVariant::fromValue(id));
@@ -264,7 +264,7 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
     rec_p2->insert("value", QVariant::fromValue(alt));
 	rec_p2->insert("state", QVariant::fromValue(1));
 
-	QVector<QMap<QString, QVariant> >* map_p2 = m_dbBlaManager->get(id, 0);
+	QVector<QMap<QString, QVariant> >* map_p2 = m_dbUavManager->get(id, 0);
 
     for(int i = 0; i < map_p2->count(); ++i)
     {
@@ -276,7 +276,7 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
         }
     }
 
-	m_dbBlaManager->set_property(0, rec_p2);*/
+	m_dbUavManager->set_property(0, rec_p2);*/
 }
 
 void RPCClient::rpcSlotServerSendAisData(QByteArray data)

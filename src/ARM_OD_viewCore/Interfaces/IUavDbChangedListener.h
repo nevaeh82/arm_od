@@ -1,18 +1,18 @@
-#ifndef IBLADBCHANGEDLISTENER_H
-#define IBLADBCHANGEDLISTENER_H
+#ifndef IUAVDBCHANGEDLISTENER_H
+#define IUAVDBCHANGEDLISTENER_H
 
-struct Bla;
-struct BlaInfo;
+struct Uav;
+struct UavInfo;
 
-class IBlaDbChangedListener{
+class IUavDbChangedListener{
 
 	public:
-		virtual ~IBlaDbChangedListener(){}
+		virtual ~IUavDbChangedListener(){}
 
-		virtual void onBlaAdded(const Bla& bla) = 0;
-		virtual void onBlaRemoved(const Bla& bla) = 0;
+		virtual void onUavAdded(const Uav& uav) = 0;
+		virtual void onUavRemoved(const Uav& uav) = 0;
 
-		virtual void onBlaInfoChanged(const BlaInfo& blaInfo);
+		virtual void onUavInfoChanged(const UavInfo& uavInfo);
 };
 
-#endif // IBLADBCHANGEDLISTENER_H
+#endif // IUAVDBCHANGEDLISTENER_H

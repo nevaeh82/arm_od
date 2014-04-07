@@ -1,118 +1,118 @@
-#include "DbBlaManager.h"
+#include "DbUavManager.h"
 
-DbBlaManager::DbBlaManager(QObject *parent) :
+DbUavManager::DbUavManager(QObject *parent) :
 	QObject(parent)
 {
 	m_dbController = NULL;
 }
 
-void DbBlaManager::setDbController(IDbBlaController* dbController)
+void DbUavManager::setDbController(IDbUavController* dbController)
 {
 	m_dbController = dbController;
 }
 
-int DbBlaManager::addBla(const Bla& bla)
+int DbUavManager::addUav(const Uav &uav)
 {
-	int newBlaId = m_dbController->addBla(bla);
+	int newUavId = m_dbController->addUav(uav);
 
-	if (newBlaId != INVALID_INDEX){
-		foreach (IBlaDbChangedListener* receiver, m_receiversList){
-			receiver->onBlaAdded(bla);
+	if (newUavId != INVALID_INDEX){
+		foreach (IUavDbChangedListener* receiver, m_receiversList){
+			receiver->onUavAdded(uav);
 		}
 	}
 
-	return newBlaId;
+	return newUavId;
 }
 
-int DbBlaManager::getBlaByBlaId(const uint blaId)
+int DbUavManager::getUavByUavId(const uint uavId)
 {
-	return m_dbController->getBlaByBlaId(blaId);
+	return m_dbController->getUavByUavId(uavId);
 }
 
-int DbBlaManager::addBlaInfo(const BlaInfo& blaInfo)
+int DbUavManager::addUavInfo(const UavInfo &uavInfo)
 {
-	int newBlaInfo = m_dbController->addBlaInfo(blaInfo);
+	int newUavInfo = m_dbController->addUavInfo(uavInfo);
 
-	if (newBlaInfo != INVALID_INDEX){
-		foreach (IBlaDbChangedListener* receiver, m_receiversList){
-			receiver->onBlaInfoChanged(blaInfo);
+	if (newUavInfo != INVALID_INDEX){
+		foreach (IUavDbChangedListener* receiver, m_receiversList){
+			receiver->onUavInfoChanged(uavInfo);
 		}
 	}
 
-	return newBlaInfo;
+	return newUavInfo;
 }
 
-int DbBlaManager::getBlaInfoByBlaId(const uint blaId)
+int DbUavManager::getUavInfoByUavId(const uint uavId)
 {
-	return m_dbController->getBlaInfoByBlaId(blaId);
+	return m_dbController->getUavInfoByUavId(uavId);
 }
 
-int DbBlaManager::addDevice(const Devices& device)
+int DbUavManager::addDevice(const Devices& device)
 {
 	return m_dbController->addDevice(device);
 }
 
-bool DbBlaManager::getDevicesByType(const uint deviceTypeId, QList<Devices> &devicesRecords)
+bool DbUavManager::getDevicesByType(const uint deviceTypeId, QList<Devices> &devicesRecords)
 {
 	return m_dbController->getDevicesByType(deviceTypeId, devicesRecords);
 }
 
-int DbBlaManager::addBlaMission(const BlaMission& mission)
+int DbUavManager::addUavMission(const UavMission &mission)
 {
-	return m_dbController->addBlaMission(mission);
+	return m_dbController->addUavMission(mission);
 }
 
-bool DbBlaManager::getBlaMissionsByBlaId(const uint blaId, QList<BlaMission> &missionsRecords)
+bool DbUavManager::getUavMissionsByUavId(const uint uavId, QList<UavMission> &missionsRecords)
 {
-	return m_dbController->getBlaMissionsByBlaId(blaId, missionsRecords);
+	return m_dbController->getUavMissionsByUavId(uavId, missionsRecords);
 }
 
-int DbBlaManager::addTarget(const Target& target)
+int DbUavManager::addTarget(const Target& target)
 {
 	return m_dbController->addTarget(target);
 }
 
-bool DbBlaManager::getTargetsByType(const uint targetTypeId, QList<Target> &targetsRecords)
+bool DbUavManager::getTargetsByType(const uint targetTypeId, QList<Target> &targetsRecords)
 {
 	return m_dbController->getTargetsByType(targetTypeId, targetsRecords);
 }
 
-int DbBlaManager::addTargetType(const TargetType& targetType)
+int DbUavManager::addTargetType(const TargetType& targetType)
 {
 	return m_dbController->addTargetType(targetType);
 }
 
-int DbBlaManager::getTargetTypeByName(const QString& name)
+int DbUavManager::getTargetTypeByName(const QString& name)
 {
 	return m_dbController->getTargetTypeByName(name);
 }
 
-int DbBlaManager::addBlaType(const BlaType& blaType)
+int DbUavManager::addUavType(const UavType& uavType)
 {
-	return m_dbController->addBlaType(blaType);
+	return m_dbController->addUavType(uavType);
 }
 
-int DbBlaManager::getBlaTypeByName(const QString& name)
+int DbUavManager::getUavTypeByName(const QString& name)
 {
-	return m_dbController->getBlaTypeByName(name);
+	return m_dbController->getUavTypeByName(name);
 }
 
-int DbBlaManager::addDeviceType(const DeviceType& deviceType)
+int DbUavManager::addDeviceType(const DeviceType& deviceType)
 {
 	return m_dbController->addDeviceType(deviceType);
 }
 
-int DbBlaManager::getDeviceTypeByName(const QString& name)
+int DbUavManager::getDeviceTypeByName(const QString& name)
 {
 	return m_dbController->getDeviceTypeByName(name);
 }
 
-int DbBlaManager::addStatus(const Status& status)
+int DbUavManager::addStatus(const Status& status)
 {
 	return m_dbController->addStatus(status);
 }
 
-int DbBlaManager::getStatusByName(const QString& name)
+int DbUavManager::getStatusByName(const QString& name)
 {
 	return m_dbController->getStatusByName(name);
 }
