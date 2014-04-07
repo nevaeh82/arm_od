@@ -76,10 +76,6 @@ void TcpManager::addTcpDevice(const QString& deviceName, const quint32& deviceTy
 
 	controller->connectToHost();
 
-//	if (deviceType == DeviceTypes::KTR_TCP_DEVICE) {
-//		controller->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_GET_BOARD_LIST, QByteArray())));
-//	}
-
 	log_debug(QString("Added device connection for %1 with %2").arg(deviceName).arg(deviceType));
 }
 
