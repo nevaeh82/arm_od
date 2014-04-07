@@ -7,7 +7,6 @@
 #include "NiippWidget.h"
 #include "Niipp.h"
 
-#include "NIIPPParser.h"
 #include <Interfaces/IController.h>
 
 class NiippController : public QObject, public IController<NiippWidget>, public INiiPPController

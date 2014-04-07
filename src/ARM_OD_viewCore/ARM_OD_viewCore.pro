@@ -35,8 +35,6 @@ HEADERS += \
 	Abstracts/ISubModule.h \
 	Common/CommandMessage.h \
 	Common/IMessage.h \
-	Common/IRouter.h \
-	Common/Router.h \
 	Icons/IconsGenerator.h \
 	Interfaces/core/IController.h \
 	Interfaces/core/IExchangeMainTreeItem.h \
@@ -53,11 +51,9 @@ HEADERS += \
 	MapInterface/Map.h \
 	MapInterface/MapWidget.h \
 	NIIPP/INiippController.h \
-	NIIPP/TCPPareserNiiPP.h \
 	NIIPP/Niipp.h \
 	NIIPP/NiippController.h \
 	NIIPP/NiippWidget.h \
-	NIIPP/NiippParser.h \
 	Tabs/RPC/IRPC.h \
 	Tabs/RPC/RadiolocationInterface.h \
 	Tabs/RPC/RPCClient.h \
@@ -78,11 +74,6 @@ HEADERS += \
 	UAV/ZInterception.h \
 	MainWindow.h \
 	MainWindowController.h \
-#    DB/DbController.h \
-#    DB/DbManager.h \
-#    SettingsTree/TreeItem.h \
-#    SettingsTree/TreeModel.h \
-#    SettingsTree/TreeWidgetDelegate.h \
     Interfaces/IDbChangedListener.h \
     Interfaces/IDbController.h \
     Interfaces/IDbManager.h \
@@ -102,16 +93,13 @@ HEADERS += \
 
 SOURCES += \
 	Common/CommandMessage.cpp \
-	Common/Router.cpp \
 	Icons/IconsGenerator.cpp \
 	MapInterface/mapclient1.cpp \
 	MapInterface/MapController.cpp \
 	MapInterface/Map.cpp \
 	MapInterface/MapWidget.cpp \
-	NIIPP/TCPPareserNiiPP.cpp \
 	NIIPP/NiippController.cpp \
 	NIIPP/Niipp.cpp \
-	NIIPP/NiippParser.cpp \
 	NIIPP/NiippWidget.cpp \
 	Tabs/Solver/Solver.cpp \
 	Tabs/Solver/SolverWidget.cpp \
@@ -125,11 +113,6 @@ SOURCES += \
 	UAV/ZInterception.cpp \
 	MainWindow.cpp \
 	MainWindowController.cpp \
-#    DB/DbController.cpp \
-#    DB/DbManager.cpp \
-#    SettingsTree/TreeItem.cpp \
-#    SettingsTree/TreeModel.cpp \
-#    SettingsTree/TreeWidgetDelegate.cpp \
     Tabs/MapTabWidget.cpp \
     Tabs/MapTabWidgetController.cpp \
     ControlPanel/ControlPanel.cpp \

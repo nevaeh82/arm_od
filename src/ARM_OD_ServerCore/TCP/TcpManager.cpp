@@ -59,6 +59,9 @@ void TcpManager::addTcpDevice(const QString& deviceName, const quint32& deviceTy
 		return;
 	}
 
+	controller->createTcpDeviceCoder();
+	controller->createTcpClient();
+
 	QThread* controllerThread = new QThread;
 	connect(controller->asQObject(), SIGNAL(destroyed()), controllerThread, SLOT(terminate()));
 	connect(this, SIGNAL(threadTerminateSignal()), controllerThread, SLOT(quit()));
@@ -71,8 +74,6 @@ void TcpManager::addTcpDevice(const QString& deviceName, const quint32& deviceTy
 
 	controller->registerReceiver(this);
 
-	controller->createTcpDeviceCoder();
-	controller->createTcpClient();
 	controller->connectToHost();
 
 	if (deviceType == DeviceTypes::KTR_TCP_DEVICE) {

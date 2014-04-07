@@ -26,8 +26,6 @@
 
 #include "../MapInterface/MapController.h"
 
-#include "../Common/Router.h"
-
 #include "../NIIPP/NIIPPController.h"
 
 #include "MapTabWidgetController.h"

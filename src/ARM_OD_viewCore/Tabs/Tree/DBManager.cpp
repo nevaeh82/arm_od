@@ -37,24 +37,24 @@ DBManager::~DBManager()
 
 int DBManager::set(int group, QMap<QString, QVariant>* data)
 {
- /*  emit signalSet(group, data);
+   //emit signalSet(group, data);
     switch(group)
     {
     case 0:
 //        _db_cache.set(data);
-		_model->addChild(data, Qt::EditRole);
+		//_model->addChild(data, Qt::EditRole);
         _db_controller->set_bla(data);
 
         break;
     case 1:
 //        _db_cache.set(data);
-		_model->addChild(data, Qt::EditRole);
+		//_model->addChild(data, Qt::EditRole);
         _db_controller->set_bpla(data);
         break;
     default:
         return -1;
         break;
-	}*/
+	}
     return 0;
 }
 
