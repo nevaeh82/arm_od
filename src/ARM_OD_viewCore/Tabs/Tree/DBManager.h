@@ -9,8 +9,6 @@
 #include "IDBController.h"
 #include "DBController.h"
 
-#include "ITreeModel.h"
-
 //#include "DBCache.h"
 
 #include "../../Common/CommandMessage.h"
@@ -24,7 +22,7 @@ public:
     ~DBManager();
 
 public:
-    void set_model(ITreeModel *model/*_bla, ITreeModel* model_bpla*/);
+	//void set_model(ITreeModel *model/*_bla, ITreeModel* model_bpla*/);
 
 public:
     virtual int set(int group, QMap<QString, QVariant>* data);
@@ -48,19 +46,19 @@ public:
 private:
     ITabManager*        _tab_manager;
     DBController*       _db_controller;
-    ITreeModel*         _model/*_bla*/;
+	//ITreeModel*         _model/*_bla*/;
 //    ITreeModel*         _model_bpla;
 
 //    DBCache             _db_cache;
 
 signals:
     void signalSetDataDBController(QMap<QString, QVariant> *);
-    void signalSetModel(ITreeModel* model);
+ //   void signalSetModel(ITreeModel* model);
     void signalSet(int group, QMap<QString, QVariant>* data);
     void signalSetPropertry(int group, QMap<QString, QVariant> *data);
 
 private slots:
-    void _slot_set_model(ITreeModel* model);
+//    void _slot_set_model(ITreeModel* model);
     void _slot_set(int group, QMap<QString, QVariant>* data);
     void _slot_set_property(int group, QMap<QString, QVariant> *data);
 

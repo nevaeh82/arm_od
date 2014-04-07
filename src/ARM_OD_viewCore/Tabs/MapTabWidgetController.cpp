@@ -17,19 +17,23 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 
 	m_station = station;
 
-	QStringList headers;
-	headers << tr("Property") << tr("Value");
-
-	m_blaModel = new TreeModel(headers);
-	m_bplaModel = new TreeModel(headers);
-
 	/// TODO: refactor
 	m_bplaDbManager = db_evil;
 	m_blaDbManager = db_bla;
 
+	QStringList headers;
+	headers << tr("Property") << tr("Value");
+
+	//m_blaModel = new TreeModel(headers);
+	m_blaTreeModel =  new BlaTreeModel(headers, this);
+	m_blaDbManager->registerReceiver(m_blaTreeModel);
+
+	//m_bplaModel = new TreeModel(headers);
+
+
 	/// TODO: refactor
 	//m_blaDbManager->set_model(m_blaModel);
-	m_bplaDbManager->set_model(m_bplaModel);
+	//m_bplaDbManager->set_model(m_bplaModel);
 
 	m_mapSettings = map_settings;
 
@@ -94,15 +98,9 @@ void MapTabWidgetController::hide()
 int MapTabWidgetController::createRPC()
 {
 	readSettings();
-	m_rpcClient = new RPCClient(m_station, m_blaDbManager, m_bplaDbManager, m_mapController, this, _tab_manager);
-	//m_rpcClient->start(m_rpcHostPort, QHostAddress(m_rpcHostAddress));
-
-	QThread* rpcClientThread = new QThread;
-	connect(m_rpcClient, SIGNAL(destroyed()), rpcClientThread, SLOT(terminate()));
-	m_rpcClient->moveToThread(rpcClientThread);
-	rpcClientThread->start();
-
+	m_rpcClient = new RPCClient(m_station, m_blaDbManager, m_bplaDbManager, m_mapController, this, _tab_manager, this);
 	m_rpcClient->start(m_rpcHostPort, QHostAddress(m_rpcHostAddress));
+
 	/*
 		QThread *thread_rpc_client = new QThread;
 		qDebug() << "create thread for rpc client ";
@@ -134,13 +132,13 @@ int MapTabWidgetController::closeRPC()
 
 int MapTabWidgetController::createTree()
 {
-	m_view->getBlaTreeView()->setModel(m_blaModel);
+	m_view->getBlaTreeView()->setModel(m_blaTreeModel);
 	m_view->getBlaTreeView()->setItemDelegate(m_treeDelegate);
 
 	connect(m_view->getBlaTreeView(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onBlaTreeItemDoubleClicked(QModelIndex)));
 
-	m_view->getBplaTreeView()->setModel(m_bplaModel);
-	m_view->getBplaTreeView()->setItemDelegate(m_treeDelegate);
+	//m_view->getBplaTreeView()->setModel(m_bplaModel);
+	//m_view->getBplaTreeView()->setItemDelegate(m_treeDelegate);
 
 	connect(m_view->getControlPanelWidget(), SIGNAL(showBlaClicked()), this, SLOT(onShowBlaTree()));
 	connect(m_view->getControlPanelWidget(), SIGNAL(showBplaClicked()), this, SLOT(onShowBplaTree()));
@@ -165,12 +163,12 @@ void MapTabWidgetController::appendView(MapTabWidget *view)
 	QPointF latlon1;
 	latlon1.setX(42.511183);
 	latlon1.setY(41.6905);
-	m_niipp1 = new NiippController(100, tr("SPIP DD-1"), latlon1, m_mapController, _tab_manager);
+	m_niipp1 = new NiippController(100, tr("СПИП ДД-1"), latlon1, m_mapController, _tab_manager);
 
 	QPointF latlon2;
 	latlon2.setX(42.634183);
 	latlon2.setY(41.912167);
-	m_niipp2 = new NiippController(101, tr("SPIP DD-2"), latlon2, m_mapController, _tab_manager);
+	m_niipp2 = new NiippController(101, tr("СПИП ДД-2"), latlon2, m_mapController, _tab_manager);
 
 	m_niipp1->appendView(m_view->getNiippWidget(1));
 	m_niipp2->appendView(m_view->getNiippWidget(2));

@@ -12,7 +12,7 @@
 //#include "../Interfaces/core/IController.h"
 
 #include "IRouter.h"
-#include "../Tabs/Tree/ITreeModel.h"
+//#include "../Tabs/Tree/ITreeModel.h"
 
 
 class Router : public QObject, public IRouter
@@ -25,14 +25,14 @@ public:
 public:
 //    virtual void set_tcp_controller(ITCPController *tcp_controller);
 //    virtual ITCPController          *get_tcp_controller();
-    virtual ITreeModel             *get_models_controller(int id_tree);
+	//virtual ITreeModel             *get_models_controller(int id_tree);
 
 
 
 private:
 //    ITCPController          *_tcp_controller;
 //    IModelController             *_models_controller;
-    QMap<int, ITreeModel*> _map_model_controllers;
+//    QMap<int, ITreeModel*> _map_model_controllers;
 
 };
 

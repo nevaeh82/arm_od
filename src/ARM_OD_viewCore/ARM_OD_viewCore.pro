@@ -70,9 +70,6 @@ HEADERS += \
 	Tabs/Tree/IDBCache.h \
 	Tabs/Tree/IDBController.h \
 	Tabs/Tree/IDBManager.h \
-	Tabs/Tree/ITreeModel.h \
-	Tabs/Tree/TreeItem.h \
-	Tabs/Tree/TreeModel.h \
 	Tabs/Tree/TreeWidgetDelegate.h \
 	Tabs/ITabManager.h \
 	Tabs/ITabMap.h \
@@ -100,7 +97,8 @@ HEADERS += \
     Tabs/DbBla/Defines.h  \
     Tabs/DbBla/IDbBlaController.h \
     Tabs/DbBla/DbBlaManager.h \
-    Interfaces/IDbBlaManager.h
+    Interfaces/IDbBlaManager.h \
+    Tabs/Tree/BlaTreeModel.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -121,8 +119,6 @@ SOURCES += \
 	Tabs/Tree/BLAWidgetDelegate.cpp \
 	Tabs/Tree/DBController.cpp \
 	Tabs/Tree/DBManager.cpp \
-	Tabs/Tree/TreeItem.cpp \
-	Tabs/Tree/treemodel.cpp \
 	Tabs/Tree/TreeWidgetDelegate.cpp \
 	Tabs/TabManager.cpp \
 	UAV/BLAPerehvatDialog.cpp \
@@ -139,7 +135,8 @@ SOURCES += \
     ControlPanel/ControlPanel.cpp \
     Tabs/RPC/Rpcclient.cpp \
     Tabs/DbBla/DbBlaController.cpp \
-    Tabs/DbBla/DbBlaManager.cpp
+    Tabs/DbBla/DbBlaManager.cpp \
+    Tabs/Tree/BlaTreeModel.cpp
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \

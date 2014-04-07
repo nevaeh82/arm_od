@@ -19,7 +19,7 @@ Router::~Router()
 //    return _tcp_controller;
 //}
 
-ITreeModel *Router::get_models_controller(int id_tree)
-{
-    return _map_model_controllers.value(id_tree);
-}
+//ITreeModel *Router::get_models_controller(int id_tree)
+//{
+//    return _map_model_controllers.value(id_tree);
+//}

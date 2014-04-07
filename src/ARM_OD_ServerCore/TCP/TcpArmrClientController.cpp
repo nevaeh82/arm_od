@@ -1,15 +1,5 @@
 #include "TcpArmrClientController.h"
 
-TcpArmrClientController::TcpArmrClientController(QObject *parent) :
-	BaseTcpDeviceController(parent)
-{
-	m_tcpDeviceName = DeviceTypes::ARMR_TCP_CLIENT;
-	log_debug(QString("Created %1").arg(m_tcpDeviceName));
-
-	init();
-	connect(this, SIGNAL(createTcpArmrCoderInternalSignal()), this, SLOT(createTcpArmrCoderInternalSlot()));
-}
-
 TcpArmrClientController::TcpArmrClientController(const QString &tcpDeviceName, QObject *parent) :
 	BaseTcpDeviceController(tcpDeviceName, parent)
 {
@@ -39,7 +29,7 @@ bool TcpArmrClientController::init()
 
 			m_host = m_settings.host;
 			m_port = m_settings.port;
-			m_deviceType = BaseSettingsType::TypeArmrTcpClient;
+			m_deviceType = TypeArmrTcpClient;
 
 			QByteArray baseInfo;
 			QDataStream dsBaseInfo(&baseInfo, QIODevice::WriteOnly);

@@ -30,6 +30,7 @@ HEADERS += \
     Info/KTRSettings.h \
     Info/AISSettings.h \
     Info/ArmrTcpClientSettings.h \
-    UAVDefines.h \    Info/ArmrTcpClientSettings.h \
+    UAVDefines.h \
+    Info/ArmrTcpClientSettings.h \
     Interfaces/IDbBlaSettingsManager.h \
     DbBlaSettingsManager.h

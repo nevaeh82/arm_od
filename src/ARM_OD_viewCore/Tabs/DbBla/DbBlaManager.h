@@ -8,7 +8,7 @@
 #include "Interfaces/IBlaDbChangedListener.h"
 #include "BaseSubject.h"
 
-class DbBlaManager : public QObject, public IDbBlaManager, BaseSubject<IBlaDbChangedListener>
+class DbBlaManager : public QObject, public IDbBlaManager, public BaseSubject<IBlaDbChangedListener>
 {
 	Q_OBJECT
 private:

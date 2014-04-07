@@ -21,14 +21,14 @@ DBManager::DBManager(ITabManager *tab_manager)
 //    thread_db_controller->start();
 }
 
-void DBManager::set_model(ITreeModel* model/*_bla, ITreeModel* model_bpla*/)
-{
-    _model = model;
+//void DBManager::set_model(ITreeModel* model/*_bla, ITreeModel* model_bpla*/)
+//{
+//    _model = model;
 
-//    emit signalSetModel(model);
-//    _model/*_bla*/ = model/*_bla*/;
-//    _model_bpla = model_bpla;
-}
+////    emit signalSetModel(model);
+////    _model/*_bla*/ = model/*_bla*/;
+////    _model_bpla = model_bpla;
+//}
 
 DBManager::~DBManager()
 {
@@ -37,24 +37,24 @@ DBManager::~DBManager()
 
 int DBManager::set(int group, QMap<QString, QVariant>* data)
 {
-//    emit signalSet(group, data);
+ /*  emit signalSet(group, data);
     switch(group)
     {
     case 0:
 //        _db_cache.set(data);
-        _model/*_bla*/->addChild(data, Qt::EditRole);
+		_model->addChild(data, Qt::EditRole);
         _db_controller->set_bla(data);
 
         break;
     case 1:
 //        _db_cache.set(data);
-        _model/*_bpla*/->addChild(data, Qt::EditRole);
+		_model->addChild(data, Qt::EditRole);
         _db_controller->set_bpla(data);
         break;
     default:
         return -1;
         break;
-    }
+	}*/
     return 0;
 }
 
@@ -76,7 +76,7 @@ int DBManager::set_property(int group, QMap<QString, QVariant> *data)
                 if(vec->at(i).value("pid").toString() == data->value("pid").toString())
                 {
                     data->insert("id", vec->at(i).value("id").toInt());
-                    _model->addChild(data, Qt::EditRole);
+					//_model->addChild(data, Qt::EditRole);
                 }
             }
         }
@@ -94,7 +94,7 @@ int DBManager::set_property(int group, QMap<QString, QVariant> *data)
                 if(vec->at(i).value("pid").toString() == data->value("pid").toString())
                 {
                     data->insert("id", vec->at(i).value("id").toInt());
-                    _model->addChild(data, Qt::EditRole);
+					//_model->addChild(data, Qt::EditRole);
                 }
             }
         }
@@ -174,34 +174,34 @@ QMap<QString, QVariant> *DBManager::get_bpla_fields(int id)
 
 void DBManager::delete_bla(int id)
 {
-    _model->removeChild(0, id, 0);
+	//_model->removeChild(0, id, 0);
 
     _db_controller->delete_bla(id);
 }
 
 void DBManager::delete_bpla(int id)
 {
-    _model->removeChild(0, id, 0);
+	//_model->removeChild(0, id, 0);
 
     _db_controller->delete_bpla(id);
 }
 
 void DBManager::delete_bla_property(int pid, int id)
 {
-    _model->removeChild(pid, id, 0);
+	//_model->removeChild(pid, id, 0);
     _db_controller->delete_bla_property(pid, id);
 }
 
 void DBManager::delete_bpla_property(int pid, int id)
 {
-    _model->removeChild(pid, id, 0);
+	//_model->removeChild(pid, id, 0);
     _db_controller->delete_bpla_property(pid, id);
 }
 
-void DBManager::_slot_set_model(ITreeModel *model)
-{
-    _model = model;
-}
+//void DBManager::_slot_set_model(ITreeModel *model)
+//{
+//    //_model = model;
+//}
 
 void DBManager::_slot_set(int group, QMap<QString, QVariant>* data)
 {
@@ -209,13 +209,13 @@ void DBManager::_slot_set(int group, QMap<QString, QVariant>* data)
     {
     case 0:
 //        _db_cache.set(data);
-        _model/*_bla*/->addChild(data, Qt::EditRole);
+		//_model/*_bla*/->addChild(data, Qt::EditRole);
         _db_controller->set_bla(data);
 
         break;
     case 1:
 //        _db_cache.set(data);
-        _model/*_bpla*/->addChild(data, Qt::EditRole);
+	   // _model/*_bpla*/->addChild(data, Qt::EditRole);
         _db_controller->set_bpla(data);
         break;
     default:
@@ -241,7 +241,7 @@ void DBManager::_slot_set_property(int group, QMap<QString, QVariant> *data)
                 if(vec->at(i).value("pid").toString() == data->value("pid").toString())
                 {
                     data->insert("id", vec->at(i).value("id").toInt());
-                    _model->addChild(data, Qt::EditRole);
+					//_model->addChild(data, Qt::EditRole);
                 }
             }
         }
@@ -259,7 +259,7 @@ void DBManager::_slot_set_property(int group, QMap<QString, QVariant> *data)
                 if(vec->at(i).value("pid").toString() == data->value("pid").toString())
                 {
                     data->insert("id", vec->at(i).value("id").toInt());
-                    _model->addChild(data, Qt::EditRole);
+					//_model->addChild(data, Qt::EditRole);
                 }
             }
         }

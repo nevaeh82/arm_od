@@ -1,18 +1,9 @@
 #include "TcpKTRController.h"
 
-TcpKTRController::TcpKTRController(QObject* parent) :
-	BaseTcpDeviceController(parent)
-{
-	m_tcpDeviceName = DeviceTypes::KTR_TCP_DEVICE;
-	m_deviceType = BaseSettingsType::TypeKTR;
-	log_debug(QString("Created %1").arg(m_tcpDeviceName));
-	connect(this, SIGNAL(createTcpKTRCoderInternalSignal()), this, SLOT(createTcpKTRCoderInternalSlot()));
-}
-
 TcpKTRController::TcpKTRController(const QString& tcpDeviceName, QObject* parent) :
 	BaseTcpDeviceController(tcpDeviceName, parent)
 {
-	m_deviceType = BaseSettingsType::TypeKTR;
+	m_deviceType = TypeKTR;
 	init();
 	connect(this, SIGNAL(createTcpKTRCoderInternalSignal()), this, SLOT(createTcpKTRCoderInternalSlot()));
 }
