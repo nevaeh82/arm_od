@@ -15,6 +15,7 @@ TcpKTRController::TcpKTRController(const QString& tcpDeviceName, QObject* parent
 	m_deviceType = BaseSettingsType::TypeKTR;
 	init();
 	connect(this, SIGNAL(createTcpKTRCoderInternalSignal()), this, SLOT(createTcpKTRCoderInternalSlot()));
+	connect(m_tcpClient, SIGNAL(signalConnectedToHost(bool)), this, SLOT(tcpConnectionStatusInternalSlot(int)));
 }
 
 TcpKTRController::~TcpKTRController()
@@ -30,6 +31,23 @@ void TcpKTRController::createTcpKTRCoderInternalSlot()
 {
 	log_debug("Creating TcpKTRCoder...");
 	m_tcpDeviceCoder = new TcpKTRCoder(this);
+}
+
+void TcpKTRController::tcpConnectionStatusInternalSlot(int status)
+{
+	QByteArray dataToSend;
+	QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
+	dataStream << status;
+
+	MessageSP message(new Message<QByteArray>(TCP_KTR_ANSWER_CONNECTION_STATUS, dataToSend));
+
+	if (message == NULL) {
+		return;
+	}
+
+	foreach (ITcpListener* listener, m_receiversList) {
+		listener->onMessageReceived(m_deviceType, m_tcpDeviceName, message);
+	}
 }
 
 bool TcpKTRController::init()
