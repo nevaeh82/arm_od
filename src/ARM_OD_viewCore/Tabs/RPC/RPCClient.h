@@ -65,7 +65,7 @@ private:
 
 	void sendBplaPoints(QByteArray data);
 
-	void addFriendUavInfoToDb(const UAVPositionData&);
+	void addUavInfoToDb(const UAVPositionData&, const QString& role, const QString& uavType, const QString& status, const QString& deviceType);
 
 public slots:
     ///rpc_server

@@ -132,7 +132,7 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
 
 	/// Now we take first point, but we need to take more than 1 point
 	UAVPositionData positionData = positionDataVector.at(0);
-	addFriendUavInfoToDb(positionData);
+	addUavInfoToDb(positionData, "OUR", "UnknownUavType", "UnknownStatus", "UnknownDeviceType");
 
 //////
 
@@ -143,7 +143,9 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
 	double alt = positionData.altitude;
 	double speed = positionData.speed;
 	double course = positionData.course;
-	quint32 state = positionData.state;    QByteArray ddd;
+	quint32 state = positionData.state;
+
+	QByteArray ddd;
     QDataStream ds(&ddd, QIODevice::WriteOnly);
     ds << point;
     ds << alt;
@@ -510,16 +512,16 @@ void RPCClient::sendBplaPoints(QByteArray data)
 	m_dbManagerTarget->set_property(1, rec_p2);
 }
 
-void RPCClient::addFriendUavInfoToDb(const UAVPositionData& positionData)
+void RPCClient::addUavInfoToDb(const UAVPositionData& positionData, const QString& role, const QString& uavType, const QString& status, const QString& deviceType)
 {
 	int uavId = m_dbUavManager->getUavByUavId(positionData.boardID);
 	if (uavId < 0){
-		int uavUnknownTypeId = m_dbUavManager->getUavTypeByName("UnknownUavType");
+		int uavUnknownTypeId = m_dbUavManager->getUavTypeByName(uavType);
 
 		if (uavUnknownTypeId < 0){
-			UavType uavType;
-			uavType.name = "UnknownUavType";
-			uavUnknownTypeId = m_dbUavManager->addUavType(uavType);
+			UavType uavTypeStruct;
+			uavTypeStruct.name = uavType;
+			uavUnknownTypeId = m_dbUavManager->addUavType(uavTypeStruct);
 		}
 
 		Uav uav;
@@ -527,10 +529,10 @@ void RPCClient::addFriendUavInfoToDb(const UAVPositionData& positionData)
 		uav.uavTypeId = uavUnknownTypeId;
 		uav.ip = "127.0.0.1";
 
-		UavRole uavRole = m_dbUavManager->getUavRoleByCode("FRIEND");
+		UavRole uavRole = m_dbUavManager->getUavRoleByCode(role);
 		if (uavRole.id < 0){
-			uavRole.code = "FRIEND";
-			uavRole.name = "FRIEND";
+			uavRole.code = role;
+			uavRole.name = role;
 			uavRole.id = m_dbUavManager->addUavRole(uavRole);
 		}
 		uav.roleId = uavRole.id;
@@ -538,20 +540,20 @@ void RPCClient::addFriendUavInfoToDb(const UAVPositionData& positionData)
 		uavId = m_dbUavManager->addUav(uav);
 	}
 
-	int statusUnknownId = m_dbUavManager->getStatusByName("UnknownStatus");
+	int statusUnknownId = m_dbUavManager->getStatusByName(status);
 	if (statusUnknownId < 0){
-		Status status;
-		status.status = "UnknownStatus";
-		statusUnknownId = m_dbUavManager->addStatus(status);
+		Status statusStruct;
+		statusStruct.status = status;
+		statusUnknownId = m_dbUavManager->addStatus(statusStruct);
 	}
 
 	QList<Devices> devices;
-	int unknownDeviceTypeId = m_dbUavManager->getDeviceTypeByName("UnknownDeviceType");
+	int unknownDeviceTypeId = m_dbUavManager->getDeviceTypeByName(deviceType);
 
 	if (unknownDeviceTypeId < 0){
-		DeviceType deviceType;
-		deviceType.name = "UnknownDeviceType";
-		unknownDeviceTypeId = m_dbUavManager->addDeviceType(deviceType);
+		DeviceType deviceTypeStruct;
+		deviceTypeStruct.name = deviceType;
+		unknownDeviceTypeId = m_dbUavManager->addDeviceType(deviceTypeStruct);
 	}
 
 	m_dbUavManager->getDevicesByType(unknownDeviceTypeId, devices);
