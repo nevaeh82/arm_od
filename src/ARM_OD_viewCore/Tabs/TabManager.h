@@ -30,8 +30,8 @@
 
 #include "MapTabWidgetController.h"
 
-#include "DbBla/DbBlaManager.h"
-#include "DbBla/DbBlaController.h"
+#include "DbBla/DbUavManager.h"
+#include "DbBla/DbUavController.h"
 #include "Db/Defines.h"
 
 #include "Interfaces/IDbBlaSettingsManager.h"
@@ -55,8 +55,8 @@ private:
 
    // DBManager*                  _db_manager_bla;
 	IDbBlaSettingsManager* m_dbBlaSettingsManager;
-	DbBlaController* m_dbBlaController;
-	DbBlaManager* m_dbBlaManager;
+	DbUavController* m_dbUavController;
+	DbUavManager* m_dbUavManager;
 
     DBManager*                  _db_manager_evil;
 

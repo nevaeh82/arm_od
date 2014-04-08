@@ -83,12 +83,12 @@ HEADERS += \
     Station.h \
     Tabs/MapTabWidgetController.h \
     ControlPanel/ControlPanel.h \
-    Interfaces/IBlaDbChangedListener.h \
-    Tabs/DbBla/DbBlaController.h \
+    Interfaces/IUavDbChangedListener.h \
+    Tabs/DbBla/DbUavController.h \
     Tabs/DbBla/Defines.h  \
-    Tabs/DbBla/IDbBlaController.h \
-    Tabs/DbBla/DbBlaManager.h \
-    Interfaces/IDbBlaManager.h \
+    Tabs/DbBla/IDbUavController.h \
+    Tabs/DbBla/DbUavManager.h \
+    Interfaces/IDbUavManager.h \
     Tabs/Tree/UavTreeModel.h
 
 SOURCES += \
@@ -117,8 +117,8 @@ SOURCES += \
     Tabs/MapTabWidgetController.cpp \
     ControlPanel/ControlPanel.cpp \
     Tabs/RPC/Rpcclient.cpp \
-    Tabs/DbBla/DbBlaController.cpp \
-    Tabs/DbBla/DbBlaManager.cpp \
+    Tabs/DbBla/DbUavController.cpp \
+    Tabs/DbBla/DbUavManager.cpp \
     Tabs/Tree/UavTreeModel.cpp
 
 FORMS += \

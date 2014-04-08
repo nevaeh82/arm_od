@@ -33,17 +33,17 @@ bool UavTreeModel::updateModelData(TreeItem *item)
 	return false;
 }
 
-void UavTreeModel::onBlaAdded(const Bla &bla)
+void UavTreeModel::onUavAdded(const Uav &uav)
 {
 	SettingsNode inSettingsNode;
-	inSettingsNode.object.id = bla.blaId;
-	inSettingsNode.object.name = bla.name;
+	inSettingsNode.object.id = uav.uavId;
+	inSettingsNode.object.name = uav.name;
 	inSettingsNode.object.isEditable = false;
 	inSettingsNode.object.pid = 0;
 	inSettingsNode.object.state = 0;
 
 	Property inProperty;
-	inProperty.pid = bla.blaId;
+	inProperty.pid = uav.uavId;
 	inProperty.id = LAT_PROPERTY_ID;
 	inProperty.isEditable = false;
 	inProperty.state = 0;
@@ -81,24 +81,24 @@ void UavTreeModel::onBlaAdded(const Bla &bla)
 	emit onItemAddedSignal();
 }
 
-void UavTreeModel::onBlaRemoved(const Bla &bla)
+void UavTreeModel::onUavRemoved(const Uav &uav)
 {
-	Q_UNUSED(bla);
+	Q_UNUSED(uav);
 }
 
-void UavTreeModel::onBlaInfoChanged(const BlaInfo &blaInfo)
+void UavTreeModel::onUavInfoChanged(const UavInfo &uavInfo)
 {
-	onPropertyChanged(blaInfo, 1, tr("lat"), QString::number(blaInfo.lat, 'g', 6));
-	onPropertyChanged(blaInfo, 2, tr("lon"), QString::number(blaInfo.lon, 'g', 6));
-	onPropertyChanged(blaInfo, 3, tr("alt"), QString::number(blaInfo.alt, 'g', 6));
+	onPropertyChanged(uavInfo, 1, tr("lat"), QString::number(uavInfo.lat, 'g', 6));
+	onPropertyChanged(uavInfo, 2, tr("lon"), QString::number(uavInfo.lon, 'g', 6));
+	onPropertyChanged(uavInfo, 3, tr("alt"), QString::number(uavInfo.alt, 'g', 6));
 
 	refreshModel();
 }
 
-void UavTreeModel::onPropertyChanged(const BlaInfo &blaInfo, const uint propId, const QString &name, const QVariant &value)
+void UavTreeModel::onPropertyChanged(const UavInfo &uavInfo, const uint propId, const QString &name, const QVariant &value)
 {
 	Property inProperty;
-	inProperty.pid = blaInfo.blaId;
+	inProperty.pid = uavInfo.uavId;
 	inProperty.id = propId;
 	inProperty.isEditable = false;
 	inProperty.state = 0;
