@@ -559,6 +559,7 @@ void RPCClient::addUavInfoToDb(const UAVPositionData& positionData, const QStrin
 		Devices device;
 		device.uavId = positionData.boardID;
 		device.deviceId = unknownDeviceTypeId;
+		device.port = 0;
 		deviceUnknownId = m_dbUavManager->addDevice(device);
 	} else {
 		deviceUnknownId = devices.at(0).id;

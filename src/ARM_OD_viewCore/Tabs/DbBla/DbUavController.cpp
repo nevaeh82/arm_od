@@ -93,7 +93,7 @@ Uav DbUavController::getUav(const uint id)
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare("SELECT * FROM bla WHERE id = :id;");
+	bool succeeded = query.prepare("SELECT * FROM uav WHERE id = :id;");
 
 	if (!succeeded) {
 		QString er = query.lastError().text();
@@ -129,7 +129,7 @@ int DbUavController::addUavInfo(const UavInfo& info)
 
 	QSqlQuery query(m_db);
 	bool succeeded = query.prepare(QString("INSERT INTO info (uavId, device, latitude, longitude, altitude, speed, yaw, restTime, statusTypeId, datetime)")
-								   + QString("VALUES(:blaId, :device, :lat, :lon, :alt, :speed, :yaw, :restTime, :statusId, :dateTime);"));
+								   + QString("VALUES(:uavId, :device, :lat, :lon, :alt, :speed, :yaw, :restTime, :statusId, :dateTime);"));
 
 	if (!succeeded){
 		QString er = query.lastError().text();
