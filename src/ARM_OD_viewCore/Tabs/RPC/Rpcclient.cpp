@@ -133,7 +133,9 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
 	/// Now we take first point, but we need to take more than 1 point
 	UAVPositionData positionData = positionDataVector.at(0);
 
-	int blaId = m_dbBlaManager->getBlaByBlaId(positionData.boardID);
+	Bla bla = m_dbBlaManager->getBlaByBlaId(positionData.boardID);
+
+	int blaId = bla.id;
 	if (blaId < 0){
 		int blaUnknownTypeId = m_dbBlaManager->getBlaTypeByName("UnknownBlaType");
 
@@ -143,7 +145,6 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
 			blaUnknownTypeId = m_dbBlaManager->addBlaType(blaType);
 		}
 
-		Bla bla;
 		bla.blaId = positionData.boardID;
 		bla.type = blaUnknownTypeId;
 		bla.ip = "127.0.0.1";

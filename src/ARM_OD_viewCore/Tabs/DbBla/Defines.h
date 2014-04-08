@@ -7,7 +7,7 @@
 
 typedef struct Bla
 {
-	uint id; // PK
+	int id; // PK
 	uint blaId;
 	QString ip;
 	uint type; // FK

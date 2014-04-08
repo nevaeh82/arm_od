@@ -15,27 +15,63 @@ int DbBlaManager::addBla(const Bla& bla)
 {
 	int newBlaId = m_dbController->addBla(bla);
 
-	if (newBlaId != INVALID_INDEX){
+	/// NOW: sent after receiving first UAV info
+
+//	if (newBlaId != INVALID_INDEX){
+//		foreach (IBlaDbChangedListener* receiver, m_receiversList){
+//			receiver->onBlaAdded(bla);
+//		}
+//	}
+
+	return newBlaId;
+}
+
+Bla DbBlaManager::getBlaByBlaId(const uint blaId)
+{
+	return m_dbController->getBlaByBlaId(blaId);
+}
+
+Bla DbBlaManager::getBla(const uint id)
+{
+	return m_dbController->getBla(id);
+}
+
+int DbBlaManager::addBlaInfo(const BlaInfo& blaInfo)
+{
+	Bla bla = getBla(blaInfo.blaId);
+
+	if (bla.id < 0) {
+		return -1;
+	}
+
+	if (bla.name.isEmpty()) {
+		bla.name = QString::number(bla.blaId);
+	}
+
+	if (!m_knownUavsList.contains(bla.blaId)) {
+		m_knownUavsList.insert(bla.blaId, bla);
+
 		foreach (IBlaDbChangedListener* receiver, m_receiversList){
 			receiver->onBlaAdded(bla);
 		}
 	}
 
-	return newBlaId;
-}
-
-int DbBlaManager::getBlaByBlaId(const uint blaId)
-{
-	return m_dbController->getBlaByBlaId(blaId);
-}
-
-int DbBlaManager::addBlaInfo(const BlaInfo& blaInfo)
-{
 	int newBlaInfo = m_dbController->addBlaInfo(blaInfo);
+
+	//o0
+
+//	  , _ ,
+//   ( o o )
+//  /'` ' `'\
+//  |'''''''|
+//  |\\'''//|
+//     """
+	BlaInfo blaInfoForListeners = blaInfo;
+	blaInfoForListeners.blaId = bla.blaId;
 
 	if (newBlaInfo != INVALID_INDEX){
 		foreach (IBlaDbChangedListener* receiver, m_receiversList){
-			receiver->onBlaInfoChanged(blaInfo);
+			receiver->onBlaInfoChanged(blaInfoForListeners);
 		}
 	}
 

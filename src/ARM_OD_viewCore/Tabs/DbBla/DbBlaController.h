@@ -22,7 +22,8 @@ public:
 	virtual ~DbBlaController();
 
 	int addBla(const Bla&);
-	int getBlaByBlaId(const uint blaId);
+	Bla getBlaByBlaId(const uint blaId);
+	Bla getBla(const uint id);
 
 	int addBlaInfo(const BlaInfo&);
 	int getBlaInfoByBlaId(const uint blaId);
