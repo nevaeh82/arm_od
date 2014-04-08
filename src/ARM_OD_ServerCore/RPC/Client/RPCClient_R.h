@@ -22,6 +22,7 @@
 #include "../../Common/IClient.h"
 
 #include "Rpc/RpcDefines.h"
+#include "UAVDefines.h"
 
 class RPCClient_R : public QObject, public IClient
 {
@@ -68,6 +69,7 @@ private:
 
     int     _read_settings(QString path_to_ini_file_RPC);
 	void    _form_command(IMessageOld *msg);
+	QByteArray encodeToEnemyUav(const QByteArray& data);
 
 private slots:
     void _close();

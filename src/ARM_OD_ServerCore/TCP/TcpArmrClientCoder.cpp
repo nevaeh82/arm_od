@@ -30,6 +30,7 @@ MessageSP TcpArmrClientCoder::encode(const QByteArray &data)
 				break;
 			case Zaviruha::sendBplaPointsAuto:
 				method = QString(ARM_R_SERVER_BPLA_COORDS_AUTO);
+				dataToSend = encodeToEnemyUav(data);
 				break;
 			default:
 				break;
