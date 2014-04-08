@@ -153,7 +153,7 @@ public:
 
 		// ADDING TARGET TYPE
 		BlaMission mission;
-		mission.blaId = db->getBlaByBlaId(8000);
+		mission.blaId = db->getBlaByBlaId(8000).id;
 
 		QList<Target> targets;
 		bool isTargetsGetOk = db->getTargetsByType(db->getTargetTypeByName("testTargetType"), targets);

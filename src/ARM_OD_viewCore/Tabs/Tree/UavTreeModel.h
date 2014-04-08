@@ -24,7 +24,7 @@ public:
 
 private:
 
-	void onPropertyChanged(const BlaInfo &blaInfo, const QString& name, const QVariant& value);
+	void onPropertyChanged(const BlaInfo &blaInfo, const uint propId, const QString& name, const QVariant& value);
 };
 
 #endif // BLATREEMODEL_H

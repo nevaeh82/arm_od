@@ -43,10 +43,13 @@ int DbBlaController::addBla(const Bla& bla)
 	return INVALID_INDEX;
 }
 
-int DbBlaController::getBlaByBlaId(const uint blaId)
+Bla DbBlaController::getBlaByBlaId(const uint blaId)
 {
+	Bla bla;
+	bla.id = INVALID_INDEX;
+
 	if(!m_db.isOpen()){
-		return INVALID_INDEX;
+		return bla;
 	}
 
 	QSqlQuery query(m_db);
@@ -55,7 +58,7 @@ int DbBlaController::getBlaByBlaId(const uint blaId)
 	if (!succeeded) {
 		QString er = query.lastError().text();
 		log_debug("SQL is wrong! " + er);
-		return INVALID_INDEX;
+		return bla;
 	}
 
 	query.bindValue(":id", blaId);
@@ -65,14 +68,57 @@ int DbBlaController::getBlaByBlaId(const uint blaId)
 	QString queryTxt = query.executedQuery();
 
 	if(!query.next()) {
-		return INVALID_INDEX;
+		return bla;
 	}
 
 	if (succeeded){
-		return query.record().value(0).toUInt();
+		bla.id = query.record().value(0).toUInt();
+		bla.blaId = query.record().value(1).toUInt();
+		bla.ip = query.record().value(2).toString();
+		bla.type = query.record().value(3).toUInt();
+		bla.name = query.record().value(4).toString();
 	}
 
-	return INVALID_INDEX;
+	return bla;
+}
+
+Bla DbBlaController::getBla(const uint id)
+{
+	Bla bla;
+	bla.id = INVALID_INDEX;
+
+	if(!m_db.isOpen()){
+		return bla;
+	}
+
+	QSqlQuery query(m_db);
+	bool succeeded = query.prepare("SELECT * FROM bla WHERE id = :id;");
+
+	if (!succeeded) {
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		return bla;
+	}
+
+	query.bindValue(":id", id);
+
+
+	succeeded = query.exec();
+	QString queryTxt = query.executedQuery();
+
+	if(!query.next()) {
+		return bla;
+	}
+
+	if (succeeded){
+		bla.id = query.record().value(0).toUInt();
+		bla.blaId = query.record().value(1).toUInt();
+		bla.ip = query.record().value(2).toString();
+		bla.type = query.record().value(3).toUInt();
+		bla.name = query.record().value(4).toString();
+	}
+
+	return bla;
 }
 
 int DbBlaController::addBlaInfo(const BlaInfo& info)

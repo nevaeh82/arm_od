@@ -2,6 +2,7 @@
 #define DBBLAMANAGER_H
 
 #include <QObject>
+#include <QMap>
 
 #include "DbBlaController.h"
 #include "Interfaces/IDbBlaManager.h"
@@ -13,6 +14,7 @@ class DbBlaManager : public QObject, public IDbBlaManager, public BaseSubject<IB
 	Q_OBJECT
 private:
 	IDbBlaController* m_dbController;
+	QMap<uint, Bla> m_knownUavsList;
 
 public:
 	explicit DbBlaManager(QObject *parent = 0);
@@ -20,7 +22,8 @@ public:
 	void setDbController(IDbBlaController*);
 
 	int addBla(const Bla&);
-	int getBlaByBlaId(const uint blaId);
+	Bla getBlaByBlaId(const uint blaId);
+	Bla getBla(const uint id);
 
 	int addBlaInfo(const BlaInfo&);
 	int getBlaInfoByBlaId(const uint blaId);

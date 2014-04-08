@@ -23,7 +23,8 @@ class IDbBlaManager
 		virtual void setDbController(IDbBlaController*) = 0;
 
 		virtual int addBla(const Bla&) = 0;
-		virtual int getBlaByBlaId(const uint blaId) = 0;
+		virtual Bla getBlaByBlaId(const uint blaId) = 0;
+		virtual Bla getBla(const uint id) = 0;
 
 		virtual int addBlaInfo(const BlaInfo&) = 0;
 		virtual int getBlaInfoByBlaId(const uint blaId) = 0;
