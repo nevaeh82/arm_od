@@ -49,6 +49,7 @@ public:
 	int getStatusByName(const QString&);
 
 	int addUavRole(const UavRole&);
+	UavRole getUavRole(const uint roleId);
 	UavRole getUavRoleByName(const QString&);
 	UavRole getUavRoleByCode(const QString&);
 signals:

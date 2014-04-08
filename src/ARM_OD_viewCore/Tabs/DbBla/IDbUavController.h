@@ -52,6 +52,7 @@ class IDbUavController
 		virtual int getStatusByName(const QString&) = 0;
 
 		virtual int addUavRole(const UavRole&) = 0;
+		virtual UavRole getUavRole(const uint) = 0;
 		virtual UavRole getUavRoleByName(const QString&) = 0;
 		virtual UavRole getUavRoleByCode(const QString&) = 0;
 };
