@@ -57,32 +57,10 @@ inline QDataStream& operator<<(QDataStream& out, const UAVPositionData& object)
 
 inline QDataStream& operator>>(QDataStream& in, UAVPositionData& object)
 {
-	quint16		boardID;
-	quint32		device;
-	double		latitude;
-	double		longitude;
-	double		altitude;
-	double		speed;
-	double		course;
-	quint32		state;
-	QDateTime	dateTime;
-
-
-	in >> boardID >> device >> latitude
-		>> longitude >> altitude
-		>> speed >> course
-		>> state >> dateTime;
-
-	object.boardID		= boardID;
-	object.device		= device;
-	object.latitude		= latitude;
-	object.longitude	= longitude;
-	object.altitude		= altitude;
-	object.speed		= speed;
-	object.course		= course;
-	object.state		= state;
-	object.dateTime		= dateTime;
-
+	in >> object.boardID >> object.device >> object.latitude
+	   >> object.longitude >> object.altitude
+	   >> object.speed >> object.course
+	   >> object.state >> object.dateTime;
 	return in;
 }
 

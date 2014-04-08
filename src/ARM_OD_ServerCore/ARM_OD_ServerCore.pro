@@ -43,7 +43,6 @@ HEADERS += \
     TCP/TcpManager.h \
     TCP/TcpAISClient.h \
     TCP/TcpAISCoder.h \
-    TCP/UAV/IBLAController.h \
     TCP/TcpArmrClientController.h \
     TCP/TcpArmrClientCoder.h \
     TCP/TcpAISController.h \
@@ -74,7 +73,6 @@ SOURCES += \
     TCP/TcpAISClient.cpp \
     TCP/TcpAISCoder.cpp \
     TCP/TcpAISController.cpp \
-    TCP/UAV/BLASimulator.cpp \
     TCP/TcpArmrClientController.cpp \
     TCP/TcpArmrClientCoder.cpp \
     TCP/TcpAISZoneManager.cpp \
