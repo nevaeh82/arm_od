@@ -47,11 +47,13 @@ int DbUavManager::addUavInfo(const UavInfo &uavInfo)
 		uav.name = QString::number(uav.uavId);
 	}
 
+	QString uavRole = getUavRole(uav.roleId).code;
+
 	if (!m_knownUavsList.contains(uav.uavId)) {
 		m_knownUavsList.insert(uav.uavId, uav);
 
 		foreach (IUavDbChangedListener* receiver, m_receiversList){
-			receiver->onUavAdded(uav);
+			receiver->onUavAdded(uav, uavRole);
 		}
 	}
 
@@ -61,7 +63,7 @@ int DbUavManager::addUavInfo(const UavInfo &uavInfo)
 
 	if (newUavInfo != INVALID_INDEX){
 		foreach (IUavDbChangedListener* receiver, m_receiversList){
-			receiver->onUavInfoChanged(uavInfoForListeners);
+			receiver->onUavInfoChanged(uavInfoForListeners, uavRole);
 		}
 	}
 
@@ -146,6 +148,11 @@ int DbUavManager::getStatusByName(const QString& name)
 int DbUavManager::addUavRole(const UavRole& role)
 {
 	return m_dbController->addUavRole(role);
+}
+
+UavRole DbUavManager::getUavRole(const uint roleId)
+{
+	return m_dbController->getUavRole(roleId);
 }
 
 UavRole DbUavManager::getUavRoleByName(const QString& name)

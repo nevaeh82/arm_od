@@ -1,4 +1,5 @@
 #include "RPCClient.h"
+#include "Tabs/DbBla/Defines.h"
 
 #include <QDebug>
 
@@ -132,7 +133,7 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
 
 	/// Now we take first point, but we need to take more than 1 point
 	UAVPositionData positionData = positionDataVector.at(0);
-	addUavInfoToDb(positionData, "OUR", "UnknownUavType", "UnknownStatus", "UnknownDeviceType");
+	addUavInfoToDb(positionData, OUR_UAV_ROLE, "UnknownUavType", "UnknownStatus", "UnknownDeviceType");
 
 //////
 
@@ -412,21 +413,22 @@ void RPCClient::sendBplaPoints(QByteArray data)
 	UAVPositionDataEnemy uavEnemy;
 	inputDataStream >> uavEnemy;
 
-	QTime t = uavEnemy.time;
-	int state = uavEnemy.state;
-	QPointF pointStdDev = uavEnemy.pointStdDev;
-	double speed = uavEnemy.speed;
-	double alt = uavEnemy.altitude;
-	double course = uavEnemy.course;
-	QVector<QPointF> track = uavEnemy.track;
+	addUavInfoToDb(uavEnemy, ENEMY_UAV_ROLE, "UnknownUavType", "UnknownStatus", "UnknownDeviceType");
 
-	if(m_rdsEvilIds > 99)
-    {
+	//QTime t = uavEnemy.time;
+	//int state = uavEnemy.state;
+	//QPointF pointStdDev = uavEnemy.pointStdDev;
+	//double speed = uavEnemy.speed;
+	//double alt = uavEnemy.altitude;
+	//double course = uavEnemy.course;
+	//QVector<QPointF> track = uavEnemy.track;
+
+	if(m_rdsEvilIds > 99){
 		m_rdsEvilIds = 50;
     }
 	m_mapController->get_map_client(1)->slot_add_evil(m_rdsEvilIds, data);
 
-    QMap<QString, QVariant>* rec = new QMap<QString, QVariant>;
+   /* QMap<QString, QVariant>* rec = new QMap<QString, QVariant>;
 
 	rec = m_dbManagerTarget->get_bpla_fields(m_rdsEvilIds);
     if(rec->count() == 0)
@@ -505,7 +507,18 @@ void RPCClient::sendBplaPoints(QByteArray data)
         }
     }
 
-	m_dbManagerTarget->set_property(1, rec_p2);
+	m_dbManagerTarget->set_property(1, rec_p2);*/
+}
+
+void RPCClient::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy, const QString &role, const QString &uavType, const QString &status, const QString &deviceType)
+{
+	UAVPositionData positionData;
+	positionData.altitude = positionDataEnemy.altitude;
+	positionData.course = positionDataEnemy.course;
+	positionData.speed = positionDataEnemy.speed;
+	positionData.state = positionDataEnemy.state;
+
+	addUavInfoToDb(positionData, role, uavType, status, deviceType);
 }
 
 void RPCClient::addUavInfoToDb(const UAVPositionData& positionData, const QString& role, const QString& uavType, const QString& status, const QString& deviceType)

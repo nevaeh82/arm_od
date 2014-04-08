@@ -5,6 +5,10 @@
 #include <QTime>
 #include <QDateTime>
 
+#define FRIEND_UAV_ROLE "friendUavRole"
+#define OUR_UAV_ROLE "ourUavRole"
+#define ENEMY_UAV_ROLE "enemyUavRole"
+
 typedef struct Uav
 {
 	int id; // PK

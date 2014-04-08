@@ -28,7 +28,6 @@
 #include "UAVDefines.h"
 
 #include "Interfaces/IDbUavManager.h"
-#include "Tabs/DbBla/Defines.h"
 
 class RPCClient : public RpcClientBase
 {
@@ -65,6 +64,7 @@ private:
 
 	void sendBplaPoints(QByteArray data);
 
+	void addUavInfoToDb(const UAVPositionDataEnemy&, const QString& role, const QString& uavType, const QString& status, const QString& deviceType);
 	void addUavInfoToDb(const UAVPositionData&, const QString& role, const QString& uavType, const QString& status, const QString& deviceType);
 
 public slots:

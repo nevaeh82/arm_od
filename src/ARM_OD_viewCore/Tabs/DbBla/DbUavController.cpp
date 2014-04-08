@@ -18,7 +18,7 @@ int DbUavController::addUav(const Uav& uav)
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare("INSERT INTO uav (uavId, ip, uavTypeId, name, freqId) VALUES(:uavId, :ip, :uavTypeId, :name, :freqId);");
+	bool succeeded = query.prepare("INSERT INTO uav (uavId, ip, uavTypeId, roleId, name, freqId) VALUES(:uavId, :ip, :uavTypeId, :roleId, :name, :freqId);");
 
 	if (!succeeded){
 		QString er = query.lastError().text();
@@ -29,6 +29,7 @@ int DbUavController::addUav(const Uav& uav)
 	query.bindValue(":uavId", uav.uavId);
 	query.bindValue(":ip", uav.ip);
 	query.bindValue(":uavTypeId", uav.uavTypeId);
+	query.bindValue(":roleId", uav.roleId);
 	query.bindValue(":name", uav.name);
 	query.bindValue(":freqId", uav.freqId);
 
@@ -77,7 +78,9 @@ Uav DbUavController::getUavByUavId(const uint uavId)
 		uav.uavId = query.record().value(1).toUInt();
 		uav.ip = query.record().value(2).toString();
 		uav.uavTypeId = query.record().value(3).toUInt();
-		uav.name = query.record().value(4).toString();
+		uav.roleId = query.record().value(4).toUInt();
+		uav.name = query.record().value(5).toString();
+		uav.freqId = query.record().value(6).toUInt();
 	}
 
 	return uav;
@@ -115,7 +118,9 @@ Uav DbUavController::getUav(const uint id)
 		uav.uavId = query.record().value(1).toUInt();
 		uav.ip = query.record().value(2).toString();
 		uav.uavTypeId = query.record().value(3).toUInt();
-		uav.name = query.record().value(4).toString();
+		uav.roleId = query.record().value(4).toUInt();
+		uav.name = query.record().value(5).toString();
+		uav.freqId = query.record().value(6).toUInt();
 	}
 
 	return uav;
@@ -447,6 +452,41 @@ int DbUavController::addUavRole(const UavRole& uavRole)
 	}
 
 	return INVALID_INDEX;
+}
+
+UavRole DbUavController::getUavRole(const uint roleId)
+{
+	UavRole uavRole;
+	uavRole.id = INVALID_INDEX;
+
+	if(!m_db.isOpen()){
+		return uavRole;
+	}
+
+	QSqlQuery query(m_db);
+	bool succeeded = query.prepare("SELECT * FROM uavroles WHERE id = :roleId;");
+
+	if (!succeeded) {
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		return uavRole;
+	}
+
+	query.bindValue(":roleId", roleId);
+
+	succeeded = query.exec();
+
+	if(!query.next()) {
+		return uavRole;
+	}
+
+	if (succeeded){
+		uavRole.id = query.record().value(0).toUInt();
+		uavRole.code = query.record().value(1).toString();
+		uavRole.name = query.record().value(2).toString();
+	}
+
+	return uavRole;
 }
 
 UavRole DbUavController::getUavRoleByName(const QString& name)

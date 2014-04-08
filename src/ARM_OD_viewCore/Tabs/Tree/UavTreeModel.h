@@ -18,9 +18,9 @@ protected:
 	virtual bool updateModelData(TreeItem *item);
 
 public:
-	virtual void onUavAdded(const Uav &uav);
-	virtual void onUavRemoved(const Uav &uav);
-	virtual void onUavInfoChanged(const UavInfo &uavInfo);
+	virtual void onUavAdded(const Uav &uav, const QString& uavRole);
+	virtual void onUavRemoved(const Uav &uav, const QString& uavRole);
+	virtual void onUavInfoChanged(const UavInfo &uavInfo, const QString& uavRole);
 
 private:
 

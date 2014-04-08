@@ -33,8 +33,12 @@ bool UavTreeModel::updateModelData(TreeItem *item)
 	return false;
 }
 
-void UavTreeModel::onUavAdded(const Uav &uav)
+void UavTreeModel::onUavAdded(const Uav &uav, const QString& uavRole)
 {
+	if (uavRole != OUR_UAV_ROLE){
+		return;
+	}
+
 	SettingsNode inSettingsNode;
 	inSettingsNode.object.id = uav.uavId;
 	inSettingsNode.object.name = uav.name;
@@ -81,13 +85,21 @@ void UavTreeModel::onUavAdded(const Uav &uav)
 	emit onItemAddedSignal();
 }
 
-void UavTreeModel::onUavRemoved(const Uav &uav)
+void UavTreeModel::onUavRemoved(const Uav &uav, const QString& uavRole)
 {
 	Q_UNUSED(uav);
+
+	if (uavRole != OUR_UAV_ROLE){
+		return;
+	}
 }
 
-void UavTreeModel::onUavInfoChanged(const UavInfo &uavInfo)
+void UavTreeModel::onUavInfoChanged(const UavInfo &uavInfo, const QString& uavRole)
 {
+	if (uavRole != OUR_UAV_ROLE){
+		return;
+	}
+
 	onPropertyChanged(uavInfo, 1, tr("lat"), QString::number(uavInfo.lat, 'g', 6));
 	onPropertyChanged(uavInfo, 2, tr("lon"), QString::number(uavInfo.lon, 'g', 6));
 	onPropertyChanged(uavInfo, 3, tr("alt"), QString::number(uavInfo.alt, 'g', 6));
