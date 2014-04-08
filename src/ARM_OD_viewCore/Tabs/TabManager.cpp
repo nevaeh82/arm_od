@@ -14,7 +14,7 @@ TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
 
 	//Creating db bla settings manager
 	m_dbBlaSettingsManager = DbBlaSettingsManager::instance();
-	m_dbBlaSettingsManager->setIniFile("./DB/db_bla.ini");
+	m_dbBlaSettingsManager->setIniFile("./DB/db_uav.ini");
 
 	//Creating db bla controller
 	m_dbUavController = new DbUavController();

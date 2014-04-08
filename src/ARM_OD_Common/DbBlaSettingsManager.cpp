@@ -21,35 +21,35 @@ QString DbBlaSettingsManager::getBlaDbHost()
 {
 	QMutexLocker mutexLocker(&m_mutex);
 	QSettings settings(m_settingsFile, QSettings::IniFormat);
-	return settings.value("BLADB/Host", "127.0.0.1").toString();
+	return settings.value("UAVDB/Host", "127.0.0.1").toString();
 }
 
 unsigned short DbBlaSettingsManager::getBlaDbPort()
 {
 	QMutexLocker mutexLocker(&m_mutex);
 	QSettings settings(m_settingsFile, QSettings::IniFormat);
-	return settings.value("BLADB/Port", "3306").toUInt();
+	return settings.value("UAVDB/Port", "3306").toUInt();
 }
 
 QString DbBlaSettingsManager::getBlaDbLogin()
 {
 	QMutexLocker mutexLocker(&m_mutex);
 	QSettings settings(m_settingsFile, QSettings::IniFormat);
-	return settings.value("BLADB/Login", "root").toString();
+	return settings.value("UAVDB/Login", "root").toString();
 }
 
 QString DbBlaSettingsManager::getBlaDbPassword()
 {
 	QMutexLocker mutexLocker(&m_mutex);
 	QSettings settings(m_settingsFile, QSettings::IniFormat);
-	return settings.value("BLADB/Password", "qwerty12345").toString();
+	return settings.value("UAVDB/Password", "qwerty12345").toString();
 }
 
 QString DbBlaSettingsManager::getBlaDbName()
 {
 	QMutexLocker mutexLocker(&m_mutex);
 	QSettings settings(m_settingsFile, QSettings::IniFormat);
-	return settings.value("BLADB/Name", "bla").toString();
+	return settings.value("UAVDB/Name", "bla").toString();
 }
 
 QString DbBlaSettingsManager::getBplaDbHost()
