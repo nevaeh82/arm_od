@@ -3,5 +3,5 @@ How to install:
 Server only installation is enough.
 TCP port by default (3306).
 2. Open MySQL 5.6 Command Line Client (authorize with qwerty12345 password).
-3. Execute 'source arm_od_bla_tables.sql'.
-4. Execute 'source arm_od_bla_tablesTest.sql'.
+3. Execute 'source arm_od_uav_tables.sql'.
+4. Execute 'source arm_od_uav_tablesTest.sql'.

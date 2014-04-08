@@ -2,44 +2,61 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
-CREATE SCHEMA IF NOT EXISTS `BLATEST` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `BLATEST` ;
+CREATE SCHEMA IF NOT EXISTS `UAVTEST` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+USE `UAVTEST` ;
 
 -- -----------------------------------------------------
--- Table `BLATEST`.`TypeBLADictionary`
+-- Table `UAVTEST`.`UAVTypes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BLATEST`.`TypeBLADictionary` (
+CREATE TABLE IF NOT EXISTS `UAVTEST`.`UAVTypes` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` TEXT NULL,
   PRIMARY KEY (`id`),
-  INDEX `typeID` (`id` ASC))
+  INDEX `typeId` (`id` ASC))
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `UAVTEST`.`UAVRoles`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `UAVTEST`.`UAVRoles` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `code` TEXT NOT NULL,
+  `name` TEXT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `roleId` (`id` ASC))
+ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `BLATEST`.`BLA`
+-- Table `UAVTEST`.`UAV`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BLATEST`.`BLA` (
+CREATE TABLE IF NOT EXISTS `UAVTEST`.`UAV` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `idBLA` INT UNSIGNED NOT NULL,
+  `uavId` INT UNSIGNED NOT NULL,
   `ip` TEXT NOT NULL,
-  `type` INT NULL,
+  `uavTypeId` INT NULL,
+  `roleId` INT NULL,
   `name` TEXT NULL,
+  `freqId` INT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
-  INDEX `typeID` (`type` ASC),
+  INDEX `uavTypeId` (`uavTypeId` ASC),
   INDEX `id` (`id` ASC),
-  CONSTRAINT `typeID`
-    FOREIGN KEY (`type`)
-    REFERENCES `BLATEST`.`TypeBLADictionary` (`id`)
+  CONSTRAINT `uavTypeId`
+    FOREIGN KEY (`uavTypeId`)
+    REFERENCES `UAVTEST`.`UAVTypes` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `IUAVROLE`
+    FOREIGN KEY (`roleId`)
+    REFERENCES `UAVTEST`.`UAVRoles` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `BLATEST`.`DeviceDictionary`
+-- Table `UAVTEST`.`DeviceTypes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BLATEST`.`DeviceDictionary` (
+CREATE TABLE IF NOT EXISTS `UAVTEST`.`DeviceTypes` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   PRIMARY KEY (`id`))
@@ -47,28 +64,28 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `BLATEST`.`Devices`
+-- Table `UAVTEST`.`Devices`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BLATEST`.`Devices` (
+CREATE TABLE IF NOT EXISTS `UAVTEST`.`Devices` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `deviceID` INT NULL,
+  `deviceTypeId` INT NULL,
   `port` MEDIUMINT NULL,
-  `BLAID` INT NULL,
+  `uavId` INT NULL,
   PRIMARY KEY (`id`),
-  INDEX `BLAID` (`BLAID` ASC),
-  INDEX `deviceID` (`deviceID` ASC),
+  INDEX `uavId` (`uavId` ASC),
+  INDEX `deviceTypeId` (`deviceTypeId` ASC),
   CONSTRAINT `device`
-    FOREIGN KEY (`deviceID`)
-    REFERENCES `BLATEST`.`DeviceDictionary` (`id`)
+    FOREIGN KEY (`deviceTypeId`)
+    REFERENCES `UAVTEST`.`DeviceTypes` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `BLATEST`.`StatusDictionary`
+-- Table `UAVTEST`.`Status`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BLATEST`.`StatusDictionary` (
+CREATE TABLE IF NOT EXISTS `UAVTEST`.`StatusTypes` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` TEXT NULL,
   PRIMARY KEY (`id`))
@@ -76,11 +93,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `BLATEST`.`Info`
+-- Table `UAVTEST`.`Info`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BLATEST`.`Info` (
+CREATE TABLE IF NOT EXISTS `UAVTEST`.`Info` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `BLA_id` INT NULL,
+  `uavID` INT NULL,
   `device` INT NULL,
   `latitude` DOUBLE NOT NULL,
   `longitude` DOUBLE NOT NULL,
@@ -88,34 +105,34 @@ CREATE TABLE IF NOT EXISTS `BLATEST`.`Info` (
   `speed` DOUBLE NULL,
   `yaw` DOUBLE NULL,
   `restTime` TIME NULL,
-  `statusID` INT NULL,
+  `statusTypeId` INT NULL,
   `datetime` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `IBLAID` (`BLA_id` ASC),
+  INDEX `IUAVID` (`uavID` ASC),
   INDEX `deviceID` (`device` ASC),
-  INDEX `st` (`statusID` ASC),
+  INDEX `st` (`statusTypeId` ASC),
   CONSTRAINT `deviceID`
     FOREIGN KEY (`device`)
-    REFERENCES `BLATEST`.`Devices` (`id`)
+    REFERENCES `UAVTEST`.`Devices` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `IBLAID`
-    FOREIGN KEY (`BLA_id`)
-    REFERENCES `BLATEST`.`BLA` (`id`)
+  CONSTRAINT `IUAVID`
+    FOREIGN KEY (`uavID`)
+    REFERENCES `UAVTEST`.`UAV` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `stID`
-    FOREIGN KEY (`statusID`)
-    REFERENCES `BLATEST`.`StatusDictionary` (`id`)
+    FOREIGN KEY (`statusTypeId`)
+    REFERENCES `UAVTEST`.`StatusTypes` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `BLATEST`.`TargetTypeDictionary`
+-- Table `UAVTEST`.`TargetType`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BLATEST`.`TargetTypeDictionary` (
+CREATE TABLE IF NOT EXISTS `UAVTEST`.`TargetTypes` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` TEXT NULL,
   PRIMARY KEY (`id`),
@@ -124,51 +141,50 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `BLATEST`.`Target`
+-- Table `UAVTEST`.`Target`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BLATEST`.`Target` (
+CREATE TABLE IF NOT EXISTS `UAVTEST`.`Target` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `ip` TEXT NULL,
   `port` MEDIUMINT NULL,
-  `targetID` INT NULL,
-  `type` INT NULL,
+--  `targetId` INT NULL, WHY?!
+  `targetTypeId` INT NULL,
   PRIMARY KEY (`id`),
-  INDEX `TtypeID` (`type` ASC),
+  INDEX `TtypeID` (`targetTypeId` ASC),
   CONSTRAINT `TtypeID`
-    FOREIGN KEY (`type`)
-    REFERENCES `BLATEST`.`TargetTypeDictionary` (`id`)
+    FOREIGN KEY (`targetTypeId`)
+    REFERENCES `UAVTEST`.`TargetTypes` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `BLATEST`.`BLAMission`
+-- Table `UAVTEST`.`UAVMission`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BLATEST`.`BLAMission` (
+CREATE TABLE IF NOT EXISTS `UAVTEST`.`UAVMission` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `BLAid` INT NULL,
+  `uavID` INT NULL,
   `targetID` INT NULL,
   `regionCenterLatitude` DOUBLE NULL,
   `regionCenterLongitude` DOUBLE NULL,
-  `regionCenterAtitude` DOUBLE NULL,
+  `regionCenterAltitude` DOUBLE NULL,
   `regionRadius` DOUBLE NULL,
   `timeToTarget` TIME NULL,
   PRIMARY KEY (`id`),
-  INDEX `BLAid` (`BLAid` ASC),
-  INDEX `targetID` (`targetID` ASC),
-  CONSTRAINT `BLAID`
-    FOREIGN KEY (`BLAid`)
-    REFERENCES `BLATEST`.`BLA` (`id`)
+  INDEX `UAVid` (`uavID` ASC),
+  INDEX `targetId` (`targetId` ASC),
+  CONSTRAINT `UAVID`
+    FOREIGN KEY (`uavID`)
+    REFERENCES `UAVTEST`.`UAV` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `targetID`
-    FOREIGN KEY (`targetID`)
-    REFERENCES `BLATEST`.`Target` (`id`)
+  CONSTRAINT `targetId`
+    FOREIGN KEY (`targetId`)
+    REFERENCES `UAVTEST`.`Target` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
