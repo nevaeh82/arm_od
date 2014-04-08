@@ -15,7 +15,6 @@
 
 #include <QVector>
 
-#include "../MapInterface/IMapClient.h"
 
 #include "Tabs/DbBla/DbUavManager.h"
 
@@ -34,10 +33,8 @@ private:
 	IDbUavManager* m_dbBla;
 	DBManager* m_dbEvil;
 
-	IMapClient* m_mapClient;
-
 public:
-	explicit BLAPerehvatDialog(IMapClient* map_client);
+	explicit BLAPerehvatDialog(QWidget *parent = NULL);
 	~BLAPerehvatDialog();
 
 	void init(int id, IDbUavManager* db_bla, DBManager* db_evil);

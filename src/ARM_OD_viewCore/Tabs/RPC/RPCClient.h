@@ -20,7 +20,7 @@
 #include "Tabs/ITabMap.h"
 #include "MapInterface/IMapController.h"
 
-#include "RadiolocationInterface.h"
+//#include "RadiolocationInterface.h"
 
 #include "Rpc/RpcDefines.h"
 #include "Rpc/RpcClientBase.h"

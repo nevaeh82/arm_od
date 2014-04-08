@@ -1,13 +1,15 @@
 #include "BLAPerehvatDialog.h"
 #include "ui_blaperehvatdialog.h"
 
-BLAPerehvatDialog::BLAPerehvatDialog(IMapClient* map_client) :
-	QDialog(0),
+BLAPerehvatDialog::BLAPerehvatDialog(QWidget* parent) :
+	QDialog(parent),
 	ui(new Ui::BLAPerehvatDialog)
 {
 	ui->setupUi(this);
 
-	m_mapClient = map_client;
+	m_id = 0;
+	m_dbBla = NULL;
+	m_dbEvil = NULL;
 }
 
 BLAPerehvatDialog::~BLAPerehvatDialog()

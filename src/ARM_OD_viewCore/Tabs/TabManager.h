@@ -11,22 +11,17 @@
 #include <QMutex>
 #include <QThread>
 
-#include "../Abstracts/IModuleController.h"
-
 #include "Station.h"
 
 #include "MapTabWidget.h"
 
-//#include "Tree/Controller.h"
-
 #include "Tree/DBManager.h"
-//#include "Tree/TreeModel.h"
 
 #include "ITabManager.h"
 
-#include "../MapInterface/MapController.h"
+#include "MapInterface/MapController.h"
 
-#include "../NIIPP/NIIPPController.h"
+#include "NIIPP/NIIPPController.h"
 
 #include "MapTabWidgetController.h"
 
