@@ -253,10 +253,10 @@ void RPCClient_R::rpc_slot_server_send_bpla_def(QByteArray ba1)
 void RPCClient_R::rpc_slot_server_send_bpla_def_auto(QByteArray ba)
 {
 //    qDebug() << "GOT FROM SERVER ID BPLA! = ";// << id;
-	QByteArray ba2 = encodeToEnemyUav(ba1);
+	QByteArray ba2 = encodeToEnemyUav(ba);
 
-	QByteArray *ba = new QByteArray();
-	ba->append(ba2);
+	QByteArray *ba1 = new QByteArray();
+	ba1->append(ba2);
 
     QSharedPointer<IMessageOld> msg(new MessageOld(_id, ARM_R_SERVER_BPLA_COORDS_AUTO, ba1));
     _subscriber->data_ready(ARM_R_SERVER_BPLA_COORDS_AUTO, msg);
