@@ -241,8 +241,10 @@ void RPCClient_R::slotFinish()
 void RPCClient_R::rpc_slot_server_send_bpla_def(QByteArray ba1)
 {
 //    qDebug() << "GOT FROM SERVER ID BPLA! = ";// << id;
+	QByteArray ba2 = encodeToEnemyUav(ba1);
+
     QByteArray *ba = new QByteArray();
-	ba->append(ba1);
+	ba->append(ba2);
 
     QSharedPointer<IMessageOld> msg(new MessageOld(_id, ARM_R_SERVER_BPLA_COORDS, ba));
     _subscriber->data_ready(ARM_R_SERVER_BPLA_COORDS, msg);
@@ -251,9 +253,10 @@ void RPCClient_R::rpc_slot_server_send_bpla_def(QByteArray ba1)
 void RPCClient_R::rpc_slot_server_send_bpla_def_auto(QByteArray ba)
 {
 //    qDebug() << "GOT FROM SERVER ID BPLA! = ";// << id;
+	QByteArray ba2 = encodeToEnemyUav(ba);
 
-    QByteArray *ba1 = new QByteArray();
-    ba1->append(ba);
+	QByteArray *ba1 = new QByteArray();
+	ba1->append(ba2);
 
     QSharedPointer<IMessageOld> msg(new MessageOld(_id, ARM_R_SERVER_BPLA_COORDS_AUTO, ba1));
     _subscriber->data_ready(ARM_R_SERVER_BPLA_COORDS_AUTO, msg);
@@ -279,4 +282,25 @@ void RPCClient_R::rpc_slot_server_atlant_position(QByteArray ba1)
     QSharedPointer<IMessageOld> msg1(new MessageOld(_id, ARM_R_SERVER_ATLANT_POSITION, ba));
     _subscriber->data_ready(ARM_R_SERVER_ATLANT_POSITION, msg1);
 
+}
+
+QByteArray RPCClient_R::encodeToEnemyUav(const QByteArray& data)
+{
+	QByteArray inputData = data;
+	QDataStream inputDataStream(&inputData, QIODevice::ReadOnly);
+
+	UAVPositionDataEnemy uav;
+	inputDataStream >> uav.time;
+	inputDataStream >> uav.state;
+	inputDataStream >> uav.pointStdDev;
+	inputDataStream >> uav.track;
+	inputDataStream >> uav.speed;
+	inputDataStream >> uav.altitude;
+	inputDataStream >> uav.course;
+
+	QByteArray dataToSend;
+	QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
+	dataStream << uav;
+
+	return dataToSend;
 }
