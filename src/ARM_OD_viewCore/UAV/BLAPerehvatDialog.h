@@ -17,7 +17,7 @@
 
 #include "../MapInterface/IMapClient.h"
 
-#include "Tabs/DbBla/DbBlaManager.h"
+#include "Tabs/DbBla/DbUavManager.h"
 
 namespace Ui {
 class BLAPerehvatDialog;
@@ -25,26 +25,25 @@ class BLAPerehvatDialog;
 
 class BLAPerehvatDialog : public QDialog
 {
-    Q_OBJECT
-    
-public:
-    explicit BLAPerehvatDialog(IMapClient* map_client);
-    ~BLAPerehvatDialog();
-
-	void init(int id, IDbBlaManager* db_bla, DBManager* db_evil);
-    
+	Q_OBJECT
 private:
-    Ui::BLAPerehvatDialog *ui;
+	Ui::BLAPerehvatDialog *ui;
 
-    int                 _id;
+	int m_id;
 
-	IDbBlaManager*          _db_bla;
-    DBManager*          _db_evil;
+	IDbUavManager* m_dbBla;
+	DBManager* m_dbEvil;
 
-    IMapClient*     _map_client;
+	IMapClient* m_mapClient;
+
+public:
+	explicit BLAPerehvatDialog(IMapClient* map_client);
+	~BLAPerehvatDialog();
+
+	void init(int id, IDbUavManager* db_bla, DBManager* db_evil);
 
 private slots:
-    void treeItemChangedSlot(QTreeWidgetItem* item, int id);
+	void treeItemChangedSlot(QTreeWidgetItem* item, int id);
 };
 
 #endif // BLAPEREHVATDIALOG_H

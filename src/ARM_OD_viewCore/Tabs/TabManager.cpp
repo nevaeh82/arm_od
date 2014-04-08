@@ -17,17 +17,17 @@ TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
 	m_dbBlaSettingsManager->setIniFile("./DB/db_bla.ini");
 
 	//Creating db bla controller
-	m_dbBlaController = new DbBlaController();
-	m_dbBlaController->connectToDB(getDbBlaConnectionSettings());
+	m_dbUavController = new DbUavController();
+	m_dbUavController->connectToDB(getDbBlaConnectionSettings());
 
 	//Creating db bla manager and set its controller
-	m_dbBlaManager = new DbBlaManager();
-	m_dbBlaManager->setDbController(m_dbBlaController);
+	m_dbUavManager = new DbUavManager();
+	m_dbUavManager->setDbController(m_dbUavController);
 
 	//Moving db bla manager to another thread
 	QThread* dbBlaManagerThread = new QThread;
-	connect(m_dbBlaManager, SIGNAL(destroyed()), dbBlaManagerThread, SLOT(terminate()));
-	m_dbBlaManager->moveToThread(dbBlaManagerThread);
+	connect(m_dbUavManager, SIGNAL(destroyed()), dbBlaManagerThread, SLOT(terminate()));
+	m_dbUavManager->moveToThread(dbBlaManagerThread);
 	dbBlaManagerThread->start();
 
 	_db_manager_evil = new DBManager(this);
@@ -57,7 +57,7 @@ int TabManager::createSubModules(const QString& settingsFile)
 
 	foreach (Station* station, m_stationsMap) {
 
-		MapTabWidgetController* tabWidgetController = new MapTabWidgetController(station, m_stationsMap, this, m_dbBlaManager, _db_manager_evil);
+		MapTabWidgetController* tabWidgetController = new MapTabWidgetController(station, m_stationsMap, this, m_dbUavManager, _db_manager_evil);
 		MapTabWidget* tabWidget = new MapTabWidget(m_tabWidget);
 
 		tabWidgetController->appendView(tabWidget);

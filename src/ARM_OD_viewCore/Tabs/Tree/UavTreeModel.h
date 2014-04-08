@@ -4,9 +4,9 @@
 #include <QObject>
 #include <TreeModel/TreeModelBase.h>
 
-#include "Interfaces/IBlaDbChangedListener.h"
+#include "Interfaces/IUavDbChangedListener.h"
 
-class UavTreeModel : public TreeModelBase, public IBlaDbChangedListener
+class UavTreeModel : public TreeModelBase, public IUavDbChangedListener
 {
 	Q_OBJECT
 public:
@@ -18,13 +18,13 @@ protected:
 	virtual bool updateModelData(TreeItem *item);
 
 public:
-	virtual void onBlaAdded(const Bla &bla);
-	virtual void onBlaRemoved(const Bla &bla);
-	virtual void onBlaInfoChanged(const BlaInfo &blaInfo);
+	virtual void onUavAdded(const Uav &uav);
+	virtual void onUavRemoved(const Uav &uav);
+	virtual void onUavInfoChanged(const UavInfo &uavInfo);
 
 private:
 
-	void onPropertyChanged(const BlaInfo &blaInfo, const uint propId, const QString& name, const QVariant& value);
+	void onPropertyChanged(const UavInfo &uavInfo, const uint propId, const QString& name, const QVariant& value);
 };
 
 #endif // BLATREEMODEL_H

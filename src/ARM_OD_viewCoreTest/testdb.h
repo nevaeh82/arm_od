@@ -5,119 +5,157 @@
 
 #include <QTime>
 
-#include "Tabs/DbBla/DbBlaController.h"
+#include "Tabs/DbBla/DbUavController.h"
 #include "Tabs/DbBla/Defines.h"
 #include "Db/Defines.h"
 #include "Interfaces/IDbControllerBase.h"
 
 #include "Logger.h"
 
-class testDbBla : public CxxTest::TestSuite
+class testDbUav : public CxxTest::TestSuite
 {
 
 public:
 	void testConnection()
     {
-		IDbControllerBase* dbBlaController = new DbBlaController(NULL);
+		IDbControllerBase* dbUavController = new DbUavController(NULL);
 		DBConnectionStruct parameters;
 
-		parameters.dbName = "BLATEST";
+		parameters.dbName = "UAVTEST";
 		parameters.host = "127.0.0.1";
 		parameters.login = "root";
 		parameters.port = 3306;
 		parameters.password = "qwerty12345";
-		bool isConnected = dbBlaController->connectToDB(parameters);
+		bool isConnected = dbUavController->connectToDB(parameters);
 		TS_ASSERT_EQUALS(true, isConnected);
 
-		delete dbBlaController;
+		delete dbUavController;
     }
 
-	void testAddBlaType()
+	void testAddUavType()
 	{
-		DbBlaController* dbBlaController = new DbBlaController();
+		DbUavController* dbUavController = new DbUavController();
 		DBConnectionStruct parameters;
 
-		parameters.dbName = "BLATEST";
+		parameters.dbName = "UAVTEST";
 		parameters.host = "127.0.0.1";
 		parameters.login = "root";
 		parameters.port = 3306;
 		parameters.password = "qwerty12345";
-		bool isConnected = dbBlaController->connectToDB(parameters);
+		bool isConnected = dbUavController->connectToDB(parameters);
 		TS_ASSERT_EQUALS(true, isConnected);
 
-		// ADDING BLA TYPE
-		BlaType blaType;
-		blaType.name = "testBlaType";
+		// ADDING UAV TYPE
+		UavType uavType;
+		uavType.name = "testUavType";
 
-		int newBlaTypeId = dbBlaController->addBlaType(blaType);
-		TS_ASSERT_DIFFERS(INVALID_INDEX, newBlaTypeId);
+		int newUavTypeId = dbUavController->addUavType(uavType);
+		TS_ASSERT_DIFFERS(INVALID_INDEX, newUavTypeId);
 
-		delete dbBlaController;
+		delete dbUavController;
 	}
 
-	void testAddBla()
+	void testAddUavRole()
 	{
-		DbBlaController* dbBlaController = new DbBlaController();
+		DbUavController* dbUavController = new DbUavController();
 		DBConnectionStruct parameters;
 
-		parameters.dbName = "BLATEST";
+		parameters.dbName = "UAVTEST";
 		parameters.host = "127.0.0.1";
 		parameters.login = "root";
 		parameters.port = 3306;
 		parameters.password = "qwerty12345";
-		bool isConnected = dbBlaController->connectToDB(parameters);
+		bool isConnected = dbUavController->connectToDB(parameters);
 		TS_ASSERT_EQUALS(true, isConnected);
 
-		// GETTING BLA TYPE
-		BlaType blaType;
-		blaType.name = "testBlaType";
+		// ADDING UAV FRIEND TYPE
+		UavRole uavRole;
+		uavRole.name = "testFriend";
+		uavRole.code = "testFriend";
 
-		int blaTypeId = dbBlaController->getBlaTypeByName(blaType.name);
-		TS_ASSERT_DIFFERS(INVALID_INDEX, blaTypeId);
+		int newUavRoleId = dbUavController->addUavRole(uavRole);
+		TS_ASSERT_DIFFERS(INVALID_INDEX, newUavRoleId);
 
+		// ADDING UAV ENEMY TYPE
+		uavRole.name = "testEnemy";
+		uavRole.code = "testEnemy";
 
-		// ADDING BLA
-		Bla bla; // ;)
-		bla.blaId = 8000;
-		bla.ip = "10.11.12.134";
-		bla.name = "TEST_BLA";
-		bla.type = blaTypeId;
+		newUavRoleId = dbUavController->addUavRole(uavRole);
+		TS_ASSERT_DIFFERS(INVALID_INDEX, newUavRoleId);
 
-		int newBlaId = dbBlaController->addBla(bla);
-		TS_ASSERT_DIFFERS(INVALID_INDEX, newBlaId);
+		delete dbUavController;
+	}
 
-		delete dbBlaController;
+	void testAddUav()
+	{
+		DbUavController* dbUavController = new DbUavController();
+		DBConnectionStruct parameters;
+
+		parameters.dbName = "UAVTEST";
+		parameters.host = "127.0.0.1";
+		parameters.login = "root";
+		parameters.port = 3306;
+		parameters.password = "qwerty12345";
+		bool isConnected = dbUavController->connectToDB(parameters);
+		TS_ASSERT_EQUALS(true, isConnected);
+
+		// GETTING UAV ROLE
+		UavRole uavRole;
+		uavRole.code = "testEnemy";
+
+		int uavRoleId = dbUavController->getUavRoleByCode(uavRole.code).id;
+		TS_ASSERT_DIFFERS(INVALID_INDEX, uavRoleId);
+
+		// GETTING UAV TYPE
+		UavType uavType;
+		uavType.name = "testUavType";
+
+		int uavTypeId = dbUavController->getUavTypeByName(uavType.name);
+		TS_ASSERT_DIFFERS(INVALID_INDEX, uavTypeId);
+
+		// ADDING UAV
+		Uav uav; // ;)
+		uav.uavId = 8000;
+		uav.ip = "10.11.12.134";
+		uav.name = "TEST_UAV";
+		uav.uavTypeId = uavTypeId;
+		uav.roleId = uavRoleId;
+
+		int newUavId = dbUavController->addUav(uav);
+		TS_ASSERT_DIFFERS(INVALID_INDEX, newUavId);
+
+		delete dbUavController;
 	}
 
 	void testAddTargetType()
 	{
-		DbBlaController* dbBlaController = new DbBlaController();
+		DbUavController* dbUavController = new DbUavController();
 		DBConnectionStruct parameters;
 
-		parameters.dbName = "BLATEST";
+		parameters.dbName = "UAVTEST";
 		parameters.host = "127.0.0.1";
 		parameters.login = "root";
 		parameters.port = 3306;
 		parameters.password = "qwerty12345";
-		bool isConnected = dbBlaController->connectToDB(parameters);
+		bool isConnected = dbUavController->connectToDB(parameters);
 		TS_ASSERT_EQUALS(true, isConnected);
 
 		// ADDING TARGET TYPE
 		TargetType targetType;
 		targetType.name = "testTargetType";
 
-		int newTargetTypeId = dbBlaController->addTargetType(targetType);
+		int newTargetTypeId = dbUavController->addTargetType(targetType);
 		TS_ASSERT_DIFFERS(INVALID_INDEX, newTargetTypeId);
 
-		delete dbBlaController;
+		delete dbUavController;
 	}
 
 	void testAddTarget()
 	{
-		DbBlaController* db = new DbBlaController();
+		DbUavController* db = new DbUavController();
 		DBConnectionStruct parameters;
 
-		parameters.dbName = "BLATEST";
+		parameters.dbName = "UAVTEST";
 		parameters.host = "127.0.0.1";
 		parameters.login = "root";
 		parameters.port = 3306;
@@ -129,21 +167,20 @@ public:
 		Target target;
 		target.ip = "127.1.1.1";
 		target.port = 2000;
-		target.targetId = 8001;
 		target.type = db->getTargetTypeByName("testTargetType");
 
-		int statusId = db->addTarget(target);
-		TS_ASSERT_DIFFERS(INVALID_INDEX, statusId);
+		int targetId = db->addTarget(target);
+		TS_ASSERT_DIFFERS(INVALID_INDEX, targetId);
 
 		delete db;
 	}
 
-	void testAddBlaMission()
+	void testAddUavMission()
 	{
-		DbBlaController* db = new DbBlaController();
+		DbUavController* db = new DbUavController();
 		DBConnectionStruct parameters;
 
-		parameters.dbName = "BLATEST";
+		parameters.dbName = "UAVTEST";
 		parameters.host = "127.0.0.1";
 		parameters.login = "root";
 		parameters.port = 3306;
@@ -152,8 +189,8 @@ public:
 		TS_ASSERT_EQUALS(true, isConnected);
 
 		// ADDING TARGET TYPE
-		BlaMission mission;
-		mission.blaId = db->getBlaByBlaId(8000).id;
+		UavMission mission;
+		mission.uavId = db->getUavByUavId(8000).id;
 
 		QList<Target> targets;
 		bool isTargetsGetOk = db->getTargetsByType(db->getTargetTypeByName("testTargetType"), targets);
@@ -162,11 +199,11 @@ public:
 		mission.targetId = targets.at(0).id;
 		mission.regionCenterLat = 29.0f;
 		mission.regionCenterLon = 59.0f;
-		mission.regionCenterAtitude = 100.0f;
+		mission.regionCenterAltitude = 100.0f;
 		mission.regionRadius = 1000.0f;
 		mission.timeToTarget = QTime(2, 0);
 
-		int missionId = db->addBlaMission(mission);
+		int missionId = db->addUavMission(mission);
 		TS_ASSERT_DIFFERS(INVALID_INDEX, missionId);
 
 		delete db;
@@ -175,81 +212,81 @@ public:
 
 	void testAddDeviceType()
 	{
-		DbBlaController* dbBlaController = new DbBlaController();
+		DbUavController* dbUavController = new DbUavController();
 		DBConnectionStruct parameters;
 
-		parameters.dbName = "BLATEST";
+		parameters.dbName = "UAVTEST";
 		parameters.host = "127.0.0.1";
 		parameters.login = "root";
 		parameters.port = 3306;
 		parameters.password = "qwerty12345";
-		bool isConnected = dbBlaController->connectToDB(parameters);
+		bool isConnected = dbUavController->connectToDB(parameters);
 		TS_ASSERT_EQUALS(true, isConnected);
 
 		// ADDING TARGET TYPE
 		DeviceType deviceType;
 		deviceType.name = "testDeviceType";
 
-		int deviceTypeId = dbBlaController->addDeviceType(deviceType);
+		int deviceTypeId = dbUavController->addDeviceType(deviceType);
 		TS_ASSERT_DIFFERS(INVALID_INDEX, deviceTypeId);
 
-		delete dbBlaController;
+		delete dbUavController;
 	}
 
 	void testAddDevice()
 	{
-		DbBlaController* dbBlaController = new DbBlaController();
+		DbUavController* dbUavController = new DbUavController();
 		DBConnectionStruct parameters;
 
-		parameters.dbName = "BLATEST";
+		parameters.dbName = "UAVTEST";
 		parameters.host = "127.0.0.1";
 		parameters.login = "root";
 		parameters.port = 3306;
 		parameters.password = "qwerty12345";
-		bool isConnected = dbBlaController->connectToDB(parameters);
+		bool isConnected = dbUavController->connectToDB(parameters);
 		TS_ASSERT_EQUALS(true, isConnected);
 
 		// ADDING TARGET TYPE
 		Devices device;
 		device.port = 1000;
-		device.blaId = 8000;
+		device.uavId = 8000;
 		device.deviceId = 1;
 
-		int deviceId = dbBlaController->addDevice(device);
+		int deviceId = dbUavController->addDevice(device);
 		TS_ASSERT_DIFFERS(INVALID_INDEX, deviceId);
 
-		delete dbBlaController;
+		delete dbUavController;
 	}
 
 	void testAddStatusType()
 	{
-		DbBlaController* dbBlaController = new DbBlaController();
+		DbUavController* dbUavController = new DbUavController();
 		DBConnectionStruct parameters;
 
-		parameters.dbName = "BLATEST";
+		parameters.dbName = "UAVTEST";
 		parameters.host = "127.0.0.1";
 		parameters.login = "root";
 		parameters.port = 3306;
 		parameters.password = "qwerty12345";
-		bool isConnected = dbBlaController->connectToDB(parameters);
+		bool isConnected = dbUavController->connectToDB(parameters);
 		TS_ASSERT_EQUALS(true, isConnected);
 
 		// ADDING TARGET TYPE
 		Status status;
 		status.status = "testStatus";
 
-		int statusId = dbBlaController->addStatus(status);
+		int statusId = dbUavController->addStatus(status);
 		TS_ASSERT_DIFFERS(INVALID_INDEX, statusId);
 
-		delete dbBlaController;
+		delete dbUavController;
 	}
 
-	void testAddBlaInfo()
+	void testAddUavInfo()
 	{
-		DbBlaController* db = new DbBlaController();
+		DbUavController* db = new DbUavController();
 		DBConnectionStruct parameters;
 
-		parameters.dbName = "BLATEST";
+		parameters.dbName = "UAVTEST";
 		parameters.host = "127.0.0.1";
 		parameters.login = "root";
 		parameters.port = 3306;
@@ -261,20 +298,20 @@ public:
 		bool isDevicesGetOk = db->getDevicesByType(db->getDeviceTypeByName("testDeviceType"), devices);
 		TS_ASSERT_EQUALS(true, isDevicesGetOk);
 
-		BlaInfo blaInfo;
-		blaInfo.blaId = 1; // FK
-		blaInfo.device = devices.at(0).id; // FK
-		blaInfo.lat = 1.0f;
-		blaInfo.lon = 2.0f;
-		blaInfo.alt = 300.0f;
-		blaInfo.speed = 330.0f;
-		blaInfo.yaw = 200.0f;
-		blaInfo.restTime = QTime(1, 0);
-		blaInfo.statusId = 1; // FK
-		blaInfo.dateTime = QDateTime::currentDateTime();
+		UavInfo uavInfo;
+		uavInfo.uavId = 1; // FK
+		uavInfo.device = devices.at(0).id; // FK
+		uavInfo.lat = 1.0f;
+		uavInfo.lon = 2.0f;
+		uavInfo.alt = 300.0f;
+		uavInfo.speed = 330.0f;
+		uavInfo.yaw = 200.0f;
+		uavInfo.restTime = QTime(1, 0);
+		uavInfo.statusId = 1; // FK
+		uavInfo.dateTime = QDateTime::currentDateTime();
 
-		int newBlaInfoId = db->addBlaInfo(blaInfo);
-		TS_ASSERT_DIFFERS(INVALID_INDEX, newBlaInfoId);
+		int newUavInfoId = db->addUavInfo(uavInfo);
+		TS_ASSERT_DIFFERS(INVALID_INDEX, newUavInfoId);
 
 		delete db;
 	}

@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Station *> map_settings, ITabManager* tabManager, DbBlaManager* db_bla, DBManager* db_evil, QObject* parent) :
+MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Station *> map_settings, ITabManager* tabManager, DbUavManager* db_bla, DBManager* db_evil, QObject* parent) :
 	QObject(parent)
 {
 	m_view = NULL;
@@ -19,14 +19,14 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 
 	/// TODO: refactor
 	m_bplaDbManager = db_evil;
-	m_blaDbManager = db_bla;
+	m_uavDbManager = db_bla;
 
 	QStringList headers;
 	headers << tr("Property") << tr("Value");
 
 	//m_blaModel = new TreeModel(headers);
 	m_uavTreeModel =  new UavTreeModel(headers, this);
-	m_blaDbManager->registerReceiver(m_uavTreeModel);
+	m_uavDbManager->registerReceiver(m_uavTreeModel);
 
 	//m_bplaModel = new TreeModel(headers);
 
@@ -101,7 +101,7 @@ int MapTabWidgetController::createRPC()
 
 	///TODO: fix deleting
 
-	m_rpcClient = new RPCClient(m_station, m_blaDbManager, m_bplaDbManager, m_mapController, this, _tab_manager);
+	m_rpcClient = new RPCClient(m_station, m_uavDbManager, m_bplaDbManager, m_mapController, this, _tab_manager);
 	//m_rpcClient->start(m_rpcHostPort, QHostAddress(m_rpcHostAddress));
 
 	QThread* rpcClientThread = new QThread;
@@ -182,7 +182,7 @@ void MapTabWidgetController::openMapSlot()
 void MapTabWidgetController::onBlaTreeItemDoubleClicked(QModelIndex index)
 {
 	BLAPerehvatDialog *b = new BLAPerehvatDialog(m_mapController->get_map_client(1));
-	b->init((index.data()).toInt(), m_blaDbManager, m_bplaDbManager);
+	b->init((index.data()).toInt(), m_uavDbManager, m_bplaDbManager);
 
 	/// TODO: This dialog should be modal
 	b->show();
