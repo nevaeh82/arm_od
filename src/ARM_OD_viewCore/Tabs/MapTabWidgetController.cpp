@@ -125,6 +125,7 @@ int MapTabWidgetController::createTree()
 {
 	m_view->getBlaTreeView()->setModel(m_uavTreeModel);
 	m_view->getBlaTreeView()->setItemDelegate(m_treeDelegate);
+	connect(m_uavTreeModel, SIGNAL(onItemAddedSignal()), m_view->getBlaTreeView(), SLOT(expandAll()));
 
 	connect(m_view->getBlaTreeView(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onBlaTreeItemDoubleClicked(QModelIndex)));
 
