@@ -8,6 +8,8 @@
 
 #include <QPointF>
 
+#include <SettingsManager/RpcSettingsManager.h>
+
 #include "RPC/RPCServer.h"
 
 #include "Common/Router.h"

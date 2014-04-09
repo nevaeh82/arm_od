@@ -18,7 +18,7 @@ TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
 
 	//Creating db bla controller
 	m_dbUavController = new DbUavController();
-	m_dbUavController->connectToDB(getDbBlaConnectionSettings());
+//	m_dbUavController->connectToDB(getDbBlaConnectionSettings());
 
 	//Creating db bla manager and set its controller
 	m_dbUavManager = new DbUavManager();
@@ -46,14 +46,62 @@ void TabManager::send_data_niipp_control(int id, QByteArray ba)
 
 }
 
+void TabManager::setRpcConfig(const quint16& port, const QString& host)
+{
+	m_rpcHost = host;
+	m_rpcPort = port;
+}
+
+void TabManager::setDbConnectionStruct(const DBConnectionStruct& connectionStruct)
+{
+	m_dbUavController->connectToDB(connectionStruct);
+}
+
+void TabManager::setStationsConfiguration(const QList<StationConfiguration>& stationList)
+{
+	foreach (StationConfiguration stationConf, stationList) {
+		Station *station = new Station();
+
+		station->id(stationConf.id);
+		station->name(stationConf.name);
+		station->latitude(stationConf.latitude);
+		station->longitude(stationConf.longitude);
+
+		m_stationsMap.insert(station->getId(), station);
+	}
+}
+
+void TabManager::addStationTabs()
+{
+	foreach (Station* station, m_stationsMap) {
+
+		MapTabWidgetController* tabWidgetController = new MapTabWidgetController(station, m_stationsMap, this, m_dbUavManager, _db_manager_evil);
+		tabWidgetController->setRpcConfig(m_rpcPort, m_rpcHost);
+
+		MapTabWidget* tabWidget = new MapTabWidget(m_tabWidget);
+
+		tabWidgetController->appendView(tabWidget);
+
+		connect(this, SIGNAL(signalSendToNIIPPControl(int,QByteArray)), tabWidgetController, SLOT(_slot_send_data_to_niipp_control(int,QByteArray)));
+		connect(this, SIGNAL(openAtlasSignal()), tabWidgetController, SLOT(openAtlasSlot()));
+		connect(this, SIGNAL(openMapSignal()), tabWidgetController, SLOT(openMapSlot()));
+
+		m_tabWidget->addTab(tabWidget, station->name);
+
+		m_tabWidgetsMap.insert(station->name, tabWidgetController);
+	}
+
+	emit readyToStart();
+}
+
 void TabManager::start()
 {
 	changeTabSlot(m_tabWidget->currentIndex());
 }
 
-int TabManager::createSubModules(const QString& settingsFile)
+/*int TabManager::createSubModules(const QString& settingsFile)
 {
-	int count = readSettings(settingsFile);
+//	int count = readSettings(settingsFile);
 
 	foreach (Station* station, m_stationsMap) {
 
@@ -72,7 +120,7 @@ int TabManager::createSubModules(const QString& settingsFile)
 	}
 
 	return count;
-}
+}*/
 
 
 /// BUG
@@ -107,7 +155,7 @@ void TabManager::changeTabSlot(int index)
 
 
 /// read settings for generated submodules (tabs)
-int TabManager::readSettings(const QString& settingsFile)
+/*int TabManager::readSettings(const QString& settingsFile)
 {
 	int count = 0;
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
@@ -134,8 +182,8 @@ int TabManager::readSettings(const QString& settingsFile)
 	}
 
 	return count;
-}
-
+}*/
+/*
 DBConnectionStruct TabManager::getDbBlaConnectionSettings()
 {
 	DBConnectionStruct connectionStruct;
@@ -147,4 +195,4 @@ DBConnectionStruct TabManager::getDbBlaConnectionSettings()
 	connectionStruct.port = m_dbBlaSettingsManager->getBlaDbPort();
 
 	return connectionStruct;
-}
+}*/

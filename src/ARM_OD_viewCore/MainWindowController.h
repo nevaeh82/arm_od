@@ -2,8 +2,9 @@
 #define MAINWINDOWCONTROLLER_H
 
 #include <QObject>
+#include <QEventLoop>
 
-#include <PwLogger/PwLogger.h>
+#include <SettingsManager/RpcSettingsManager.h>
 
 //#include "Interfaces/IController.h"
 #include "MainWindow.h"
@@ -13,14 +14,14 @@
 #include "Tabs/TabManager.h"
 #include "Tabs/Solver/SolverController.h"
 
+#include "Tabs/RPC/RpcConfigClient.h"
+#include "Rpc/RpcDefines.h"
 
-class MainWindowController : public QObject//, public IController<MainWindow>
+class MainWindowController : public QObject, public IRpcListener//, public IController<MainWindow>
 {
 	Q_OBJECT
 
 private:
-	/// logger
-	Pw::Logger::ILogger* m_logger;
 
 	MainWindow* m_view;
 
@@ -28,6 +29,8 @@ private:
 
 	TabManager*  m_tabManager;
 	SolverController* m_solver;
+
+	RpcConfigClient* m_rpcConfigClient;
 
 public:
 	explicit MainWindowController(QObject *parent = 0);
@@ -43,12 +46,18 @@ private slots:
 	void serverFailedToStartSlot();
 	void serverStartedSlot();
 
+	void startTabManger();
+
 private:
 
 	void start();
 	void stop();
 
 	void init();
+
+	// IRpcListener interface
+public:
+	virtual void onMethodCalled(const QString& method, const QVariant& argument);
 };
 
 #endif // MAINWINDOWCONTROLLER_H

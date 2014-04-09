@@ -32,9 +32,15 @@ ARM_OD_Srv::ARM_OD_Srv()
 //    QObject::connect(_rpc_server, SIGNAL(finished()), &a, SLOT(quit()));
 //    QObject::connect(&a, SIGNAL(aboutToQuit()), _rpc_server, SLOT(aboutToQuitApp()));
 
+	IRpcSettingsManager* rpcSettingsManager = RpcSettingsManager::instance();
+	rpcSettingsManager->setIniFile("./RPC/RpcOdServer.ini");
+	QString host = rpcSettingsManager->getRpcHost();
+	quint16 port = rpcSettingsManager->getRpcPort().toUShort();
+
+	// We should read rpc settings from .ini
 	_rpc_server = new RPCServer(this);
 	_rpc_server->setRouter(_router);
-	_rpc_server->start(24550, QHostAddress::Any);
+	_rpc_server->start(port, QHostAddress(host));
 
 
 //	_read_settingsKTR();

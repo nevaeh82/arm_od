@@ -71,6 +71,16 @@
 #define RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION           "rpc_slot_server_send_atlant_direction"
 #define RPC_SLOT_SERVER_SEND_ATLANT_POSITION            "rpc_slot_server_send_atlant_position"
 
+
+#define RPC_METHOD_CONFIG_REQUEST_GET_STATION_LIST			"rpcMethodConfigRequestGetStationList"
+#define RPC_METHOD_CONFIG_ANSWER_STATION_LIST				"rpcMethodConfigAnswerStationList"
+#define RPC_METHOD_CONFIG_REQUEST_GET_MAP_OBJECTS			"rpcMethodConfigRequestGetMapObjects"
+#define RPC_METHOD_CONFIG_ANSWER_MAP_OBJECTS				"rpcMethodConfigAnswerMapObjects"
+#define RPC_METHOD_CONFIG_REQUEST_GET_MAP_POINTS			"rpcMethodConfigRequestGetMapPoints"
+#define RPC_METHOD_CONFIG_ANSWER_MAP_POINTS					"rpcMethodConfigAnswerMapPoints"
+#define RPC_METHOD_CONFIG_REQUEST_GET_DB_CONFIGURATION		"rpcMethodConfigRequestGetDbConfiguration"
+#define RPC_METHOD_CONFIG_ANSWER_DB_CONFIGURATION			"rpcMethodConfigAnswerDbConfiguration"
+
 ///PRM to RPC client
 //#define RPC_SLOT_SERVER_PRM_STATUS                   "rpc_slot_server_prm_status"
 #include <QObject>

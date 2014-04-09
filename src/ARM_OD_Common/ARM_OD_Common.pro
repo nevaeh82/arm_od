@@ -33,4 +33,5 @@ HEADERS += \
     UAVDefines.h \
     Info/ArmrTcpClientSettings.h \
     Interfaces/IDbBlaSettingsManager.h \
-    DbBlaSettingsManager.h
+    DbBlaSettingsManager.h \
+    Info/StationConfiguration.h
