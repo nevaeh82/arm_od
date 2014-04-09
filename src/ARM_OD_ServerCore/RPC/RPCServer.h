@@ -47,7 +47,10 @@ private slots:
     void _slotRPCConnetion(quint64 client);
     void _slotRPCDisconnected(quint64 client);
 
-	void rq
+	void requestGetStationListSlot(quint64 client, QString configFilename);
+	void requestGetDbConfigurationSlot(quint64 client, QString configFilename);
+
+	void requestGetAisDataSlot(quint64 client);
 
 public slots:
     void rpc_slot_set_client_id(quint64 client, int id);

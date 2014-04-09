@@ -101,17 +101,23 @@ void MainWindowController::serverStartedSlot()
 
 	m_tabManager->setRpcConfig(port, host);
 	m_rpcConfigClient->start(port, QHostAddress(host));
+	connect(m_rpcConfigClient, SIGNAL(connectionEstablishedSignal()), this, SLOT(rpcConnectionEstablished()));
 
-	m_rpcConfigClient->requestGetStationList("./Tabs/Tabs.ini");
-	m_rpcConfigClient->requestGetDbConfiguration("./DB/db_uav.ini");
-//	m_rpcConfigClient->requestGetMapObjects("./Map/map_objects.ini");
-	//	m_rpcConfigClient->requestGetMapObjects("./Map/map_points.ini");
+
 }
 
 void MainWindowController::startTabManger()
 {
 	m_view->getStackedWidget()->setCurrentIndex(0);
 	m_tabManager->start();
+}
+
+void MainWindowController::rpcConnectionEstablished()
+{
+	m_rpcConfigClient->requestGetStationList("./Tabs/Tabs.ini");
+	m_rpcConfigClient->requestGetDbConfiguration("./DB/db_uav.ini");
+//	m_rpcConfigClient->requestGetMapObjects("./Map/map_objects.ini");
+	//	m_rpcConfigClient->requestGetMapObjects("./Map/map_points.ini");
 }
 
 void MainWindowController::onMethodCalled(const QString& method, const QVariant& argument)

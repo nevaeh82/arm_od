@@ -8,17 +8,14 @@
 #include <QDataStream>
 
 #include "TcpDefines.h"
+#include "TcpAISZoneManager.h"
 
 class TcpAISCoder : public BaseTcpDeviceCoder
 {
 	Q_OBJECT
 
 private:
-	//! Координаты квадрата
-	double latitude1;
-	double latitude2;
-	double longinude1;
-	double longinude2;
+	ITcpAISZoneManager* m_zoneManager;
 
 	//! Координаты кавычек и запятых в полученных данных
 	struct Bracketed {
@@ -41,7 +38,7 @@ private:
 	QVector<DataFly> listDataFly;
 
 public:
-	explicit TcpAISCoder(QObject* parent = NULL);
+	explicit TcpAISCoder(ITcpAISZoneManager* zoneManager, QObject* parent = NULL);
 	virtual ~TcpAISCoder();
 
 	// ITcpDeviceCoder interface

@@ -1,12 +1,9 @@
 #include "TcpAISCoder.h"
 
-TcpAISCoder::TcpAISCoder(QObject* parent) :
+TcpAISCoder::TcpAISCoder(ITcpAISZoneManager* zoneManager, QObject* parent) :
 	BaseTcpDeviceCoder(parent)
 {
-	latitude1 = 0;
-	latitude2 = 0;
-	longinude1 = 0;
-	longinude2 = 0;
+	m_zoneManager = zoneManager;
 }
 
 TcpAISCoder::~TcpAISCoder()
@@ -24,7 +21,8 @@ MessageSP TcpAISCoder::encode(const QByteArray& data)
 		log_debug("Empty answer");
 		return MessageSP(new Message<QByteArray>(TCP_EMPTY_MESSAGE, QByteArray()));
 	}
-	log_debug(answer);
+//	log_debug(answer);
+	log_debug("Answer is not empty");
 
 	return filterData(answer);
 }
@@ -69,19 +67,21 @@ MessageSP TcpAISCoder::filterData(const QString& data)
 		QString course;
 		QString namePlane;
 
+		AISZone zone = m_zoneManager->getLastZone();
+
 		//! получение широты расположения самолета
 		x1 = listBr[i].comma[0] + 1;
 		x2 = listBr[i].comma[1];
 		latitude = data.mid(x1, x2 - x1);
 
-		if (latitude1 >= latitude.toDouble() && latitude.toDouble() >= latitude2)
+		if (zone.latitudeMax >= latitude.toDouble() && latitude.toDouble() >= zone.latitudeMin)
 		{
 			//! получение долготы расположения самолета
 			x1 = listBr[i].comma[1] + 1;
 			x2 = listBr[i].comma[2];
 			longinude = data.mid(x1, x2 - x1);
 
-			if (longinude1 <= longinude.toDouble() && longinude.toDouble() <= longinude2) {
+			if (zone.longitudeMin <= longinude.toDouble() && longinude.toDouble() <= zone.longitudeMax) {
 				//! получение курса самолета
 				x1 = listBr[i].comma[2] + 1;
 				x2 = listBr[i].comma[3];

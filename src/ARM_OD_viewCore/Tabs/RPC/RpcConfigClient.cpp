@@ -3,7 +3,6 @@
 RpcConfigClient::RpcConfigClient(QObject* parent) :
 	RpcClientBase(parent)
 {
-
 }
 
 RpcConfigClient::~RpcConfigClient()
@@ -54,7 +53,7 @@ void RpcConfigClient::requestGetMapObjects(const QString& filename)
 void RpcConfigClient::requestGetMapPoints(const QString& filename)
 {
 //	m_clientPeer->call(RPC_METHOD_CONFIG_REQUEST_GET_MAP_POINTS, filename);
-	emit getMapPointsSignal(fileName);
+	emit getMapPointsSignal(filename);
 }
 
 void RpcConfigClient::requestGetDbConfiguration(const QString& filename)
@@ -79,5 +78,5 @@ bool RpcConfigClient::start(quint16 port, QHostAddress ipAddress)
 	m_clientPeer->attachSlot(RPC_METHOD_CONFIG_ANSWER_DB_CONFIGURATION, this, SLOT(receivedDbConfigurationSlot(QByteArray)));
 
 	log_debug("Start RpcConfigClient");
-	RpcClientBase::start(port, ipAddress);
+	return RpcClientBase::start(port, ipAddress);
 }

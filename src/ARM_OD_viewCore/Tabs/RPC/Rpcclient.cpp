@@ -61,6 +61,8 @@ void RPCClient::startInternalSlot(quint16 port, QString ipAddress)
 	m_clientPeer->attachSignal(this, SIGNAL(signalSetSolverData(QByteArray)), RPC_SLOT_SET_SOLVER_DATA);
 	m_clientPeer->attachSignal(this, SIGNAL(signalSetSolverDataClear(QByteArray)), RPC_SLOT_SET_SOLVER_CLEAR);
 
+	m_clientPeer->attachSignal(this, SIGNAL(requestGetAisDataSignal()), RPC_METHOD_AIS_REQUEST_GET_DATA);
+
 	connect(this, SIGNAL(signalReconnection()), this, SLOT(_slotReconnection()));
 	connect(m_clientPeer, SIGNAL(disconnectedFromServer()), this, SLOT(_slotRPCDisconnection()));
 	//qDebug() << this->thread();
@@ -117,6 +119,7 @@ void RPCClient::setSolverAuto(QByteArray ba)
 void RPCClient::slotRCPConnetion()
 {
     qDebug() << "Connection complete!";
+//	emit requestGetAisDataSignal();
 	emit signalSetClientId(m_station->id);
 }
 
@@ -235,8 +238,8 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
 void RPCClient::rpcSlotServerSendAisData(QByteArray data)
 {
     QDataStream ds(&data, QIODevice::ReadOnly);
-    int id;
-    ds >> id;
+//    int id;
+//    ds >> id;
 	QMap<int, QVector<QString> > map1;
     ds >> map1;
 

@@ -46,4 +46,27 @@
 #define NORTHATLANTIC_LONGITUDE_MIN			-84.53
 #define NORTHATLANTIC_LONGITUDE_MAX			4.45
 
+typedef struct AISZone
+{
+	AISZone()
+	{
+		latitudeMax		= 0.0;
+		longitudeMin	= 0.0;
+		latitudeMin		= 0.0;
+		longitudeMax	= 0.0;
+	}
+	AISZone(const AISZone& object)
+	{
+		latitudeMax		= object.latitudeMax;
+		longitudeMin	= object.longitudeMin;
+		latitudeMin		= object.latitudeMin;
+		longitudeMax	= object.longitudeMax;
+	}
+
+	double latitudeMax;
+	double longitudeMin;
+	double latitudeMin;
+	double longitudeMax;
+} AISZone;
+
 #endif // TCPAISZONEDEFINES_H

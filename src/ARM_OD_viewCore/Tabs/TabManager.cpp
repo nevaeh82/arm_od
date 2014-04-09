@@ -62,12 +62,12 @@ void TabManager::setStationsConfiguration(const QList<StationConfiguration>& sta
 	foreach (StationConfiguration stationConf, stationList) {
 		Station *station = new Station();
 
-		station->id(stationConf.id);
-		station->name(stationConf.name);
-		station->latitude(stationConf.latitude);
-		station->longitude(stationConf.longitude);
+		station->id = stationConf.id;
+		station->name = stationConf.name;
+		station->latitude = stationConf.latitude;
+		station->longitude = stationConf.longitude;
 
-		m_stationsMap.insert(station->getId(), station);
+		m_stationsMap.insert(station->id, station);
 	}
 }
 

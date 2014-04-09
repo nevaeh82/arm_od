@@ -71,6 +71,7 @@
 #define RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION           "rpc_slot_server_send_atlant_direction"
 #define RPC_SLOT_SERVER_SEND_ATLANT_POSITION            "rpc_slot_server_send_atlant_position"
 
+#define RPC_METHOD_AIS_REQUEST_GET_DATA		"rpcMethodAisRequestGetData"
 
 #define RPC_METHOD_CONFIG_REQUEST_GET_STATION_LIST			"rpcMethodConfigRequestGetStationList"
 #define RPC_METHOD_CONFIG_ANSWER_STATION_LIST				"rpcMethodConfigAnswerStationList"

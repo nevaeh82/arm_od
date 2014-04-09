@@ -48,6 +48,8 @@ private slots:
 
 	void startTabManger();
 
+	void rpcConnectionEstablished();
+
 private:
 
 	void start();

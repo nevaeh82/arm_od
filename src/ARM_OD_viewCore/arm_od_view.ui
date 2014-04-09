@@ -17,6 +17,9 @@
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
       <widget class="QWidget" name="tabPage">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -46,7 +49,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Initialization</string>
+           <string>Initialization...</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
