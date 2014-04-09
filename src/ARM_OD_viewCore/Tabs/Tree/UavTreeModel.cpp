@@ -13,11 +13,54 @@
 UavTreeModel::UavTreeModel(const QStringList &headers, QObject *parent) :
 	TreeModelBase(headers, parent)
 {
+	m_treeUpdater.setInterval(500);
+	m_treeUpdater.start();
+
+	connect(&m_treeUpdater,SIGNAL(timeout()),this,SLOT(updateData()));
+
+	m_isNeedRedraw =false;
+
+	m_targetRole = OUR_UAV_ROLE;
 }
 
 UavTreeModel::~UavTreeModel()
 {
 
+}
+
+void UavTreeModel::updateData()
+{
+	if(m_isNeedRedraw){
+
+		refreshModel();
+
+		m_isNeedRedraw = false;
+	}
+}
+
+QVariant UavTreeModel::data(const QModelIndex &index, int role) const
+{
+	if (!index.isValid()) {
+		return QVariant();
+	}
+
+	TreeItem* item =  static_cast<TreeItem *>(index.internalPointer());
+
+	if (!item) {
+		return QVariant();
+	}
+
+	if (role == Qt::CheckStateRole) {
+
+		if ((item->data().pid != 0) || (index.column() != 0)) {
+			return QVariant();
+		}
+
+		return ((item->data().state > 0) ? Qt::Checked : Qt::Unchecked);
+
+	}
+
+	return TreeModelBase::data(index, role);
 }
 
 
@@ -35,7 +78,7 @@ bool UavTreeModel::updateModelData(TreeItem *item)
 
 void UavTreeModel::onUavAdded(const Uav &uav, const QString& uavRole)
 {
-	if (uavRole != OUR_UAV_ROLE){
+	if (uavRole != m_targetRole){
 		return;
 	}
 
@@ -89,14 +132,14 @@ void UavTreeModel::onUavRemoved(const Uav &uav, const QString& uavRole)
 {
 	Q_UNUSED(uav);
 
-	if (uavRole != OUR_UAV_ROLE){
+	if (uavRole != m_targetRole){
 		return;
 	}
 }
 
 void UavTreeModel::onUavInfoChanged(const UavInfo &uavInfo, const QString& uavRole)
 {
-	if (uavRole != OUR_UAV_ROLE){
+	if (uavRole != m_targetRole){
 		return;
 	}
 
@@ -104,11 +147,25 @@ void UavTreeModel::onUavInfoChanged(const UavInfo &uavInfo, const QString& uavRo
 	onPropertyChanged(uavInfo, 2, tr("lon"), QString::number(uavInfo.lon, 'g', 6));
 	onPropertyChanged(uavInfo, 3, tr("alt"), QString::number(uavInfo.alt, 'g', 6));
 
-	refreshModel();
+	if(m_isNeedRedraw){
+		return;
+	}
+
+	m_isNeedRedraw = true;
+
+	//refreshModel();
+}
+
+void UavTreeModel::setTargetRole(const QString &role)
+{
+	m_targetRole = role;
 }
 
 void UavTreeModel::onPropertyChanged(const UavInfo &uavInfo, const uint propId, const QString &name, const QVariant &value)
 {
+	/// TODO: need to uncomment after imlementing of speed receiving from KTR
+	bool isInFlight = /*(uavInfo.speed > 0) && */(uavInfo.alt > 0);
+
 	Property inProperty;
 	inProperty.pid = uavInfo.uavId;
 	inProperty.id = propId;
@@ -124,6 +181,10 @@ void UavTreeModel::onPropertyChanged(const UavInfo &uavInfo, const uint propId, 
 		if (stationItem->data().id != inProperty.pid) {
 			continue;
 		}
+
+		BaseItem item = stationItem->data();
+		item.state = (isInFlight ? 1 : 0);
+		stationItem->updateData(item);
 
 		for (int j = 0; j< stationItem->childCount(); j++) {
 			if (stationItem->child(j)->data().id == inProperty.id) {

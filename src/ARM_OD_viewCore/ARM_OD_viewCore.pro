@@ -30,9 +30,6 @@ DEFINES += _UNICODE
 OTHER_FILES +=
 
 HEADERS += \
-	Abstracts/ICommonComponents.h \
-	Abstracts/IModuleController.h \
-	Abstracts/ISubModule.h \
 	Common/CommandMessage.h \
 	Common/IMessage.h \
 	Icons/IconsGenerator.h \

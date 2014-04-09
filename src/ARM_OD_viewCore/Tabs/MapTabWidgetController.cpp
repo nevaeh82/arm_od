@@ -10,7 +10,7 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 	m_niipp2 = NULL;
 	m_rpcClient = NULL;
 
-	_tab_manager = tabManager;
+	m_tabManager = tabManager;
 
 	/// create map controller
 	m_mapController = new MapController(this);
@@ -24,20 +24,17 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 	QStringList headers;
 	headers << tr("Property") << tr("Value");
 
-	//m_blaModel = new TreeModel(headers);
-	m_uavTreeModel =  new UavTreeModel(headers, this);
-	m_uavDbManager->registerReceiver(m_uavTreeModel);
+	m_allyUavTreeModel =  new UavTreeModel(headers, this);
+	m_allyUavTreeModel->setTargetRole(OUR_UAV_ROLE);
+	m_uavDbManager->registerReceiver(m_allyUavTreeModel);
 
-	//m_bplaModel = new TreeModel(headers);
-
-
-	/// TODO: refactor
-	//m_blaDbManager->set_model(m_blaModel);
-	//m_bplaDbManager->set_model(m_bplaModel);
+	m_enemyUavTreeModel = new UavTreeModel(headers, this);
+	m_enemyUavTreeModel->setTargetRole(ENEMY_UAV_ROLE);
+	m_uavDbManager->registerReceiver(m_enemyUavTreeModel);
 
 	m_mapSettings = map_settings;
 
-	m_treeDelegate = new BLAWidgetDelegate();
+	m_treeDelegate = new BLAWidgetDelegate(this);
 
 	start();
 }
@@ -47,8 +44,6 @@ MapTabWidgetController::~MapTabWidgetController()
 	closeRPC();
 
 	/// TODO: delete
-	delete m_treeDelegate;
-	//delete m_blaDbManager;
 	delete m_bplaDbManager;
 }
 
@@ -57,13 +52,13 @@ int MapTabWidgetController::init()
 	int error = createTree();
 
 	if(error != 0) {
-		qDebug() << "Cannot create tree view";
+		log_debug("Cannot create tree view");
 		return error;
 	}
 
 	error = createRPC();
 	if(error != 0) {
-		qDebug() << "Cannot create RPC";
+		log_debug("Cannot create RPC");
 		return error;
 	}
 
@@ -101,15 +96,14 @@ int MapTabWidgetController::createRPC()
 
 	///TODO: fix deleting
 
-	m_rpcClient = new RPCClient(m_station, m_uavDbManager, m_bplaDbManager, m_mapController, this, _tab_manager);
-	//m_rpcClient->start(m_rpcHostPort, QHostAddress(m_rpcHostAddress));
+	m_rpcClient = new RPCClient(m_station, m_uavDbManager, m_bplaDbManager, m_mapController, this, m_tabManager);
+
+	m_rpcClient->start(m_rpcHostPort, QHostAddress(m_rpcHostAddress));
 
 	QThread* rpcClientThread = new QThread;
 	connect(m_rpcClient, SIGNAL(destroyed()), rpcClientThread, SLOT(terminate()));
 	m_rpcClient->moveToThread(rpcClientThread);
 	rpcClientThread->start();
-
-	m_rpcClient->start(m_rpcHostPort, QHostAddress(m_rpcHostAddress));
 
 	return 0;
 }
@@ -123,14 +117,15 @@ int MapTabWidgetController::closeRPC()
 
 int MapTabWidgetController::createTree()
 {
-	m_view->getBlaTreeView()->setModel(m_uavTreeModel);
+	m_view->getBlaTreeView()->setModel(m_allyUavTreeModel);
 	m_view->getBlaTreeView()->setItemDelegate(m_treeDelegate);
-	connect(m_uavTreeModel, SIGNAL(onItemAddedSignal()), m_view->getBlaTreeView(), SLOT(expandAll()));
+	connect(m_allyUavTreeModel, SIGNAL(onItemAddedSignal()), m_view->getBlaTreeView(), SLOT(expandAll()));
 
 	connect(m_view->getBlaTreeView(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onBlaTreeItemDoubleClicked(QModelIndex)));
 
-	//m_view->getBplaTreeView()->setModel(m_bplaModel);
-	//m_view->getBplaTreeView()->setItemDelegate(m_treeDelegate);
+	m_view->getBplaTreeView()->setModel(m_enemyUavTreeModel);
+	m_view->getBplaTreeView()->setItemDelegate(m_treeDelegate);
+	connect(m_enemyUavTreeModel, SIGNAL(onItemAddedSignal()), m_view->getBplaTreeView(), SLOT(expandAll()));
 
 	connect(m_view->getControlPanelWidget(), SIGNAL(showBlaClicked()), this, SLOT(onShowBlaTree()));
 	connect(m_view->getControlPanelWidget(), SIGNAL(showBplaClicked()), this, SLOT(onShowBplaTree()));
@@ -155,12 +150,12 @@ void MapTabWidgetController::appendView(MapTabWidget *view)
 	QPointF latlon1;
 	latlon1.setX(42.511183);
 	latlon1.setY(41.6905);
-	m_niipp1 = new NiippController(100, tr("SPIP DD-1"), latlon1, m_mapController, _tab_manager);
+	m_niipp1 = new NiippController(100, tr("SPIP DD-1"), latlon1, m_mapController, m_tabManager);
 
 	QPointF latlon2;
 	latlon2.setX(42.634183);
 	latlon2.setY(41.912167);
-	m_niipp2 = new NiippController(101, tr("SPIP DD-2"), latlon2, m_mapController, _tab_manager);
+	m_niipp2 = new NiippController(101, tr("SPIP DD-2"), latlon2, m_mapController, m_tabManager);
 
 	m_niipp1->appendView(m_view->getNiippWidget(1));
 	m_niipp2->appendView(m_view->getNiippWidget(2));
@@ -181,7 +176,7 @@ void MapTabWidgetController::openMapSlot()
 
 void MapTabWidgetController::onBlaTreeItemDoubleClicked(QModelIndex index)
 {
-	BLAPerehvatDialog *b = new BLAPerehvatDialog(m_mapController->get_map_client(1));
+	BLAPerehvatDialog *b = new BLAPerehvatDialog(m_view);
 	b->init((index.data()).toInt(), m_uavDbManager, m_bplaDbManager);
 
 	/// TODO: This dialog should be modal

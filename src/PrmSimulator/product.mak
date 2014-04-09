@@ -5,7 +5,6 @@ include ../../specs/logger.mak
 include ../../specs/qxt.mak
 
 prebuild::
-	-$(cp) -ud qt.conf $(DESTDIR)
 	$(call begin-build, Prebuild OK )
 	
 postbuild::

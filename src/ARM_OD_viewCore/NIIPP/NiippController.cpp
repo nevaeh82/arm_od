@@ -64,10 +64,12 @@ void NiippController::changeAngel(double value)
 
 void NiippController::set_power(double value)
 {
+	Q_UNUSED(value);
 }
 
 void NiippController::set_switch_on(bool state)
 {
+	Q_UNUSED(state);
 }
 
 void NiippController::set_antenna_type(int value)
