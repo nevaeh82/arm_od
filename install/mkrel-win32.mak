@@ -8,7 +8,7 @@ DEPLOY_EXCLUDE = *Test.exe *d.* *d1.* *debug.dll
 TmpRel = $(SolutionDir)/build/tmprel
 BinDir = $(SolutionDir)/build/bin/msvc
 
-Qt = Gui Core Network Sql
+Qt = Gui Core Network Sql Svg Webkit
 
 all: makeimage
 
