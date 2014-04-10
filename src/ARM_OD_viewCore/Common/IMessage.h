@@ -9,7 +9,7 @@
 class IMessageOld
 {
 public:
-    virtual ~IMessageOld(){};
+	virtual ~IMessageOld(){}
 
     virtual int get(QByteArray& data) = 0;
 

@@ -5,11 +5,7 @@
 #include <QWidget>
 #include <QThread>
 
-
-#include "../Abstracts/ISubModule.h"
-
 #include "Station.h"
-
 
 #include "Tree/DBManager.h"
 
@@ -38,7 +34,7 @@ namespace Ui {
 class MapTabWidget;
 }
 
-class MapTabWidgetController: public QObject, public ISubModule, public IController<MapTabWidget>, public ITabMap
+class MapTabWidgetController: public QObject, public IController<MapTabWidget>, public ITabMap
 {
 	Q_OBJECT
 public:
@@ -54,9 +50,9 @@ private:
 	NiippController* m_niipp1;
 	NiippController* m_niipp2;
 
-//	TreeModel*          m_bplaModel;
-	//TreeModel*          m_blaModel;
-	UavTreeModel*		m_uavTreeModel;
+
+	UavTreeModel*		m_allyUavTreeModel;
+	UavTreeModel*		m_enemyUavTreeModel;
 
 	RPCClient*          m_rpcClient;
 
@@ -70,7 +66,7 @@ private:
 	///Map
 	MapController*          m_mapController;
 
-	ITabManager* _tab_manager;
+	ITabManager* m_tabManager;
 
 	int m_rpcHostPort;
 	QString m_rpcHostAddress;

@@ -15,10 +15,17 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLineEdit" name="blaLE"/>
+    <widget class="QLineEdit" name="blaLE">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QTreeWidget" name="bplaTreeWidget">
+     <attribute name="headerVisible">
+      <bool>false</bool>
+     </attribute>
      <column>
       <property name="text">
        <string notr="true">1</string>
