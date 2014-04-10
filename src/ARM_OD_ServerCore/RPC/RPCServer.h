@@ -27,6 +27,9 @@
 #include "Rpc/RpcServerBase.h"
 #include "Rpc/RpcDefines.h"
 
+#include <QMutexLocker>
+#include <QMutex>
+
 class RPCServer : public RpcServerBase, public IRPC
 {
     Q_OBJECT
@@ -46,6 +49,8 @@ private slots:
     void _slotErrorRPCConnection(QAbstractSocket::SocketError socketError);
     void _slotRPCConnetion(quint64 client);
     void _slotRPCDisconnected(quint64 client);
+
+	void sendDataByRpcSlot(QString signalType, QByteArray data);
 
 public slots:
     void rpc_slot_set_client_id(quint64 client, int id);
@@ -67,6 +72,10 @@ private:
     IRouter*        _router;
 	ISubscriber*    _subscriber;
 
+	int counter;
+
+	QMutex m_mutex;
+
 signals:
     void finished();
 
@@ -78,6 +87,8 @@ signals:
 	void signalSendToRPCBLAPoints(QByteArray);
 	void signalSendToRPCAISData(QByteArray);
 	void signalSendToRPCNIIPPData(QByteArray);
+
+	void sendDataByRpcSignal(QString signalType, QByteArray data);
 
 };
 
