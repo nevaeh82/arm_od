@@ -19,7 +19,6 @@
 #include "Common/CommandMessage.h"
 
 #include "Station.h"
-#include "Tabs/Tree/DBManager.h"
 #include "Tabs/ITabMap.h"
 #include "MapInterface/IMapController.h"
 
@@ -31,6 +30,7 @@
 #include "UAVDefines.h"
 
 #include "Interfaces/IDbUavManager.h"
+#include "Tabs/ITabManager.h"
 
 class RPCClient : public RpcClientBase
 {

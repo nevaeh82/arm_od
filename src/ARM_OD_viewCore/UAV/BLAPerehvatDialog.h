@@ -5,7 +5,6 @@
 #include <QComboBox>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include "../Tabs/Tree/DBManager.h"
 
 #include <QTreeView>
 #include <QTreeWidget>

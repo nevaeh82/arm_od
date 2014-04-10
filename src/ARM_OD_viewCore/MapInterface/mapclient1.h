@@ -40,10 +40,7 @@
 #include <PwGis/MapManagerEvents.h>
 #include <PwGis/GeoRectangle.h>
 
-
 #include "../NIIPP/INiippController.h"
-
-#include "../Tabs/Tree/IDBManager.h"
 
 #include "../UAV/ZInterception.h"
 
