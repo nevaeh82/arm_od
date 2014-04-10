@@ -7,8 +7,6 @@
 
 #include "Station.h"
 
-#include "Tree/DBManager.h"
-
 #include "ITabManager.h"
 #include "ITabMap.h"
 
@@ -38,8 +36,7 @@ class MapTabWidgetController: public QObject, public IController<MapTabWidget>, 
 {
 	Q_OBJECT
 public:
-	MapTabWidgetController(Station* station, QMap<int, Station*> map_settings, ITabManager* tabManager, DbUavManager* db_bla,
-				 DBManager* db_evil, QObject* parent = NULL);
+	MapTabWidgetController(Station* station, QMap<int, Station*> map_settings, ITabManager* tabManager, DbUavManager* db_bla, QObject* parent = NULL);
 	virtual ~MapTabWidgetController();
 
 private:
@@ -57,7 +54,6 @@ private:
 	RPCClient*          m_rpcClient;
 
 	DbUavManager*          m_uavDbManager;
-	DBManager*          m_bplaDbManager;
 
 	QMap<int, Station *> m_mapSettings;
 

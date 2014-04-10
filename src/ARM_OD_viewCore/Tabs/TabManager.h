@@ -15,8 +15,6 @@
 
 #include "MapTabWidget.h"
 
-#include "Tree/DBManager.h"
-
 #include "ITabManager.h"
 
 #include "MapInterface/MapController.h"
@@ -48,12 +46,9 @@ private:
 
 	QMap<QString, MapTabWidgetController* >    m_tabWidgetsMap;
 
-   // DBManager*                  _db_manager_bla;
 	IDbBlaSettingsManager* m_dbBlaSettingsManager;
 	DbUavController* m_dbUavController;
 	DbUavManager* m_dbUavManager;
-
-    DBManager*                  _db_manager_evil;
 
 	MapTabWidgetController*                m_currentWidget;
 

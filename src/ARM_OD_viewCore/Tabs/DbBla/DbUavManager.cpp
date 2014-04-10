@@ -13,9 +13,7 @@ void DbUavManager::setDbController(IDbUavController* dbController)
 
 int DbUavManager::addUav(const Uav &uav)
 {
-	int newUavId = m_dbController->addUav(uav);
-
-	return newUavId;
+	return m_dbController->addUav(uav);
 }
 
 Uav DbUavManager::getUavByUavId(const uint uavId)
@@ -26,6 +24,11 @@ Uav DbUavManager::getUavByUavId(const uint uavId)
 Uav DbUavManager::getUav(const uint id)
 {
 	return m_dbController->getUav(id);
+}
+
+bool DbUavManager::getUavsByRole(const QString &role, QList<Uav> &uavs)
+{
+	return m_dbController->getUavsByRole(role, uavs);
 }
 
 int DbUavManager::addUavInfo(const UavInfo &uavInfo)
@@ -48,12 +51,6 @@ int DbUavManager::addUavInfo(const UavInfo &uavInfo)
 	}
 
 	QString uavRole = getUavRole(uav.roleId).code;
-
-	/// TODO: fix it
-	if (ENEMY_UAV_ROLE == uavRole) {
-		uav.uavId = 50;
-		uav.name = QString::number(uav.uavId);
-	}
 
 	if (!m_knownUavsList.contains(uav.uavId)) {
 		m_knownUavsList.insert(uav.uavId, uav);
@@ -109,6 +106,16 @@ int DbUavManager::addTarget(const Target& target)
 bool DbUavManager::getTargetsByType(const uint targetTypeId, QList<Target> &targetsRecords)
 {
 	return m_dbController->getTargetsByType(targetTypeId, targetsRecords);
+}
+
+bool DbUavManager::getTargetsByUavId(const uint uavId, QList<Target> &targetsRecords)
+{
+	return m_dbController->getTargetsByUavId(uavId, targetsRecords);
+}
+
+bool DbUavManager::deleteTargetsByUavId(const uint uavId)
+{
+	return m_dbController->deleteTargetsByUavId(uavId);
 }
 
 int DbUavManager::addTargetType(const TargetType& targetType)

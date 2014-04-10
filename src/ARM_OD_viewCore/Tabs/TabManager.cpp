@@ -9,9 +9,6 @@ TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
 
 	m_tabWidget = tabWidget;
 
-	/*TODO: REMOVE NEXT STRING*/
-	//_db_manager_bla = new DBManager(this);
-
 	//Creating db bla settings manager
 	m_dbBlaSettingsManager = DbBlaSettingsManager::instance();
 	m_dbBlaSettingsManager->setIniFile("./DB/db_uav.ini");
@@ -29,8 +26,6 @@ TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
 	connect(m_dbUavManager, SIGNAL(destroyed()), dbBlaManagerThread, SLOT(terminate()));
 	m_dbUavManager->moveToThread(dbBlaManagerThread);
 	dbBlaManagerThread->start();
-
-	_db_manager_evil = new DBManager(this);
 
 	connect(this, SIGNAL(currentChanged(int)), this, SLOT(changeTabSlot(int)));
 }
@@ -57,7 +52,7 @@ int TabManager::createSubModules(const QString& settingsFile)
 
 	foreach (Station* station, m_stationsMap) {
 
-		MapTabWidgetController* tabWidgetController = new MapTabWidgetController(station, m_stationsMap, this, m_dbUavManager, _db_manager_evil);
+		MapTabWidgetController* tabWidgetController = new MapTabWidgetController(station, m_stationsMap, this, m_dbUavManager);
 		MapTabWidget* tabWidget = new MapTabWidget(m_tabWidget);
 
 		tabWidgetController->appendView(tabWidget);
