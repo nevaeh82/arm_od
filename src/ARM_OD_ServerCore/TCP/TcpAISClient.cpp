@@ -41,6 +41,7 @@ bool TcpAISClient::isConnected()
 
 void TcpAISClient::writeData(const QByteArray& data)
 {
+	Q_UNUSED(data);
 }
 
 QString TcpAISClient::getHost()

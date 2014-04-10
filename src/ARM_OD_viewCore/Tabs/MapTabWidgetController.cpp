@@ -24,10 +24,14 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 	QStringList headers;
 	headers << tr("Property") << tr("Value");
 
+
 	m_allyUavTreeModel =  new UavTreeModel(headers, this);
+	m_allyUavTreeModel->setTargetRole(OUR_UAV_ROLE);
 	m_uavDbManager->registerReceiver(m_allyUavTreeModel);
 
+
 	m_enemyUavTreeModel = new UavTreeModel(headers, this);
+	m_enemyUavTreeModel->setTargetRole(ENEMY_UAV_ROLE);
 	m_uavDbManager->registerReceiver(m_enemyUavTreeModel);
 
 	m_mapSettings = map_settings;
@@ -96,12 +100,12 @@ int MapTabWidgetController::createRPC()
 
 	m_rpcClient = new RPCClient(m_station, m_uavDbManager, m_bplaDbManager, m_mapController, this, m_tabManager);
 
+	m_rpcClient->start(m_rpcHostPort, QHostAddress(m_rpcHostAddress));
+
 	QThread* rpcClientThread = new QThread;
 	connect(m_rpcClient, SIGNAL(destroyed()), rpcClientThread, SLOT(terminate()));
 	m_rpcClient->moveToThread(rpcClientThread);
 	rpcClientThread->start();
-
-	m_rpcClient->start(m_rpcHostPort, QHostAddress(m_rpcHostAddress));
 
 	return 0;
 }

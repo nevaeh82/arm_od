@@ -194,6 +194,8 @@ void Niipp::setAntennaType(int value)
 
 void Niipp::sendEvil(const QPointF& point, const QPointF& point_uvoda, double alt, double bearing)
 {
+	Q_UNUSED(point_uvoda);
+
 	QByteArray ba;
 	QDataStream ds(&ba, QIODevice::ReadWrite);
 	QDateTime dt = QDateTime::currentDateTime();

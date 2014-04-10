@@ -60,6 +60,7 @@ ARM_OD_Srv::ARM_OD_Srv()
 
     _subscriber_up->add_subscription(SOLVER_SET, _rpc_client1);
     _subscriber_up->add_subscription(SOLVER_CLEAR, _rpc_client1);
+
     thread_rpc_client->start();
 
 	qRegisterMetaType<MessageSP>("MessageSP");

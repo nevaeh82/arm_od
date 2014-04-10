@@ -15,6 +15,8 @@ private:
 	QTimer m_treeUpdater;
 	bool m_isNeedRedraw;
 
+	QString m_targetRole;
+	
 public:
 	explicit UavTreeModel(const QStringList& headers, QObject *parent = 0);
 	virtual ~UavTreeModel();
@@ -29,6 +31,8 @@ public:
 	virtual void onUavAdded(const Uav &uav, const QString& uavRole);
 	virtual void onUavRemoved(const Uav &uav, const QString& uavRole);
 	virtual void onUavInfoChanged(const UavInfo &uavInfo, const QString& uavRole);
+
+	void setTargetRole(const QString& role);
 
 private:
 	void onPropertyChanged(const UavInfo &uavInfo, const uint propId, const QString& name, const QVariant& value);

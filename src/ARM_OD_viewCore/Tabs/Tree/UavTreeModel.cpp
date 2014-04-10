@@ -19,6 +19,8 @@ UavTreeModel::UavTreeModel(const QStringList &headers, QObject *parent) :
 	connect(&m_treeUpdater,SIGNAL(timeout()),this,SLOT(updateData()));
 
 	m_isNeedRedraw =false;
+
+	m_targetRole = OUR_UAV_ROLE;
 }
 
 UavTreeModel::~UavTreeModel()
@@ -76,7 +78,7 @@ bool UavTreeModel::updateModelData(TreeItem *item)
 
 void UavTreeModel::onUavAdded(const Uav &uav, const QString& uavRole)
 {
-	if (uavRole != OUR_UAV_ROLE){
+	if (uavRole != m_targetRole){
 		return;
 	}
 
@@ -130,14 +132,14 @@ void UavTreeModel::onUavRemoved(const Uav &uav, const QString& uavRole)
 {
 	Q_UNUSED(uav);
 
-	if (uavRole != OUR_UAV_ROLE){
+	if (uavRole != m_targetRole){
 		return;
 	}
 }
 
 void UavTreeModel::onUavInfoChanged(const UavInfo &uavInfo, const QString& uavRole)
 {
-	if (uavRole != OUR_UAV_ROLE){
+	if (uavRole != m_targetRole){
 		return;
 	}
 
@@ -152,6 +154,11 @@ void UavTreeModel::onUavInfoChanged(const UavInfo &uavInfo, const QString& uavRo
 	m_isNeedRedraw = true;
 
 	//refreshModel();
+}
+
+void UavTreeModel::setTargetRole(const QString &role)
+{
+	m_targetRole = role;
 }
 
 void UavTreeModel::onPropertyChanged(const UavInfo &uavInfo, const uint propId, const QString &name, const QVariant &value)

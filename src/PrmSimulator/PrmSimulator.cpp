@@ -1,6 +1,7 @@
 #include <math.h>
 #include <time.h>
 
+#include <QPointF>
 #include <QDateTime>
 #include <QDataStream>
 #include <QStringList>
