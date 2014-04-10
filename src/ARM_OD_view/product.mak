@@ -8,6 +8,7 @@ include ../../specs/pwgis.mak
 
 prebuild::
 	-$(cp) -ud qt.conf $(DESTDIR)
+	-$(cp) -ud ../../version.ini $(DESTDIR)
 	$(call begin-build, Prebuild OK )
 	
 postbuild::
