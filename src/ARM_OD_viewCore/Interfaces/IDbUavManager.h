@@ -28,6 +28,7 @@ class IDbUavManager
 		virtual int addUav(const Uav&) = 0;
 		virtual Uav getUavByUavId(const uint uavId) = 0;
 		virtual Uav getUav(const uint id) = 0;
+		virtual bool getUavsByRole(const QString& role, QList<Uav>& uavs) = 0;
 
 		virtual int addUavInfo(const UavInfo&) = 0;
 		virtual int getUavInfoByUavId(const uint uavId) = 0;

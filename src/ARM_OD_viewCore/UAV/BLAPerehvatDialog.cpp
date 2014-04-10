@@ -21,6 +21,35 @@ void BLAPerehvatDialog::init(int id, IDbUavManager *db_bla, DBManager *db_evil)
 {
 	m_id = id;
 	m_dbBla = db_bla;
+
+	QList<Uav> enemyUavs;
+
+	m_dbBla->getUavsByRole(ENEMY_UAV_ROLE, enemyUavs);
+	ui->blaLE->setText(tr("UAV #") + QString::number(m_id));
+
+	QList<QTreeWidgetItem *> items;
+
+	foreach (Uav enemyUav, enemyUavs){
+		QTreeWidgetItem *it = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString(tr("UAV_: #%1")).arg(enemyUav.id)));
+	//	QMap<QString, QVariant>* res_evil_fields = m_dbEvil->get_bpla_fields(res_evil.at(i));
+
+		/*if(res_evil_fields->value("state").toInt() == 0) {
+			it->setCheckState(0, Qt::Unchecked);
+		}
+		else {
+			it->setCheckState(0, Qt::Checked);
+		}
+*/
+		items.append(it);
+	}
+	ui->bplaTreeWidget->insertTopLevelItems(0, items);
+
+
+	connect(ui->bplaTreeWidget, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this, SLOT(treeItemChangedSlot(QTreeWidgetItem*, int)));
+
+
+	/*m_id = id;
+	m_dbBla = db_bla;
 	m_dbEvil = db_evil;
 
 	QVector<int> res_evil = m_dbEvil->get(1);
@@ -43,7 +72,7 @@ void BLAPerehvatDialog::init(int id, IDbUavManager *db_bla, DBManager *db_evil)
 	}
 	ui->bplaTreeWidget->insertTopLevelItems(0, items);
 
-	connect(ui->bplaTreeWidget, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this, SLOT(treeItemChangedSlot(QTreeWidgetItem*, int)));
+	connect(ui->bplaTreeWidget, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this, SLOT(treeItemChangedSlot(QTreeWidgetItem*, int)));*/
 }
 
 void BLAPerehvatDialog::treeItemChangedSlot(QTreeWidgetItem *item, int id)

@@ -13,9 +13,7 @@ void DbUavManager::setDbController(IDbUavController* dbController)
 
 int DbUavManager::addUav(const Uav &uav)
 {
-	int newUavId = m_dbController->addUav(uav);
-
-	return newUavId;
+	return m_dbController->addUav(uav);
 }
 
 Uav DbUavManager::getUavByUavId(const uint uavId)
@@ -26,6 +24,11 @@ Uav DbUavManager::getUavByUavId(const uint uavId)
 Uav DbUavManager::getUav(const uint id)
 {
 	return m_dbController->getUav(id);
+}
+
+bool DbUavManager::getUavsByRole(const QString &role, QList<Uav> &uavs)
+{
+	return m_dbController->getUavsByRole(role, uavs);
 }
 
 int DbUavManager::addUavInfo(const UavInfo &uavInfo)
