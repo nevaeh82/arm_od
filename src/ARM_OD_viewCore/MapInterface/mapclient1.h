@@ -47,6 +47,8 @@
 
 #include "../UAV/ZInterception.h"
 
+#include "UAVDefines.h"
+
 //typedef struct tt
 //{
 //    QPointF *point;

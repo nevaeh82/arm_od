@@ -38,8 +38,7 @@ class RPCClient : public RpcClientBase
 private:
 	IMessageOld*        m_commandMsg;
 	IDbUavManager*		m_dbUavManager;
-	IDBManager*         m_dbManagerTarget;
-	Station	*			m_station;
+	Station*			m_station;
 	ITabMap*            m_parentTab;
 	ITabManager*        m_tabManager;
 	IMapController*     m_mapController;
@@ -53,8 +52,8 @@ private:
 	QMutex m_mutex;
 
 public:
-	RPCClient(Station *station, IDbUavManager *db_manager, IDBManager *db_manager_target,
-			  IMapController* map_controller, ITabMap *parent_tab, ITabManager* tab_manager, QObject *parent = NULL);
+	RPCClient(Station *station, IDbUavManager *db_manager, IMapController* map_controller,
+			  ITabMap *parent_tab, ITabManager* tab_manager, QObject *parent = NULL);
     ~RPCClient();
 
 	bool start(quint16 port, QHostAddress ipAddress);

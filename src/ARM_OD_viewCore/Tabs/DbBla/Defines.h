@@ -72,6 +72,7 @@ typedef struct UavMission
 typedef struct Target
 {
 	int id; // PK
+	int uavId;
 	QString ip;
 	uint port;
 	uint type; // FK

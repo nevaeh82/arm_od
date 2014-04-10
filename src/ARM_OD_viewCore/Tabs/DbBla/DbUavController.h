@@ -38,6 +38,8 @@ public:
 
 	int addTarget(const Target&);
 	bool getTargetsByType(const uint targetTypeId, QList<Target>& targetsRecords);
+	bool getTargetsByUavId(const uint uavId, QList<Target>& targetsRecords);
+	bool deleteTargetsByUavId(const uint uavId);
 
 	int addTargetType(const TargetType&);
 	int getTargetTypeByName(const QString&);

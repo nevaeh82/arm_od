@@ -409,8 +409,8 @@ int DbUavController::addTarget(const Target& target)
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare(QString("INSERT INTO target (ip, port, targetTypeId)")
-								   + QString("VALUES(:ip, :port, :targetTypeId);"));
+	bool succeeded = query.prepare(QString("INSERT INTO target (uavID, ip, port, targetTypeId)")
+								   + QString("VALUES(:uavId, :ip, :port, :targetTypeId);"));
 
 	if (!succeeded){
 		QString er = query.lastError().text();
@@ -418,6 +418,7 @@ int DbUavController::addTarget(const Target& target)
 		return INVALID_INDEX;
 	}
 
+	query.bindValue(":uavId", target.uavId);
 	query.bindValue(":ip", target.ip);
 	query.bindValue(":port", target.port);
 	query.bindValue(":targetTypeId", target.type);
@@ -460,12 +461,89 @@ bool DbUavController::getTargetsByType(const uint targetTypeId, QList<Target> &t
 	while (query.next()){
 		Target target;
 
-		target.id = query.value(0).toUInt();
-		target.ip = query.value(1).toString();
-		target.port = query.value(2).toUInt();
-		target.type = query.value(3).toUInt();
+		target.id = query.value(0).toInt();
+		target.uavId = query.value(1).toInt();
+		target.ip = query.value(2).toString();
+		target.port = query.value(3).toInt();
+		target.type = query.value(4).toInt();
 
 		targetsRecords.append(target);
+	}
+
+	return true;
+}
+
+bool DbUavController::getTargetsByUavId(const uint uavId, QList<Target> &targetsRecords)
+{
+	if(!m_db.isOpen()){
+		return false;
+	}
+
+	Uav uav = getUavByUavId(uavId);
+
+	if (INVALID_INDEX == uav.id){
+		return false;
+	}
+
+	QSqlQuery query(m_db);
+	bool succeeded = query.prepare(QString("SELECT * FROM target WHERE uavId = :uavId;"));
+
+	if (!succeeded) {
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		return false;
+	}
+
+	query.bindValue(":uavId", uav.id);
+
+	succeeded = query.exec();
+
+	if (!succeeded){
+		return false;
+	}
+
+	while (query.next()){
+		Target target;
+
+		target.id = query.value(0).toInt();
+		target.uavId = query.value(1).toInt();
+		target.ip = query.value(2).toString();
+		target.port = query.value(3).toInt();
+		target.type = query.value(4).toInt();
+
+		targetsRecords.append(target);
+	}
+
+	return true;
+}
+
+bool DbUavController::deleteTargetsByUavId(const uint uavId)
+{
+	if(!m_db.isOpen()){
+		return false;
+	}
+
+	Uav uav = getUavByUavId(uavId);
+
+	if (INVALID_INDEX == uav.id){
+		return false;
+	}
+
+	QSqlQuery query(m_db);
+	bool succeeded = query.prepare(QString("DELETE FROM target WHERE uavId = :uavId;"));
+
+	if (!succeeded) {
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		return false;
+	}
+
+	query.bindValue(":uavId", uav.id);
+
+	succeeded = query.exec();
+
+	if (!succeeded){
+		return false;
 	}
 
 	return true;

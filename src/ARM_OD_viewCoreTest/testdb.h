@@ -165,6 +165,7 @@ public:
 
 		// ADDING TARGET TYPE
 		Target target;
+		target.uavId = 1;
 		target.ip = "127.1.1.1";
 		target.port = 2000;
 		target.type = db->getTargetTypeByName("testTargetType");
