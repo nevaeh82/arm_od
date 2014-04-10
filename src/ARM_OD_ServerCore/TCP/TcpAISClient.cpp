@@ -71,6 +71,6 @@ void TcpAISClient::connectToHostAISInternalSlot(const QString& host, const quint
 {
 	m_host = host;
 	m_port = port; // NULL
-
+	log_debug(host);
 	m_networkAccessManager->get(QNetworkRequest(QUrl(m_host)));
 }
