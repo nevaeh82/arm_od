@@ -20,6 +20,7 @@
 
 #include "TCP/TcpManager.h"
 #include "TCP/TcpSettingsManager.h"
+#include "SettingsManager/EnviromentSettingsManager.h"
 
 typedef QSharedPointer<IMessageOld> rpc_msg;
 typedef QVector<QPointF>         rpc_send_points_vector;
@@ -28,30 +29,35 @@ typedef QByteArray               rpc_send_ba_data;
 
 class ARM_OD_Srv : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 
 private:
+	ITcpSettingsManager* m_tcpSettingsManager;
 	TcpManager* m_tcpManager;
 
 public:
-    ARM_OD_Srv();
-    ~ARM_OD_Srv();
+	ARM_OD_Srv();
+	~ARM_OD_Srv();
 
 public:
 
 private:
-    RPCServer*      _rpc_server;
-    Router*         _router;
+	RPCServer*      _rpc_server;
+	Router*         _router;
 	Subscriber*     _subscriber_up;
 
 	RPCClient_R*    _rpc_client1;
 
-signals:
-    void signalStartRPC();
-    void signalStopRPC();
-    void signalFinishRPC();
+private:
+	void addTcpArmrConnection();
+	void addRpcArmrConnection();
 
-    void closeALL();
+signals:
+	void signalStartRPC();
+	void signalStopRPC();
+	void signalFinishRPC();
+
+	void closeALL();
 
 };
 
