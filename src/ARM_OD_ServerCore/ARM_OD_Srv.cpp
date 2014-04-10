@@ -49,10 +49,6 @@ ARM_OD_Srv::ARM_OD_Srv()
 		m_tcpManager->addTcpDevice(key, mapInfo.value(key));
 	}
 
-
-	emit signalStartRPC();
-
-
 	IEnviromentSettingsManager* envSettingsManager = EnviromentSettingsManager::instance();
 	envSettingsManager->setIniFile("./Enviroment/armr_connection.ini");
 	quint32 armrConnectionType = envSettingsManager->getArmrConnectionMode().toUInt();
@@ -70,6 +66,7 @@ ARM_OD_Srv::ARM_OD_Srv()
 			break;
 	}
 
+	emit signalStartRPC();
 }
 
 ARM_OD_Srv::~ARM_OD_Srv()
