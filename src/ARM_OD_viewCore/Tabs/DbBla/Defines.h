@@ -9,6 +9,8 @@
 #define OUR_UAV_ROLE "ourUavRole"
 #define ENEMY_UAV_ROLE "enemyUavRole"
 
+#define ENEMY_UAV_ID_OFFSET 50
+
 typedef struct Uav
 {
 	int id; // PK
@@ -70,6 +72,7 @@ typedef struct UavMission
 typedef struct Target
 {
 	int id; // PK
+	int uavId;
 	QString ip;
 	uint port;
 	uint type; // FK

@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Station *> map_settings, ITabManager* tabManager, DbUavManager* db_bla, DBManager* db_evil, QObject* parent) :
+MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Station *> map_settings, ITabManager* tabManager, DbUavManager* db_bla, QObject* parent) :
 	QObject(parent)
 {
 	m_view = NULL;
@@ -18,7 +18,6 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 	m_station = station;
 
 	/// TODO: refactor
-	m_bplaDbManager = db_evil;
 	m_uavDbManager = db_bla;
 
 	QStringList headers;
@@ -44,9 +43,6 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 MapTabWidgetController::~MapTabWidgetController()
 {
 	closeRPC();
-
-	/// TODO: delete
-	delete m_bplaDbManager;
 }
 
 int MapTabWidgetController::init()
@@ -98,7 +94,7 @@ int MapTabWidgetController::createRPC()
 
 	///TODO: fix deleting
 
-	m_rpcClient = new RPCClient(m_station, m_uavDbManager, m_bplaDbManager, m_mapController, this, m_tabManager);
+	m_rpcClient = new RPCClient(m_station, m_uavDbManager, m_mapController, this, m_tabManager);
 
 	m_rpcClient->start(m_rpcHostPort, QHostAddress(m_rpcHostAddress));
 
@@ -178,8 +174,8 @@ void MapTabWidgetController::openMapSlot()
 
 void MapTabWidgetController::onBlaTreeItemDoubleClicked(QModelIndex index)
 {
-	BLAPerehvatDialog *b = new BLAPerehvatDialog(m_view);
-	b->init((index.data()).toInt(), m_uavDbManager, m_bplaDbManager);
+	BLAPerehvatDialog *b = new BLAPerehvatDialog(m_mapController->get_map_client(1), m_view);
+	b->init((index.data()).toInt(), m_uavDbManager);
 
 	/// TODO: This dialog should be modal
 	b->show();

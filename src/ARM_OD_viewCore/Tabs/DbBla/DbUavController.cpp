@@ -26,7 +26,15 @@ int DbUavController::addUav(const Uav& uav)
 		return INVALID_INDEX;
 	}
 
-	query.bindValue(":uavId", uav.uavId);
+	QString uavRole = getUavRole(uav.roleId).code;
+
+	if (uavRole == ENEMY_UAV_ROLE){
+		int enemyUavId = /*getUavsCountByRole(ENEMY_UAV_ROLE) +*/ ENEMY_UAV_ID_OFFSET;
+		query.bindValue(":uavId", enemyUavId);
+	} else {
+		query.bindValue(":uavId", uav.uavId);
+	}
+
 	query.bindValue(":ip", uav.ip);
 	query.bindValue(":uavTypeId", uav.uavTypeId);
 	query.bindValue(":roleId", uav.roleId);
@@ -124,6 +132,86 @@ Uav DbUavController::getUav(const uint id)
 	}
 
 	return uav;
+}
+
+bool DbUavController::getUavsByRole(const QString &role, QList<Uav> &uavs)
+{
+	if(!m_db.isOpen()){
+		return false;
+	}
+
+	uavs.clear();
+
+	QSqlQuery query(m_db);
+
+	int roleId = getUavRoleByCode(role).id;
+
+	if (INVALID_INDEX == roleId){
+		return false;
+	}
+
+	bool succeeded = query.prepare("SELECT * FROM uav WHERE roleId = :roleId;");
+
+	if (!succeeded) {
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		return false;
+	}
+
+	query.bindValue(":roleId", roleId);
+
+	succeeded = query.exec();
+
+	if (!succeeded){
+		return false;
+	}
+
+	while (query.next()){
+		Uav uav;
+		uav.id = query.record().value(0).toUInt();
+		uav.uavId = query.record().value(1).toUInt();
+		uav.ip = query.record().value(2).toString();
+		uav.uavTypeId = query.record().value(3).toUInt();
+		uav.roleId = query.record().value(4).toUInt();
+		uav.name = query.record().value(5).toString();
+		uav.freqId = query.record().value(6).toUInt();
+		uavs.append(uav);
+	}
+
+	return true;
+}
+
+int DbUavController::getUavsCountByRole(const QString &role)
+{
+	if(!m_db.isOpen()){
+		return INVALID_INDEX;
+	}
+
+	QSqlQuery query(m_db);
+	bool succeeded = query.prepare(QString("SELECT COUNT(*) AS CNT FROM UAV WHERE roleId = (SELECT ID FROM UAVROLES WHERE code = :roleCode);"));
+
+	if (!succeeded){
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		return INVALID_INDEX;
+	}
+
+	query.bindValue(":roleCode", role);
+
+	succeeded = query.exec();
+
+	if (!succeeded){
+		QString er = query.lastError().databaseText() + "\n" + query.lastError().driverText();
+		log_debug("SQL query is wrong! " + er);
+		return INVALID_INDEX;
+	}
+
+	if(!query.next()) {
+		return INVALID_INDEX;
+	}
+
+
+	return query.record().value(0).toUInt();
 }
 
 int DbUavController::addUavInfo(const UavInfo& info)
@@ -321,8 +409,8 @@ int DbUavController::addTarget(const Target& target)
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare(QString("INSERT INTO target (ip, port, targetTypeId)")
-								   + QString("VALUES(:ip, :port, :targetTypeId);"));
+	bool succeeded = query.prepare(QString("INSERT INTO target (uavID, ip, port, targetTypeId)")
+								   + QString("VALUES(:uavId, :ip, :port, :targetTypeId);"));
 
 	if (!succeeded){
 		QString er = query.lastError().text();
@@ -330,6 +418,7 @@ int DbUavController::addTarget(const Target& target)
 		return INVALID_INDEX;
 	}
 
+	query.bindValue(":uavId", target.uavId);
 	query.bindValue(":ip", target.ip);
 	query.bindValue(":port", target.port);
 	query.bindValue(":targetTypeId", target.type);
@@ -372,12 +461,89 @@ bool DbUavController::getTargetsByType(const uint targetTypeId, QList<Target> &t
 	while (query.next()){
 		Target target;
 
-		target.id = query.value(0).toUInt();
-		target.ip = query.value(1).toString();
-		target.port = query.value(2).toUInt();
-		target.type = query.value(3).toUInt();
+		target.id = query.value(0).toInt();
+		target.uavId = query.value(1).toInt();
+		target.ip = query.value(2).toString();
+		target.port = query.value(3).toInt();
+		target.type = query.value(4).toInt();
 
 		targetsRecords.append(target);
+	}
+
+	return true;
+}
+
+bool DbUavController::getTargetsByUavId(const uint uavId, QList<Target> &targetsRecords)
+{
+	if(!m_db.isOpen()){
+		return false;
+	}
+
+	Uav uav = getUavByUavId(uavId);
+
+	if (INVALID_INDEX == uav.id){
+		return false;
+	}
+
+	QSqlQuery query(m_db);
+	bool succeeded = query.prepare(QString("SELECT * FROM target WHERE uavId = :uavId;"));
+
+	if (!succeeded) {
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		return false;
+	}
+
+	query.bindValue(":uavId", uav.id);
+
+	succeeded = query.exec();
+
+	if (!succeeded){
+		return false;
+	}
+
+	while (query.next()){
+		Target target;
+
+		target.id = query.value(0).toInt();
+		target.uavId = query.value(1).toInt();
+		target.ip = query.value(2).toString();
+		target.port = query.value(3).toInt();
+		target.type = query.value(4).toInt();
+
+		targetsRecords.append(target);
+	}
+
+	return true;
+}
+
+bool DbUavController::deleteTargetsByUavId(const uint uavId)
+{
+	if(!m_db.isOpen()){
+		return false;
+	}
+
+	Uav uav = getUavByUavId(uavId);
+
+	if (INVALID_INDEX == uav.id){
+		return false;
+	}
+
+	QSqlQuery query(m_db);
+	bool succeeded = query.prepare(QString("DELETE FROM target WHERE uavId = :uavId;"));
+
+	if (!succeeded) {
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		return false;
+	}
+
+	query.bindValue(":uavId", uav.id);
+
+	succeeded = query.exec();
+
+	if (!succeeded){
+		return false;
 	}
 
 	return true;

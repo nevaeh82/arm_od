@@ -24,6 +24,8 @@ public:
 	int addUav(const Uav&);
 	Uav getUavByUavId(const uint uavId);
 	Uav getUav(const uint id);
+	bool getUavsByRole(const QString& role, QList<Uav>& uavs);
+	int getUavsCountByRole(const QString& role);
 
 	int addUavInfo(const UavInfo&);
 	int getUavInfoByUavId(const uint UavId);
@@ -36,6 +38,8 @@ public:
 
 	int addTarget(const Target&);
 	bool getTargetsByType(const uint targetTypeId, QList<Target>& targetsRecords);
+	bool getTargetsByUavId(const uint uavId, QList<Target>& targetsRecords);
+	bool deleteTargetsByUavId(const uint uavId);
 
 	int addTargetType(const TargetType&);
 	int getTargetTypeByName(const QString&);

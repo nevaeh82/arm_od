@@ -145,6 +145,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `UAVTEST`.`Target` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `uavID` INT NULL,
   `ip` TEXT NULL,
   `port` MEDIUMINT NULL,
 --  `targetId` INT NULL, WHY?!
@@ -154,6 +155,11 @@ CREATE TABLE IF NOT EXISTS `UAVTEST`.`Target` (
   CONSTRAINT `TtypeID`
     FOREIGN KEY (`targetTypeId`)
     REFERENCES `UAVTEST`.`TargetTypes` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `TARGETUAVID`
+    FOREIGN KEY (`uavID`)
+    REFERENCES `UAVTEST`.`UAV` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
