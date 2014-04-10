@@ -52,7 +52,9 @@ HEADERS += \
     TCP/Interfaces/ITcpSettingsManager.h \
     TCP/TcpSettingsManager.h \
     TCP/TcpKTRManager.h \
-    TCP/Interfaces/ITcpKTRManager.h
+    TCP/Interfaces/ITcpKTRManager.h \
+    RPC/Interfaces/IRpcConfigReader.h \
+    RPC/RpcConfigReader.h
 
 SOURCES += \
     ARM_OD_Application.cpp \
@@ -77,4 +79,5 @@ SOURCES += \
     TCP/TcpArmrClientCoder.cpp \
     TCP/TcpAISZoneManager.cpp \
     TCP/TcpSettingsManager.cpp \
-    TCP/TcpKTRManager.cpp
+    TCP/TcpKTRManager.cpp \
+    RPC/RpcConfigReader.cpp

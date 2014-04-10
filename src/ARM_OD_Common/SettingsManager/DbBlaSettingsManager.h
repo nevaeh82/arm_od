@@ -22,14 +22,14 @@ public:
 
 	//FRIEND
 	QString getBlaDbHost();
-	unsigned short getBlaDbPort();
+	quint16 getBlaDbPort();
 	QString getBlaDbLogin();
 	QString getBlaDbPassword();
 	QString getBlaDbName();
 
 	// ENEMY
 	QString getBplaDbHost();
-	unsigned short getBplaDbPort();
+	quint16 getBplaDbPort();
 	QString getBplaDbLogin();
 	QString getBplaDbPassword();
 	QString getBplaDbName();

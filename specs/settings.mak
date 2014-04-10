@@ -1,7 +1,6 @@
 prebuild::
 	$(mkdir) $(DESTDIR)/DB
 	$(mkdir) $(DESTDIR)/images
-	$(mkdir) $(DESTDIR)/KTR
 	$(mkdir) $(DESTDIR)/Map
 	$(mkdir) $(DESTDIR)/RPC
 	$(mkdir) $(DESTDIR)/Styles
@@ -11,7 +10,6 @@ prebuild::
 	
 	$(cp) -ud $(SolutionDir)/settings/DB/*.* $(DESTDIR)/DB
 	$(cp) -ud $(SolutionDir)/settings/images/*.* $(DESTDIR)/images
-	$(cp) -ud $(SolutionDir)/settings/KTR/*.* $(DESTDIR)/KTR
 	$(cp) -ud $(SolutionDir)/settings/Map/*.* $(DESTDIR)/Map
 	$(cp) -ud $(SolutionDir)/settings/RPC/*.* $(DESTDIR)/RPC
 	$(cp) -ud $(SolutionDir)/settings/Styles/*.* $(DESTDIR)/Styles

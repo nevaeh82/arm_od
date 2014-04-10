@@ -7,12 +7,11 @@
 MainWindowController::MainWindowController(QObject *parent) :
 	QObject(parent)
 {
-	m_logger = Pw::Logger::PwLoggerFactory::Instance()->createLogger(LOGGERCLASSNAME(MainWindowController));
-
 	m_view = NULL;
 	m_tabManager = NULL;
 	m_solver = NULL;
 	m_serverHandler = 0;
+	m_rpcConfigClient = NULL;
 }
 
 MainWindowController::~MainWindowController()
@@ -55,13 +54,16 @@ void MainWindowController::stop()
 
 void MainWindowController::init()
 {
+	m_view->getStackedWidget()->setCurrentIndex(1);
+
 	m_tabManager = new TabManager(m_view->getMainTabWidget(), this);
+	connect(m_tabManager, SIGNAL(readyToStart()), this, SLOT(startTabManger()));
 
-	QString tabs_setting_file = QCoreApplication::applicationDirPath();
-	tabs_setting_file.append("/Tabs/Tabs.ini");
+//	QString tabs_setting_file = QCoreApplication::applicationDirPath();
+//	tabs_setting_file.append("/Tabs/Tabs.ini");
 
-	m_tabManager->createSubModules(tabs_setting_file);
-	m_tabManager->start();
+//	m_tabManager->createSubModules(tabs_setting_file);
+//	m_tabManager->start();
 
 	m_solver = new SolverController(701, m_tabManager);
 
@@ -70,6 +72,8 @@ void MainWindowController::init()
 
 	connect(m_view, SIGNAL(setupKoordinatometriyaSignal()), m_solver, SLOT(show()));
 
+	m_rpcConfigClient = new RpcConfigClient(this);
+	m_rpcConfigClient->registerReceiver(this);
 }
 
 void MainWindowController::serverFailedToStartSlot()
@@ -80,5 +84,61 @@ void MainWindowController::serverFailedToStartSlot()
 void MainWindowController::serverStartedSlot()
 {
 	//startRpc();
+
+	log_debug("go to sleep");
+	QEventLoop loop;
+	QTimer timer;
+	connect(&timer, SIGNAL(timeout()),&loop, SLOT(quit()));
+	timer.start(1000);
+	loop.exec();
+	timer.stop();
+	log_debug("Sleeper is off");
+
+	IRpcSettingsManager* rpcSettingsManager = RpcSettingsManager::instance();
+	rpcSettingsManager->setIniFile("./RPC/RpcOdServer.ini");
+	QString host = rpcSettingsManager->getRpcHost();
+	quint16 port = rpcSettingsManager->getRpcPort().toUShort();
+
+	m_tabManager->setRpcConfig(port, host);
+	m_rpcConfigClient->start(port, QHostAddress(host));
+	connect(m_rpcConfigClient, SIGNAL(connectionEstablishedSignal()), this, SLOT(rpcConnectionEstablished()));
+
+
 }
 
+void MainWindowController::startTabManger()
+{
+	m_view->getStackedWidget()->setCurrentIndex(0);
+	m_tabManager->start();
+}
+
+void MainWindowController::rpcConnectionEstablished()
+{
+	m_rpcConfigClient->requestGetStationList("./Tabs/Tabs.ini");
+	m_rpcConfigClient->requestGetDbConfiguration("./DB/db_uav.ini");
+//	m_rpcConfigClient->requestGetMapObjects("./Map/map_objects.ini");
+	//	m_rpcConfigClient->requestGetMapObjects("./Map/map_points.ini");
+}
+
+void MainWindowController::onMethodCalled(const QString& method, const QVariant& argument)
+{
+	QByteArray data = argument.toByteArray();
+		if (method == RPC_METHOD_CONFIG_ANSWER_STATION_LIST) {
+
+			QDataStream dataStream(&data, QIODevice::ReadOnly);
+			QList<StationConfiguration> stationList;
+			dataStream >> stationList;
+
+			m_tabManager->clearAllInformation();
+			m_tabManager->setStationsConfiguration(stationList);
+			m_tabManager->addStationTabs();
+
+		} else if (method == RPC_METHOD_CONFIG_ANSWER_DB_CONFIGURATION) {
+
+			QDataStream dataStream(&data, QIODevice::ReadOnly);
+			DBConnectionStruct dbConfig;;
+			dataStream >> dbConfig;
+
+			m_tabManager->setDbConnectionStruct(dbConfig);
+		}
+}

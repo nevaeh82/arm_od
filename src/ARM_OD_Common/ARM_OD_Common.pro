@@ -21,7 +21,7 @@ INCLUDEPATH += $$PWD
 
 SOURCES += \
     Rpc/RpcDefines.cpp \
-    DbBlaSettingsManager.cpp \
+    SettingsManager/DbBlaSettingsManager.cpp \
     SettingsManager/EnviromentSettingsManager.cpp
 
 HEADERS += \
@@ -33,7 +33,7 @@ HEADERS += \
     Info/ArmrTcpClientSettings.h \
     UAVDefines.h \
     Info/ArmrTcpClientSettings.h \
-    Interfaces/IDbBlaSettingsManager.h \
-    DbBlaSettingsManager.h \
+    SettingsManager/DbBlaSettingsManager.h \
     SettingsManager/EnviromentSettingsManager.h \
+    Interfaces/SettingsManager/IDbBlaSettingsManager.h \
     Interfaces/SettingsManager/IEnviromentSettingsManager.h
