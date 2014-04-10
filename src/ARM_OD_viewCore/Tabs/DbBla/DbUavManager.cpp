@@ -49,6 +49,12 @@ int DbUavManager::addUavInfo(const UavInfo &uavInfo)
 
 	QString uavRole = getUavRole(uav.roleId).code;
 
+	/// TODO: fix it
+	if (ENEMY_UAV_ROLE == uavRole) {
+		uav.uavId = 50;
+		uav.name = QString::number(uav.uavId);
+	}
+
 	if (!m_knownUavsList.contains(uav.uavId)) {
 		m_knownUavsList.insert(uav.uavId, uav);
 

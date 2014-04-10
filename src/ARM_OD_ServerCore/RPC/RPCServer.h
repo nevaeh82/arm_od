@@ -60,8 +60,19 @@ public slots:
     void rpc_slot_set_solver_data(quint64 client, QByteArray data);
     void rpc_slot_set_solver_clear(quint64 client, QByteArray data);
 
-    /// AIS
-    void rpc_slot_send_ais_data(quint64 client, QByteArray* data);
+	/// BLA
+	void rpc_slot_send_bla_points(quint64 client, int id, rpc_QPointF points, double alt, double speed, double course, int state);
+
+	/// AIS
+	void rpc_slot_send_ais_data(quint64 client, QByteArray* data);
+
+	/// ARM_R_Server
+	void rpc_slot_send_bpla_points(quint64 client, QByteArray* data);
+	void rpc_slot_send_bpla_points_auto(quint64 client, QByteArray* data);
+
+	void rpc_slot_send_atlant_direction(quint64 client, QByteArray* data);
+	void rpc_slot_send_atlant_position(quint64 client, QByteArray* data);
+
 
     /// NIIPP
     void rpc_slot_send_NIIPP_data(quint64 client, QByteArray* data);
@@ -71,8 +82,6 @@ private:
 
     IRouter*        _router;
 	ISubscriber*    _subscriber;
-
-	int counter;
 
 	QMutex m_mutex;
 

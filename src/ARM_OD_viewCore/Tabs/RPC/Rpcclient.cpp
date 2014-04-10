@@ -235,7 +235,7 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
 void RPCClient::rpcSlotServerSendAisData(QByteArray data)
 {
     QDataStream ds(&data, QIODevice::ReadOnly);
-    int id;
+	int id;
     ds >> id;
 	QMap<int, QVector<QString> > map1;
     ds >> map1;

@@ -35,6 +35,7 @@ bool RPCServer::start(quint16 port, QHostAddress address)
 	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCAISData(QByteArray)), RPC_SLOT_SERVER_SEND_AIS_DATA);
 	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCNIIPPData(QByteArray)), RPC_SLOT_SERVER_SEND_NIIPP_DATA);
 
+
 	return RpcServerBase::start(port, address);
 }
 
@@ -72,10 +73,16 @@ void RPCServer::_slotRPCConnetion(quint64 client)
 	}
 	RPCClient* cl = new RPCClient(_router, this);
 	_map_clients.insert(client, cl);
-
+	//    connect(cl, SIGNAL(signalSendToRPCBLAPoints(quint64,int,rpc_QPointF,double,double,double,int)), this, SLOT(rpc_slot_send_bla_points(quint64,int,rpc_QPointF,double,double,double,int)));
 	connect(cl, SIGNAL(signalSendToRPCAISData(quint64,QByteArray*)), this, SLOT(rpc_slot_send_ais_data(quint64,QByteArray*)));
+	connect(cl, SIGNAL(signalSendToRPCBPLAPoints(quint64,QByteArray*)), this, SLOT(rpc_slot_send_bpla_points(quint64,QByteArray*)));
+	connect(cl, SIGNAL(signalSendToRPCBPLAPointsAuto(quint64,QByteArray*)), this, SLOT(rpc_slot_send_bpla_points_auto(quint64,QByteArray*)));
+
 	connect(cl, SIGNAL(signalSendToNIIPPPoints(quint64,QByteArray*)), this, SLOT(rpc_slot_send_NIIPP_data(quint64,QByteArray*)));
+	connect(cl, SIGNAL(signalSendToRPCAtlantDirection(quint64,QByteArray*)), this, SLOT(rpc_slot_send_atlant_direction(quint64,QByteArray*)));
+	connect(cl, SIGNAL(signalSendToRPCAtlantPosition(quint64,QByteArray*)), this, SLOT(rpc_slot_send_atlant_position(quint64,QByteArray*)));
 }
+
 
 void RPCServer::_slotRPCDisconnected(quint64 client)
 {
@@ -199,11 +206,35 @@ void RPCServer::sendDataByRpc(const QString &signalType, const QByteArray &data)
 }
 
 ///// send bpla coords
+void RPCServer::rpc_slot_send_bla_points(quint64 client, int id, rpc_QPointF points, double alt, double speed, double course, int state)
+{
+	m_serverPeer->call(client, RPC_SLOT_SERVER_SEND_BLA_POINTS, QVariant::fromValue(id), QVariant::fromValue(points), QVariant::fromValue(alt), QVariant::fromValue(speed), QVariant::fromValue(course), QVariant::fromValue(state));
+}
+
 void RPCServer::rpc_slot_send_ais_data(quint64 client, QByteArray *data)
 {
 	m_serverPeer->call(client, RPC_SLOT_SERVER_SEND_AIS_DATA, QVariant::fromValue(*data));
 }
 
+void RPCServer::rpc_slot_send_bpla_points(quint64 client, QByteArray* data)
+{
+	m_serverPeer->call(client, RPC_SLOT_SERVER_SEND_BPLA_POINTS, QVariant::fromValue(*data));
+}
+
+void RPCServer::rpc_slot_send_bpla_points_auto(quint64 client, QByteArray *data)
+{
+	m_serverPeer->call(client, RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO, QVariant::fromValue(*data));
+}
+
+void RPCServer::rpc_slot_send_atlant_direction(quint64 client, QByteArray *data)
+{
+	m_serverPeer->call(client, RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION, QVariant::fromValue(*data));
+}
+
+void RPCServer::rpc_slot_send_atlant_position(quint64 client, QByteArray *data)
+{
+	m_serverPeer->call(client, RPC_SLOT_SERVER_SEND_ATLANT_POSITION, QVariant::fromValue(*data));
+}
 void RPCServer::rpc_slot_send_NIIPP_data(quint64 client, QByteArray *data)
 {
 	m_serverPeer->call(client, RPC_SLOT_SERVER_SEND_NIIPP_DATA, QVariant::fromValue(*data));
