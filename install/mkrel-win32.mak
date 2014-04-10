@@ -23,6 +23,7 @@ create-dirs:
 	
 copy-qt-msvc: get-msvc
 	$(cp) -u $(foreach name,$(Qt),$(SolutionDir)/build/qt-msvc/Qt$(name)4.dll) $(SolutionDir)/build/qt-msvc/phonon4.dll $(TmpRel)/bin
+	$(cp) $(SolutionDir)/build/qt-mingw/phonon4.dll $(TmpRel)/bin
 	
 copy-bin:
 	$(cp) -rudf $(foreach name,$(DEPLOY), $(BinDir)/$(name)) $(TmpRel)/bin
