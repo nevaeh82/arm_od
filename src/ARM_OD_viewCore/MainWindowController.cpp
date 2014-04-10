@@ -50,6 +50,7 @@ void MainWindowController::stop()
 {
 	//m_serverHandler->terminate();
 	m_serverHandler->kill();
+	m_tabManager->clearAllInformation();
 }
 
 void MainWindowController::init()
@@ -58,12 +59,6 @@ void MainWindowController::init()
 
 	m_tabManager = new TabManager(m_view->getMainTabWidget(), this);
 	connect(m_tabManager, SIGNAL(readyToStart()), this, SLOT(startTabManger()));
-
-//	QString tabs_setting_file = QCoreApplication::applicationDirPath();
-//	tabs_setting_file.append("/Tabs/Tabs.ini");
-
-//	m_tabManager->createSubModules(tabs_setting_file);
-//	m_tabManager->start();
 
 	m_solver = new SolverController(701, m_tabManager);
 
@@ -83,7 +78,7 @@ void MainWindowController::serverFailedToStartSlot()
 
 void MainWindowController::serverStartedSlot()
 {
-	//startRpc();
+	m_view->getStackedWidget()->setCurrentIndex(1);
 
 	log_debug("go to sleep");
 	QEventLoop loop;
@@ -117,7 +112,7 @@ void MainWindowController::rpcConnectionEstablished()
 	m_rpcConfigClient->requestGetStationList("./Tabs/Tabs.ini");
 	m_rpcConfigClient->requestGetDbConfiguration("./DB/db_uav.ini");
 //	m_rpcConfigClient->requestGetMapObjects("./Map/map_objects.ini");
-	//	m_rpcConfigClient->requestGetMapObjects("./Map/map_points.ini");
+//	m_rpcConfigClient->requestGetMapObjects("./Map/map_points.ini");
 }
 
 void MainWindowController::onMethodCalled(const QString& method, const QVariant& argument)

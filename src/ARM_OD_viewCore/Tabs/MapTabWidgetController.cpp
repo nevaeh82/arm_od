@@ -43,6 +43,9 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 MapTabWidgetController::~MapTabWidgetController()
 {
 	closeRPC();
+	m_uavDbManager->deregisterReceiver(m_allyUavTreeModel);
+	m_uavDbManager->deregisterReceiver(m_enemyUavTreeModel);
+	m_rpcClient->stop();
 }
 
 int MapTabWidgetController::init()

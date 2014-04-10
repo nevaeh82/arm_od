@@ -46,7 +46,6 @@ private:
 
 	QMap<QString, MapTabWidgetController* >    m_tabWidgetsMap;
 
-	IDbBlaSettingsManager* m_dbBlaSettingsManager;
 	DbUavController* m_dbUavController;
 	DbUavManager* m_dbUavManager;
 
@@ -60,7 +59,6 @@ private:
 public:
 	void start();
 
-//	int createSubModules(const QString& settingsFile);
 
     virtual void send_data(int pid, IMessageOld* msg);
     virtual void send_data_niipp_control(int id, QByteArray ba);
@@ -72,10 +70,6 @@ public:
 	void addStationTabs();
 	void clearAllInformation();
 
-private:
-//	int readSettings(const QString &settingsFile);
-
-//	DBConnectionStruct getDbBlaConnectionSettings();
 
 private slots:
 	void changeTabSlot(int index);
