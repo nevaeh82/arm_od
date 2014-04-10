@@ -1,8 +1,8 @@
 #ifndef SOLVER_H
 #define SOLVER_H
 
-#include "../ITabManager.h"
-#include "../../Common/CommandMessage.h"
+#include "Tabs/ITabManager.h"
+#include "Common/CommandMessage.h"
 
 class Solver
 {

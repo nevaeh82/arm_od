@@ -2,7 +2,7 @@
 #define MESSAGEOLD_H
 
 #include <QByteArray>
-#include "../Common/IMessage.h"
+#include "Common/IMessage.h"
 
 class MessageOld : public IMessageOld
 {

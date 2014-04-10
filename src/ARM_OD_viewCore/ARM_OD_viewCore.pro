@@ -44,12 +44,6 @@ HEADERS += \
 	Interfaces/IExchangeMainTreeItem.h \
 	Interfaces/ITCPClient.h \
 	Interfaces/ITCPParser.h \
-	MapInterface/IMapClient.h \
-	MapInterface/IMapController.h \
-	MapInterface/mapclient1.h \
-	MapInterface/MapController.h \
-	MapInterface/Map.h \
-	MapInterface/MapWidget.h \
 	NIIPP/INiippController.h \
 	NIIPP/Niipp.h \
 	NIIPP/NiippController.h \
@@ -70,34 +64,43 @@ HEADERS += \
 	Tabs/ITabManager.h \
 	Tabs/ITabMap.h \
 	Tabs/TabManager.h \
+	Tabs/MapTabWidget.h \
+	Tabs/DbBla/DbUavController.h \
+	Tabs/DbBla/Defines.h  \
+	Tabs/DbBla/IDbUavController.h \
+	Tabs/DbBla/DbUavManager.h \
+	Tabs/Tree/UavTreeModel.h \
+	Tabs/MapTabWidgetController.h \
 	UAV/BLAPerehvatDialog.h \
 	UAV/ZInterception.h \
 	MainWindow.h \
 	MainWindowController.h \
-    Interfaces/IDbChangedListener.h \
-    Interfaces/IDbController.h \
-    Interfaces/IDbManager.h \
-    UiDefines.h \
-    Interfaces/ISettingsChangedListener.h \
-    Tabs/MapTabWidget.h \
-    Station.h \
-    Tabs/MapTabWidgetController.h \
-    ControlPanel/ControlPanel.h \
-    Interfaces/IUavDbChangedListener.h \
-    Tabs/DbBla/DbUavController.h \
-    Tabs/DbBla/Defines.h  \
-    Tabs/DbBla/IDbUavController.h \
-    Tabs/DbBla/DbUavManager.h \
-    Interfaces/IDbUavManager.h \
-    Tabs/Tree/UavTreeModel.h
+	Interfaces/IDbChangedListener.h \
+	Interfaces/IDbController.h \
+	Interfaces/IDbManager.h \
+	UiDefines.h \
+	Interfaces/ISettingsChangedListener.h \
+	Station.h \
+	ControlPanel/ControlPanel.h \
+	Interfaces/IUavDbChangedListener.h \
+	Interfaces/IDbUavManager.h \
+	Map/IMapClient.h \
+	Map/IMapController.h \
+	Map/MapClient1.h \
+	Map/MapController.h \
+	Map/Map.h \
+	Map/MapWidget.h \
+	Map/Features/AisFeature.h \
+	Map/Features/EnemyBplaFeature.h \
+	Map/Features/FriendBplaFeature.h \
+	Map/Features/InterceptionFeature.h \
+	Map/Features/NiippFeature.h \
+	Map/Features/PelengatorFeature.h \
+	Map/Features/StationFeature.h \
 
 SOURCES += \
 	Common/CommandMessage.cpp \
 	Icons/IconsGenerator.cpp \
-	MapInterface/mapclient1.cpp \
-	MapInterface/MapController.cpp \
-	MapInterface/Map.cpp \
-	MapInterface/MapWidget.cpp \
 	NIIPP/NiippController.cpp \
 	NIIPP/Niipp.cpp \
 	NIIPP/NiippWidget.cpp \
@@ -109,24 +112,35 @@ SOURCES += \
 	Tabs/Tree/DBManager.cpp \
 	Tabs/Tree/TreeWidgetDelegate.cpp \
 	Tabs/TabManager.cpp \
+	Tabs/MapTabWidget.cpp \
+	Tabs/MapTabWidgetController.cpp \
+	Tabs/DbBla/DbUavController.cpp \
+	Tabs/DbBla/DbUavManager.cpp \
+	Tabs/Tree/UavTreeModel.cpp \
 	UAV/BLAPerehvatDialog.cpp \
 	UAV/ZInterception.cpp \
 	MainWindow.cpp \
 	MainWindowController.cpp \
-    Tabs/MapTabWidget.cpp \
-    Tabs/MapTabWidgetController.cpp \
-    ControlPanel/ControlPanel.cpp \
-    Tabs/RPC/Rpcclient.cpp \
-    Tabs/DbBla/DbUavController.cpp \
-    Tabs/DbBla/DbUavManager.cpp \
-    Tabs/Tree/UavTreeModel.cpp
+	Tabs/RPC/Rpcclient.cpp \
+	ControlPanel/ControlPanel.cpp \
+	Map/MapClient1.cpp \
+	Map/MapController.cpp \
+	Map/Map.cpp \
+	Map/MapWidget.cpp \
+	Map/Features/AisFeature.cpp \
+	Map/Features/EnemyBplaFeature.cpp \
+	Map/Features/FriendBplaFeature.cpp \
+	Map/Features/InterceptionFeature.cpp \
+	Map/Features/NiippFeature.cpp \
+	Map/Features/PelengatorFeature.cpp \
+	Map/Features/StationFeature.cpp \
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \
 	arm_od_view.ui \
 	Tabs/Solver/SolverWidget.ui \
-	MapInterface/MapWidget.ui \
+	Map/MapWidget.ui \
 	NIIPP/NiippWidget.ui \
-    MapTabWidget.ui \
-    ControlPanel/ControlPanel.ui
+	MapTabWidget.ui \
+	ControlPanel/ControlPanel.ui
 

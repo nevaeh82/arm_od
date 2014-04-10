@@ -3,9 +3,9 @@
 
 #include <QObject>
 
-#include "SolverWidget.h"
-#include "Solver.h"
-#include "../ITabManager.h"
+#include "Tabs/Solver/SolverWidget.h"
+#include "Tabs/Solver/Solver.h"
+#include "Tabs/ITabManager.h"
 
 class SolverController : public QObject
 {

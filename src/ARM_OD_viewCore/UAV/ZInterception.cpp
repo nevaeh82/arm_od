@@ -1,4 +1,4 @@
-#include "ZInterception.h"
+﻿#include "ZInterception.h"
 
 ZInterception::ZInterception(IMapClient* client)
 {
@@ -58,77 +58,77 @@ void ZInterception::_slot_set(int bla, int bpla, QByteArray per, QByteArray targ
 
 void ZInterception::getIntcData(QPointF aCoordCurrentIntc, float aHgtCurrentIntc, float aMaxSpd, float aMaxHgtSpd)
 {
-//    qDebug()<<"Р—Р°РїРѕР»РЅРµРЅС‹ РґР°РЅРЅС‹Рµ РїРµСЂРµС…РІР°С‚С‡РёРєР°";
-    mCoordCurrentIntc=aCoordCurrentIntc; //qDebug()<<"РљРѕРѕСЂРґРёРЅР°С‚С‹ "<<aCoordCurrentIntc.x()<<" "<<aCoordCurrentIntc.y();
-    mHgtCurrentIntc=aHgtCurrentIntc; //qDebug()<<"Р’С‹СЃРѕС‚Р° "<<aHgtCurrentIntc;
-    mMaxSpd=aMaxSpd; //qDebug()<<"РЎРєРѕСЂРѕСЃС‚СЊ "<<aMaxSpd;
-    mMaxHgtSpd=aMaxHgtSpd; //qDebug()<<"РЎРєРѕСЂРѕСЃС‚СЊ РЅР°Р±РѕСЂР° РІС‹СЃРѕС‚С‹"<<aMaxHgtSpd;
+//    qDebug()<<"Заполнены данные перехватчика";
+	mCoordCurrentIntc=aCoordCurrentIntc; //qDebug()<<"Координаты "<<aCoordCurrentIntc.x()<<" "<<aCoordCurrentIntc.y();
+	mHgtCurrentIntc=aHgtCurrentIntc; //qDebug()<<"Высота "<<aHgtCurrentIntc;
+	mMaxSpd=aMaxSpd; //qDebug()<<"Скорость "<<aMaxSpd;
+	mMaxHgtSpd=aMaxHgtSpd; //qDebug()<<"Скорость набора высоты"<<aMaxHgtSpd;
 
 }
 
 void ZInterception::getAimData(QPointF aCoordCurrentAim, float aHgtCurrentAim, float aSpdAim, float aCourseAim)
 {
-    //qDebug()<<"Р—Р°РїРѕР»РЅРµРЅС‹ РґР°РЅРЅС‹Рµ Р¦РµР»Рё";
-    mCoordCurrentAim=aCoordCurrentAim; //qDebug()<<"РљРѕРѕСЂРґРёРЅР°С‚С‹ "<<aCoordCurrentAim.x()<<" "<<aCoordCurrentAim.y();
-    mHgtCurrentAim=aHgtCurrentAim; //qDebug()<<"Р’С‹СЃРѕС‚Р° "<<aHgtCurrentAim;
-    mCurrentAimSpd=aSpdAim; //qDebug()<<"РЎРєРѕСЂРѕСЃС‚СЊ "<<aSpdAim;
-    mCurrentAimCourse=aCourseAim; //qDebug()<<"РљСѓСЂСЃ "<<aCourseAim;
+	//qDebug()<<"Заполнены данные Цели";
+	mCoordCurrentAim=aCoordCurrentAim; //qDebug()<<"Координаты "<<aCoordCurrentAim.x()<<" "<<aCoordCurrentAim.y();
+	mHgtCurrentAim=aHgtCurrentAim; //qDebug()<<"Высота "<<aHgtCurrentAim;
+	mCurrentAimSpd=aSpdAim; //qDebug()<<"Скорость "<<aSpdAim;
+	mCurrentAimCourse=aCourseAim; //qDebug()<<"Курс "<<aCourseAim;
 
 }
 
 void ZInterception::mainProcessing()
 {
-    //qDebug()<<"РџРѕС€Р»Р° РѕСЃРЅРѕРІРЅР°СЏ РѕР±СЂР°Р±РѕС‚РєР°";
+	//qDebug()<<"Пошла основная обработка";
 
-    int aAllTime=60*60;  //Р§Р°СЃ РЅР° РїРµСЂРµС…РІР°С‚
+	uint aAllTime=60*60;  //Час на перехват
 
     QPointF aTempInterceptionCoord;
-    QPointF aDecartCoordAim=QPointF(0,0);               //Р”РµРєР°СЂС‚РѕРІС‹ РєРѕРѕСЂРёРґРЅР°С‚С‹ С†РµР»Рё
-    QPointF aDecartCoordIntc;                           //Р”РµРєР°СЂС‚РѕРІС‹ РєРѕРѕСЂРґРёРЅР°С‚С‹ РїРµСЂРµС…РІР°С‚С‡РёРєР°
+	QPointF aDecartCoordAim=QPointF(0,0);               //Декартовы коориднаты цели
+	QPointF aDecartCoordIntc;                           //Декартовы координаты перехватчика
     geogrToDecart(mCoordCurrentIntc, aDecartCoordIntc, mCoordCurrentAim);
 
-    //Р Р°СЃС‡РµС‚ РєРѕРѕСЂРґРёРЅР°С‚ РєР°Р¶РґРѕР№ С‚РѕС‡РєРё С†РµР»Рё РІ С‚РµС‡РµРЅРёРµ С‡Р°СЃР°
-    for (uint i=0; i<aAllTime; i++)
-    {
-		float aTempDistance;                                //Р Р°СЃСЃС‚РѕСЏРЅРёРµ, РєРѕС‚РѕСЂРѕРµ РїСЂРѕР»РµС‚РµР»Р° С†РµР»СЊ
-		float aTempTimeToIntercept;                         //Р’СЂРµРјСЏ, РЅРµРѕР±С…РѕРґРёРјРѕРµ РїРµСЂРµС…РІР°С‚С‡РёРєСѓ, С‡С‚РѕР±С‹ РґРѕР»РµС‚РµС‚СЊ РґРѕ С‚РѕС‡РєРё РїРµСЂРµС…РІР°С‚Р°
-		float aTempTimeToHgtIntercept;                      //Р’СЂРµРјСЏ, РЅРµРѕР±С…РѕРґРёРјРѕРµ РїРµСЂРµС…РІР°С‚С‡РёРєСѓ, С‡С‚РѕР±С‹ РЅР°Р±СЂР°С‚СЊ РІС‹СЃРѕС‚Сѓ С‚РѕС‡РєРё РїРµСЂРµС…РІР°С‚Р°
+	//Расчет координат каждой точки цели в течение часа
+	for (uint i=0; i < aAllTime; i++)
+	{
+		float aTempDistance;                                //Расстояние, которое пролетела цель
+		float aTempTimeToIntercept;                         //Время, необходимое перехватчику, чтобы долететь до точки перехвата
+		float aTempTimeToHgtIntercept;                      //Время, необходимое перехватчику, чтобы набрать высоту точки перехвата
 
-        //qDebug()<<"I РІ РѕСЃРЅРѕРІРЅРѕР№ РѕР±СЂР°Р±РѕС‚РєРµ "<<i;
+		//qDebug()<<"I в основной обработке "<<i;
 
-        //РўРµРєСѓС‰Р°СЏ РєРѕРѕСЂРґРёРЅР°С‚Р° С†РµР»Рё
+		//Текущая координата цели
         getNextCoord(aDecartCoordAim, mCurrentAimCourse, mCurrentAimSpd, i, aTempInterceptionCoord);
         if (mCurrentAimSpd<0.1) aTempInterceptionCoord=aDecartCoordAim;
 
-        //Р Р°СЃСЃС‚РѕСЏРЅРёРµ РѕС‚ С‚РµРєСѓС‰РµР№ РєРѕРѕСЂРґРёРЅР°С‚С‹ С†РµР»Рё РґРѕ РїРµСЂРµС…РІР°С‚С‡РёРєР°
+		//Расстояние от текущей координаты цели до перехватчика
         aTempDistance=getDistance(aTempInterceptionCoord, aDecartCoordIntc);
         //qDebug()<<" aTempDistance="<<aTempDistance;
 
-        //РћРїСЂРµРґРµР»РµРЅРёРµ РІСЂРµРјРµРЅРё, Р·Р° РєРѕС‚РѕСЂРѕРµ СЃСЋРґР° РґРѕР»РµС‚РёС‚ РїРµСЂРµС…РІР°С‚С‡РёРє
+		//Определение времени, за которое сюда долетит перехватчик
         aTempTimeToIntercept=aTempDistance/mMaxSpd;
         //qDebug()<<" aTempTimeToIntercept="<<aTempTimeToIntercept;
 
-        //РћРїСЂРµРґРµР»РµРЅРёРµ РІСЂРµРјРµРЅРё, Р·Р° РєРѕС‚РѕСЂРѕРµ РїРµСЂРµС…РІР°С‚С‡РёРє РЅР°Р±РµСЂРµС‚ РІС‹СЃРѕС‚Сѓ
+		//Определение времени, за которое перехватчик наберет высоту
         aTempTimeToHgtIntercept=(mHgtCurrentAim+1000-mHgtCurrentIntc)/mMaxHgtSpd;
 
-        //РћРїСЂРµРґРµР»РµРЅРёРµ СѓСЃР»РѕРІРёСЏ РІС‹РїРѕР»РЅРµРЅРёСЏ РїРµСЂРµС…РІР°С‚Р°
+		//Определение условия выполнения перехвата
         if (i>aTempTimeToIntercept && i>aTempTimeToHgtIntercept)
         {
-            //РџРµСЂРµС…РІР°С‚ РІРѕР·РјРѕР¶РµРЅ, РѕРїСЂРµРґРµР»СЏРµРј РєСѓСЂСЃ, СЃРєРѕСЂРѕСЃС‚СЊ, РІС‹СЃРѕС‚Сѓ РїРµСЂРµС…РІР°С‚С‡РёРєР°
-            QPointF aIntcCoords=aTempInterceptionCoord;               //РљРѕРѕСЂРґРёРЅР°С‚С‹ РїРµСЂРµС…РІР°С‚Р°
-            float aCurrentAngle;                                      //РќРµРѕР±С…РѕРґРёРјС‹Р№ РєСѓСЂСЃРѕРІРѕР№ СѓРіРѕР» РґР»СЏ РїРµСЂРµС…РІР°С‚С‡РёРєР°
+			//Перехват возможен, определяем курс, скорость, высоту перехватчика
+			QPointF aIntcCoords=aTempInterceptionCoord;               //Координаты перехвата
+			float aCurrentAngle;                                      //Необходимый курсовой угол для перехватчика
             QPointF aXYSpeed;
             getAngle(aDecartCoordIntc, aIntcCoords, mMaxSpd, aXYSpeed, aCurrentAngle);
 
             float aCurrentHgtInt=i*mMaxHgtSpd;
             float aRadius=aCurrentHgtInt-mHgtCurrentAim;
 
-            //РћС‚РїСЂР°РІРєР° СЃРёРіРЅР°Р»Р° СЃ РґР°РЅРЅС‹РјРё Рѕ С‚РѕС‡РєРµ РїРµСЂРµС…РІР°С‚Р°
+			//Отправка сигнала с данными о точке перехвата
             decartToGeogr(aTempInterceptionCoord, aIntcCoords, mCoordCurrentAim);
 
 //            emit signal_sendInterceptionPoint(aIntcCoords, aCurrentHgtInt, aRadius, i, aCurrentAngle, mMaxSpd);
-            _client->perehvat_point(_bla, _bpla, aIntcCoords, aCurrentHgtInt, aRadius, i, aCurrentAngle, mMaxSpd);
-            //РџСЂРёСЃРІРѕРµРЅРёРµ РІСЂРµРјРµРЅРё РґР»СЏ РІС‹С…РѕРґР° РёР· С†РёРєР»Р°
+			_client->addPerehvatPoint( _bla, _bpla, aIntcCoords, aCurrentHgtInt, aRadius, i, aCurrentAngle, mMaxSpd );
+			//Присвоение времени для выхода из цикла
             i=aAllTime+10;
         }
     }
@@ -138,8 +138,8 @@ void ZInterception::mainProcessing()
 void ZInterception::geogrToDecart(QPointF aGeogrCoord,QPointF &lDecartCoord, QPointF aCentrCoord)
 {
     float dY, dX, popravka;
-    float pi=3.1415926535897932385;
-    float ERadius=6366197.724;
+	float pi=3.1415926535897932385F;
+	float ERadius=6366197.724F;
 
     popravka=cos(aCentrCoord.x()*pi/180);
 
@@ -150,8 +150,8 @@ void ZInterception::geogrToDecart(QPointF aGeogrCoord,QPointF &lDecartCoord, QPo
 
 void ZInterception::decartToGeogr(QPointF aDecartCoord, QPointF &lGeogrCoord, QPointF aCentrCoord)
 {
-    float pi=3.1415926535897932385;
-    float ERadius=6366197.724;
+	float pi=3.1415926535897932385F;
+	float ERadius=6366197.724F;
 
     lGeogrCoord.setX(aCentrCoord.x() + aDecartCoord.y()*180/pi/ERadius);
     lGeogrCoord.setY(aCentrCoord.y() + aDecartCoord.x()*180/cos(aCentrCoord.x()*pi/180)/ERadius/pi);
@@ -169,7 +169,7 @@ float ZInterception::getDistance(QPointF aDecartCoordA, QPointF aDecartCoordB)
 
 void ZInterception::getAngle(QPointF aDecartCoordA, QPointF aDecartCoordB, float aSpeed, QPointF &lXYSpeed, float &lAngle)
 {
-    float pi=3.1415926535897932385;
+	float pi=3.1415926535897932385F;
     QPointF aTemp;
     aTemp=QPointF(aDecartCoordB.x()-aDecartCoordA.x(), aDecartCoordB.y() - aDecartCoordA.y());
     lAngle=(qAtan2(aTemp.x(),aTemp.y()))/pi*180;
@@ -178,7 +178,7 @@ void ZInterception::getAngle(QPointF aDecartCoordA, QPointF aDecartCoordB, float
 
 void ZInterception::getNextCoord(QPointF aDecartCoordAim, float aAngle, float aSpeed, int aTimeSec, QPointF &lDecartCoord)
 {
-    float pi=3.1415926535897932385;
+	float pi=3.1415926535897932385F;
 
     float aXSpd, aYSpd;
     aXSpd=qSin(aAngle/180*pi)*aSpeed;

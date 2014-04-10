@@ -17,8 +17,8 @@
 
 #include "IRPC.h"
 #include "RPCClient.h"
-#include "../Common/IRouter.h"
-#include "../Common/Subscriber.h"
+#include "Common/IRouter.h"
+#include "Common/Subscriber.h"
 
 #include "Message.h"
 

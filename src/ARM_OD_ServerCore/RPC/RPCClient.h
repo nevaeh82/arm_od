@@ -6,10 +6,10 @@
 #include <QVector>
 #include <QSharedPointer>
 #include <QMetaType>
-#include "../Common/IClient.h"
-#include "../Common/IRouter.h"
-#include "../Common/IMessage.h"
-#include "../Common/ISubscriber.h"
+#include "Common/IClient.h"
+#include "Common/IRouter.h"
+#include "Common/IMessage.h"
+#include "Common/ISubscriber.h"
 #include "IRPC.h"
 
 typedef QSharedPointer<IMessageOld> rpc_msg;

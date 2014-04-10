@@ -1,5 +1,5 @@
 #include "TcpArmrClientCoder.h"
-#include "../Common/Defines.h"
+#include "Common/Defines.h"
 #include "TCP/TcpDefines.h"
 
 TcpArmrClientCoder::TcpArmrClientCoder(QObject *parent) :

@@ -15,10 +15,10 @@
 
 class DBController : public QObject, public IDBController
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    DBController();
-    ~DBController();
+	DBController();
+	~DBController();
 
 public:
 //    virtual QMap<QString, QVariant>* get_data(int id, int pid);
@@ -27,43 +27,52 @@ public:
 //public slots:
 //    virtual void set_data(QMap<QString, QVariant>* data);
 
-    virtual QVector<int> get_list_bla();
-    virtual QVector<int> get_list_bpla();
+	virtual QVector<int> getFriendBplaList();
+	virtual QVector<int> getEnemyBplaList();
 
-    virtual QVector<QMap<QString, QVariant> >* get_property_bla(int pid);
-    virtual QVector<QMap<QString, QVariant> >* get_property_bpla(int pid);
+	virtual QVector<QMap<QString, QVariant> >* getFriendBplaProperty(int pid);
+	virtual QVector<QMap<QString, QVariant> >* getEnemyBplaPropert(int pid);
 
-    virtual QMap<QString, QVariant>* get_bla_fields(int id);
-    virtual QMap<QString, QVariant>* get_bpla_fields(int id);
+	virtual QMap<QString, QVariant>* getFriendBplaFields(int id);
+	virtual QMap<QString, QVariant>* getEnemyBplaFields(int id);
 
+	virtual void setFriendBpla(QMap<QString, QVariant>* data);
+	virtual void setFriendBplaProperty(QMap<QString, QVariant>* data);
 
+	virtual void setEnemyBpla(QMap<QString, QVariant>* data);
+	virtual void setEnemyBplaProperty(QMap<QString, QVariant>* data);
 
-    virtual void set_bla(QMap<QString, QVariant>* data);
-    virtual void set_bla_property(QMap<QString, QVariant>* data);
-
-    virtual void set_bpla(QMap<QString, QVariant>* data);
-    virtual void set_bpla_property(QMap<QString, QVariant>* data);
-
-    virtual void delete_bla(int id);
-    virtual void delete_bpla(int id);
-    virtual void delete_bla_property(int pid, int id);
-    virtual void delete_bpla_property(int pid, int id);
+	virtual void deleteFriendBpla(int id);
+	virtual void deleteEnemyBpla(int id);
+	virtual void deleteFriendBplaProperty(int pid, int id);
+	virtual void deleteEnemyBplaProperty(int pid, int id);
 
 
 //private slots:
 //    void _slot_set(QMap<QString, QVariant>* data);
 
-private:
-    QSqlDatabase _sdb;
-    QString     _db_name;
+protected:
+	void setBpla( QString tableName, QMap<QString, QVariant> *data );
+	void setBplaProperty( QString tableName, QMap<QString, QVariant> *data );
+
+
+	void deleteBpla( QString tableName, int id );
+	void deleteBplaProperty(QString tableName, int pid, int id);
+
+	QVector<int> getBplaList( QString tableName );
+	QMap<QString, QVariant>* getBplaFields( QString tableName, int id );
+	QVector<QMap<QString, QVariant> >* getBplaProperty( QString tableName, int pid );
 
 private:
-     int _read_settings(QString path_to_ini_file);
-     int _set_db();
-     void _set_table(QString name);
+	QSqlDatabase m_sdb;
+	QString m_dbName;
+
+	int readSettings( QString pathToIniFile );
+	int setDb();
+	void setTable(QString name);
 
 signals:
-     void signalFinished();
+	void signalFinished();
 //     void signalSet(QMap<QString, QVariant> *);
 
 };

@@ -1,479 +1,248 @@
+#include <QSQLiteDriver>
+
+#include <Logger.h>
+
 #include "DBController.h"
-#include <QDebug>
 
 DBController::DBController()
 {
-    _sdb = QSqlDatabase::addDatabase("QSQLITE");
-    _set_db();
-    connect(this, SIGNAL(signalSet(QMap<QString,QVariant>*)), this, SLOT(_slot_set(QMap<QString,QVariant>*)));
+	m_sdb = QSqlDatabase::addDatabase( "QSQLITE", "Pw.Zaviruha.ARMOD.Tabs.Tree.DB" );
+	setDb();
 }
 
 DBController::~DBController()
 {
-    if(_sdb.isOpen())
-        _sdb.close();
+	if( m_sdb.isOpen() ) {
+		m_sdb.close();
+	}
 }
 
-QVector<int> DBController::get_list_bla()
+QVector<int> DBController::getBplaList( QString tableName )
 {
-    /// dynamically forming table name for connecting 1 to many
-    QString table_name = "BLA";
-    _set_table(table_name);
+	setTable(tableName);
 
-    QStringList req_fields("SELECT id FROM ");
+	QString sql = "SELECT id FROM %1";
+	QSqlQuery query( m_sdb );
+	query.exec( sql.arg( tableName ) );
 
-	req_fields.append(table_name);
+	QSqlRecord rec = query.record();
+	QVector<int> result;
+	while( query.next() ) {
+		for( int i = 0; i < rec.count(); i++ ) {
+			result.push_back( query.value(i).toInt() );
+		}
+	}
 
-    QSqlQuery query;
-    query.exec(req_fields.join(""));
-    QSqlRecord rec = query.record();
-    QVector<int> map_result;
-    while(query.next())
-    {
-        for(int i = 0; i < rec.count(); i++)
-        {
-            map_result.push_back(query.value(i).toInt());//->insert(rec.fieldName(i), );
-        }
-    }
-    return map_result;
+	return result;
 }
 
-QVector<int> DBController::get_list_bpla()
+QVector<int> DBController::getFriendBplaList()
 {
-    /// dynamically forming table name for connecting 1 to many
-    QString table_name = "BPLA";
-    _set_table(table_name);
-
-    QStringList req_fields("SELECT id FROM ");
-
-    req_fields.append(table_name);
-
-    QSqlQuery query;
-    query.exec(req_fields.join(""));
-    QSqlRecord rec = query.record();
-    QVector<int> map_result;
-    while(query.next())
-    {
-        for(int i = 0; i < rec.count(); i++)
-        {
-			map_result.push_back(query.value(i).toInt());
-        }
-    }
-    return map_result;
+	return getBplaList( "BLA" );
 }
 
-QVector<QMap<QString, QVariant> > *DBController::get_property_bla(int pid)
+QVector<int> DBController::getEnemyBplaList()
 {
-    /// dynamically forming table name for connecting 1 to many
-    QVector<QMap<QString, QVariant> >* vec = new QVector<QMap<QString, QVariant> >;
-    QString table_name = "BLA_Property";
-    _set_table(table_name);
-
-    QStringList req_fields("SELECT * FROM ");
-
-    req_fields.append(table_name);
-    req_fields.append(" WHERE pid=");
-    req_fields.append(QString::number(pid));
-
-    QSqlQuery query;
-    query.exec(req_fields.join(""));
-	QSqlRecord rec;
-
-    while(query.next())
-    {
-        rec = query.record();
-        QMap<QString, QVariant> map_result;
-        for(int i = 0; i < rec.count(); i++)
-        {
-            map_result.insert(rec.fieldName(i), query.value(i));
-        }
-        vec->push_back(map_result);
-    }
-    return vec;
+	return getBplaList( "BPLA" );
 }
 
-QVector<QMap<QString, QVariant> > *DBController::get_property_bpla(int pid)
+QVector<QMap<QString, QVariant> >* DBController::getBplaProperty(QString tableName, int pid)
 {
-    /// dynamically forming table name for connecting 1 to many
-    QVector<QMap<QString, QVariant> >* vec = new QVector<QMap<QString, QVariant> >;
-    QString table_name = "BPLA_Property";
-    _set_table(table_name);
+	setTable(tableName);
 
-    QStringList req_fields("SELECT * FROM ");
+	QVector<QMap<QString, QVariant> >* result = new QVector<QMap<QString, QVariant> >;
 
-    req_fields.append(table_name);
-    req_fields.append(" WHERE pid=");
-    req_fields.append(QString::number(pid));
+	QString sql = "SELECT * FROM %1 WHERE pid = %2";
+	QSqlQuery query( m_sdb );
+	query.exec( sql.arg( tableName, QString::number(pid) ) );
 
-    QSqlQuery query;
-    query.exec(req_fields.join(""));
-	QSqlRecord rec;
+	QSqlRecord rec = query.record();
+	while( query.next() ) {
+		QMap<QString, QVariant> field;
+		for( int i = 0; i < rec.count(); i++ ) {
+			field.insert( rec.fieldName(i), query.value(i) );
+		}
 
-    while(query.next())
-    {
-        rec = query.record();
-        QMap<QString, QVariant> map_result;
-        for(int i = 0; i < rec.count(); i++)
-        {
-            map_result.insert(rec.fieldName(i), query.value(i));
-        }
-        vec->push_back(map_result);
-    }
-    return vec;
+		result->push_back( field );
+	}
 
+	return result;
 }
 
-void DBController::set_bla(QMap<QString, QVariant> *data)
+QVector<QMap<QString, QVariant> >* DBController::getFriendBplaProperty(int pid)
 {
-	QString table_name = "BLA";
-    _set_table(table_name);
-
-    QStringList req_fields("SELECT id FROM ");
-
-    req_fields.append(table_name);
-    req_fields.append(" WHERE id=");
-    req_fields.append(data->value("id").toString());
-
-    QSqlQuery query;
-    query.exec(req_fields.join(""));
-
-    bool err1 = query.next();
-    if(err1)
-    {
-        QString update_string;
-        update_string.append("UPDATE ");
-        update_string.append(table_name);
-        update_string.append(" SET \"");
-        QMap<QString, QVariant>::iterator it;
-        for( it = data->begin(); it != data->end(); ++it)
-        {
-            if(it.key() == "id")
-            {
-                continue;
-            }
-            update_string.append(it.key());
-            update_string.append("\"=\"");
-            update_string.append(it.value().toString());
-            update_string.append("\", \"");
-        }
-        update_string.remove(update_string.length() - 3, 3);
-
-        update_string.append(" WHERE ");
-        update_string.append("id=");
-        update_string.append(data->value("id").toString());
-        query.exec(update_string);
-    }
-    else
-    {
-        QString insert_string;
-        insert_string.append("INSERT INTO ");
-        insert_string.append(table_name);
-        insert_string.append("(");
-        QString values;
-        QMap<QString, QVariant>::iterator it;
-        for( it = data->begin(); it != data->end(); ++it)
-        {
-            insert_string.append(it.key());
-            insert_string.append(", ");
-            values.append("\"");
-            values.append(it.value().toString());
-            values.append("\", ");
-        }
-        insert_string.remove(insert_string.length() - 2, 1);
-        values.remove(values.length() - 2, 1);
-        insert_string.append(") VALUES (");
-        insert_string.append(values);
-        insert_string.append(")");
-
-        query.exec(insert_string);
-    }
+	return getBplaProperty( "BLA_Property", pid );
 }
 
-void DBController::set_bla_property(QMap<QString, QVariant> *data)
+QVector<QMap<QString, QVariant> > *DBController::getEnemyBplaPropert(int pid)
 {
-    QString table_name = "BLA_Property";
-
-    _set_table(table_name);
-
-    QStringList req_fields("SELECT * FROM ");
-
-    req_fields.append(table_name);
-    req_fields.append(" WHERE pid=");
-    req_fields.append(data->value("pid").toString());
-    req_fields.append(" AND id=");
-    req_fields.append(data->value("id").toString());
-
-    QSqlQuery query;
-    query.exec(req_fields.join(""));
-
-    bool err1 = query.next();
-    if(err1)
-    {
-        QString update_string;
-        update_string.append("UPDATE ");
-        update_string.append(table_name);
-        update_string.append(" SET \"");
-        QMap<QString, QVariant>::iterator it;
-        for( it = data->begin(); it != data->end(); ++it)
-        {
-            if(it.key() == "id")
-            {
-                continue;
-            }
-            update_string.append(it.key());
-            update_string.append("\"=\"");
-            update_string.append(it.value().toString());
-            update_string.append("\", \"");
-        }
-        update_string.remove(update_string.length() - 3, 3);
-
-        update_string.append(" WHERE ");
-
-        update_string.append("pid=");
-        update_string.append(data->value("pid").toString());
-        update_string.append(" AND ");
-        update_string.append("id=");
-        update_string.append(data->value("id").toString());
-        query.exec(update_string);
-    }
-    else
-    {
-        QString insert_string;
-        insert_string.append("INSERT INTO ");
-        insert_string.append(table_name);
-        insert_string.append("(");
-        QString values;
-        QMap<QString, QVariant>::iterator it;
-        for( it = data->begin(); it != data->end(); ++it)
-        {
-            insert_string.append(it.key());
-            insert_string.append(", ");
-            values.append("\"");
-            values.append(it.value().toString());
-            values.append("\", ");
-        }
-        insert_string.remove(insert_string.length() - 2, 1);
-        values.remove(values.length() - 2, 1);
-        insert_string.append(") VALUES (");
-        insert_string.append(values);
-        insert_string.append(")");
-
-        query.exec(insert_string);
-    }
+	return getBplaProperty( "BPLA_Property", pid );
 }
 
-void DBController::set_bpla(QMap<QString, QVariant> *data)
+void DBController::setBpla(QString tableName, QMap<QString, QVariant> *data)
 {
-	QString table_name = "BPLA";
+	QString id = data->value("id").toString();
 
-    _set_table(table_name);
+	if( id.isNull() ) return;
 
-    QStringList req_fields("SELECT id FROM ");
+	QString sql;
+	QSqlQuery query( m_sdb );
 
-    req_fields.append(table_name);
-    req_fields.append(" WHERE id=");
-    req_fields.append(data->value("id").toString());
+	setTable(tableName);
 
-    QSqlQuery query;
-    query.exec(req_fields.join(""));
+	sql = "SELECT id FROM %1 WHERE id = %2";
+	query.exec( sql.arg( tableName, id ) );
 
-    bool err1 = query.next();
-    if(err1)
-    {
-        QString update_string;
-        update_string.append("UPDATE ");
-        update_string.append(table_name);
-        update_string.append(" SET \"");
-        QMap<QString, QVariant>::iterator it;
-        for( it = data->begin(); it != data->end(); ++it)
-        {
-            if(it.key() == "id")
-            {
-                continue;
-            }
-            update_string.append(it.key());
-            update_string.append("\"=\"");
-            update_string.append(it.value().toString());
-            update_string.append("\", \"");
-        }
-        update_string.remove(update_string.length() - 3, 3);
+	// if record already exists, just update it
+	if( query.next() ) {
+		sql = "UPDATE %1 SET %2 WHERE id = %3";
 
-        update_string.append(" WHERE ");
-        update_string.append("id=");
-        update_string.append(data->value("id").toString());
-        query.exec(update_string);
-    }
-    else
-    {
-        QString insert_string;
-        insert_string.append("INSERT INTO ");
-        insert_string.append(table_name);
-        insert_string.append("(");
-        QString values;
-        QMap<QString, QVariant>::iterator it;
-        for( it = data->begin(); it != data->end(); ++it)
-        {
-            insert_string.append(it.key());
-            insert_string.append(", ");
-            values.append("\"");
-            values.append(it.value().toString());
-            values.append("\", ");
-        }
-        insert_string.remove(insert_string.length() - 2, 1);
-        values.remove(values.length() - 2, 1);
-        insert_string.append(") VALUES (");
-        insert_string.append(values);
-        insert_string.append(")");
+		// collect fields to update
+		QStringList fields;
+		QMap<QString, QVariant>::iterator it;
+		for( it = data->begin(); it != data->end(); ++it ) {
+			if( it.key() == "id" ) continue;
 
-        query.exec(insert_string);
-    }
+			fields << QString( "\"%1\" = \"%2\"" ).arg( it.key(), it.value().toString() );
+		}
+
+		query.exec( sql.arg( tableName, fields.join(", "), id ) );
+	}
+	// else we should create new one
+	else {
+		sql = "INSERT INTO %1 (%2) VALUES (%3)";
+
+		QStringList keys = data->keys();
+
+		// collect values to insert
+		QStringList values;
+		QMap<QString, QVariant>::iterator it;
+		for( it = data->begin(); it != data->end(); ++it ) {
+			values << QString( "\"%1\"" ).arg( it.value().toString() );
+		}
+
+		query.exec( sql.arg( tableName, keys.join(", "), values.join(", ") ) );
+	}
 }
 
-void DBController::set_bpla_property(QMap<QString, QVariant> *data)
+void DBController::setFriendBpla(QMap<QString, QVariant> *data)
 {
-    QString table_name = "BPLA_Property";
-
-    _set_table(table_name);
-
-    QStringList req_fields("SELECT id FROM ");
-
-    req_fields.append(table_name);
-    req_fields.append(" WHERE pid=");
-    req_fields.append(data->value("pid").toString());
-    req_fields.append(" AND id=");
-    req_fields.append(data->value("id").toString());
-
-    QSqlQuery query;
-    query.exec(req_fields.join(""));
-
-    bool err1 = query.next();
-    if(err1)
-    {
-        QString update_string;
-        update_string.append("UPDATE ");
-        update_string.append(table_name);
-        update_string.append(" SET \"");
-        QMap<QString, QVariant>::iterator it;
-        for( it = data->begin(); it != data->end(); ++it)
-        {
-            if(it.key() == "id")
-            {
-                continue;
-            }
-            update_string.append(it.key());
-            update_string.append("\"=\"");
-            update_string.append(it.value().toString());
-            update_string.append("\", \"");
-        }
-        update_string.remove(update_string.length() - 3, 3);
-
-        update_string.append(" WHERE ");
-
-        update_string.append("pid=");
-        update_string.append(data->value("pid").toString());
-        update_string.append(" AND ");
-        update_string.append("id=");
-        update_string.append(data->value("id").toString());
-        query.exec(update_string);
-    }
-    else
-    {
-        QString insert_string;
-        insert_string.append("INSERT INTO ");
-        insert_string.append(table_name);
-        insert_string.append("(");
-        QString values;
-        QMap<QString, QVariant>::iterator it;
-        for( it = data->begin(); it != data->end(); ++it)
-        {
-            insert_string.append(it.key());
-            insert_string.append(", ");
-            values.append("\"");
-            values.append(it.value().toString());
-            values.append("\", ");
-        }
-        insert_string.remove(insert_string.length() - 2, 1);
-        values.remove(values.length() - 2, 1);
-        insert_string.append(") VALUES (");
-        insert_string.append(values);
-        insert_string.append(")");
-
-        query.exec(insert_string);
-    }
+	setBpla( "BLA", data );
 }
 
-void DBController::delete_bla(int id)
+void DBController::setEnemyBpla(QMap<QString, QVariant> *data)
 {
-    QString table_name = "BLA";
-
-    _set_table(table_name);
-
-    QStringList req_fields("DELETE FROM ");
-    req_fields.append(table_name);
-    req_fields.append(" WHERE id=");
-    req_fields.append(QString::number(id));
-
-    QSqlQuery query;
-    query.exec(req_fields.join(""));
+	setBpla( "BPLA", data );
 }
 
-void DBController::delete_bpla(int id)
+void DBController::setBplaProperty(QString tableName, QMap<QString, QVariant> *data)
 {
-    QString table_name = "BPLA";
 
-    _set_table(table_name);
 
-    QStringList req_fields("DELETE FROM ");
-    req_fields.append(table_name);
-    req_fields.append(" WHERE id=");
-    req_fields.append(QString::number(id));
+	QString pid = data->value("pid").toString();
+	QString id = data->value("id").toString();
 
-    QSqlQuery query;
-    query.exec(req_fields.join(""));
+	if( pid.isNull() || id.isNull() ) return;
+
+	QString sql;
+	QSqlQuery query( m_sdb );
+
+	setTable(tableName);
+
+	// check if property already exists in DB
+	sql = "SELECT id FROM %1 WHERE pid = %2 AND id = %3";
+	query.exec( sql.arg( tableName, pid, id ) );
+
+	// if record already exists, just update it
+	if( query.next() ) {
+		sql = "UPDATE %1 SET %2 WHERE pid = %3 AND id = %4";
+
+		// collect fields to update
+		QStringList fields;
+		QMap<QString, QVariant>::iterator it;
+		for( it = data->begin(); it != data->end(); ++it ) {
+			if( it.key() == "id" || it.key() == "pid" ) continue;
+
+			fields << QString( "\"%1\" = \"%2\"" ).arg( it.key(), it.value().toString() );
+		}
+
+		query.exec( sql.arg( tableName, fields.join(", "), pid, id ) );
+	}
+	// else we should create new one
+	else {
+		sql = "INSERT INTO %1 (%2) VALUES (%3)";
+
+		QStringList keys = data->keys();
+
+		// collect values to insert
+		QStringList values;
+		QMap<QString, QVariant>::iterator it;
+		for( it = data->begin(); it != data->end(); ++it ) {
+			values << QString( "\"%1\"" ).arg( it.value().toString() );
+		}
+
+		query.exec( sql.arg( tableName, keys.join(", "), values.join(", ") ) );
+	}
 }
 
-void DBController::delete_bla_property(int pid, int id)
+void DBController::setFriendBplaProperty(QMap<QString, QVariant> *data)
 {
-    QString table_name = "BLA_Property";
-
-    _set_table(table_name);
-
-    QStringList req_fields("DELETE FROM ");
-    req_fields.append(table_name);
-    req_fields.append(" WHERE id=");
-    req_fields.append(QString::number(id));
-    req_fields.append(" AND pid=");
-    req_fields.append(QString::number(pid));
-
-    QSqlQuery query;
-    query.exec(req_fields.join(""));
+	setBplaProperty( "BLA_Property", data );
 }
 
-void DBController::delete_bpla_property(int pid, int id)
+void DBController::setEnemyBplaProperty(QMap<QString, QVariant> *data)
 {
-    QString table_name = "BPLA_Property";
-
-    _set_table(table_name);
-
-    QStringList req_fields("DELETE FROM ");
-    req_fields.append(table_name);
-    req_fields.append(" WHERE id=");
-    req_fields.append(QString::number(id));
-    req_fields.append(" AND pid=");
-    req_fields.append(QString::number(pid));
-
-    QSqlQuery query;
-    query.exec(req_fields.join(""));
+	setBplaProperty( "BPLA_Property", data );
 }
 
-int DBController::_set_db()
+void DBController::deleteBpla(QString tableName, int id)
 {
-	_sdb.setDatabaseName(":memory:");
-    return 0;
+	setTable(tableName);
+
+	QString sql = "DELETE FROM %1 WHERE id = %2";
+
+	QSqlQuery query( m_sdb );
+	query.exec( sql.arg( tableName, QString::number(id) ) );
+}
+
+void DBController::deleteFriendBpla(int id)
+{
+	deleteBpla( "BLA", id );
+}
+
+void DBController::deleteEnemyBpla(int id)
+{
+	deleteBpla( "BPLA", id );
+}
+
+void DBController::deleteBplaProperty(QString tableName, int pid, int id)
+{
+	setTable(tableName);
+
+	QString sql = "DELETE FROM %1 WHERE id = %2 AND pid = %3";
+
+	QSqlQuery query( m_sdb );
+	query.exec( sql.arg( tableName, QString::number(id), QString::number(pid) ) );
+}
+
+void DBController::deleteFriendBplaProperty(int pid, int id)
+{
+	deleteBplaProperty( "BLA_Property", pid, id );
+}
+
+void DBController::deleteEnemyBplaProperty(int pid, int id)
+{
+	deleteBplaProperty( "BPLA_Property", pid, id );
+}
+
+int DBController::setDb()
+{
+	m_sdb.setDatabaseName(":memory:");
+	return 0;
 }
 
 /// create table based on pid
-void DBController::_set_table(QString name)
+void DBController::setTable(QString name)
 {
 	QString newTableProperties = "";
 
@@ -507,7 +276,7 @@ void DBController::_set_table(QString name)
         str.append("(id integer PRIMARY KEY NOT NULL, pid integer, name TEXT, state integer)");
         QSqlQuery query;
         bool err = query.exec(str);
-    }
+	}
     else
     {
 
@@ -521,80 +290,55 @@ void DBController::_set_table(QString name)
 	}*/
 }
 
-QMap<QString, QVariant> *DBController::get_bla_fields(int id)
+QMap<QString, QVariant>* DBController::getBplaFields(QString tableName, int id)
 {
-    /// dynamically forming table name for connecting 1 to many
-    QString table_name = "BLA";
-    _set_table(table_name);
+	setTable(tableName);
 
-    QStringList req_fields("SELECT * FROM ");
+	QString sql( "SELECT * FROM %1 WHERE id = %2");
+	QSqlQuery query( m_sdb );
+	query.exec( sql.arg( tableName, QString::number( id ) ) );
 
-    req_fields.append(table_name);
-    req_fields.append(" WHERE id=");
-    req_fields.append(QString::number(id));
+	QSqlRecord rec = query.record();
+	QMap<QString, QVariant>* fields = new QMap<QString, QVariant>;
+	while( query.next() ) {
+		for( int i = 0; i < rec.count(); i++ ) {
+			fields->insert( rec.fieldName(i), query.value(i) );
+		}
+	}
 
-    QSqlQuery query;
-    query.exec(req_fields.join(""));
-    QSqlRecord rec = query.record();
-    QMap<QString, QVariant>* map_result = new QMap<QString, QVariant>;
-    while(query.next())
-    {
-        for(int i = 0; i < rec.count(); i++)
-        {
-            map_result->insert(rec.fieldName(i), query.value(i));
-        }
-    }
-    return map_result;
+	return fields;
 }
 
-QMap<QString, QVariant> *DBController::get_bpla_fields(int id)
+QMap<QString, QVariant>* DBController::getFriendBplaFields(int id)
 {
-    /// dynamically forming table name for connecting 1 to many
-    QString table_name = "BPLA";
-    _set_table(table_name);
+	return getBplaFields( "BLA", id );
+}
 
-    QStringList req_fields("SELECT * FROM ");
-
-    req_fields.append(table_name);
-    req_fields.append(" WHERE id=");
-    req_fields.append(QString::number(id));
-
-    QSqlQuery query;
-    query.exec(req_fields.join(""));
-    QSqlRecord rec = query.record();
-    QMap<QString, QVariant>* map_result = new QMap<QString, QVariant>;
-    while(query.next())
-    {
-        for(int i = 0; i < rec.count(); i++)
-        {
-            map_result->insert(rec.fieldName(i), query.value(i));
-        }
-    }
-    return map_result;
+QMap<QString, QVariant> *DBController::getEnemyBplaFields(int id)
+{
+	return getBplaFields( "BPLA", id );
 }
 
 /// read db file location from ini file
-int DBController::_read_settings(QString path_to_ini_file)
+int DBController::readSettings(QString pathToIniFile)
 {
     int error = -1;
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-    QSettings m_settings(path_to_ini_file, QSettings::IniFormat);
+	QSettings m_settings( pathToIniFile, QSettings::IniFormat );
 
     m_settings.setIniCodec(codec);
 
-    QStringList childKeys = m_settings.childGroups();
-    foreach (const QString &childKey, childKeys)
-    {
-        if(childKey.toLatin1() != "DB_file_name")
-        {
-            continue;
-        }
-        qDebug() << "m_settings = " << childKey.toLatin1();
-        m_settings.beginGroup(childKey);
+	QStringList childKeys = m_settings.childGroups();
+	foreach( const QString &childKey, childKeys ) {
+		if( childKey.toLatin1() != "DB_file_name" ) {
+			continue;
+		}
 
-        _db_name.append("DB/");
-        _db_name += m_settings.value("file", "db_tree.sqlite").toString();
+		log_debug( QString( "m_settings = %1" ).arg( childKey ) );
 
+		m_settings.beginGroup(childKey);
+		m_dbName.append("DB/");
+		m_dbName += m_settings.value("file", "db_tree.sqlite").toString();
 
         error = 0;
         m_settings.endGroup();

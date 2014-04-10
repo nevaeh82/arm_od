@@ -11,7 +11,7 @@
 #include <QMutex>
 #include <QThread>
 
-#include "../Abstracts/IModuleController.h"
+#include "Abstracts/IModuleController.h"
 
 #include "Station.h"
 
@@ -24,9 +24,9 @@
 
 #include "ITabManager.h"
 
-#include "../MapInterface/MapController.h"
+#include "Map/MapController.h"
 
-#include "../NIIPP/NIIPPController.h"
+#include "NIIPP/NIIPPController.h"
 
 #include "MapTabWidgetController.h"
 

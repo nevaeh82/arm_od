@@ -42,7 +42,7 @@ QString DbBlaSettingsManager::getBlaDbPassword()
 {
 	QMutexLocker mutexLocker(&m_mutex);
 	QSettings settings(m_settingsFile, QSettings::IniFormat);
-	return settings.value("UAVDB/Password", "qwerty12345").toString();
+	return settings.value("UAVDB/Password", "").toString();
 }
 
 QString DbBlaSettingsManager::getBlaDbName()

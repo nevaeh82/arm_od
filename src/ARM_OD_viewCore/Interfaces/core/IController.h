@@ -1,7 +1,7 @@
 #ifndef ICONTROLLER_H
 #define ICONTROLLER_H
 
-#include "../../Tabs/MainTreeModelManager.h"
+#include "Tabs/MainTreeModelManager.h"
 
 class IController
 {

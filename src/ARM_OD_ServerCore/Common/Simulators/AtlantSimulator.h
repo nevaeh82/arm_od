@@ -8,10 +8,10 @@
 #include <math.h>
 #include <QDateTime>
 
-#include "../../Common/Router.h"
-#include "../../Common/ISubscriber.h"
-#include "../../RPC/Message.h"
-#include "../../RPC/Client/RPCClient_R.h"
+#include "Common/Router.h"
+#include "Common/ISubscriber.h"
+#include "RPC/Message.h"
+#include "RPC/Client/RPCClient_R.h"
 
 class AtlantSimulator : public QObject, public IClient
 {
