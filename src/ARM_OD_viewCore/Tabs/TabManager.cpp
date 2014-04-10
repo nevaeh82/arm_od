@@ -72,7 +72,7 @@ void TabManager::addStationTabs()
 {
 	foreach (Station* station, m_stationsMap) {
 
-		MapTabWidgetController* tabWidgetController = new MapTabWidgetController(station, m_stationsMap, this, m_dbUavManager, _db_manager_evil, this);
+		MapTabWidgetController* tabWidgetController = new MapTabWidgetController(station, m_stationsMap, this, m_dbUavManager);
 		tabWidgetController->setRpcConfig(m_rpcPort, m_rpcHost);
 
 		MapTabWidget* tabWidget = new MapTabWidget(m_tabWidget);
