@@ -59,6 +59,8 @@ void TabManager::setDbConnectionStruct(const DBConnectionStruct& connectionStruc
 
 void TabManager::setStationsConfiguration(const QList<StationConfiguration>& stationList)
 {
+	m_stationsMap.clear();
+
 	foreach (StationConfiguration stationConf, stationList) {
 		Station *station = new Station();
 
@@ -75,7 +77,7 @@ void TabManager::addStationTabs()
 {
 	foreach (Station* station, m_stationsMap) {
 
-		MapTabWidgetController* tabWidgetController = new MapTabWidgetController(station, m_stationsMap, this, m_dbUavManager, _db_manager_evil);
+		MapTabWidgetController* tabWidgetController = new MapTabWidgetController(station, m_stationsMap, this, m_dbUavManager, _db_manager_evil, this);
 		tabWidgetController->setRpcConfig(m_rpcPort, m_rpcHost);
 
 		MapTabWidget* tabWidget = new MapTabWidget(m_tabWidget);
@@ -92,6 +94,32 @@ void TabManager::addStationTabs()
 	}
 
 	emit readyToStart();
+}
+
+void TabManager::clearAllInformation()
+{
+	foreach (Station* station, m_stationsMap) {
+		MapTabWidgetController* tabWidgetController = m_tabWidgetsMap.take(station->name);
+		if (tabWidgetController != NULL){
+			tabWidgetController->deleteLater();
+		}
+	}
+
+	for (qint32 index = 0; index < m_tabWidget->count(); ++index) {
+		MapTabWidget* tabWidget = dynamic_cast<MapTabWidget*>(m_tabWidget->widget(index));
+		if (tabWidget != NULL){
+			tabWidget->deleteLater();
+		}
+		m_tabWidget->removeTab(index);;
+	}
+
+//	foreach (Station* station, m_stationsMap) {
+//		delete station;
+//	}
+
+	m_tabWidgetsMap.clear();
+	m_tabWidget->clear();
+	m_stationsMap.clear();
 }
 
 void TabManager::start()

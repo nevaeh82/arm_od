@@ -129,6 +129,7 @@ void MainWindowController::onMethodCalled(const QString& method, const QVariant&
 			QList<StationConfiguration> stationList;
 			dataStream >> stationList;
 
+			m_tabManager->clearAllInformation();
 			m_tabManager->setStationsConfiguration(stationList);
 			m_tabManager->addStationTabs();
 

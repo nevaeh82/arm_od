@@ -81,6 +81,7 @@ public:
 
 	void setStationsConfiguration(const QList<StationConfiguration>& stationList);
 	void addStationTabs();
+	void clearAllInformation();
 
 private:
 //	int readSettings(const QString &settingsFile);

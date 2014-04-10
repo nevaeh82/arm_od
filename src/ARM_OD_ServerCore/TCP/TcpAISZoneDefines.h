@@ -63,9 +63,9 @@ typedef struct AISZone
 		longitudeMax	= object.longitudeMax;
 	}
 
-	double latitudeMax;
-	double longitudeMin;
 	double latitudeMin;
+	double longitudeMin;
+	double latitudeMax;
 	double longitudeMax;
 } AISZone;
 
