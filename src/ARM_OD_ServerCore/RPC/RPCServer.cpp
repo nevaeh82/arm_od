@@ -35,6 +35,11 @@ bool RPCServer::start(quint16 port, QHostAddress address)
 	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCAISData(QByteArray)), RPC_SLOT_SERVER_SEND_AIS_DATA);
 	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCNIIPPData(QByteArray)), RPC_SLOT_SERVER_SEND_NIIPP_DATA);
 
+	// Signals and slots for config query
+	m_serverPeer->attachSlot(RPC_METHOD_CONFIG_REQUEST_GET_STATION_LIST, this, SLOT(requestGetStationListSlot(quint64,QString)));
+	m_serverPeer->attachSlot(RPC_METHOD_CONFIG_REQUEST_GET_DB_CONFIGURATION, this, SLOT(requestGetDbConfigurationSlot(quint64,QString)));
+//	m_serverPeer->attachSignal(this, SIGNAL(), RPC_METHOD_CONFIG_ANSWER_STATION_LIST);
+//	m_serverPeer->attachSignal(this, SIGNAL(), RPC_METHOD_CONFIG_ANSWER_DB_CONFIGURATION);
 
 	return RpcServerBase::start(port, address);
 }
@@ -91,6 +96,20 @@ void RPCServer::_slotRPCDisconnected(quint64 client)
 	delete cl;
 
 	_map_clients.remove(client);
+}
+
+void RPCServer::requestGetStationListSlot(quint64 client, QString configFilename)
+{
+	foreach (IRpcListener* receiver, m_receiversList) {
+		receiver->onMethodCalled(RPC_METHOD_CONFIG_REQUEST_GET_STATION_LIST, QVariant(configFilename));
+	}
+}
+
+void RPCServer::requestGetDbConfigurationSlot(quint64 client, QString configFilename)
+{
+	foreach (IRpcListener* receiver, m_receiversList) {
+		receiver->onMethodCalled(RPC_METHOD_CONFIG_REQUEST_GET_DB_CONFIGURATION, QVariant(configFilename));
+	}
 }
 
 void RPCServer::sendDataByRpcSlot(QString signalType, QByteArray data)

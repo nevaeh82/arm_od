@@ -64,7 +64,7 @@ private:
 
 	ITabManager* m_tabManager;
 
-	int m_rpcHostPort;
+	quint16 m_rpcHostPort;
 	QString m_rpcHostAddress;
 
 public:
@@ -80,9 +80,11 @@ public:
 
 	void appendView(MapTabWidget* view);
 
+	void setRpcConfig(const quint16& port, const QString& host);
+
 private:
 	int init();
-	void readSettings();
+//	void readSettings();
 
 signals:
 	void signalStartRPC();

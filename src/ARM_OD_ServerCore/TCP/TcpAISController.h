@@ -41,6 +41,8 @@ public:
 	virtual bool init();
 	virtual QByteArray getFullInfo();
 
+	virtual void sendData(const MessageSP message);
+
 signals:
 	void connectToHostAISInternalSignal(const QString& host, const quint32& port);
 	void createTcpAISCoderInternalSignal();

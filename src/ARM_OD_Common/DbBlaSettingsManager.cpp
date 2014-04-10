@@ -24,7 +24,7 @@ QString DbBlaSettingsManager::getBlaDbHost()
 	return settings.value("UAVDB/Host", "127.0.0.1").toString();
 }
 
-unsigned short DbBlaSettingsManager::getBlaDbPort()
+quint16 DbBlaSettingsManager::getBlaDbPort()
 {
 	QMutexLocker mutexLocker(&m_mutex);
 	QSettings settings(m_settingsFile, QSettings::IniFormat);
@@ -59,7 +59,7 @@ QString DbBlaSettingsManager::getBplaDbHost()
 	return settings.value("BPLADB/Host", "127.0.0.1").toString();
 }
 
-unsigned short DbBlaSettingsManager::getBplaDbPort()
+quint16 DbBlaSettingsManager::getBplaDbPort()
 {
 	QMutexLocker mutexLocker(&m_mutex);
 	QSettings settings(m_settingsFile, QSettings::IniFormat);

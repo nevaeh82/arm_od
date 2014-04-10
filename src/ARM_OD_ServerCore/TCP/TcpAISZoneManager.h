@@ -21,6 +21,8 @@ public:
 	// ITcpAISZoneManager interface
 	virtual QString getZone(const AISZone& aisZone);
 	virtual AISZone getLastZone();
+	virtual QString getZone(const AISZone& aisZone);
+	virtual AISZone getLastZone();
 };
 
 #endif // TCPAISZONEMANAGER_H

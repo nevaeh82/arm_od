@@ -12,6 +12,8 @@
 #include <QSettings>
 #include <QStringList>
 
+#include <SettingsManager/RpcSettingsManager.h>
+
 #include "IRPC_R.h"
 #include "../../Common/IMessage.h"
 //#include "../../Common/CommandMessage.h"
@@ -67,7 +69,7 @@ private:
 private:
 //    int     _init();
 
-    int     _read_settings(QString path_to_ini_file_RPC);
+//    int     _read_settings(QString path_to_ini_file_RPC);
 	void    _form_command(IMessageOld *msg);
 	QByteArray encodeToEnemyUav(const QByteArray& data);
 

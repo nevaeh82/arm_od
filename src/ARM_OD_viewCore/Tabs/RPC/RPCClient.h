@@ -99,6 +99,8 @@ signals:
 
 	void startInternalSignal(quint16 port, QString ipAddress);
 
+	void requestGetAisDataSignal();
+
 };
 
 #endif // RPCCLIENT_H

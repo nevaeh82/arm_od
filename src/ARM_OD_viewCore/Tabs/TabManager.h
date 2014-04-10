@@ -29,6 +29,7 @@
 
 #include "Interfaces/IDbBlaSettingsManager.h"
 #include "DbBlaSettingsManager.h"
+#include "Info/StationConfiguration.h"
 
 class TabManager: public QObject, public ITabManager
 {
@@ -54,18 +55,28 @@ private:
 
     QMutex                      _mux;
 
+	QString m_rpcHost;
+	quint16 m_rpcPort;
+
 public:
 	void start();
 
-	int createSubModules(const QString& settingsFile);
+//	int createSubModules(const QString& settingsFile);
 
     virtual void send_data(int pid, IMessageOld* msg);
     virtual void send_data_niipp_control(int id, QByteArray ba);
 
-private:
-	int readSettings(const QString &settingsFile);
+	void setRpcConfig(const quint16& port, const QString& host);
+	void setDbConnectionStruct(const DBConnectionStruct& connectionStruct);
 
-	DBConnectionStruct getDbBlaConnectionSettings();
+	void setStationsConfiguration(const QList<StationConfiguration>& stationList);
+	void addStationTabs();
+	void clearAllInformation();
+
+private:
+//	int readSettings(const QString &settingsFile);
+
+//	DBConnectionStruct getDbBlaConnectionSettings();
 
 private slots:
 	void changeTabSlot(int index);
@@ -75,6 +86,8 @@ signals:
 
 	void openAtlasSignal();
 	void openMapSignal();
+
+	void readyToStart();
 };
 
 #endif // TABMANAGER_H

@@ -8,7 +8,10 @@
 
 #include <QPointF>
 
+#include <SettingsManager/RpcSettingsManager.h>
+
 #include "RPC/RPCServer.h"
+#include "RPC/RpcConfigReader.h"
 
 #include "Common/Router.h"
 #include "Common/Subscriber.h"
@@ -45,6 +48,7 @@ private:
 	Subscriber*     _subscriber_up;
 
 	RPCClient_R*    _rpc_client1;
+	RpcConfigReader* m_rpcConfigReader;
 
 signals:
     void signalStartRPC();

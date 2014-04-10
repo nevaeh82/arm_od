@@ -40,6 +40,11 @@ QTabWidget *MainWindow::getMainTabWidget() const
 	return ui->mainTabWidget;
 }
 
+QStackedWidget* MainWindow::getStackedWidget() const
+{
+	return ui->stackedWidget;
+}
+
 void MainWindow::init()
 {
 	connect(ui->actionNew, SIGNAL(triggered()), this, SLOT(newFile()));

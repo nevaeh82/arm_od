@@ -46,12 +46,17 @@ void RPCClient_R::send_data(QSharedPointer<IMessageOld> msg_ptr)
 
 void RPCClient_R::slotInit()
 {
-    QString tabs_setting_file = QCoreApplication::applicationDirPath();
-    tabs_setting_file.append("/RPC/RPC_R_Server.ini");
-    if(_read_settings(tabs_setting_file) != 0)
-    {
-        return;
-    }
+//    QString tabs_setting_file = QCoreApplication::applicationDirPath();
+//    tabs_setting_file.append("/RPC/RPC_R_Server.ini");
+//    if(_read_settings(tabs_setting_file) != 0)
+//    {
+//        return;
+//    }
+
+	IRpcSettingsManager* rpcSettingsManager = RpcSettingsManager::instance();
+	rpcSettingsManager->setIniFile("./RPC/RpcRServer.ini");
+	_ip_RPC = rpcSettingsManager->getRpcHost();
+	_port_RPC = rpcSettingsManager->getRpcPort().toUShort();
 
     _rpc_client = new QxtRPCPeer();
     connect(_rpc_client, SIGNAL(connectedToServer()), this, SLOT(_slotRCPConnetion()));
@@ -196,7 +201,7 @@ void RPCClient_R::_slotReconnection()
 }
 
 /// read rpc configuration from ini file
-int RPCClient_R::_read_settings(QString path_to_ini_file_RPC)
+/*int RPCClient_R::_read_settings(QString path_to_ini_file_RPC)
 {
     int error = -1;
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
@@ -221,7 +226,7 @@ int RPCClient_R::_read_settings(QString path_to_ini_file_RPC)
     }
 
     return error;
-}
+}*/
 
 void RPCClient_R::slotStart()
 {
