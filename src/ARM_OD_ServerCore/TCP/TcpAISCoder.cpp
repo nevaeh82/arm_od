@@ -1,12 +1,9 @@
 #include "TcpAISCoder.h"
 
-TcpAISCoder::TcpAISCoder(QObject* parent) :
+TcpAISCoder::TcpAISCoder(ITcpAISZoneManager* zoneManager, QObject* parent) :
 	BaseTcpDeviceCoder(parent)
 {
-	latitude1 = 0;
-	latitude2 = 0;
-	longinude1 = 0;
-	longinude2 = 0;
+	m_zoneManager = zoneManager;
 }
 
 TcpAISCoder::~TcpAISCoder()
@@ -24,7 +21,7 @@ MessageSP TcpAISCoder::encode(const QByteArray& data)
 		log_debug("Empty answer");
 		return MessageSP(new Message<QByteArray>(TCP_EMPTY_MESSAGE, QByteArray()));
 	}
-	log_debug(answer);
+	log_debug("Answer is not empty");
 
 	return filterData(answer);
 }
@@ -39,7 +36,7 @@ MessageSP TcpAISCoder::filterData(const QString& data)
 	int c = 0;
 	bool inList = false;
 	QMap<int, QVector<QString> > map1;
-	//! получение координат кавычек и запятых и занесение их в список listBr
+	/// Getting brackets and commas and adding them to listBr
 	for (int i = 0; i < data.size(); i++) {
 		Bracketed br;
 		if (data.mid(i, 1) == "[") {
@@ -52,92 +49,79 @@ MessageSP TcpAISCoder::filterData(const QString& data)
 		}
 		if (data.mid(i, 1) == "]") {
 			br.br2 = i;
-			listBr << br;
+			m_listBr << br;
 			c = 0;
 			inList = false;
 		}
 	}
 
-	//! парсинг данных
-	for (int i = 0; i < listBr.size(); i++) {
+	/// Parsing
+	for (int i = 0; i < m_listBr.size(); i++) {
 		int x1;
 		int x2;
 		QString latitude;
 		QString longinude;
-		QString height;
+		QString altitude;
 		QString speed;
 		QString course;
 		QString namePlane;
 
-		//! получение широты расположения самолета
-		x1 = listBr[i].comma[0] + 1;
-		x2 = listBr[i].comma[1];
+		AISZone zone = m_zoneManager->getLastZone();
+
+		/// Getting latitude
+		x1 = m_listBr[i].comma[0] + 1;
+		x2 = m_listBr[i].comma[1];
 		latitude = data.mid(x1, x2 - x1);
 
-		if (latitude1 >= latitude.toDouble() && latitude.toDouble() >= latitude2)
+		if (zone.latitudeMax >= latitude.toDouble() && latitude.toDouble() >= zone.latitudeMin)
 		{
-			//! получение долготы расположения самолета
-			x1 = listBr[i].comma[1] + 1;
-			x2 = listBr[i].comma[2];
+			/// Getting longitude
+			x1 = m_listBr[i].comma[1] + 1;
+			x2 = m_listBr[i].comma[2];
 			longinude = data.mid(x1, x2 - x1);
 
-			if (longinude1 <= longinude.toDouble() && longinude.toDouble() <= longinude2) {
-				//! получение курса самолета
-				x1 = listBr[i].comma[2] + 1;
-				x2 = listBr[i].comma[3];
+			if (zone.longitudeMin <= longinude.toDouble() && longinude.toDouble() <= zone.longitudeMax) {
+				/// Getting course
+				x1 = m_listBr[i].comma[2] + 1;
+				x2 = m_listBr[i].comma[3];
 				course = data.mid(x1, x2 - x1);
 
-				//! получение высоты расположения самолета
-				x1 = listBr[i].comma[3] + 1;
-				x2 = listBr[i].comma[4];
-				height = data.mid(x1, x2 - x1);
-				double h = height.toDouble() * 0.3048;
-				height = QString().number(h);
+				/// Getting altitude
+				x1 = m_listBr[i].comma[3] + 1;
+				x2 = m_listBr[i].comma[4];
+				altitude = data.mid(x1, x2 - x1);
+				double h = altitude.toDouble() * 0.3048;
+				altitude = QString().number(h);
 
-				//! получение скорости самолета
-				x1 = listBr[i].comma[4] + 1;
-				x2 = listBr[i].comma[5];
+				/// Getting plane speed
+				x1 = m_listBr[i].comma[4] + 1;
+				x2 = m_listBr[i].comma[5];
 				speed = data.mid(x1, x2 - x1);
 
-				//! получение названия самолета
-				x1 = listBr[i].comma[15] + 2;
-				x2 = listBr[i].comma[16] - 1;
+				// Getting plane name
+				x1 = m_listBr[i].comma[15] + 2;
+				x2 = m_listBr[i].comma[16] - 1;
 				namePlane = data.mid(x1, x2 - x1);
 
-				//! внесение полученных данных в список listDataFly
-				DataFly data;
-				data.namePlane = namePlane;
-				data.latitute = latitude;
-				data.longinude = longinude;
-				data.speed = speed;
-				data.height = height;
-				data.course = course;
 				QVector<QString> vec_str;
 				vec_str.push_back(namePlane);
 				vec_str.push_back(longinude);
 				vec_str.push_back(latitude);
 				vec_str.push_back(speed);
-				vec_str.push_back(height);
+				vec_str.push_back(altitude);
 				vec_str.push_back(course);
-
 
 				map1.insert(i, vec_str);
 
-
-
-				listDataFly << data;
 			}
 		}
 	}
-	listBr.clear();
+	m_listBr.clear();
+
+	log_debug(QString("Plane count = %1").arg(map1.count()));
 
 	QByteArray dataToSend;
 	QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
-
-	/// TODO: recheck id
-//	dataStream << _id;
 	dataStream << map1;
-
-	listDataFly.clear();
 	return MessageSP(new Message<QByteArray>(TCP_AIS_ANSWER_DATA, dataToSend));
 }

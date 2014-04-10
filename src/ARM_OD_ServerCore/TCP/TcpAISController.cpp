@@ -9,6 +9,9 @@ TcpAISController::TcpAISController(const QString& tcpDeviceName, QObject* parent
 	connect(this, SIGNAL(createTcpAISClientInternalSignal()), this, SLOT(createTcpAISClientInternalSlot()));
 
 	m_zoneManager = new TcpAISZoneManager(this);
+
+	connect(&m_updateTimer, SIGNAL(timeout()), this, SLOT(updateDataInternalSlot()));
+	m_updateTimer.start(TCP_AIS_TIMER_LIFE);
 }
 
 TcpAISController::~TcpAISController()
@@ -49,13 +52,14 @@ void TcpAISController::connectToHostAISInternalSlot(const QString& host, const q
 		return;
 	}
 
-	double latitude1	= stringList.at(0).toDouble();
-	double longitude1	= stringList.at(1).toDouble();
-	double latitude2	= stringList.at(2).toDouble();
-	double longitude2	= stringList.at(3).toDouble();
+	AISZone zone;
+	zone.latitudeMax	= stringList.at(0).toDouble();
+	zone.longitudeMin	= stringList.at(1).toDouble();
+	zone.latitudeMin	= stringList.at(2).toDouble();
+	zone.longitudeMax	= stringList.at(3).toDouble();
 
 	QString __host = TCP_AIS_URL_STANDART;
-	__host += m_zoneManager->getZone(latitude1, longitude1, latitude2, longitude2);
+	__host += m_zoneManager->getZone(zone);
 
 	m_tcpClient->connectToHost(__host, port);
 }
@@ -63,7 +67,7 @@ void TcpAISController::connectToHostAISInternalSlot(const QString& host, const q
 void TcpAISController::createTcpAISCoderInternalSlot()
 {
 	log_debug("Creating TcpAISCoder...");
-	m_tcpDeviceCoder = new TcpAISCoder(this);
+	m_tcpDeviceCoder = new TcpAISCoder(m_zoneManager, this);
 }
 
 void TcpAISController::createTcpAISClientInternalSlot()
@@ -71,6 +75,11 @@ void TcpAISController::createTcpAISClientInternalSlot()
 	log_debug("Creating TcpAISClient...");
 	m_tcpClient = new TcpAISClient(this);
 	m_tcpClient->registerReceiver(this);
+}
+
+void TcpAISController::updateDataInternalSlot()
+{
+	connectToHost();
 }
 
 void TcpAISController::connectToHost()

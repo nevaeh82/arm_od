@@ -234,11 +234,9 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
 
 void RPCClient::rpcSlotServerSendAisData(QByteArray data)
 {
-    QDataStream ds(&data, QIODevice::ReadOnly);
-    int id;
-    ds >> id;
+	QDataStream ds(&data, QIODevice::ReadOnly);
 	QMap<int, QVector<QString> > map1;
-    ds >> map1;
+	ds >> map1;
 
 	m_mapController->get_map_client(1)->slot_add_ais(map1);
 
