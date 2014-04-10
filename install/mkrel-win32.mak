@@ -3,6 +3,7 @@ include makeimage-win32-common.mak
 .NOTPARALLEL:
 
 DEPLOY = *.exe *.dll *.conf *.ini
+DEPLOY_EXCLUDE = *Test.exe *d.* *d1.* *debug.dll
 
 TmpRel = $(SolutionDir)/build/tmprel
 BinDir = $(SolutionDir)/build/bin/msvc
@@ -21,12 +22,11 @@ create-dirs:
 	$(mkdir) $(TmpRel)/image
 	
 copy-qt-msvc: get-msvc
-	$(cp) -u $(foreach name,$(Qt),$(SolutionDir)/build/qt-msvc/Qt$(name)4.dll) $(TmpRel)/bin
+	$(cp) -u $(foreach name,$(Qt),$(SolutionDir)/build/qt-msvc/Qt$(name)4.dll) $(SolutionDir)/build/qt-msvc/phonon4.dll $(TmpRel)/bin
 	
 copy-bin:
 	$(cp) -rudf $(foreach name,$(DEPLOY), $(BinDir)/$(name)) $(TmpRel)/bin
-	$(rm) $(TmpRel)/bin/*d.*
-	$(rm) $(TmpRel)/bin/*debug.dll
+	$(rm) $(foreach name,$(DEPLOY_EXCLUDE), $(TmpRel)/bin/$(name))
 	$(cp) -rudf $(BinDir)/plugins $(TmpRel)/bin
 	$(cp) -rudf $(BinDir)/DB $(TmpRel)/bin
 	$(cp) -rudf $(BinDir)/images $(TmpRel)/bin
