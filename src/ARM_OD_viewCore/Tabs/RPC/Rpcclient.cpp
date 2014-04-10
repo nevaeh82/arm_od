@@ -518,11 +518,15 @@ void RPCClient::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy, co
 	positionData.speed = positionDataEnemy.speed;
 	positionData.state = positionDataEnemy.state;
 
+	positionData.boardID = ENEMY_UAV_ID_OFFSET;
+
 	addUavInfoToDb(positionData, role, uavType, status, deviceType);
 }
 
 void RPCClient::addUavInfoToDb(const UAVPositionData& positionData, const QString& role, const QString& uavType, const QString& status, const QString& deviceType)
 {
+	QMutexLocker locker(&m_mutex);
+
 	int uavId = m_dbUavManager->getUavByUavId(positionData.boardID).id;
 	if (uavId < 0){
 		int uavUnknownTypeId = m_dbUavManager->getUavTypeByName(uavType);

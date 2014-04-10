@@ -11,6 +11,9 @@
 #include <QSettings>
 #include <QStringList>
 
+#include <QMutex>
+#include <QMutexLocker>
+
 #include "IRPC.h"
 #include "Common/IMessage.h"
 #include "Common/CommandMessage.h"
@@ -46,6 +49,8 @@ private:
 	int                 m_rdsEvilIds;
 
 	bool                m_solverAuto;
+
+	QMutex m_mutex;
 
 public:
 	RPCClient(Station *station, IDbUavManager *db_manager, IDBManager *db_manager_target,
