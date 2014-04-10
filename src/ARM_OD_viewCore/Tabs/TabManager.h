@@ -27,8 +27,7 @@
 #include "DbBla/DbUavController.h"
 #include "Db/Defines.h"
 
-#include "Interfaces/IDbBlaSettingsManager.h"
-#include "DbBlaSettingsManager.h"
+#include "SettingsManager/DbBlaSettingsManager.h"
 #include "Info/StationConfiguration.h"
 
 class TabManager: public QObject, public ITabManager

@@ -32,8 +32,6 @@ ARM_OD_Srv::ARM_OD_Srv()
 	m_rpcConfigReader = new RpcConfigReader(this);
 	m_rpcConfigReader->setRpcServer(_rpc_server);
 
-
-
 	_rpc_client1 = NULL;
 
 	qRegisterMetaType<MessageSP>("MessageSP");

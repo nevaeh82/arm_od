@@ -15,7 +15,7 @@
 
 #include "Info/StationConfiguration.h"
 #include "Rpc/RpcDefines.h"
-#include "DbBlaSettingsManager.h"
+#include "SettingsManager/DbBlaSettingsManager.h"
 
 #include "Interfaces/IRpcConfigReader.h"
 
