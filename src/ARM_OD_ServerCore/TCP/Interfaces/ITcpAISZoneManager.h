@@ -2,7 +2,7 @@
 #define ITCPAISZONEMANAGER_H
 
 class QString;
-class AISZone;
+struct AISZone;
 
 class ITcpAISZoneManager
 {
