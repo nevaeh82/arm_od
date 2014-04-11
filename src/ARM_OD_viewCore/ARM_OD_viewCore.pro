@@ -80,7 +80,8 @@ HEADERS += \
     Tabs/DbBla/IDbUavController.h \
     Tabs/DbBla/DbUavManager.h \
     Interfaces/IDbUavManager.h \
-    Tabs/Tree/UavTreeModel.h
+    Tabs/Tree/UavTreeModel.h \
+    Tabs/RPC/RpcClientWrapper.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -107,7 +108,8 @@ SOURCES += \
     Tabs/RPC/Rpcclient.cpp \
     Tabs/DbBla/DbUavController.cpp \
     Tabs/DbBla/DbUavManager.cpp \
-    Tabs/Tree/UavTreeModel.cpp
+    Tabs/Tree/UavTreeModel.cpp \
+    Tabs/RPC/RpcClientWrapper.cpp
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \

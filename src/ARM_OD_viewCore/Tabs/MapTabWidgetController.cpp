@@ -93,15 +93,14 @@ int MapTabWidgetController::createRPC()
 	readSettings();
 
 	///TODO: fix deleting
-
-	m_rpcClient = new RPCClient(m_station, m_uavDbManager, m_mapController, this, m_tabManager);
-
-	m_rpcClient->start(m_rpcHostPort, QHostAddress(m_rpcHostAddress));
+	m_rpcClient = new RpcClientWrapper();
 
 	QThread* rpcClientThread = new QThread;
 	connect(m_rpcClient, SIGNAL(destroyed()), rpcClientThread, SLOT(terminate()));
 	m_rpcClient->moveToThread(rpcClientThread);
 	rpcClientThread->start();
+
+	m_rpcClient->init(m_rpcHostPort, QHostAddress(m_rpcHostAddress), m_station, m_uavDbManager, m_mapController, this, m_tabManager);
 
 	return 0;
 }

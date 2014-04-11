@@ -11,7 +11,8 @@ const double m_zoneDir[28] = {2.5, 3, 4, 5,
                        22, 26, 29, 33, 37, 41, 47, 52, 57, 62, 68, 72, 76};
 
 RPCClient::RPCClient(Station *station, IDbUavManager *db_manager,
-					 IMapController* map_controller, ITabMap* parent_tab, ITabManager* tab_manager, QObject *parent)
+					 IMapController* map_controller, ITabMap* parent_tab,
+					 ITabManager* tab_manager, QObject *parent)
 	: RpcClientBase(parent)
 {
 	m_tabManager = tab_manager;

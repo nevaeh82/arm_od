@@ -10,7 +10,7 @@
 #include "ITabManager.h"
 #include "ITabMap.h"
 
-#include "RPC/RPCClient.h"
+#include "RPC/RpcClientWrapper.h"
 
 #include "../MapInterface/MapController.h"
 
@@ -51,7 +51,7 @@ private:
 	UavTreeModel*		m_allyUavTreeModel;
 	UavTreeModel*		m_enemyUavTreeModel;
 
-	RPCClient*          m_rpcClient;
+	RpcClientWrapper*	m_rpcClient;
 
 	DbUavManager*          m_uavDbManager;
 
