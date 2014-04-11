@@ -57,8 +57,6 @@ HEADERS += \
 	Tabs/Solver/Solver.h \
 	Tabs/Solver/SolverWidget.h \
 	Tabs/Solver/SolverController.h \
-        Tabs/Tree/BLAWidgetDelegate.h \
-        Tabs/Tree/IDBCache.h \
 	Tabs/Tree/TreeWidgetDelegate.h \
 	Tabs/ITabManager.h \
 	Tabs/ITabMap.h \
@@ -97,7 +95,6 @@ SOURCES += \
 	Tabs/Solver/Solver.cpp \
 	Tabs/Solver/SolverWidget.cpp \
 	Tabs/Solver/SolverController.cpp \
-        Tabs/Tree/BLAWidgetDelegate.cpp \
 	Tabs/Tree/TreeWidgetDelegate.cpp \
 	Tabs/TabManager.cpp \
 	UAV/BLAPerehvatDialog.cpp \

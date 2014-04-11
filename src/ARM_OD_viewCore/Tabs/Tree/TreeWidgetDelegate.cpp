@@ -57,9 +57,3 @@ void TreeWidgetDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
 	painter->restore();
 }
-
-QSize TreeWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
-	QVariant value = index.model()->data(index, Qt::SizeHintRole);
-	return qvariant_cast<QSize>(value);
-}

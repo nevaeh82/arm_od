@@ -35,7 +35,7 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 
 	m_mapSettings = map_settings;
 
-	m_treeDelegate = new BLAWidgetDelegate(this);
+	m_treeDelegate = new TreeWidgetDelegate(this);
 
 	start();
 }

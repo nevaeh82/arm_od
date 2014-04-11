@@ -16,7 +16,7 @@
 
 #include "../NIIPP/NIIPPController.h"
 
-#include "Tree/BLAWidgetDelegate.h"
+#include "Tree/TreeWidgetDelegate.h"
 #include "Tree/UavTreeModel.h"
 
 #include "../UAV/BLAPerehvatDialog.h"
@@ -57,7 +57,7 @@ private:
 
 	QMap<int, Station *> m_mapSettings;
 
-	BLAWidgetDelegate*          m_treeDelegate;
+	TreeWidgetDelegate*          m_treeDelegate;
 
 	///Map
 	MapController*          m_mapController;
