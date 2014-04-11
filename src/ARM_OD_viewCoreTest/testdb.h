@@ -121,7 +121,7 @@ public:
 
 		// ADDING TARGET TYPE
 		Target target;
-		target.uavId = 1;
+		target.uavId = dbUavController->getUavByUavId(8000).id;
 		target.ip = "127.1.1.1";
 		target.port = 2000;
 		target.type = dbUavController->getTargetTypeByName("testTargetType");
