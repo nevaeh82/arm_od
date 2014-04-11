@@ -20,7 +20,10 @@ void Map::init(QMap<int, Station*> map_settings, PwGisWidget* pwwidget)
 	QMap<int, Station*>::iterator it;
 	for (it = m_mapSettings.begin(); it != m_mapSettings.end(); ++it)
 	{
-		m_mapClients[(it.value())->id] = new MapClient1(pwwidget, it.value());
+		MapClient1* client = new MapClient1(pwwidget, it.value());
+		m_mapClients[(it.value())->id] = client;
+
+		connect( this, SIGNAL(modelMapReady()), client, SLOT(init()) );
 	}
 }
 
@@ -45,7 +48,7 @@ void Map::setLayerManager(Pw::Gis::ILayerManager* layerManager)
 
 void Map::setStationVisible(bool state)
 {
-	m_mapClients.value(1)->show_layer(0, state);
+	m_mapClients.value(1)->showLayer(0, state);
 }
 
 bool Map::openAtlas()
@@ -62,14 +65,14 @@ void Map::onMapReady()
 {
 	QMap<int, IMapClient *>::iterator it;
 
+	emit modelMapReady();
+
 	for (it = m_mapClients.begin(); it != m_mapClients.end(); ++it)
 	{
 		if(!it.value())
 			continue;
-		(it.value())->set_Point();
+		(it.value())->setPoint();
 	}
-
-	emit modelMapReady();
 }
 
 IMapClient* Map::getMapClient(int id)

@@ -71,11 +71,11 @@ void BLAPerehvatDialog::treeItemChangedSlot(QTreeWidgetItem *item, int id)
 		target.type = interceptTargetTypeId;
 
 		m_dbUav->addTarget(target);
-		m_mapClient->add_perehvat(m_id, enemyUavId);
+		m_mapClient->addInterception(m_id, enemyUavId);
 	} else {
 
 		if (m_dbUav->deleteTargetsByUavId(enemyUavId)){
-			m_mapClient->remove_perehvat(m_id, enemyUavId);
+			m_mapClient->removeInterception(m_id, enemyUavId);
 		}
 	}
 }

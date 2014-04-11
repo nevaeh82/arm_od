@@ -4,11 +4,11 @@
 #include <QDebug>
 
 const double m_zone[24] = {1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5,
-                       5, 6, 7, 8, 9, 10, 11, 12, 14, 16,
-                       18, 20, 22, 24, 28, 30};
+					   5, 6, 7, 8, 9, 10, 11, 12, 14, 16,
+					   18, 20, 22, 24, 28, 30};
 const double m_zoneDir[28] = {2.5, 3, 4, 5,
-                       6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20,
-                       22, 26, 29, 33, 37, 41, 47, 52, 57, 62, 68, 72, 76};
+					   6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20,
+					   22, 26, 29, 33, 37, 41, 47, 52, 57, 62, 68, 72, 76};
 
 RPCClient::RPCClient(Station *station, IDbUavManager *db_manager,
 					 IMapController* map_controller, ITabMap* parent_tab, ITabManager* tab_manager, QObject *parent)
@@ -39,7 +39,7 @@ bool RPCClient::start(quint16 port, QHostAddress ipAddress)
 
 void RPCClient::setCommand(IMessageOld *msg)
 {
-    emit signalSetCommand(msg);
+	emit signalSetCommand(msg);
 }
 
 void RPCClient::slotSetCommand(IMessageOld *msg)
@@ -80,42 +80,42 @@ void RPCClient::startInternalSlot(quint16 port, QString ipAddress)
 
 void RPCClient::formCommand(IMessageOld *msg)
 {
-    qDebug() << "form command";
-    QByteArray data;
-    int type = msg->get(data);
-    switch(type)
-    {
-    case COMMAND_SET_NIIPP_BPLA:
+	qDebug() << "form command";
+	QByteArray data;
+	int type = msg->get(data);
+	switch(type)
+	{
+	case COMMAND_SET_NIIPP_BPLA:
 		sendNiippBpla(data);
-        break;
+		break;
 
-    case COMMAND_SET_SOLVER:
+	case COMMAND_SET_SOLVER:
 		sendDataToSovler(data);
-        break;
-    case COMMAND_SET_SOLVER_AUTO:
+		break;
+	case COMMAND_SET_SOLVER_AUTO:
 		setSolverAuto(data);
-        break;
+		break;
 
-    case COMMAND_SET_SOLVER_CLEAR:
+	case COMMAND_SET_SOLVER_CLEAR:
 		setSolverClear(data);
-        break;
+		break;
 
-    default:
-        break;
-    }
-    msg->clenup();
+	default:
+		break;
+	}
+	msg->clenup();
 }
 
 void RPCClient::setSolverAuto(QByteArray ba)
 {
-    QDataStream ds(&ba, QIODevice::ReadOnly);
+	QDataStream ds(&ba, QIODevice::ReadOnly);
 	ds >> m_solverAuto;
 }
 
 /// slot when connection complete
 void RPCClient::slotRCPConnetion()
 {
-    qDebug() << "Connection complete!";
+	qDebug() << "Connection complete!";
 	emit signalSetClientId(m_station->id);
 }
 
@@ -146,64 +146,64 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
 	int state = positionData.state;
 
 	QByteArray ddd;
-    QDataStream ds(&ddd, QIODevice::WriteOnly);
-    ds << point;
-    ds << alt;
-    ds << speed;
-    ds << course;
-    ds << state;
+	QDataStream ds(&ddd, QIODevice::WriteOnly);
+	ds << point;
+	ds << alt;
+	ds << speed;
+	ds << course;
+	ds << state;
 
-	m_mapController->get_map_client(1)->slot_add_BLA(id, ddd);
+	m_mapController->getMapClient(1)->addFriendBpla(id, ddd);
 	/*QMap<QString, QVariant>* rec = new QMap<QString, QVariant>;
 
-    rec->insert("id", QVariant::fromValue(id));
+	rec->insert("id", QVariant::fromValue(id));
 
-    rec->insert("pid", QVariant::fromValue(0));
+	rec->insert("pid", QVariant::fromValue(0));
 	rec->insert("name", QVariant::fromValue(id));
-    rec->insert("state", QVariant::fromValue(1));
+	rec->insert("state", QVariant::fromValue(1));
 	m_dbUavManager->set(0, rec);
 
 	QMap<QString, QVariant>* rec_p = new QMap<QString, QVariant>;
 
-    QString s_prop;
-    s_prop = tr("Latitude");
-    rec_p->insert("pid", QVariant::fromValue(id));
-    rec_p->insert("name", QVariant::fromValue(s_prop));
-    rec_p->insert("value", QVariant::fromValue(point.x()));
-    rec_p->insert("state", QVariant::fromValue(1));
+	QString s_prop;
+	s_prop = tr("Latitude");
+	rec_p->insert("pid", QVariant::fromValue(id));
+	rec_p->insert("name", QVariant::fromValue(s_prop));
+	rec_p->insert("value", QVariant::fromValue(point.x()));
+	rec_p->insert("state", QVariant::fromValue(1));
 
 	QVector<QMap<QString, QVariant> >* map_p = m_dbUavManager->get(id, 0);
-    for(int i = 0; i < map_p->count(); ++i)
-    {
-        QString nam = map_p->at(i).value("name").toString();
-        if(nam == s_prop)
-        {
-            rec_p->insert("id", QVariant::fromValue(map_p->at(i).value("id").toInt()));
-            break;
-        }
+	for(int i = 0; i < map_p->count(); ++i)
+	{
+		QString nam = map_p->at(i).value("name").toString();
+		if(nam == s_prop)
+		{
+			rec_p->insert("id", QVariant::fromValue(map_p->at(i).value("id").toInt()));
+			break;
+		}
 	}
 
 	m_dbUavManager->set_property(0, rec_p);
 
 	QMap<QString, QVariant>* rec_p1 = new QMap<QString, QVariant>;
 
-    s_prop = tr("Longitude");
-    rec_p1->insert("pid", QVariant::fromValue(id));
-    rec_p1->insert("name", QVariant::fromValue(s_prop));
-    rec_p1->insert("value", QVariant::fromValue(point.y()));
-    rec_p1->insert("state", QVariant::fromValue(1));
+	s_prop = tr("Longitude");
+	rec_p1->insert("pid", QVariant::fromValue(id));
+	rec_p1->insert("name", QVariant::fromValue(s_prop));
+	rec_p1->insert("value", QVariant::fromValue(point.y()));
+	rec_p1->insert("state", QVariant::fromValue(1));
 
 	QVector<QMap<QString, QVariant> >* map_p1 = m_dbUavManager->get(id, 0);
 
-    for(int i = 0; i < map_p1->count(); ++i)
-    {
-        QString nam = map_p1->at(i).value("name").toString();
-        if(nam == s_prop)
-        {
-            rec_p1->insert("id", QVariant::fromValue(map_p1->at(i).value("id").toInt()));
-            break;
-        }
-    }
+	for(int i = 0; i < map_p1->count(); ++i)
+	{
+		QString nam = map_p1->at(i).value("name").toString();
+		if(nam == s_prop)
+		{
+			rec_p1->insert("id", QVariant::fromValue(map_p1->at(i).value("id").toInt()));
+			break;
+		}
+	}
 
 	m_dbUavManager->set_property(0, rec_p1);
 
@@ -211,22 +211,22 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
 	QMap<QString, QVariant>* rec_p2 = new QMap<QString, QVariant>;
 
 	s_prop = tr("Altitude");
-    rec_p2->insert("pid", QVariant::fromValue(id));
-    rec_p2->insert("name", QVariant::fromValue(s_prop));
-    rec_p2->insert("value", QVariant::fromValue(alt));
+	rec_p2->insert("pid", QVariant::fromValue(id));
+	rec_p2->insert("name", QVariant::fromValue(s_prop));
+	rec_p2->insert("value", QVariant::fromValue(alt));
 	rec_p2->insert("state", QVariant::fromValue(1));
 
 	QVector<QMap<QString, QVariant> >* map_p2 = m_dbUavManager->get(id, 0);
 
-    for(int i = 0; i < map_p2->count(); ++i)
-    {
-        QString nam = map_p2->at(i).value("name").toString();
-        if(nam == s_prop)
-        {
-            rec_p2->insert("id", QVariant::fromValue(map_p2->at(i).value("id").toInt()));
-            break;
-        }
-    }
+	for(int i = 0; i < map_p2->count(); ++i)
+	{
+		QString nam = map_p2->at(i).value("name").toString();
+		if(nam == s_prop)
+		{
+			rec_p2->insert("id", QVariant::fromValue(map_p2->at(i).value("id").toInt()));
+			break;
+		}
+	}
 
 	m_dbUavManager->set_property(0, rec_p2);*/
 }
@@ -237,175 +237,175 @@ void RPCClient::rpcSlotServerSendAisData(QByteArray data)
 	QMap<int, QVector<QString> > map1;
 	ds >> map1;
 
-	m_mapController->get_map_client(1)->slot_add_ais(map1);
+	m_mapController->getMapClient(1)->addAis(map1);
 
 }
 
 void RPCClient::rpcSendBplaPoints(QByteArray data)
 {
 	if(m_solverAuto == false)
-    {
+	{
 		sendBplaPoints(data);
-    }
+	}
 
 }
 
 void RPCClient::rpcSendBplaPointsAuto(QByteArray data)
 {
 	if(m_solverAuto == true)
-    {
+	{
 		sendBplaPoints(data);
-    }
+	}
 
 }
 
 void RPCClient::rpcSendNiippData(QByteArray data)
 {
-    QDataStream ds(&data, QIODevice::ReadOnly);
+	QDataStream ds(&data, QIODevice::ReadOnly);
 
-    QDateTime dt;
-    QTime time;
-    int mode;
-    QPointF point;
-    QString NS;
-    QString EW;
-    int alt;
-    int zone;
-    int course;
-    int angle;
+	QDateTime dt;
+	QTime time;
+	int mode;
+	QPointF point;
+	QString NS;
+	QString EW;
+	int alt;
+	int zone;
+	int course;
+	int angle;
 
-    int id;
+	int id;
 
-    ds >> id;
+	ds >> id;
 
-    ds >> dt;
-    ds >> time;
-    ds >> mode;
-    ds >> point;
-    ds >> NS;
-    ds >> EW;
-    ds >> alt;
-    ds >> zone;
-    ds >> course;
-    ds >> angle;
+	ds >> dt;
+	ds >> time;
+	ds >> mode;
+	ds >> point;
+	ds >> NS;
+	ds >> EW;
+	ds >> alt;
+	ds >> zone;
+	ds >> course;
+	ds >> angle;
 
-    QByteArray ba;
-    QDataStream ds1(&ba, QIODevice::WriteOnly);
+	QByteArray ba;
+	QDataStream ds1(&ba, QIODevice::WriteOnly);
 
-    QPointF latlon;
-    if(id == 100)
-    {
-        latlon.setX(42.511183);
-        latlon.setY(41.6905);
-    }
-    if(id ==101)
-    {
-        latlon.setX(42.634183);
-        latlon.setY(41.912167);
-    }
+	QPointF latlon;
+	if(id == 100)
+	{
+		latlon.setX(42.511183);
+		latlon.setY(41.6905);
+	}
+	if(id ==101)
+	{
+		latlon.setX(42.634183);
+		latlon.setY(41.912167);
+	}
 
-    QString name = QString::number(id) + " - niipp";
-    double wid = 25;
-    ds1 << name;
-    ds1 << latlon;
-    ds1 << wid;
+	QString name = QString::number(id) + " - niipp";
+	double wid = 25;
+	ds1 << name;
+	ds1 << latlon;
+	ds1 << wid;
 
-    if(mode == 01)
-    {
-		m_mapController->get_map_client(1)->slot_niipp_power_cicle(id, m_zone[zone], ba);
-    }
+	if(mode == 01)
+	{
+		m_mapController->getMapClient(1)->updateNiippPowerCicle(id, m_zone[zone], ba);
+	}
 
-    if(mode == 10)
-    {
-		m_mapController->get_map_client(1)->slot_update_sector(id, m_zoneDir[zone], course, NULL);
-    }
+	if(mode == 10)
+	{
+		m_mapController->getMapClient(1)->updateNiippPowerSector(id, m_zoneDir[zone], course, NULL);
+	}
 
 	qDebug() << "MMMMMMMMMMMMMMMMMMMMMMMMMMMMM = " << mode << course << zone;
 
-    QByteArray ba1;
-    QDataStream ds2(&ba1, QIODevice::WriteOnly);
-    ds2 << mode;
+	QByteArray ba1;
+	QDataStream ds2(&ba1, QIODevice::WriteOnly);
+	ds2 << mode;
 	m_tabManager->send_data_niipp_control(id, ba1);
 
 }
 
 void RPCClient::rpcSlotServerSendAtlantDirection(QByteArray data)
 {
-    QDataStream ds(&data, QIODevice::ReadWrite);
-    A_Dir_Ans_msg msg;
-    ds >> msg.requestId;
-    ds >> msg.sourceId;
-    ds >> msg.dateTime;
-    ds >> msg.post;
-    ds >> msg.postLatitude;
-    ds >> msg.postLongitude;
-    ds >> msg.postHeight;
-    ds >> msg.frequency;
-    ds >> msg.widht;
-    ds >> msg.direction;
-    ds >> msg.angle;
-    ds >> msg.level;
-    ds >> msg.quality;
-    ds >> msg.motionType;
-    ds >> msg.motionConfidence;
+	QDataStream ds(&data, QIODevice::ReadWrite);
+	A_Dir_Ans_msg msg;
+	ds >> msg.requestId;
+	ds >> msg.sourceId;
+	ds >> msg.dateTime;
+	ds >> msg.post;
+	ds >> msg.postLatitude;
+	ds >> msg.postLongitude;
+	ds >> msg.postHeight;
+	ds >> msg.frequency;
+	ds >> msg.widht;
+	ds >> msg.direction;
+	ds >> msg.angle;
+	ds >> msg.level;
+	ds >> msg.quality;
+	ds >> msg.motionType;
+	ds >> msg.motionConfidence;
 
-    int id_post = msg.post.right(1).toInt();
+	int id_post = msg.post.right(1).toInt();
 
-	m_mapController->get_map_client(1)->slot_peleng(msg.sourceId, id_post, msg.postLatitude, msg.postLongitude, msg.direction);
+	m_mapController->getMapClient(1)->updatePeleng(msg.sourceId, id_post, msg.postLatitude, msg.postLongitude, msg.direction);
 }
 
 void RPCClient::rpcSlotServerSendAtlantPosition(QByteArray data)
 {
 //    qDebug() << "GOT DATA FROM ATLANT!";
-    QDataStream ds(&data, QIODevice::ReadWrite);
-    A_Pos_Ans_msg msg;
-    ds >> msg.requestId;
-    ds >> msg.sourceId;
-    ds >> msg.dateTime;
-    ds >> msg.latitude;
-    ds >> msg.longitude;
-    ds >> msg.quality;
+	QDataStream ds(&data, QIODevice::ReadWrite);
+	A_Pos_Ans_msg msg;
+	ds >> msg.requestId;
+	ds >> msg.sourceId;
+	ds >> msg.dateTime;
+	ds >> msg.latitude;
+	ds >> msg.longitude;
+	ds >> msg.quality;
 
 	if(!m_mapPelengEvilIds.contains(msg.sourceId))
-    {
+	{
 		m_mapPelengEvilIds.insert(msg.sourceId, ++m_pelengEvilIds);
 		if(m_pelengEvilIds > 49)
-        {
+		{
 			m_pelengEvilIds = 0;
 			m_mapPelengEvilIds.clear();
-        }
-    }
-    QPointF point(msg.longitude, msg.latitude);
+		}
+	}
+	QPointF point(msg.longitude, msg.latitude);
 
-    QByteArray ba1;
-    QDataStream ds1(&ba1, QIODevice::WriteOnly);
-    ds1 << point;
+	QByteArray ba1;
+	QDataStream ds1(&ba1, QIODevice::WriteOnly);
+	ds1 << point;
 
 	qDebug() << "ID = " << m_mapPelengEvilIds.size() << m_pelengEvilIds << m_mapPelengEvilIds.value(msg.sourceId);
 
-	m_mapController->get_map_client(1)->slot_add_evil(m_mapPelengEvilIds.value(msg.sourceId), ba1);
+	m_mapController->getMapClient(1)->addEnemyBpla(m_mapPelengEvilIds.value(msg.sourceId), ba1);
 
 }
 
 void RPCClient::sendNiippBpla(QByteArray data)
 {
-    emit signalSetNIIPPBPLA(data);
+	emit signalSetNIIPPBPLA(data);
 }
 
 
 
 void RPCClient::setSolverClear(QByteArray data)
 {
-    emit signalSetSolverDataClear(data);
+	emit signalSetSolverDataClear(data);
 }
 
 void RPCClient::sendDataToSovler(QByteArray data)
 {
-    emit signalSetSolverData(data);
+	emit signalSetSolverData(data);
 }
 
 void RPCClient::sendBplaPoints(QByteArray data)
-{	
+{
 	QDataStream inputDataStream(&data, QIODevice::ReadOnly);
 	UAVPositionDataEnemy uavEnemy;
 	inputDataStream >> uavEnemy;
@@ -419,87 +419,87 @@ void RPCClient::sendBplaPoints(QByteArray data)
 
 	if(m_rdsEvilIds > 99){
 		m_rdsEvilIds = 50;
-    }
-	m_mapController->get_map_client(1)->slot_add_evil(m_rdsEvilIds, oldDataFormat);
+	}
+	m_mapController->getMapClient(1)->addEnemyBpla(m_rdsEvilIds, oldDataFormat);
 
    /* QMap<QString, QVariant>* rec = new QMap<QString, QVariant>;
 
 	rec = m_dbManagerTarget->get_bpla_fields(m_rdsEvilIds);
-    if(rec->count() == 0)
-    {
+	if(rec->count() == 0)
+	{
 		rec->insert("id", QVariant::fromValue(m_rdsEvilIds));
-        rec->insert("pid", QVariant::fromValue(0));
+		rec->insert("pid", QVariant::fromValue(0));
 		rec->insert("name", QVariant::fromValue(m_rdsEvilIds));
-        rec->insert("state", QVariant::fromValue(0));
+		rec->insert("state", QVariant::fromValue(0));
 		m_dbManagerTarget->set(1, rec);
-    }
+	}
 
-    QMap<QString, QVariant>* rec_p = new QMap<QString, QVariant>;
+	QMap<QString, QVariant>* rec_p = new QMap<QString, QVariant>;
 
-    QString s_prop;
-    s_prop = tr("Latitude");
+	QString s_prop;
+	s_prop = tr("Latitude");
 	rec_p->insert("pid", QVariant::fromValue(m_rdsEvilIds));
-    rec_p->insert("name", QVariant::fromValue(s_prop));
-    rec_p->insert("value", QVariant::fromValue(track.at(track.size()-1).x()));
-    rec_p->insert("state", QVariant::fromValue(1));
+	rec_p->insert("name", QVariant::fromValue(s_prop));
+	rec_p->insert("value", QVariant::fromValue(track.at(track.size()-1).x()));
+	rec_p->insert("state", QVariant::fromValue(1));
 
 	QVector<QMap<QString, QVariant> >* map_p = m_dbManagerTarget->get(m_rdsEvilIds, 1);
-    for(int i = 0; i < map_p->count(); ++i)
-    {
-        QString nam = map_p->at(i).value("name").toString();
-        if(nam == s_prop)
-        {
-            rec_p->insert("id", QVariant::fromValue(map_p->at(i).value("id").toInt()));
-            break;
-        }
+	for(int i = 0; i < map_p->count(); ++i)
+	{
+		QString nam = map_p->at(i).value("name").toString();
+		if(nam == s_prop)
+		{
+			rec_p->insert("id", QVariant::fromValue(map_p->at(i).value("id").toInt()));
+			break;
+		}
 	}
 
 	m_dbManagerTarget->set_property(1, rec_p);
 
-    QMap<QString, QVariant>* rec_p1 = new QMap<QString, QVariant>;
+	QMap<QString, QVariant>* rec_p1 = new QMap<QString, QVariant>;
 
-    s_prop = tr("Longitude");
+	s_prop = tr("Longitude");
 	rec_p1->insert("pid", QVariant::fromValue(m_rdsEvilIds));
-    rec_p1->insert("name", QVariant::fromValue(s_prop));
-    rec_p1->insert("value", QVariant::fromValue(track.at(track.size()-1).y()));
-    rec_p1->insert("state", QVariant::fromValue(1));
+	rec_p1->insert("name", QVariant::fromValue(s_prop));
+	rec_p1->insert("value", QVariant::fromValue(track.at(track.size()-1).y()));
+	rec_p1->insert("state", QVariant::fromValue(1));
 
 	//TODO: shouldnt m_dbManager be m_dbManagerTarget?
 	//QVector<QMap<QString, QVariant> >* map_p1 = m_dbManager->get(m_rdsEvilIds, 1);
 	QVector<QMap<QString, QVariant> >* map_p1 = m_dbManagerTarget->get(m_rdsEvilIds, 1);
 
-    for(int i = 0; i < map_p1->count(); ++i)
-    {
-        QString nam = map_p1->at(i).value("name").toString();
-        if(nam == s_prop)
-        {
-            rec_p1->insert("id", QVariant::fromValue(map_p1->at(i).value("id").toInt()));
-            break;
-        }
-    }
+	for(int i = 0; i < map_p1->count(); ++i)
+	{
+		QString nam = map_p1->at(i).value("name").toString();
+		if(nam == s_prop)
+		{
+			rec_p1->insert("id", QVariant::fromValue(map_p1->at(i).value("id").toInt()));
+			break;
+		}
+	}
 
 	m_dbManagerTarget->set_property(1, rec_p1);
 
 
-    QMap<QString, QVariant>* rec_p2 = new QMap<QString, QVariant>;
+	QMap<QString, QVariant>* rec_p2 = new QMap<QString, QVariant>;
 
 	s_prop = tr("Altitude");
 	rec_p2->insert("pid", QVariant::fromValue(m_rdsEvilIds));
-    rec_p2->insert("name", QVariant::fromValue(s_prop));
-    rec_p2->insert("value", QVariant::fromValue(alt));
-    rec_p2->insert("state", QVariant::fromValue(1));
+	rec_p2->insert("name", QVariant::fromValue(s_prop));
+	rec_p2->insert("value", QVariant::fromValue(alt));
+	rec_p2->insert("state", QVariant::fromValue(1));
 
 	QVector<QMap<QString, QVariant> >* map_p2 = m_dbManagerTarget->get(m_rdsEvilIds, 1);
 
-    for(int i = 0; i < map_p2->count(); ++i)
-    {
-        QString nam = map_p2->at(i).value("name").toString();
-        if(nam == s_prop)
-        {
-            rec_p2->insert("id", QVariant::fromValue(map_p2->at(i).value("id").toInt()));
-            break;
-        }
-    }
+	for(int i = 0; i < map_p2->count(); ++i)
+	{
+		QString nam = map_p2->at(i).value("name").toString();
+		if(nam == s_prop)
+		{
+			rec_p2->insert("id", QVariant::fromValue(map_p2->at(i).value("id").toInt()));
+			break;
+		}
+	}
 
 	m_dbManagerTarget->set_property(1, rec_p2);*/
 }

@@ -20,7 +20,7 @@
 
 #include "Station.h"
 #include "Tabs/ITabMap.h"
-#include "MapInterface/IMapController.h"
+#include "Map/IMapController.h"
 
 //#include "RadiolocationInterface.h"
 

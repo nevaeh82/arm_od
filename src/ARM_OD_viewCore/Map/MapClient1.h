@@ -25,8 +25,6 @@
 
 #include "NIIPP/INiippController.h"
 
-#include "Tabs/Tree/IDBManager.h"
-
 #include "UAV/ZInterception.h"
 
 #include "Map/IMapStyleManager.h"

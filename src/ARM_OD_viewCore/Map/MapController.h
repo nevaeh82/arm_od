@@ -45,7 +45,7 @@ public:
 	PwGisWidget *get_pwwidget();
 	QWidget     *get_widget();
 
-	virtual IMapClient  *get_map_client(int id);
+	virtual IMapClient  *getMapClient(int id);
 
 	void addMarkerLayer(int id, QString name);
 

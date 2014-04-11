@@ -174,7 +174,7 @@ void MapTabWidgetController::openMapSlot()
 
 void MapTabWidgetController::onBlaTreeItemDoubleClicked(QModelIndex index)
 {
-	BLAPerehvatDialog *b = new BLAPerehvatDialog(m_mapController->get_map_client(1), m_view);
+	BLAPerehvatDialog *b = new BLAPerehvatDialog(m_mapController->getMapClient(1), m_view);
 	b->init((index.data()).toInt(), m_uavDbManager);
 
 	/// TODO: This dialog should be modal

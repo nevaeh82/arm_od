@@ -65,7 +65,6 @@ PwGisStyle* MapStyleManager::createEnemyBplaStyle(const QString& layerName)
 		style->setProperty( PwGisStyle::graphicHeight, "60" );
 		style->setProperty( PwGisStyle::strokeColor, "blue" );
 		style->setProperty( PwGisStyle::layer, layerName );
-		style->apply();
 	}
 
 	return style;

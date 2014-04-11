@@ -54,11 +54,11 @@ void EnemyBpla::setTrack(const QVector<QPointF>& track)
 	points->clear();
 
 	foreach( QPointF point, m_track ) {
-		points->append( new PwGisLonLat( point.x(), point.y() ) );
+		points->append( new PwGisLonLat( point.y(), point.x() ) );
 	}
 
 	if( points->count() > 0 ) {
-		setPosition( m_track.last() );
+		setPosition( QPointF( m_track.last().y(), m_track.last().x() ) );
 	}
 }
 
