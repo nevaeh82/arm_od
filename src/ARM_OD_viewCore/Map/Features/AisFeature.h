@@ -1,10 +1,6 @@
 #ifndef AISFEATURE_H
 #define AISFEATURE_H
 
-#include <QString>
-#include <QPointF>
-#include <QMap>
-
 #include "Map/Features/MarkerFeature.h"
 
 namespace MapFeature {

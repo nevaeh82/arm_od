@@ -6,29 +6,7 @@ Niipp::Niipp( PwGisWidget* pwwidget, QString niippLayerId,
 	QString niippPointLayerId ) :
 	m_pwwidget( pwwidget )
 {
-	//9 - NIIPPPoint
-	PwGisStyle* NIPPPointStyle = m_pwwidget->createStyle( "NIIPPPoint" );
-	NIPPPointStyle->setProperty( PwGisStyle::mapFontColor, "brown" );
-	NIPPPointStyle->setProperty( PwGisStyle::mapFontSize, "10pt");
-	NIPPPointStyle->setProperty( PwGisStyle::externalGraphic, "/profiles/Zav/Points/images/Points/redmark48.png" );
-	NIPPPointStyle->setProperty( PwGisStyle::fillColor, "brown" );
-	NIPPPointStyle->setProperty( PwGisStyle::graphicWidth, "20" );
-	NIPPPointStyle->setProperty( PwGisStyle::graphicHeight, "40" );
-	NIPPPointStyle->setProperty( PwGisStyle::strokeColor, "brown" );
-	NIPPPointStyle->setProperty( PwGisStyle::layer, niippPointLayerId );
-	NIPPPointStyle->apply();
 
-	//10 - NIIPP
-	PwGisStyle* NiiPPStyle = m_pwwidget->createStyle( "NIIPP" );
-	NiiPPStyle->setProperty( PwGisStyle::mapFontColor, "brown" );
-	NiiPPStyle->setProperty( PwGisStyle::mapFontSize, "10pt");
-	NiiPPStyle->setProperty( PwGisStyle::externalGraphic, "/profiles/Zav/Points/images/Points/redmark48.png" );
-	NiiPPStyle->setProperty( PwGisStyle::fillColor, "brown" );
-	NiiPPStyle->setProperty( PwGisStyle::graphicWidth, "20" );
-	NiiPPStyle->setProperty( PwGisStyle::graphicHeight, "40" );
-	NiiPPStyle->setProperty( PwGisStyle::strokeColor, "brown" );
-	NiiPPStyle->setProperty( PwGisStyle::layer, niippLayerId );
-	NiiPPStyle->apply();
 }
 
 Niipp::~Niipp()

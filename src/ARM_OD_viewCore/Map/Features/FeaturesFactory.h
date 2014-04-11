@@ -24,6 +24,10 @@ public:
 
 	virtual Ais* createAis(const QString& name, const QPointF& position, double course);
 	virtual FriendBpla* createFriendBpla(int id, const QPointF& position);
+	virtual EnemyBpla* createEnemyBpla(int id, const QPointF& speed, const QVector<QPointF> track,
+									   double altitude);
+	virtual Interception* createInterception( int friendBplaId, int enemyBplaId, QPointF position,
+		float height, float radius, int time, float course, float speed );
 };
 
 } // namespace MapFeature

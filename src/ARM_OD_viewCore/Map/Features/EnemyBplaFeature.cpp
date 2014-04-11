@@ -1,46 +1,107 @@
+#include "Map/IMapStyleManager.h"
 #include "Map/Features/EnemyBplaFeature.h"
 
 namespace MapFeature {
 
-EnemyBpla::EnemyBpla( PwGisWidget* pwwidget, QString layerId ) :
-	m_pwwidget( pwwidget )
+EnemyBpla::EnemyBpla(IObjectsFactory* factory, const QString& id, int bplaId)
+	: Marker( factory, id, "", QPointF() )
+	, m_altitude( altitude )
 {
-	PwGisStyle* BPLAStyle = m_pwwidget->createStyle( "BPLA" );
-	BPLAStyle->setProperty( PwGisStyle::mapFontColor, "blue" );
-	BPLAStyle->setProperty( PwGisStyle::mapFontSize, "10pt");
-	BPLAStyle->setProperty( PwGisStyle::externalGraphic, "/profiles/Zav/UAV/images/UAV/BPLA48.png" );
-	BPLAStyle->setProperty( PwGisStyle::fillColor, "blue" );
-	BPLAStyle->setProperty( PwGisStyle::graphicWidth, "40" );
-	BPLAStyle->setProperty( PwGisStyle::graphicHeight, "60" );
-	BPLAStyle->setProperty( PwGisStyle::strokeColor, "blue" );
-	BPLAStyle->setProperty( PwGisStyle::layer, layerId );
-	BPLAStyle->apply();
+	setName( QString::number( bplaId ) );
+
+	m_tail = factory->createPath();
+
+	m_tail->addStyleByName( MAP_STYLE_NAME_ENEMY_BPLA );
+	m_marker->addStyleByName( MAP_STYLE_NAME_ENEMY_BPLA );
 }
 
 EnemyBpla::~EnemyBpla()
 {
+	m_tail->removeFromMap();
+	delete m_tail;
 }
 
-void EnemyBpla::add(int id, QPointF sko, QVector<QPointF> *track,
-	double alt )
+void EnemyBpla::setName(const QString& name)
 {
-	QString name;
-	name = "БПЛА (№" + QString::number( id ) + ")\\n";
-	name.append( QString::number( alt, 'f', 1 ) );
-	name.append( "\\n" );
-	double sko1 = qSqrt( sko.x()*sko.x() + sko.y()*sko.y() );
-	name.append( QString::number( sko1, 'f', 4 ) );
+	m_originName = name;
+	QString newName = "БПЛА (№%1)\\n%2\\n%3";
 
-//	TODO 2014.03.27 alax
-//	PwGisPointList* p = new PwGisPointList();
-//	for( int i = 0; i < track.size(); ++i ) {
-//		PwGisLonLat *platlon = new PwGisLonLat( track.at(i).y(), track.at(i).x(), this );
-//		p->append( platlon );
-//	}
+	double speed = qSqrt( m_speed.x() * m_speed.x() + m_speed.y() * m_speed.y() );
 
-	int lastIndex = track->size() - 1;
-	m_pwwidget->addMarker( QString::number( id ), track->at( lastIndex ).y(),
-		track->at( lastIndex ).x(), name, "", 0, "BPLA" );
+	Marker::setName( newName.arg( name,
+								  QString::number( m_altitude, 'f', 1 ),
+								  QString::number( speed, 'f', 1 ) ) );
+}
+
+void EnemyBpla::setPosition(const QPointF& position)
+{
+	Marker::setPosition( position );
+	updateName();
+}
+
+void EnemyBpla::setAltitude(double altitude)
+{
+	m_altitude = altitude;
+	updateName();
+}
+
+void EnemyBpla::setTrack(const QVector<QPointF>& track)
+{
+	m_track = track;
+
+	PwGisPointList* points = m_tail->points();
+	points->clear();
+
+	for( QPointF point : m_track ) {
+		points->append( new PwGisLonLat( point.x(), point.y() ) );
+	}
+
+	if( points->size() > 0 ) {
+		setPosition( m_track.last() );
+	}
+}
+
+void EnemyBpla::setSpeed(const QPointF& speed)
+{
+	m_speed = speed;
+	updateName();
+}
+
+void EnemyBpla::update(double altitude, const QPointF& speed, const QVector<QPointF>& track)
+{
+	bool changed = false;
+
+	if( track != m_track ) {
+		setTrack( track );
+		changed = true;
+	}
+
+	if( altitude != m_altitude ) {
+		m_altitude = altitude;
+		changed = true;
+	}
+
+	if( speed != m_speed ) {
+		m_speed = speed;
+		changed = true;
+	}
+
+	if( changed ) {
+		updateName();
+		updateMap();
+	}
+}
+
+void EnemyBpla::updateMap()
+{
+	Marker::updateMap();
+	m_tail->updateMap();
+}
+
+void EnemyBpla::removeFromMap()
+{
+	m_tail->removeFromMap();
+	Marker::removeFromMap();
 }
 
 } // namespace MapFeature

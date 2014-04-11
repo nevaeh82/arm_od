@@ -1,40 +1,108 @@
+#include "Map/IMapStyleManager.h"
 #include "Map/Features/InterceptionFeature.h"
 
 namespace MapFeature {
 
-Interception::Interception( PwGisWidget* pwwidget, QString layerId ) :
-	m_pwwidget( pwwidget )
+Interception::Interception(IObjectsFactory* factory, const QString& id,
+						   int friendBplaId, int enemyBplaId, const QPointF& position,
+						   float height, float radius, float course, float speed)
+	: FeatureAbstract( factory, id, "", position )
+	, m_friendBplaId( friendBplaId )
+	, m_enemyBplaId( enemyBplaId )
+	, m_height( height )
+	, m_course( course )
+	, m_speed( speed )
 {
-	//7 - Perehvat
-	PwGisStyle* perehvatStyle = m_pwwidget->createStyle( "Perehvat" );
-	perehvatStyle->setProperty( PwGisStyle::mapFontColor, "red" );
-	perehvatStyle->setProperty( PwGisStyle::mapFontSize, "10pt");
-	perehvatStyle->setProperty( PwGisStyle::externalGraphic, "/profiles/Zav/UAV/images/UAV/BPLA48.png" );
-	perehvatStyle->setProperty( PwGisStyle::graphicWidth, "40" );
-	perehvatStyle->setProperty( PwGisStyle::graphicHeight, "40" );
-	perehvatStyle->setProperty( PwGisStyle::strokeColor, "red" );
-	perehvatStyle->setProperty( PwGisStyle::layer, layerId );
-	perehvatStyle->apply();
+	m_circle = factory->createCircle();
+	m_circle->setOriginPoint( &m_position );
+	m_circle->addStyleByName( MAP_STYLE_NAME_INTERCEPTION );
+
+	setRadius( radius );
+}
+
+void Interception::updateCaption()
+{
+	QString caption = QObject::tr( "Высота" ) + " = " + QString::number( m_height ) + "\\n";
+	caption.append( QObject::tr( "Радиус" ) + " = " + QString::number( m_radius ) + "\\n" );
+	caption.append( QObject::tr( "Курс" ) + " = " + QString::number( m_course ) + "\\n" );
+	caption.append( QObject::tr( "Скорость" ) + " = " + QString::number( m_speed ) );
+
+	m_circle->setName( caption );
 }
 
 Interception::~Interception()
 {
+	m_circle->removeFromMap();
+	delete m_circle;
 }
 
-//radius - in projection EPSG:900913 is pseudo meters
-//must use the projection EPSG:28406,28407...; EPSG:32636,32637...
-//http://192.168.13.65/pulse/pulse4/index.php?page=task&id=5004&aspect=plan
-void Interception::addPointData( int blaId, int bplaId, QPointF coord,
-	float hgt, float radius, float intcCourse, float intcSpeed )
+void Interception::setRadius(float value)
 {
-	QString pointId = QString::number( blaId ) + "-" + QString::number( bplaId );
+	m_radius = value;
+	updateCaption();
+}
 
-	QString caption = QObject::tr( "Высота = " ) + QString::number( hgt ) + "\\n";
-	caption.append( QObject::tr( "Радиус = " ) + QString::number( radius ) + "\\n" );
-	caption.append( QObject::tr( "Курс = " ) + QString::number( intcCourse ) + "\\n" );
-	caption.append( QObject::tr( "Скорость = " ) + QString::number( intcSpeed ) );
+void Interception::setHeight(float value)
+{
+	m_height = value;
+	updateCaption();
+}
 
-	m_pwwidget->addCircle( pointId, coord.y(), coord.x(), radius, caption, "", "Perehvat" );
+void Interception::setCourse(float value)
+{
+	m_course = value;
+	updateCaption();
+}
+
+void Interception::setSpeed(float value)
+{
+	m_speed = value;
+	updateCaption();
+}
+
+void Interception::update(const QPointF& position, float height, float radius, float course, float speed)
+{
+	bool changed = false;
+
+	if( position != m_position ) {
+		setPosition( position );
+		changed = true;
+	}
+
+	if( height != m_height ) {
+		m_height = height;
+		changed = true;
+	}
+
+	if( radius != m_radius ) {
+		m_radius = radius;
+		changed = true;
+	}
+
+	if( course != m_course ) {
+		m_course = course;
+		changed = true;
+	}
+
+	if( speed != m_speed ) {
+		m_speed = speed;
+		changed = true;
+	}
+
+	if( changed ) {
+		updateCaption();
+		updateMap();
+	}
+}
+
+void Interception::updateMap()
+{
+	m_circle->updateMap();
+}
+
+void Interception::removeFromMap()
+{
+	m_circle->removeFromMap();
 }
 
 } // namespace MapFeature

@@ -16,6 +16,12 @@ FriendBpla::FriendBpla(IObjectsFactory* factory , const QString& id, int bplaId,
 	setPosition( position );
 }
 
+FriendBpla::~FriendBpla()
+{
+	m_tail->removeFromMap();
+	delete m_tail;
+}
+
 void FriendBpla::setName(const QString& name)
 {
 	int id = name.toInt();

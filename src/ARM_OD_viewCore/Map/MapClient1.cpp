@@ -294,8 +294,7 @@ void MapClient1::updateSlice()
 
 void MapClient1::init()
 {
-
-	//define style
+	// create marker layers
 	this->addMarkerLayer( 0, QObject::tr( "ОП" ) );//0 - stations
 	this->addMarkerLayer( 1, QObject::tr( "БПЛА" ) ); //1 - BPLA profile
 	this->addMarkerLayer( 2, QObject::tr( "БЛА" ) ); //2 - BLA profile
@@ -308,18 +307,18 @@ void MapClient1::init()
 	this->addMarkerLayer( 9, QObject::tr( "Точки увода" ) ); //9 - NIIPPPoint
 	this->addMarkerLayer( 10, QObject::tr( "СПИП ДД" ) ); //10 - NIIPP
 
-	// init styles for features
-	m_styleManager->createAisStyle( m_mapLayers.value(8) );
+	// create styles for features
+	m_styleManager->createStationStyle( m_mapLayers.value(0) );
+	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(1) );
 	m_styleManager->createFriendBplaStyle( m_mapLayers.value(2) );
+	m_styleManager->createPelengatorStyle( m_mapLayers.value(3) );
+	m_styleManager->createPelengatorPointsStyle( m_mapLayers.value(4) );
+	m_styleManager->createInterceptionStyle( m_mapLayers.value(7) );
+	m_styleManager->createAisStyle( m_mapLayers.value(8) );
+	m_styleManager->createNiippPointsStyle( m_mapLayers.value(9) );
+	m_styleManager->createNiippStyle( m_mapLayers.value(10) );
 
-	//map features
-	m_niippFeature = new MapFeature::Niipp( m_pwWidget, m_mapLayers.value(10), m_mapLayers.value(9) );
-	m_pelengatorFeature = new MapFeature::Pelengator( m_pwWidget, m_lastCoord,
-												 m_mapLayers.value(3), m_mapLayers.value(4) );
-	m_interceptionFeature = new MapFeature::Interception( m_pwWidget, m_mapLayers.value(7) );
-	m_enemyBplaFeature = new MapFeature::EnemyBpla( m_pwWidget, m_mapLayers.value(1) );
-	m_stationFeature = new MapFeature::Station( m_pwWidget, m_mapLayers.value(0) );
-
+	// other stuff
 	QString niippLayerId = m_niippLayerName + QString::number( m_niippLayerId );
 	addNiippLayer( niippLayerId );
 
@@ -402,24 +401,35 @@ void MapClient1::setPointEvil( int id, QByteArray data )
 	QDataStream ds( &data, QIODevice::ReadOnly );
 	int time;
 	ds >> time;
+
 	int state;
 	ds >> state;
+
 	QPointF sko;
 	ds >> sko;
+
 	QVector<QPointF> track;
 	ds >> track;
+
 	double speed;
 	ds >> speed;
+
 	double alt;
 	ds >> alt;
+
 	double bearing;
 	ds >> bearing;
 
-	if ( !track.size() ) {
-		return;
+	MapFeature::EnemyBpla* bpla = m_enemyBplaList.value( id, NULL );
+	if( bpla != NULL ) {
+		bpla->update( alt, speed, track );
+	} else {
+		bpla = m_factory->createEnemyBpla( id, speed, track, alt );
+		m_friendBplaList.insert( id, bpla );
+		bpla->updateMap();
 	}
 
-	m_enemyBplaFeature->add( id, sko, &track, alt );
+	if ( !track.size() ) return;
 
 	m_mapNiippController.value( 100 )->sendEnemyBpla( track.at( track.size()-1 ),
 		m_pointUvodaNiipp, alt, bearing );
@@ -517,24 +527,25 @@ void MapClient1::updateSector( int id, double radius, double bis, QByteArray ba 
 	m_niippFeature->updateSector( id, radius, bis, ba );
 }
 
-//add NIIPP-circle
-//radius - in projection EPSG:900913 is pseudo meters
-//must use the projection EPSG:28406,28407...; EPSG:32636,32637...
-//http://192.168.13.65/pulse/pulse4/index.php?page=task&id=5004&aspect=plan
 void MapClient1::updateCicle( int id, double radius, QByteArray ba )
 {
 	m_niippFeature->updateCicle( id, radius, ba );
 }
 
-//add interception
-//radius - in projection EPSG:900913 is pseudo meters
-//must use the projection EPSG:28406,28407...; EPSG:32636,32637...
-//http://192.168.13.65/pulse/pulse4/index.php?page=task&id=5004&aspect=plan
-void MapClient1::addInterceptionPointData( int blaId, int bplaId, QPointF coord,
-	float hgt, float radius, int time, float intcCourse, float intcSpeed )
+void MapClient1::addInterceptionPointData( int friendBplaId, int enemyBplaId, QPointF position,
+	float height, float radius, int time, float course, float speed )
 {
 	Q_UNUSED( time );
 
-	m_interceptionFeature->addPointData( blaId, bplaId, coord,
-		hgt, radius, intcCourse, intcSpeed );
+	QString key = QString( "%1-%2" ).arg( friendBplaId ).arg( enemyBplaId );
+
+	MapFeature::Interception* intc = m_interceptionList.value( key, NULL );
+	if( intc != NULL ) {
+		intc->update( position, height, radius, course, speed );
+	} else {
+		intc = m_factory->createInterception( friendBplaId, enemyBplaId, position, height, radius, course,
+											  speed );
+		intc->updateMap();
+		m_interceptionList.insert( key, intc );
+	}
 }

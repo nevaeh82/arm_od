@@ -114,12 +114,13 @@ private:
 
 	QString m_niippLayerName;
 
-	QMap<QString, MapFeature::Ais*> m_aisList;
 	QMap<int, MapFeature::FriendBpla*> m_friendBplaList;
+	QMap<int, MapFeature::EnemyBpla*> m_enemyBplaList;
+	QMap<QString, MapFeature::Interception*> m_interceptionList;
+	QMap<QString, MapFeature::Ais*> m_aisList;
 	MapFeature::Niipp* m_niippFeature;
 	MapFeature::Pelengator* m_pelengatorFeature;
 	MapFeature::Interception* m_interceptionFeature;
-	MapFeature::EnemyBpla* m_enemyBplaFeature;
 	MapFeature::Station* m_stationFeature;
 
 	void addNiippLayer( QString id );
@@ -155,8 +156,9 @@ private slots:
 
 	void addPerehvatData( int bla_id, int bpla_id );
 	void removeInterceptionData(int friendBplaId, int enemyBplaId );
-	void addInterceptionPointData( int blaId, int bplaId, QPointF coord,
-		float hgt, float radius, int time, float intcCourse, float intcSpeed );
+	void addInterceptionPointData(int friendBplaId, int enemyBplaId, QPointF position,
+								  float height, float radius, int time,
+								  float course, float speed );
 
 	void updateCircle();
 	void updateSlice();

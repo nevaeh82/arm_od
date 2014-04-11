@@ -1,33 +1,50 @@
 #ifndef BPLAFEATURE_H
 #define BPLAFEATURE_H
 
-#include <QString>
-#include <QMap>
-#include <qmath.h>
-#include <PwGis/pwgiswidget.h>
-#include <PwGis/objects/PwGisStyle.h>
+#include <PwGis/PwGisPointList.h>
+#include <PwGis/objects/Path.h>
 
-#include <PwGis/objects/IconStyle.h>
-#include <PwGis/objects/LineStyle.h>
-#include <PwGis/objects/TextStyle.h>
-#include <PwGis/objects/PwGisStyle.h>
+#include "Map/Features/MarkerFeature.h"
 
 namespace MapFeature {
 
-/// Enemy BPLA feature draws in PwGis map
-class EnemyBpla
+class FeaturesFactory;
+
+/// Enemy BPLA feature in map
+class EnemyBpla : public Marker
 {
+	friend class FeaturesFactory;
+
+protected:
+	Path* m_tail;
+	QString m_originName;
+	QVector<QPointF> m_track;
+	double m_altitude;
+	QPointF m_speed;
+
+	EnemyBpla(IObjectsFactory* factory, const QString& id, int bplaId);
+
+	void inline updateName() { setName( m_originName ); }
 
 public:
-	EnemyBpla( PwGisWidget* pwwidget, QString layerId );
-	~EnemyBpla();
+	virtual ~EnemyBpla();
 
-	void add( int id, QPointF sko, QVector<QPointF> *track,
-		double alt );
+	virtual void setName(const QString &name);
+	virtual void setPosition(const QPointF &position);
 
-private:
-	PwGisWidget* m_pwwidget;
-	QMap<int, QVector<QString> > m_mapAis;
+	void setAltitude(double altitude);
+	inline double altitude() { return m_altitude; }
+
+	void setTrack(const QVector<QPointF>& track);
+	inline const QVector<QPointF>& track() { return m_track; }
+
+	void setSpeed(const QPointF& speed);
+	inline const QPointF& speed() { return m_speed; }
+
+	void update(double altitude, const QPointF& speed, const QVector<QPointF>& track);
+
+	virtual void updateMap();
+	virtual void removeFromMap();
 };
 
 } // namespace MapFeature

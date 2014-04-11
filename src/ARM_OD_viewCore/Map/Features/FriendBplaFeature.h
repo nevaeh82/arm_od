@@ -10,7 +10,7 @@ namespace MapFeature {
 
 class FeaturesFactory;
 
-/// Friend BPLA feature draw in map
+/// Friend BPLA feature in map
 class FriendBpla : public Marker
 {
 	friend class FeaturesFactory;
@@ -21,7 +21,7 @@ protected:
 	FriendBpla(IObjectsFactory* factory, const QString& id, int bplaId , QPointF position);
 
 public:
-	virtual ~FriendBpla() {}
+	virtual ~FriendBpla();
 
 	virtual void setName(const QString &name);
 	virtual void setPosition(const QPointF &position);

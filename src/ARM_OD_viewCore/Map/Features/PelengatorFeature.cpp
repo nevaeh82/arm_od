@@ -8,28 +8,17 @@ Pelengator::Pelengator( PwGisWidget* pwwidget,
 	m_pwwidget( pwwidget ),
 	m_lastCoord( lastCoord )
 {
-	//3 - Pelengators
-	PwGisStyle* pelengStyle = m_pwwidget->createStyle( "Pelengators" );
-	pelengStyle->setProperty( PwGisStyle::mapFontColor, "green" );
-	pelengStyle->setProperty( PwGisStyle::mapFontSize, "10pt");
-	pelengStyle->setProperty( PwGisStyle::fillColor, "green" );
-	pelengStyle->setProperty( PwGisStyle::graphicWidth, "40" );
-	pelengStyle->setProperty( PwGisStyle::graphicHeight, "40" );
-	pelengStyle->setProperty( PwGisStyle::strokeColor, "green" );
-	pelengStyle->setProperty( PwGisStyle::layer, pelengatorLayerId );
-	pelengStyle->apply();
-
 	//4 - PelengatorsPoint
-	PwGisStyle* pelengPointStyle = m_pwwidget->createStyle( "PelengatorsPoint" );
-	pelengPointStyle->setProperty( PwGisStyle::mapFontColor, "green" );
-	pelengPointStyle->setProperty( PwGisStyle::mapFontSize, "10pt");
-	pelengPointStyle->setProperty( PwGisStyle::externalGraphic, "/profiles/Zav/UAV/images/UAV/BPLA48.png" );
-	pelengPointStyle->setProperty( PwGisStyle::fillColor, "green" );
-	pelengPointStyle->setProperty( PwGisStyle::graphicWidth, "40" );
-	pelengPointStyle->setProperty( PwGisStyle::graphicHeight, "40" );
-	pelengPointStyle->setProperty( PwGisStyle::strokeColor, "green" );
-	pelengPointStyle->setProperty( PwGisStyle::layer, pelengatorPointLayerId );
-	pelengPointStyle->apply();
+	PwGisStyle* style = m_pwwidget->createStyle( "PelengatorsPoint" );
+	style->setProperty( PwGisStyle::mapFontColor, "green" );
+	style->setProperty( PwGisStyle::mapFontSize, "10pt");
+	style->setProperty( PwGisStyle::externalGraphic, "/profiles/Zav/UAV/images/UAV/BPLA48.png" );
+	style->setProperty( PwGisStyle::fillColor, "green" );
+	style->setProperty( PwGisStyle::graphicWidth, "40" );
+	style->setProperty( PwGisStyle::graphicHeight, "40" );
+	style->setProperty( PwGisStyle::strokeColor, "green" );
+	style->setProperty( PwGisStyle::layer, pelengatorPointLayerId );
+	style->apply();
 }
 
 Pelengator::~Pelengator()

@@ -6,15 +6,9 @@ Station::Station( PwGisWidget* pwwidget, QString layerId ) :
 	m_pwwidget( pwwidget )
 {
 	//0 - stations
-	PwGisStyle* StationStyle = m_pwwidget->createStyle( "stations" );
-	StationStyle->setProperty( PwGisStyle::mapFontColor, "red" );
-	StationStyle->setProperty( PwGisStyle::mapFontSize, "10pt");
-	StationStyle->setProperty( PwGisStyle::externalGraphic, "/profiles/Zav/tabs/images/Punkts/StationRed128.png" );
-	StationStyle->setProperty( PwGisStyle::fillColor, "red" );
-	StationStyle->setProperty( PwGisStyle::graphicWidth, "40" );
-	StationStyle->setProperty( PwGisStyle::graphicHeight, "40" );
-	StationStyle->setProperty( PwGisStyle::layer, layerId );
-	StationStyle->apply();
+	PwGisStyle* style = m_pwwidget->createStyle( "stations" );
+
+	style->apply();
 }
 
 Station::~Station()
