@@ -1,70 +1,58 @@
+#include "Map/IMapStyleManager.h"
 #include "Map/Features/FriendBplaFeature.h"
 
 namespace MapFeature {
 
-FriendBpla::FriendBpla( PwGisWidget* pwwidget,
-	QMap< int, PwGisPointList* > *lastCoord, QString layerId ) :
-	m_pwwidget( pwwidget ),
-	m_lastCoord( lastCoord )
+FriendBpla::FriendBpla(IObjectsFactory* factory , const QString& id, int bplaId,
+					   QPointF position)
+	: Marker( factory, id, QString(), position )
 {
-	//2 - BLA profile
-	PwGisStyle* BLAStyle = m_pwwidget->createStyle( "BLA" );
-	BLAStyle->setProperty( PwGisStyle::mapFontColor, "red" );
-	BLAStyle->setProperty( PwGisStyle::mapFontSize, "10pt");
-	BLAStyle->setProperty( PwGisStyle::externalGraphic, "/profiles/Zav/UAV/images/UAV/BLA48.png" );
-	BLAStyle->setProperty( PwGisStyle::fillColor, "red" );
-	BLAStyle->setProperty( PwGisStyle::graphicWidth, "40" );
-	BLAStyle->setProperty( PwGisStyle::graphicHeight, "60" );
-	BLAStyle->setProperty( PwGisStyle::strokeColor, "red" );
-	BLAStyle->setProperty( PwGisStyle::layer, layerId );
-	BLAStyle->apply();
+	m_marker->addStyleByName( MAP_STYLE_NAME_FRIEND_BPLA );
+
+	m_tail = factory->createPath();
+	m_tail->addStyleByName( MAP_STYLE_NAME_FRIEND_BPLA );
+
+	setName( QString::number( bplaId ) );
+	setPosition( position );
 }
 
-FriendBpla::~FriendBpla()
+void FriendBpla::setName(const QString& name)
 {
+	int id = name.toInt();
+	if( id > 0 ) {
+		QString newName = id == 1044 ? "БЛА-Ц" : (QString( "БЛА (№%1)" ).arg( id ));
+		Marker::setName( newName );
+	}
 }
 
-void FriendBpla::add( int id, QPointF point )
+void FriendBpla::setPosition(const QPointF& position)
 {
-	PwGisPointList *p;
-	if ( m_lastCoord->contains( id ) ) {
-		p = m_lastCoord->value( id );
-	}
-	else {
-		p = new PwGisPointList();
-		m_lastCoord->insert( id, p );
-	}
+	Marker::setPosition( position );
 
-	QString name;
-	if ( id == 1044 ) {
-		name  = "БЛА-Ц";
-	}
-	else {
-		name = "БЛА (№" + QString::number( id ) + ")";
+	PwGisPointList* points = m_tail->points();
+
+	points->append( new PwGisLonLat( m_position ) );
+
+	while( points->length() > 100 ) {
+		points->removeFirst();
 	}
 
-	double y = point.y();
-	double x = point.x();
-
-//	TODO 2014.03.27 alax
-//	PwGisLonLat *platlon = new PwGisLonLat( y, x, this );
-	PwGisLonLat *platlon = new PwGisLonLat( y, x );
-
-	p->append(platlon);
-	QString path_id = "path_" + QString::number( id );
-	if ( p->length() > 100 ) {
-		p->removeFirst();
-	}
-
-	if ( p->first() == p->last() ) {
-		m_pwwidget->removeObject( QString::number( id ) );
+	if ( points->first() == points->last() ) {
+		removeFromMap();
 		return;
 	}
+}
 
-	m_pwwidget->addMarker( QString::number( id ), y, x, name, "", 0, "BLA" );
+void FriendBpla::updateMap()
+{
+	m_tail->updateMap();
+	Marker::updateMap();
+}
 
-	m_pwwidget->removeObject( path_id );
-	m_pwwidget->addPath( path_id, p, "", "", "BLA" );
+void FriendBpla::removeFromMap()
+{
+	m_tail->removeFromMap();
+	Marker::removeFromMap();
 }
 
 } // namespace MapFeature

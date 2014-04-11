@@ -97,6 +97,12 @@ HEADERS += \
 	Map/Features/NiippFeature.h \
 	Map/Features/PelengatorFeature.h \
 	Map/Features/StationFeature.h \
+    Map/MapStyleManager.h \
+    Map/Features/FeaturesFactory.h \
+    Map/Features/IFeaturesFactory.h \
+    Map/IMapStyleManager.h \
+    Map/Features/FeatureAbstract.h \
+    Map/Features/MarkerFeature.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -134,6 +140,10 @@ SOURCES += \
 	Map/Features/NiippFeature.cpp \
 	Map/Features/PelengatorFeature.cpp \
 	Map/Features/StationFeature.cpp \
+    Map/MapStyleManager.cpp \
+    Map/Features/FeaturesFactory.cpp \
+    Map/Features/FeatureAbstract.cpp \
+    Map/Features/MarkerFeature.cpp
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \

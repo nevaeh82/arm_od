@@ -1,12 +1,18 @@
-﻿#include "MapClient1.h"
+﻿#include <Logger.h>
 
+#include "Map/MapStyleManager.h"
+#include "Map/MapClient1.h"
 
-MapClient1::MapClient1(PwGisWidget* pwwidget, Station* station, QObject* parent)
+MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 	: QObject( parent )
 	, m_mux( QMutex::Recursive )
 	, m_niippLayerId( 0 )
 	, m_layersCounter( 0 )
 {
+	m_styleManager = new MapStyleManager( pwWidget->mapProvider()->styleFactory() );
+
+	m_factory = new MapFeature::FeaturesFactory( pwWidget->mapProvider(), m_styleManager );
+
 	m_niippLayerName = "NIIPP";
 
 	m_pointUvodaNiipp.setX( 0 );
@@ -16,8 +22,8 @@ MapClient1::MapClient1(PwGisWidget* pwwidget, Station* station, QObject* parent)
 	m_circleChanged = false;
 	m_sliceChanged = false;
 
-	m_pwwidget = pwwidget;
-	m_mapBounds = m_pwwidget->mapProvider()->mapBounds();
+	m_pwWidget = pwWidget;
+	m_mapBounds = m_pwWidget->mapProvider()->mapBounds();
 	m_station = station;
 	m_mainLatitude = m_station->latitude;
 	m_mainLongitude = m_station->longitude;
@@ -47,7 +53,7 @@ MapClient1::MapClient1(PwGisWidget* pwwidget, Station* station, QObject* parent)
 	connect( m_uiTimerSlice, SIGNAL( timeout() ), this, SLOT( updateSlice() ) );
 	m_uiTimerSlice->setInterval( 100 );
 
-	m_layerManager = m_pwwidget->mapProvider()->layerManager();
+	m_layerManager = m_pwWidget->mapProvider()->layerManager();
 
 	m_perehvat = new ZInterception( this );
 	QThread* thread = new QThread;
@@ -63,11 +69,10 @@ MapClient1::MapClient1(PwGisWidget* pwwidget, Station* station, QObject* parent)
 
 MapClient1::~MapClient1()
 {
-	delete m_aisFeature;
+	removeAis();
 	delete m_niippFeature;
 	delete m_pelengatorFeature;
 	delete m_interceptionFeature;
-	delete m_friendBplaFeature;
 	delete m_enemyBplaFeature;
 	delete m_stationFeature;
 }
@@ -156,7 +161,7 @@ void MapClient1::addPerehvatPoint(int blaId, int bplaId, QPointF coord,
 
 void MapClient1::removePointUvoda()
 {
-	m_pwwidget->removeMarker( "NIIPMarker" );
+	m_pwWidget->removeMarker( "NIIPMarker" );
 }
 
 /// set central control point
@@ -164,7 +169,7 @@ void MapClient1::setPoint()
 {
 	//define style
 	//5 - Grid
-	PwGisStyle* gridStyle = m_pwwidget->createStyle( "Grid" );
+	PwGisStyle* gridStyle = m_pwWidget->createStyle( "Grid" );
 	gridStyle->setProperty( PwGisStyle::mapFontColor, "black" );
 	gridStyle->setProperty( PwGisStyle::mapFontSize, "10pt");
 	gridStyle->setProperty( PwGisStyle::fillColor, "black" );
@@ -176,7 +181,7 @@ void MapClient1::setPoint()
 	showLayer(5, false);
 
 	//6 - Control_points
-	PwGisStyle* pointsStyle = m_pwwidget->createStyle( "Control_points" );
+	PwGisStyle* pointsStyle = m_pwWidget->createStyle( "Control_points" );
 	pointsStyle->setProperty( PwGisStyle::mapFontColor, "black" );
 	pointsStyle->setProperty( PwGisStyle::mapFontSize, "10pt" );
 	pointsStyle->setProperty( PwGisStyle::graphicWidth, "40" );
@@ -207,8 +212,8 @@ void MapClient1::centerMap()
 /// set justify map
 void MapClient1::justifyMap()
 {
-	int h = m_pwwidget->maximumHeight();
-	int w = m_pwwidget->maximumWidth();
+	int h = m_pwWidget->maximumHeight();
+	int w = m_pwWidget->maximumWidth();
 	m_mapBounds->zoomMapTo( 0, 0, w, h );
 }
 
@@ -260,7 +265,7 @@ void MapClient1::updatePoints()
 
 void MapClient1::addNiippLayer( QString id )
 {
-	m_pwwidget->mapProvider()->layerManager()->addVectorLayer( id, m_niippLayerName );
+	m_pwWidget->mapProvider()->layerManager()->addVectorLayer( id, m_niippLayerName );
 }
 
 void MapClient1::addPerehvatData( int bla_id, int bpla_id )
@@ -276,7 +281,7 @@ void MapClient1::updateCircle()
 	}
 	m_circleChanged = false;
 
-	m_pwwidget->addClassicPolygon( "c1",  30.531368, 60.074592,
+	m_pwWidget->addClassicPolygon( "c1",  30.531368, 60.074592,
 		m_circleRadius*1000, 40, 0, "ОП1 Гроза", "", "yellow selectAndDrag" );
 }
 
@@ -303,15 +308,17 @@ void MapClient1::init()
 	this->addMarkerLayer( 9, QObject::tr( "Точки увода" ) ); //9 - NIIPPPoint
 	this->addMarkerLayer( 10, QObject::tr( "СПИП ДД" ) ); //10 - NIIPP
 
+	// init styles for features
+	m_styleManager->createAisStyle( m_mapLayers.value(8) );
+	m_styleManager->createFriendBplaStyle( m_mapLayers.value(2) );
+
 	//map features
-	m_aisFeature = new MapFeature::Ais( m_pwwidget, m_mapLayers.value(8) );
-	m_niippFeature = new MapFeature::Niipp( m_pwwidget, m_mapLayers.value(10), m_mapLayers.value(9) );
-	m_pelengatorFeature = new MapFeature::Pelengator( m_pwwidget, m_lastCoord,
+	m_niippFeature = new MapFeature::Niipp( m_pwWidget, m_mapLayers.value(10), m_mapLayers.value(9) );
+	m_pelengatorFeature = new MapFeature::Pelengator( m_pwWidget, m_lastCoord,
 												 m_mapLayers.value(3), m_mapLayers.value(4) );
-	m_interceptionFeature = new MapFeature::Interception( m_pwwidget, m_mapLayers.value(7) );
-	m_friendBplaFeature = new MapFeature::FriendBpla( m_pwwidget, m_lastCoord, m_mapLayers.value(2) );
-	m_enemyBplaFeature = new MapFeature::EnemyBpla( m_pwwidget, m_mapLayers.value(1) );
-	m_stationFeature = new MapFeature::Station( m_pwwidget, m_mapLayers.value(0) );
+	m_interceptionFeature = new MapFeature::Interception( m_pwWidget, m_mapLayers.value(7) );
+	m_enemyBplaFeature = new MapFeature::EnemyBpla( m_pwWidget, m_mapLayers.value(1) );
+	m_stationFeature = new MapFeature::Station( m_pwWidget, m_mapLayers.value(0) );
 
 	QString niippLayerId = m_niippLayerName + QString::number( m_niippLayerId );
 	addNiippLayer( niippLayerId );
@@ -334,7 +341,7 @@ void MapClient1::init()
 	connect( this, SIGNAL( cicleUpdated( int, double, QByteArray ) ),
 			 this, SLOT( updateCicle( int, double, QByteArray ) ) );
 
-	connect( m_pwwidget, SIGNAL( mapClicked( double, double ) ),
+	connect( m_pwWidget, SIGNAL( mapClicked( double, double ) ),
 			 this, SLOT( mapMouseClicked( double, double ) ) );
 }
 
@@ -371,7 +378,21 @@ void MapClient1::setPointBla( int id, QPointF point, double alt, double speed,
 
 	QMutexLocker lock( &m_mux );
 
-	m_friendBplaFeature->add( id, point );
+	point = QPointF(point.y(), point.x());
+
+	MapFeature::FriendBpla* bpla = m_friendBplaList.value( id, NULL );
+	if( bpla != NULL ) {
+		// update, if BPLA already added and position changed
+		if( bpla->position() == point ) return;
+
+		bpla->setPosition( point );
+	} else {
+		// else create new one
+		bpla = m_factory->createFriendBpla( id, point );
+		m_friendBplaList.insert( id, bpla );
+	}
+
+	bpla->updateMap();
 }
 
 //add BPLA - Evil
@@ -407,14 +428,71 @@ void MapClient1::setPointEvil( int id, QByteArray data )
 }
 
 //add AIS
-void MapClient1::setAisData( QMap<int, QVector<QString> > map )
+void MapClient1::setAisData( QMap<int, QVector<QString> > data )
 {
-	m_aisFeature->add( map );
+	QMap<QString, MapFeature::Ais*> newAisList;
+
+	QMap<int, QVector<QString> >::iterator it;
+	for( it = data.begin(); it != data.end(); ++it ) {
+		bool doubleOK;
+
+		QVector<QString> vec = it.value();
+
+		double lon = vec.at(1).toDouble( &doubleOK );
+		if( !doubleOK ) {
+			log_warning( QString( "Wrong longitude (%1) for AIS %2" ).arg( vec.at(1), vec.at(0) ) );
+			continue;
+		}
+
+		double lat = vec.at(2).toDouble( &doubleOK );
+		if( !doubleOK ) {
+			log_warning( QString( "Wrong latitude (%1) for AIS %2" ).arg( vec.at(2), vec.at(0) ) );
+			continue;
+		}
+
+		double course = vec.at(5).toDouble( &doubleOK );
+		if( !doubleOK ) {
+			log_warning( QString( "Wrong course (%1) for AIS %2" ).arg( vec.at(5), vec.at(0) ) );
+			continue;
+		}
+
+		QString name = vec.at(0);
+		QPointF position( lon, lat );
+
+		// try to pass or update this AIS, if it exists
+		MapFeature::Ais* ais = m_aisList.value( name, NULL );
+		if( ais != NULL ) {
+			m_aisList.remove( name );
+			newAisList.insert( name, ais );
+
+			if( ais->name() == name && ais->position() == position && ais->course() == course ) {
+				continue;
+			}
+
+			// if new data is not same, update it
+			ais->setName( name );
+			ais->setPosition( position );
+			ais->setCourse( course );
+			ais->updateMap();
+			continue;
+		}
+
+		ais = m_factory->createAis( name, position, course );
+		newAisList.insert( name, ais );
+	}
+
+	// now remove remains AIS from old list
+	removeAis();
+
+	m_aisList = newAisList;
 }
 
 void MapClient1::removeAis()
 {
-	m_aisFeature->remove();
+	QMap<QString, MapFeature::Ais*>::iterator i;
+	for( i = m_aisList.begin(); i != m_aisList.end(); ++i ) {
+		delete i.value();
+	}
 }
 
 //add Pelengators

@@ -1,34 +1,33 @@
 #ifndef BLAFEATURE_H
 #define BLAFEATURE_H
 
-#include <QString>
-#include <QMap>
-
-#include <PwGis/pwgiswidget.h>
-#include <PwGis/PwGisLonLat.h>
 #include <PwGis/PwGisPointList.h>
+#include <PwGis/objects/Path.h>
 
-#include <PwGis/objects/IconStyle.h>
-#include <PwGis/objects/LineStyle.h>
-#include <PwGis/objects/TextStyle.h>
-#include <PwGis/objects/PwGisStyle.h>
+#include "Map/Features/MarkerFeature.h"
 
 namespace MapFeature {
 
-/// Bla feature draw in PwGis map
-class FriendBpla
+class FeaturesFactory;
+
+/// Friend BPLA feature draw in map
+class FriendBpla : public Marker
 {
+	friend class FeaturesFactory;
+
+protected:
+	Path* m_tail;
+
+	FriendBpla(IObjectsFactory* factory, const QString& id, int bplaId , QPointF position);
 
 public:
-	FriendBpla( PwGisWidget* pwwidget, QMap< int, PwGisPointList* > *lastCoord,
-				QString layerId );
-	~FriendBpla();
+	virtual ~FriendBpla() {}
 
-	void add( int id, QPointF point );
+	virtual void setName(const QString &name);
+	virtual void setPosition(const QPointF &position);
 
-private:
-	PwGisWidget* m_pwwidget;
-	QMap< int, PwGisPointList* > *m_lastCoord;
+	virtual void updateMap();
+	virtual void removeFromMap();
 };
 
 } // namespace MapFeature

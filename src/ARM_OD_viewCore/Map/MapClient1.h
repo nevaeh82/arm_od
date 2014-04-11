@@ -40,6 +40,8 @@
 
 #include "UAV/ZInterception.h"
 
+#include "Map/IMapStyleManager.h"
+#include "Map/Features/FeaturesFactory.h"
 #include "Map/Features/AisFeature.h"
 #include "Map/Features/NiippFeature.h"
 #include "Map/Features/PelengatorFeature.h"
@@ -71,6 +73,9 @@ public:
 	virtual void removePointUvoda();
 
 private:
+	MapStyleManager* m_styleManager;
+	MapFeature::FeaturesFactory* m_factory;
+
 	int m_niippLayerId;
 	QMap<int, IMapObjectInfo*> m_mapObjects;
 
@@ -78,7 +83,7 @@ private:
 
 	QMap<int, INiiPPController* > m_mapNiippController;
 
-	PwGisWidget* m_pwwidget;
+	PwGisWidget* m_pwWidget;
 	Pw::Gis::IMapBounds* m_mapBounds;
 	Station* m_station;
 
@@ -109,11 +114,11 @@ private:
 
 	QString m_niippLayerName;
 
-	MapFeature::Ais* m_aisFeature;
+	QMap<QString, MapFeature::Ais*> m_aisList;
+	QMap<int, MapFeature::FriendBpla*> m_friendBplaList;
 	MapFeature::Niipp* m_niippFeature;
 	MapFeature::Pelengator* m_pelengatorFeature;
 	MapFeature::Interception* m_interceptionFeature;
-	MapFeature::FriendBpla* m_friendBplaFeature;
 	MapFeature::EnemyBpla* m_enemyBplaFeature;
 	MapFeature::Station* m_stationFeature;
 
@@ -142,7 +147,7 @@ private slots:
 	void setPointEvilPeleng( int id, QPointF point );
 
 	void setCurrentPoint( int id, QByteArray data );
-	void setAisData(QMap<int, QVector<QString> > map );
+	void setAisData(QMap<int, QVector<QString> > data );
 	void updatePoints();
 	void updatePelengData( int id, int postId, double lat, double lon, double direction );
 	void updateSector( int id, double radius, double bis, QByteArray ba );

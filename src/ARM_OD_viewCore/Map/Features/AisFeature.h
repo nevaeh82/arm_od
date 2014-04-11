@@ -2,30 +2,29 @@
 #define AISFEATURE_H
 
 #include <QString>
+#include <QPointF>
 #include <QMap>
-#include <PwGis/pwgiswidget.h>
 
-#include <PwGis/objects/IconStyle.h>
-#include <PwGis/objects/LineStyle.h>
-#include <PwGis/objects/TextStyle.h>
-#include <PwGis/objects/PwGisStyle.h>
+#include "Map/Features/MarkerFeature.h"
 
 namespace MapFeature {
 
-/// AIS feature draws in PwGis map
-class Ais
+class FeaturesFactory;
+
+/// AIS feature in map
+class Ais : public Marker
 {
+	friend class FeaturesFactory;
+
+protected:
+	Ais(IObjectsFactory* factory, const QString& id, const QString& name,
+		const QPointF& position, double course);
 
 public:
-	Ais( PwGisWidget* pwwidget, QString layerId );
-	~Ais();
+	virtual ~Ais() {}
 
-	void add( QMap<int, QVector<QString> > aisMap );
-	void remove();
-
-private:
-	PwGisWidget* m_pwwidget;
-	QMap<int, QVector<QString> > m_mapAis;
+	void setCourse(double course);
+	inline double course() { return m_marker->rotate(); }
 };
 
 } // namespace MapFeature
