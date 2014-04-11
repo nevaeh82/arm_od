@@ -145,6 +145,7 @@ public:
 		bool isTargetsGetOk = dbUavController->getTargetsByType(
 					dbUavController->getTargetTypeByName("testTargetType"), targets);
 		TS_ASSERT_EQUALS(true, isTargetsGetOk);
+		TS_ASSERT_DIFFERS(0, targets.length());
 
 		mission.targetId = targets.at(0).id;
 		mission.regionCenterLat = 29.0f;

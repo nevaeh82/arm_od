@@ -41,12 +41,6 @@ HEADERS += \
 	Interfaces/IExchangeMainTreeItem.h \
 	Interfaces/ITCPClient.h \
 	Interfaces/ITCPParser.h \
-	MapInterface/IMapClient.h \
-	MapInterface/IMapController.h \
-	MapInterface/mapclient1.h \
-	MapInterface/MapController.h \
-	MapInterface/Map.h \
-	MapInterface/MapWidget.h \
 	NIIPP/INiippController.h \
 	NIIPP/Niipp.h \
 	NIIPP/NiippController.h \
@@ -61,6 +55,7 @@ HEADERS += \
 	Tabs/ITabManager.h \
 	Tabs/ITabMap.h \
 	Tabs/TabManager.h \
+	Tabs/Tree/UavTreeModel.h \
 	UAV/BLAPerehvatDialog.h \
 	UAV/ZInterception.h \
 	MainWindow.h \
@@ -81,15 +76,32 @@ HEADERS += \
     Tabs/DbBla/DbUavManager.h \
     Interfaces/IDbUavManager.h \
     Tabs/Tree/UavTreeModel.h \
-    Tabs/RPC/RpcClientWrapper.h
+    Tabs/RPC/RpcClientWrapper.h \
+	Map/Map.h \
+	Map/MapWidget.h \
+	Map/IMapClient.h \
+	Map/MapClient1.h \
+	Map/IMapController.h \
+	Map/MapController.h \
+	Map/IMapStyleManager.h \
+	Map/MapStyleManager.h \
+	Map/Features/AisFeature.h \
+	Map/Features/EnemyBplaFeature.h \
+	Map/Features/FriendBplaFeature.h \
+	Map/Features/InterceptionFeature.h \
+	Map/Features/NiippFeature.h \
+	Map/Features/PelengatorFeature.h \
+	Map/Features/StationFeature.h \
+	Map/Features/FeaturesFactory.h \
+	Map/Features/IFeaturesFactory.h \
+	Map/Features/FeatureAbstract.h \
+	Map/Features/MarkerFeature.h \
+	Map/Features/NiippPointFeature.h \
+	Map/Features/PelengatorPointFeature.h \
 
 SOURCES += \
 	Common/CommandMessage.cpp \
 	Icons/IconsGenerator.cpp \
-	MapInterface/mapclient1.cpp \
-	MapInterface/MapController.cpp \
-	MapInterface/Map.cpp \
-	MapInterface/MapWidget.cpp \
 	NIIPP/NiippController.cpp \
 	NIIPP/Niipp.cpp \
 	NIIPP/NiippWidget.cpp \
@@ -109,13 +121,30 @@ SOURCES += \
     Tabs/DbBla/DbUavController.cpp \
     Tabs/DbBla/DbUavManager.cpp \
     Tabs/Tree/UavTreeModel.cpp \
-    Tabs/RPC/RpcClientWrapper.cpp
+    Tabs/RPC/RpcClientWrapper.cpp \
+	Map/Map.cpp \
+	Map/MapWidget.cpp \
+	Map/MapClient1.cpp \
+	Map/MapController.cpp \
+	Map/MapStyleManager.cpp \
+	Map/Features/AisFeature.cpp \
+	Map/Features/EnemyBplaFeature.cpp \
+	Map/Features/FriendBplaFeature.cpp \
+	Map/Features/InterceptionFeature.cpp \
+	Map/Features/NiippFeature.cpp \
+	Map/Features/PelengatorFeature.cpp \
+	Map/Features/StationFeature.cpp \
+	Map/Features/FeaturesFactory.cpp \
+	Map/Features/FeatureAbstract.cpp \
+	Map/Features/MarkerFeature.cpp \
+	Map/Features/NiippPointFeature.cpp \
+	Map/Features/PelengatorPointFeature.cpp \
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \
 	arm_od_view.ui \
 	Tabs/Solver/SolverWidget.ui \
-	MapInterface/MapWidget.ui \
+	Map/MapWidget.ui \
 	NIIPP/NiippWidget.ui \
     MapTabWidget.ui \
     ControlPanel/ControlPanel.ui

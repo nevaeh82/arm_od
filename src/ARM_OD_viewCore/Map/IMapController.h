@@ -7,7 +7,7 @@ class IMapController
 {
 public:
     virtual ~IMapController(){};
-    virtual IMapClient  *get_map_client(int id) = 0;
+    virtual IMapClient* getMapClient( int id ) = 0;
 };
 
 #endif // IMAPCONTROLLER_H

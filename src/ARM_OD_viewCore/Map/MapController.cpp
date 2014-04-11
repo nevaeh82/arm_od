@@ -76,7 +76,7 @@ bool MapController::eventFilter(QObject *obj, QEvent *e)
 }
 
 /// get map client by name
-IMapClient *MapController::get_map_client(int id)
+IMapClient *MapController::getMapClient(int id)
 {
 	return m_mapModel->getMapClient(id);
 }

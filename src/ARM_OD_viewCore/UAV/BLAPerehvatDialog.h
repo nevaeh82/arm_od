@@ -16,7 +16,7 @@
 
 #include "Tabs/DbBla/DbUavManager.h"
 
-#include "MapInterface/IMapClient.h"
+#include "Map/IMapClient.h"
 
 namespace Ui {
 class BLAPerehvatDialog;

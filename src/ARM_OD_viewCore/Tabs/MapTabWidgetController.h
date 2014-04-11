@@ -12,7 +12,7 @@
 
 #include "RPC/RpcClientWrapper.h"
 
-#include "../MapInterface/MapController.h"
+#include "../Map/MapController.h"
 
 #include "../NIIPP/NIIPPController.h"
 

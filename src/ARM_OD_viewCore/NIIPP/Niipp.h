@@ -1,7 +1,7 @@
 #ifndef NIIPPCONTROLMODEL_H
 #define NIIPPCONTROLMODEL_H
 
-#include "../MapInterface/MapController.h"
+#include "../Map/MapController.h"
 #include "../Tabs/ITabManager.h"
 
 #include "../Common/CommandMessage.h"
