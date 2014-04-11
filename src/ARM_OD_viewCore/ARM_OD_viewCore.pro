@@ -120,7 +120,6 @@ SOURCES += \
     Tabs/RPC/Rpcclient.cpp \
     Tabs/DbBla/DbUavController.cpp \
     Tabs/DbBla/DbUavManager.cpp \
-    Tabs/Tree/UavTreeModel.cpp \
     Tabs/RPC/RpcClientWrapper.cpp \
 	Map/Map.cpp \
 	Map/MapWidget.cpp \
