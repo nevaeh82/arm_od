@@ -22,6 +22,7 @@ public:
 	virtual ~Marker();
 
 	virtual void setName(const QString& name);
+	virtual void setPosition(const QPointF& position);
 
 public slots:
 	virtual void updateMap();

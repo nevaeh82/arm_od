@@ -7,7 +7,7 @@ namespace MapFeature {
 
 class FeaturesFactory;
 
-/// AIS feature in map
+/// AIS feature representation on map
 class Ais : public Marker
 {
 	friend class FeaturesFactory;

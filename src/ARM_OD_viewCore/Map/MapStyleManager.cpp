@@ -85,7 +85,7 @@ PwGisStyle* MapStyleManager::createInterceptionStyle(const QString& layerName)
 		style->setProperty( PwGisStyle::graphicWidth, "40" );
 		style->setProperty( PwGisStyle::graphicHeight, "40" );
 		style->setProperty( PwGisStyle::strokeColor, "red" );
-		style->setProperty( PwGisStyle::layer, layerId );
+		style->setProperty( PwGisStyle::layer, layerName );
 		style->apply();
 	}
 
@@ -112,10 +112,10 @@ PwGisStyle* MapStyleManager::createNiippStyle(const QString& layerName)
 	return style;
 }
 
-PwGisStyle* MapStyleManager::createNiippPointsStyle(const QString& layerName)
+PwGisStyle* MapStyleManager::createNiippPointStyle(const QString& layerName)
 {
 	bool exists;
-	PwGisStyle* style = createStyle( , &exists );
+	PwGisStyle* style = createStyle( MAP_STYLE_NAME_NIIPP_POINT, &exists );
 
 	if( !exists ) {
 		style->setProperty( PwGisStyle::mapFontColor, "brown" );
@@ -151,10 +151,10 @@ PwGisStyle* MapStyleManager::createPelengatorStyle(const QString& layerName)
 	return style;
 }
 
-PwGisStyle* MapStyleManager::createPelengatorPointsStyle(const QString& layerName)
+PwGisStyle* MapStyleManager::createPelengatorPointStyle(const QString& layerName)
 {
 	bool exists;
-	PwGisStyle* style = createStyle( MAP_STYLE_NAME_PELENGATOR_POINTS, &exists );
+	PwGisStyle* style = createStyle( MAP_STYLE_NAME_PELENGATOR_POINT, &exists );
 
 	if( !exists ) {
 		style->setProperty( PwGisStyle::mapFontColor, "green" );

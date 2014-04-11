@@ -13,10 +13,8 @@ MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 
 	m_factory = new MapFeature::FeaturesFactory( pwWidget->mapProvider(), m_styleManager );
 
+	m_niippPoint = m_factory->createNiippPoint();
 	m_niippLayerName = "NIIPP";
-
-	m_pointUvodaNiipp.setX( 0 );
-	m_pointUvodaNiipp.setY( 0 );
 
 	m_circleRadius = 0;
 	m_circleChanged = false;
@@ -70,11 +68,11 @@ MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 MapClient1::~MapClient1()
 {
 	removeAis();
-	delete m_niippFeature;
+
+	if( m_niippPoint ) delete m_niippPoint;
+
 	delete m_pelengatorFeature;
 	delete m_interceptionFeature;
-	delete m_enemyBplaFeature;
-	delete m_stationFeature;
 }
 
 void MapClient1::setNiippController( INiiPPController* niippController )
@@ -192,8 +190,9 @@ void MapClient1::setPoint()
 
 	QString mapObjectsSettingFile = QCoreApplication::applicationDirPath();
 	mapObjectsSettingFile.append( "/Map/map_objects.ini" );
+
 	/// read settings for generated (positions)
-	m_stationFeature->readFromFile( mapObjectsSettingFile );
+	readStationsFromFile( mapObjectsSettingFile );
 }
 
 void MapClient1::addMarkerLayer( int id, QString name )
@@ -312,13 +311,12 @@ void MapClient1::init()
 	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(1) );
 	m_styleManager->createFriendBplaStyle( m_mapLayers.value(2) );
 	m_styleManager->createPelengatorStyle( m_mapLayers.value(3) );
-	m_styleManager->createPelengatorPointsStyle( m_mapLayers.value(4) );
+	m_styleManager->createPelengatorPointStyle( m_mapLayers.value(4) );
 	m_styleManager->createInterceptionStyle( m_mapLayers.value(7) );
 	m_styleManager->createAisStyle( m_mapLayers.value(8) );
-	m_styleManager->createNiippPointsStyle( m_mapLayers.value(9) );
+	m_styleManager->createNiippPointStyle( m_mapLayers.value(9) );
 	m_styleManager->createNiippStyle( m_mapLayers.value(10) );
 
-	// other stuff
 	QString niippLayerId = m_niippLayerName + QString::number( m_niippLayerId );
 	addNiippLayer( niippLayerId );
 
@@ -335,10 +333,10 @@ void MapClient1::init()
 			 this, SLOT( updatePelengData( int, int, double, double, double ) ) );
 
 	connect( this, SIGNAL( sectorUpdated( int, double, double, QByteArray ) ),
-			 this, SLOT( updateSector( int, double, double, QByteArray ) ) );
+			 this, SLOT( addNiippDirected( int, double, double, QByteArray ) ) );
 
 	connect( this, SIGNAL( cicleUpdated( int, double, QByteArray ) ),
-			 this, SLOT( updateCicle( int, double, QByteArray ) ) );
+			 this, SLOT( addNiippNotDirected( int, double, QByteArray ) ) );
 
 	connect( m_pwWidget, SIGNAL( mapClicked( double, double ) ),
 			 this, SLOT( mapMouseClicked( double, double ) ) );
@@ -347,12 +345,15 @@ void MapClient1::init()
 /// get coordinates
 void MapClient1::mapMouseClicked( double lon, double lat )
 {
-	m_niippFeature->addPoint( lon, lat );
+	if( !m_niippPoint ) {
+		m_niippPoint = m_factory->createNiippPoint( );
+	}
 
-	m_pointUvodaNiipp.setX( lat );
-	m_pointUvodaNiipp.setY( lon );
-	m_mapNiippController.value( 100 )->setPoint( m_pointUvodaNiipp );
-	m_mapNiippController.value( 101 )->setPoint( m_pointUvodaNiipp );
+	QPointF position( lon, lat );
+	m_niippPoint->setPosition( position );
+
+	m_mapNiippController.value( 100 )->setPoint( position );
+	m_mapNiippController.value( 101 )->setPoint( position );
 }
 
 void MapClient1::removeInterceptionData( int friendBplaId, int enemyBplaId )
@@ -422,19 +423,19 @@ void MapClient1::setPointEvil( int id, QByteArray data )
 
 	MapFeature::EnemyBpla* bpla = m_enemyBplaList.value( id, NULL );
 	if( bpla != NULL ) {
-		bpla->update( alt, speed, track );
+		bpla->update( alt, sko, track );
 	} else {
-		bpla = m_factory->createEnemyBpla( id, speed, track, alt );
-		m_friendBplaList.insert( id, bpla );
+		bpla = m_factory->createEnemyBpla( id, sko, track, alt );
+		m_enemyBplaList.insert( id, bpla );
 		bpla->updateMap();
 	}
 
 	if ( !track.size() ) return;
 
 	m_mapNiippController.value( 100 )->sendEnemyBpla( track.at( track.size()-1 ),
-		m_pointUvodaNiipp, alt, bearing );
+		m_niippPoint->position(), alt, bearing );
 	m_mapNiippController.value( 101 )->sendEnemyBpla( track.at( track.size()-1 ),
-		m_pointUvodaNiipp, alt, bearing );
+		m_niippPoint->position(), alt, bearing );
 }
 
 //add AIS
@@ -505,6 +506,45 @@ void MapClient1::removeAis()
 	}
 }
 
+void MapClient1::readStationsFromFile(QString fileName)
+{
+	QTextCodec* codec = QTextCodec::codecForName( "UTF-8" );
+	QSettings stationSettings( fileName, QSettings::IniFormat );
+
+	stationSettings.setIniCodec( codec );
+
+	QString name;
+	double lat;
+	double lon;
+	QPointF position;
+
+	QStringList childKeys = stationSettings.childGroups();
+	foreach( const QString &childKey, childKeys ) {
+		stationSettings.beginGroup( childKey );
+
+		name = stationSettings.value( "Name", 0 ).toString();
+		lat = stationSettings.value( "Latitude", "0" ).toDouble();
+		lon = stationSettings.value( "Longitude", "0" ).toDouble();
+
+		position = QPointF( lon, lat );
+
+		if( name != QObject::tr( "Ингур" ) ) {
+			MapFeature::Station* station = m_stationList.value( name, NULL );
+
+			if( station = NULL ) {
+				station->setPosition( position );
+			} else {
+				station = m_factory->createStation( name, position );
+				m_stationList.insert( name, station );
+			}
+
+			station->updateMap();
+		}
+
+		stationSettings.endGroup();
+	}
+}
+
 //add Pelengators
 void MapClient1::updatePelengData( int id, int idPost, double lat, double lon, double direction )
 {
@@ -518,18 +558,38 @@ void MapClient1::setPointEvilPeleng( int id, QPointF point )
 	m_pelengatorFeature->setPointEvilPeleng( id, point );
 }
 
-//add NIIPP-slice
-//radius - in projection EPSG:900913 is pseudo meters
-//must use the projection EPSG:28406,28407...; EPSG:32636,32637...
-//http://192.168.13.65/pulse/pulse4/index.php?page=task&id=5004&aspect=plan
-void MapClient1::updateSector( int id, double radius, double bis, QByteArray ba )
+void MapClient1::addNiippDirected( int id, double radius, double angle, QByteArray data )
 {
-	m_niippFeature->updateSector( id, radius, bis, ba );
+	addNiip( id, MapFeature::Niipp::Directed, radius, data, angle );
 }
 
-void MapClient1::updateCicle( int id, double radius, QByteArray ba )
+void MapClient1::addNiippNotDirected( int id, double radius, QByteArray data )
 {
-	m_niippFeature->updateCicle( id, radius, ba );
+	addNiip( id, MapFeature::Niipp::NotDirected, radius, data );
+}
+
+void MapClient1::addNiip(int id, MapFeature::Niipp::Mode mode, double radius, QByteArray data,
+						 double angle)
+{
+	// get position from bytes
+	QDataStream stream( data );
+
+	QString name;
+	stream >> name;
+
+	QPointF position;
+	stream >> position;
+
+	// add or update NIIPP
+	MapFeature::Niipp* niipp = m_niippList.value( id, NULL );
+	if( niipp != NULL ) {
+		niipp->update( position, mode, radius, angle );
+	} else {
+		niipp = m_factory->createNiipp( id, position, mode, radius, angle );
+		niipp->updateMap();
+
+		m_niippList.insert( id, niipp );
+	}
 }
 
 void MapClient1::addInterceptionPointData( int friendBplaId, int enemyBplaId, QPointF position,

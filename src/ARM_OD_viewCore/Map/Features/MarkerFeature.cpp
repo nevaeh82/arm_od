@@ -24,6 +24,12 @@ void Marker::setName(const QString& name)
 	m_marker->setName( name );
 }
 
+void Marker::setPosition(const QPointF& position)
+{
+	FeatureAbstract::setPosition( position );
+	m_marker->setPosition( &m_position );
+}
+
 void Marker::updateMap()
 {
 	m_marker->updateMap();

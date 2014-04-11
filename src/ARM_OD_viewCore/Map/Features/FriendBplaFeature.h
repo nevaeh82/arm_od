@@ -10,7 +10,7 @@ namespace MapFeature {
 
 class FeaturesFactory;
 
-/// Friend BPLA feature in map
+/// Friend BPLA feature representation on map
 class FriendBpla : public Marker
 {
 	friend class FeaturesFactory;

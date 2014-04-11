@@ -1,110 +1,122 @@
+#include "Map/IMapStyleManager.h"
 #include "Map/Features/NiippFeature.h"
 
 namespace MapFeature {
 
-Niipp::Niipp( PwGisWidget* pwwidget, QString niippLayerId,
-	QString niippPointLayerId ) :
-	m_pwwidget( pwwidget )
+Niipp::Niipp(IObjectsFactory* factory, const QString& id, int niippId, const QPointF& position,
+			 Niipp::Mode mode, double radius, double angle)
+	: FeatureAbstract( factory, id, "", position )
+	, m_niippId( niippId )
+	, m_mode( mode )
 {
+	m_circle = factory->createCircle();
+	m_circle->setOriginPoint( &m_position );
+	m_circle->addStyleByName( MAP_STYLE_NAME_NIIPP );
 
+	m_sector = factory->createSector();
+	m_sector->setOriginPoint( &m_position );
+	m_sector->addStyleByName( MAP_STYLE_NAME_NIIPP );
+
+	setRadius( radius );
+	setAngle( angle );
 }
 
 Niipp::~Niipp()
 {
+	m_circle->removeFromMap();
+	delete m_circle;
+
+	m_sector->removeFromMap();
+	delete m_sector;
 }
 
-//add NIIPP-slice
-//radius - in projection EPSG:900913 is pseudo meters
-//must use the projection EPSG:28406,28407...; EPSG:32636,32637...
-//http://192.168.13.65/pulse/pulse4/index.php?page=task&id=5004&aspect=plan
-void Niipp::updateSector( int id, double radius, double bis, QByteArray ba )
+void Niipp::setMode(Niipp::Mode mode)
 {
-	QString post_id = QString::number( id ) + " - niipp";
+	m_mode = mode;
 
-	if ( m_mapNiippCircle.contains( post_id ) ) {
-		QMap<QString, PwGisLonLat *>::iterator it;
-		for( it = m_mapNiippCircle.begin(); it != m_mapNiippCircle.end(); ++it ) {
-			QString name = QString::number(id) + " - niipp";
-			if ( it.key() == name ) {
-				m_pwwidget->removeObject( name );
-				m_mapNiippCircle.remove( name );
-				break;
-			}
-		}
+	switch( m_mode ) {
+		case Directed:
+			m_circle->removeFromMap();
+			break;
+
+		case NotDirected:
+			m_sector->removeFromMap();
+			break;
 	}
-
-	if( !m_mapNiippSector.contains( post_id ) ) {
-		QDataStream ds( &ba, QIODevice::ReadOnly );
-		QString name;
-		ds >> name;
-		QPointF latlon;
-		ds >> latlon;
-		double width_angle;
-		ds >> width_angle;
-		m_mapNiippSector.insert( post_id, new PwGisLonLat( latlon.y(), latlon.x() ) );
-	}
-	PwGisLonLat* l = m_mapNiippSector.value( post_id );
-
-	double direction = bis + 12.5;
-
-	if ( direction < 0 ) {
-		direction = 360 + direction;
-	}
-
-	direction *= -1;
-	direction += 90;
-	double enddir = direction + 25;
-	qDebug() << "AAAAAAAAAAAAAAAAAAA = " << post_id << direction << enddir;
-	m_pwwidget->addSlice( post_id, l->lon, l->lat, radius*1000, direction, enddir, "", "", "NIIPP" );
 }
 
-//add NIIPP-circle
-//radius - in projection EPSG:900913 is pseudo meters
-//must use the projection EPSG:28406,28407...; EPSG:32636,32637...
-//http://192.168.13.65/pulse/pulse4/index.php?page=task&id=5004&aspect=plan
-void Niipp::updateCicle( int id, double radius, QByteArray ba )
+void Niipp::setRadius(double value)
 {
-	QString post_id = QString::number( id ) + " - niipp";
-
-	if ( m_mapNiippSector.contains( post_id ) ) {
-		QMap<QString, PwGisLonLat *>::iterator it;
-		for( it = m_mapNiippSector.begin(); it != m_mapNiippSector.end(); ++it ) {
-			QString name = QString::number(id) + " - niipp";
-			qDebug() << it.key();
-			if ( it.key() == name ) {
-				m_pwwidget->removeObject( name );
-				m_mapNiippSector.remove( name );
-				break;
-			}
-		}
-	}
-
-	if ( !m_mapNiippCircle.contains( post_id ) ) {
-		QDataStream ds( &ba, QIODevice::ReadOnly );
-		QString name;
-		ds >> name;
-		QPointF latlon;
-		ds >> latlon;
-		double width_angle;
-		ds >> width_angle;
-		m_mapNiippCircle.insert( post_id, new PwGisLonLat( latlon.y(), latlon.x() ) );
-	}
-
-	PwGisLonLat* l = m_mapNiippCircle.value( post_id );
-
-	m_pwwidget->addCircle( post_id, l->lon, l->lat, radius*1000, "", "", "NIIPP" );
-	m_pwwidget->update();
+	m_radius = value;
+	m_circle->setRadius( m_radius );
+	m_sector->setRadius( m_radius );
 }
 
-void Niipp::addPoint( double lon, double lat )
+void Niipp::setAngle(float value)
 {
-	QString caption;
-	caption.append( QObject::tr( "Точка увода" ) );
-	caption.append( "\\n" );
-	caption.append( QString::number( lat, 'f', 4 ) );
-	caption.append( "\\n" );
-	caption.append( QString::number( lon, 'f', 4 ) );
-	m_pwwidget->addMarker( "NIIPMarker", lon, lat, caption, "", 0, "NIIPPPoint" );
+	m_angle = value;
+
+	double startAngle = value + 12.5;
+
+	if ( startAngle < 0 ) {
+		startAngle = 360 + startAngle;
+	}
+
+	startAngle *= -1;
+	startAngle += 90;
+
+	double endAngle = startAngle + 25;
+
+	m_sector->setStartAngle( startAngle );
+	m_sector->setEndAngle( endAngle );
+}
+
+void Niipp::update(const QPointF& position, Niipp::Mode mode, double radius, double angle)
+{
+	bool changed = false;
+
+	if( position != this->position() ) {
+		setPosition( position );
+		changed = true;
+	}
+
+	if( mode != m_mode ) {
+		setMode( mode );
+		changed = true;
+	}
+
+	if( radius != m_radius) {
+		setRadius( m_radius );
+		changed = true;
+	}
+
+	if( angle != m_angle ) {
+		setAngle( m_angle );
+		changed = m_mode == Directed;
+	}
+
+	if( changed ) {
+		updateMap();
+	}
+}
+
+void Niipp::updateMap()
+{
+	switch( m_mode ) {
+		case Directed:
+			m_sector->updateMap();
+			break;
+
+		case NotDirected:
+			m_circle->updateMap();
+			break;
+	}
+}
+
+void Niipp::removeFromMap()
+{
+	m_circle->removeFromMap();
+	m_sector->removeFromMap();
 }
 
 } // namespace MapFeature

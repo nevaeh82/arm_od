@@ -1,32 +1,23 @@
 #ifndef STATIONFEATURE_H
 #define STATIONFEATURE_H
 
-#include <QString>
-#include <QStringList>
-#include <QTextCodec>
-#include <QSettings>
-
-#include <PwGis/pwgiswidget.h>
-
-#include <PwGis/objects/IconStyle.h>
-#include <PwGis/objects/LineStyle.h>
-#include <PwGis/objects/TextStyle.h>
-#include <PwGis/objects/PwGisStyle.h>
+#include "Map/Features/MarkerFeature.h"
 
 namespace MapFeature {
 
-/// Station feature draws in PwGis map
-class Station
+class FeaturesFactory;
+
+/// Station feature representation at map
+class Station : public Marker
 {
+	friend class FeaturesFactory;
+
+protected:
+	Station(IObjectsFactory* factory, const QString& id, const QString& name,
+			const QPointF& position);
 
 public:
-	Station( PwGisWidget* pwwidget, QString layerId );
-	~Station();
-
-	int readFromFile( QString fileName );
-
-private:
-	PwGisWidget* m_pwwidget;
+	virtual ~Station() {}
 };
 
 } // namespace MapFeature

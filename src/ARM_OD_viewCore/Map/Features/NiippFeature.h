@@ -1,40 +1,53 @@
 #ifndef NIIPPFEATURE_H
 #define NIIPPFEATURE_H
 
-#include <QString>
-#include <QMap>
-#include <QDebug>
+#include <PwGis/objects/Circle.h>
+#include <PwGis/objects/Sector.h>
 
-#include <PwGis/pwgiswidget.h>
-#include <PwGis/PwGisLonLat.h>
-
-#include <PwGis/objects/IconStyle.h>
-#include <PwGis/objects/LineStyle.h>
-#include <PwGis/objects/TextStyle.h>
-#include <PwGis/objects/PwGisStyle.h>
+#include "Map/Features/FeatureAbstract.h"
 
 namespace MapFeature {
 
-/// Niipp feature draws in PwGis map
-class Niipp
+class FeaturesFactory;
+
+/// Niipp feature representation on map
+class Niipp : public FeatureAbstract
 {
+	friend class FeaturesFactory;
 
 public:
-	Niipp( PwGisWidget* pwwidget, QString niippLayerId, QString niippPointLayerId );
-	~Niipp();
+	enum Mode { Directed, NotDirected };
 
-	//radius - in projection EPSG:900913 is pseudo meters
-	//must use the projection EPSG:28406,28407...; EPSG:32636,32637...
-	//http://192.168.13.65/pulse/pulse4/index.php?page=task&id=5004&aspect=plan
-	void updateSector( int id, double radius, double bis, QByteArray ba );
-	void updateCicle( int id, double radius, QByteArray ba );
+protected:
+	Circle* m_circle;
+	Sector* m_sector;
 
-	void addPoint( double lon, double lat );
+	int m_niippId;
+	Mode m_mode;
+	double m_radius;
+	double m_angle;
 
-private:
-	PwGisWidget* m_pwwidget;
-	QMap< QString, PwGisLonLat* > m_mapNiippSector;
-	QMap< QString, PwGisLonLat* > m_mapNiippCircle;
+	Niipp(IObjectsFactory* factory, const QString& id, int niippId, const QPointF& position,
+				 Mode mode, double radius, double angle = 0);
+
+public:
+	virtual ~Niipp();
+
+	void setMode(Mode mode);
+	/// \param radius In projection EPSG:900913 is pseudo meters. \
+	///					Must use the projection EPSG:28406,28407...; EPSG:32636,32637...
+	/// \link http://192.168.13.65/pulse/pulse4/index.php?page=task&id=5004&aspect=plan
+	void setRadius(double value);
+	void setAngle(float value);
+
+	inline Mode mode() { return m_mode; }
+	inline float radius() { return m_radius; }
+	inline float angle() { return m_angle; }
+
+	void update( const QPointF& position, Mode mode, double radius, double angle = 0 );
+
+	virtual void updateMap();
+	virtual void removeFromMap();
 };
 
 } // namespace MapFeature

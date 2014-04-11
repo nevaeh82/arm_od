@@ -9,7 +9,7 @@ namespace MapFeature {
 
 class FeaturesFactory;
 
-/// Interseption feature in map
+/// Interseption feature representation on map
 class Interception : public FeatureAbstract
 {
 	friend class FeaturesFactory;
@@ -29,11 +29,10 @@ protected:
 				 int friendBplaId, int enemyBplaId, const QPointF& position,
 				 float height, float radius, float course, float speed);
 
-	void updateCaption();
+	void updatePresentation();
 
 public:
 	virtual ~Interception();
-
 
 	/// \param radius In projection EPSG:900913 is pseudo meters. \
 	///					Must use the projection EPSG:28406,28407...; EPSG:32636,32637...
@@ -47,6 +46,8 @@ public:
 	inline float height() { return m_height; }
 	inline float course() { return m_course; }
 	inline float speed() { return m_speed; }
+
+	void update(const QPointF& position, float height, float radius, float course, float speed);
 
 	virtual void updateMap();
 	virtual void removeFromMap();

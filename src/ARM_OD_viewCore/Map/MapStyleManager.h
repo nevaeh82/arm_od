@@ -23,9 +23,9 @@ public:
 	virtual PwGisStyle* createEnemyBplaStyle(const QString& layerName);
 	virtual PwGisStyle* createInterceptionStyle(const QString& layerName);
 	virtual PwGisStyle* createNiippStyle(const QString& layerName);
-	virtual PwGisStyle* createNiippPointsStyle(const QString& layerName);
+	virtual PwGisStyle* createNiippPointStyle(const QString& layerName);
 	virtual PwGisStyle* createPelengatorStyle(const QString& layerName);
-	virtual PwGisStyle* createPelengatorPointsStyle(const QString& layerName);
+	virtual PwGisStyle* createPelengatorPointStyle(const QString& layerName);
 	virtual PwGisStyle* createStationStyle(const QString& layerName);
 
 	inline virtual PwGisStyle* getAisStyle() { return getStyle( MAP_STYLE_NAME_AIS ); }
@@ -33,9 +33,9 @@ public:
 	inline virtual PwGisStyle* getEnemyBplaStyle() { return getStyle( MAP_STYLE_NAME_ENEMY_BPLA ); }
 	inline virtual PwGisStyle* getInterceptionStyle() { return getStyle( MAP_STYLE_NAME_INTERCEPTION ); }
 	inline virtual PwGisStyle* getNiippStyle() { return getStyle( MAP_STYLE_NAME_NIIPP ); }
-	inline virtual PwGisStyle* getNiippPointsStyle() { return getStyle( MAP_STYLE_NAME_NIIPP_POINTS ); }
+	inline virtual PwGisStyle* getNiippPointStyle() { return getStyle( MAP_STYLE_NAME_NIIPP_POINT ); }
 	inline virtual PwGisStyle* getPelengatorStyle() { return getStyle( MAP_STYLE_NAME_PELENGATOR ); }
-	inline virtual PwGisStyle* getPelengatorPointsStyle() { return getStyle( MAP_STYLE_NAME_PELENGATOR_POINTS ); }
+	inline virtual PwGisStyle* getPelengatorPointStyle() { return getStyle( MAP_STYLE_NAME_PELENGATOR_POINT ); }
 	inline virtual PwGisStyle* getStationStyle() { return getStyle( MAP_STYLE_NAME_STATION ); }
 
 protected:

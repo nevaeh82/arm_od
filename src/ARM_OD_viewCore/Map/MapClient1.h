@@ -16,17 +16,6 @@
 #include <QThread>
 
 #include <MapProvider.h>
-#include <IdGenerator.h>
-#include <PwGis/PwGisPointList.h>
-#include <PwGis/objects/IconStyle.h>
-#include <PwGis/objects/LineStyle.h>
-#include <PwGis/objects/TextStyle.h>
-#include <PwGis/objects/PwGisStyle.h>
-#include <PwGis/objects/Sector.h>
-#include <PwGis/objects/Circle.h>
-#include <PwGis/objects/Path.h>
-#include <PwGis/objects/Polygon.h>
-#include <PwGis/objects/IObjectsFactory.h>
 #include <PwGis/ILayerManager.h>
 #include <PwGis/LayerManager.h>
 #include <PwGis/MapManagerEvents.h>
@@ -44,6 +33,7 @@
 #include "Map/Features/FeaturesFactory.h"
 #include "Map/Features/AisFeature.h"
 #include "Map/Features/NiippFeature.h"
+#include "Map/Features/NiippPointFeature.h"
 #include "Map/Features/PelengatorFeature.h"
 #include "Map/Features/InterceptionFeature.h"
 #include "Map/Features/FriendBplaFeature.h"
@@ -73,7 +63,7 @@ public:
 	virtual void removePointUvoda();
 
 private:
-	MapStyleManager* m_styleManager;
+	IMapStyleManager* m_styleManager;
 	MapFeature::FeaturesFactory* m_factory;
 
 	int m_niippLayerId;
@@ -114,18 +104,21 @@ private:
 
 	QString m_niippLayerName;
 
+	MapFeature::NiippPoint* m_niippPoint;
 	QMap<int, MapFeature::FriendBpla*> m_friendBplaList;
 	QMap<int, MapFeature::EnemyBpla*> m_enemyBplaList;
+	QMap<int, MapFeature::Niipp*> m_niippList;
 	QMap<QString, MapFeature::Interception*> m_interceptionList;
 	QMap<QString, MapFeature::Ais*> m_aisList;
-	MapFeature::Niipp* m_niippFeature;
+	QMap<QString, MapFeature::Station*> m_stationList;
 	MapFeature::Pelengator* m_pelengatorFeature;
 	MapFeature::Interception* m_interceptionFeature;
-	MapFeature::Station* m_stationFeature;
 
 	void addNiippLayer( QString id );
 	void addMarkerLayer( int id, QString name );
 	void removeAis();
+
+	void readStationsFromFile(QString fileName);
 
 public slots:
 	virtual void init();
@@ -151,8 +144,11 @@ private slots:
 	void setAisData(QMap<int, QVector<QString> > data );
 	void updatePoints();
 	void updatePelengData( int id, int postId, double lat, double lon, double direction );
-	void updateSector( int id, double radius, double bis, QByteArray ba );
-	void updateCicle( int id, double radius, QByteArray ba );
+
+	void addNiippDirected(int id, double radius, double angle, QByteArray data );
+	void addNiippNotDirected(int id, double radius, QByteArray data );
+	void addNiip( int id, MapFeature::Niipp::Mode mode, double radius, QByteArray data,
+				  double angle = 0 );
 
 	void addPerehvatData( int bla_id, int bpla_id );
 	void removeInterceptionData(int friendBplaId, int enemyBplaId );

@@ -1,3 +1,5 @@
+#include <qmath.h>
+
 #include "Map/IMapStyleManager.h"
 #include "Map/Features/EnemyBplaFeature.h"
 
@@ -5,7 +7,6 @@ namespace MapFeature {
 
 EnemyBpla::EnemyBpla(IObjectsFactory* factory, const QString& id, int bplaId)
 	: Marker( factory, id, "", QPointF() )
-	, m_altitude( altitude )
 {
 	setName( QString::number( bplaId ) );
 
@@ -52,11 +53,11 @@ void EnemyBpla::setTrack(const QVector<QPointF>& track)
 	PwGisPointList* points = m_tail->points();
 	points->clear();
 
-	for( QPointF point : m_track ) {
+	foreach( QPointF point, m_track ) {
 		points->append( new PwGisLonLat( point.x(), point.y() ) );
 	}
 
-	if( points->size() > 0 ) {
+	if( points->count() > 0 ) {
 		setPosition( m_track.last() );
 	}
 }

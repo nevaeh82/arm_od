@@ -20,7 +20,7 @@ Interception::Interception(IObjectsFactory* factory, const QString& id,
 	setRadius( radius );
 }
 
-void Interception::updateCaption()
+void Interception::updatePresentation()
 {
 	QString caption = QObject::tr( "Высота" ) + " = " + QString::number( m_height ) + "\\n";
 	caption.append( QObject::tr( "Радиус" ) + " = " + QString::number( m_radius ) + "\\n" );
@@ -28,6 +28,8 @@ void Interception::updateCaption()
 	caption.append( QObject::tr( "Скорость" ) + " = " + QString::number( m_speed ) );
 
 	m_circle->setName( caption );
+
+	m_circle->setRadius( m_radius );
 }
 
 Interception::~Interception()
@@ -39,32 +41,32 @@ Interception::~Interception()
 void Interception::setRadius(float value)
 {
 	m_radius = value;
-	updateCaption();
+	updatePresentation();
 }
 
 void Interception::setHeight(float value)
 {
 	m_height = value;
-	updateCaption();
+	updatePresentation();
 }
 
 void Interception::setCourse(float value)
 {
 	m_course = value;
-	updateCaption();
+	updatePresentation();
 }
 
 void Interception::setSpeed(float value)
 {
 	m_speed = value;
-	updateCaption();
+	updatePresentation();
 }
 
 void Interception::update(const QPointF& position, float height, float radius, float course, float speed)
 {
 	bool changed = false;
 
-	if( position != m_position ) {
+	if( position != this->position() ) {
 		setPosition( position );
 		changed = true;
 	}
@@ -90,7 +92,7 @@ void Interception::update(const QPointF& position, float height, float radius, f
 	}
 
 	if( changed ) {
-		updateCaption();
+		updatePresentation();
 		updateMap();
 	}
 }
