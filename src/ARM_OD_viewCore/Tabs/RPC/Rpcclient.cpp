@@ -29,6 +29,9 @@ RPCClient::RPCClient(Station *station, IDbUavManager *db_manager,
 
 RPCClient::~RPCClient()
 {
+	log_debug("~RPCClient");
+	m_clientPeer->disconnectAll();
+	m_clientPeer->deleteLater();
 }
 
 bool RPCClient::start(quint16 port, QHostAddress ipAddress)
@@ -154,6 +157,10 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
 	ds << course;
 	ds << state;
 
+	if (NULL == m_mapController) {
+		return;
+	}
+
 	m_mapController->getMapClient(1)->addFriendBpla(id, ddd);
 	/*QMap<QString, QVariant>* rec = new QMap<QString, QVariant>;
 
@@ -238,6 +245,10 @@ void RPCClient::rpcSlotServerSendAisData(QByteArray data)
 	QMap<int, QVector<QString> > map1;
 	ds >> map1;
 
+	if (NULL == m_mapController) {
+		return;
+	}
+
 	m_mapController->getMapClient(1)->addAis(map1);
 
 }
@@ -311,6 +322,10 @@ void RPCClient::rpcSendNiippData(QByteArray data)
 	ds1 << latlon;
 	ds1 << wid;
 
+	if (NULL == m_mapController) {
+		return;
+	}
+
 	if(mode == 01)
 	{
 		m_mapController->getMapClient(1)->updateNiippPowerCicle(id, m_zone[zone], ba);
@@ -352,6 +367,10 @@ void RPCClient::rpcSlotServerSendAtlantDirection(QByteArray data)
 
 	int id_post = msg.post.right(1).toInt();
 
+	if (NULL == m_mapController) {
+		return;
+	}
+
 	m_mapController->getMapClient(1)->updatePeleng(msg.sourceId, id_post, msg.postLatitude, msg.postLongitude, msg.direction);
 }
 
@@ -383,6 +402,10 @@ void RPCClient::rpcSlotServerSendAtlantPosition(QByteArray data)
 	ds1 << point;
 
 	qDebug() << "ID = " << m_mapPelengEvilIds.size() << m_pelengEvilIds << m_mapPelengEvilIds.value(msg.sourceId);
+
+	if (NULL == m_mapController) {
+		return;
+	}
 
 	m_mapController->getMapClient(1)->addEnemyBpla(m_mapPelengEvilIds.value(msg.sourceId), ba1);
 
@@ -421,6 +444,11 @@ void RPCClient::sendBplaPoints(QByteArray data)
 	if(m_rdsEvilIds > 99){
 		m_rdsEvilIds = 50;
 	}
+
+	if (NULL == m_mapController) {
+		return;
+	}
+
 	m_mapController->getMapClient(1)->addEnemyBpla(m_rdsEvilIds, oldDataFormat);
 
    /* QMap<QString, QVariant>* rec = new QMap<QString, QVariant>;

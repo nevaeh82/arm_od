@@ -81,6 +81,8 @@ signals:
 	void openMapSignal();
 
 	void readyToStart();
+
+	void finished();
 };
 
 #endif // TABMANAGER_H

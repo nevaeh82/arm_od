@@ -7,6 +7,12 @@ RpcClientWrapper::RpcClientWrapper(QObject *parent) :
 	connect(this, SIGNAL(signalSetCommand(IMessageOld*)), this, SLOT(slotSetCommand(IMessageOld*)));
 }
 
+RpcClientWrapper::~RpcClientWrapper()
+{
+	m_rpcClient->stop();
+	m_rpcClient->deleteLater();
+}
+
 void RpcClientWrapper::init(quint16 port, QHostAddress& address,
 							Station* station, IDbUavManager* uavDbManager,
 							IMapController* mapController, ITabMap* tabMap, ITabManager* tabManager)

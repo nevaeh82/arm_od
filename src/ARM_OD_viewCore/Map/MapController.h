@@ -39,7 +39,7 @@ class MapController : public QObject, public IMapController, public IController<
 
 public:
 	MapController(QObject* parent =NULL);
-	~MapController();
+	virtual ~MapController();
 	void init(QMap<int, Station *> map_settings);
 
 	PwGisWidget *get_pwwidget();

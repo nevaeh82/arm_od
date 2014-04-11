@@ -54,7 +54,7 @@ private:
 public:
 	RPCClient(Station *station, IDbUavManager *db_manager, IMapController* map_controller,
 			  ITabMap *parent_tab, ITabManager* tab_manager, QObject *parent = NULL);
-    ~RPCClient();
+	virtual ~RPCClient();
 
 	bool start(quint16 port, QHostAddress ipAddress);
 	void setCommand(IMessageOld* msg);

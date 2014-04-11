@@ -107,6 +107,7 @@ void MainWindowController::startTabManger()
 	m_tabManager->start();
 }
 
+
 void MainWindowController::rpcConnectionEstablished()
 {
 	m_rpcConfigClient->requestGetStationList("./Tabs/Tabs.ini");

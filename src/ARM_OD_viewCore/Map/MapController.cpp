@@ -3,6 +3,8 @@
 #include <QLabel>
 #include <QCursor>
 
+#include "Logger.h"
+
 #include "../Icons/IconsGenerator.h"
 
 #include "../UAV/ZInterception.h"
@@ -15,6 +17,8 @@ MapController::MapController(QObject *parent):
 
 MapController::~MapController()
 {
+	delete m_mapModel;
+	log_debug("~MapController()");
 }
 
 void MapController::init(QMap<int, Station*> map_settings)
