@@ -21,10 +21,16 @@ ARM_OD_Srv::ARM_OD_Srv()
 	_subscriber_up = new Subscriber();
 
 	_router->set_subscriber(_subscriber_up);
-
+	IRpcSettingsManager* rpcSettingsManager = RpcSettingsManager::instance();
+	rpcSettingsManager->setIniFile("./RPC/RpcOdServer.ini");
+	QString host = rpcSettingsManager->getRpcHost();
+	quint16 port = rpcSettingsManager->getRpcPort().toUShort();
 	_rpc_server = new RPCServer(this);
 	_rpc_server->setRouter(_router);
-	_rpc_server->start(24550, QHostAddress::Any);
+	_rpc_server->start(port, QHostAddress(host));
+
+	m_rpcConfigReader = new RpcConfigReader(this);
+	m_rpcConfigReader->setRpcServer(_rpc_server);
 
 	_rpc_client1 = NULL;
 

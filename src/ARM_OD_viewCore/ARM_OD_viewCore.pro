@@ -77,6 +77,7 @@ HEADERS += \
     Interfaces/IDbUavManager.h \
     Tabs/Tree/UavTreeModel.h \
     Tabs/RPC/RpcClientWrapper.h \
+	Tabs/RPC/RpcConfigClient.h \
 	Map/Map.h \
 	Map/MapWidget.h \
 	Map/IMapClient.h \
@@ -122,6 +123,7 @@ SOURCES += \
     Tabs/DbBla/DbUavManager.cpp \
     Tabs/Tree/UavTreeModel.cpp \
     Tabs/RPC/RpcClientWrapper.cpp \
+	Tabs/RPC/RpcConfigClient.cpp \
 	Map/Map.cpp \
 	Map/MapWidget.cpp \
 	Map/MapClient1.cpp \

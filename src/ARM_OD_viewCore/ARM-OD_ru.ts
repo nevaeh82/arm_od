@@ -9,42 +9,47 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="arm_od_view.ui" line="34"/>
+        <location filename="arm_od_view.ui" line="52"/>
+        <source>Initialization...</source>
+        <translation>Инициализация...</translation>
+    </message>
+    <message>
+        <location filename="arm_od_view.ui" line="76"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="arm_od_view.ui" line="41"/>
+        <location filename="arm_od_view.ui" line="83"/>
         <source>Map</source>
         <translation>Карта</translation>
     </message>
     <message>
-        <location filename="arm_od_view.ui" line="48"/>
+        <location filename="arm_od_view.ui" line="90"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="arm_od_view.ui" line="59"/>
+        <location filename="arm_od_view.ui" line="101"/>
         <source>New</source>
         <translation>Новый пункт</translation>
     </message>
     <message>
-        <location filename="arm_od_view.ui" line="64"/>
+        <location filename="arm_od_view.ui" line="106"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="arm_od_view.ui" line="69"/>
+        <location filename="arm_od_view.ui" line="111"/>
         <source>Open Atlas</source>
         <translation>Открыть атлас</translation>
     </message>
     <message>
-        <location filename="arm_od_view.ui" line="74"/>
+        <location filename="arm_od_view.ui" line="116"/>
         <source>Open from file</source>
         <translation>Открыть из файла</translation>
     </message>
     <message>
-        <location filename="arm_od_view.ui" line="79"/>
+        <location filename="arm_od_view.ui" line="121"/>
         <source>Koordinatometriya parameters</source>
         <translation>Параметры координатометрии</translation>
     </message>
@@ -84,26 +89,24 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="27"/>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="26"/>
         <source>UAV #</source>
         <oldsource>UAV â</oldsource>
         <translation>БЛА №</translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="31"/>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="30"/>
         <source>UAV_: #%1</source>
         <oldsource>UAV_: #1</oldsource>
         <translation>БПЛА: №%1</translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="53"/>
         <source>#</source>
-        <translation>№</translation>
+        <translation type="obsolete">№</translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="90"/>
         <source>Target #</source>
-        <translation>Цель №</translation>
+        <translation type="obsolete">Цель №</translation>
     </message>
 </context>
 <context>
@@ -230,12 +233,12 @@
 <context>
     <name>MainWindowController</name>
     <message>
-        <location filename="MainWindowController.cpp" line="74"/>
+        <location filename="MainWindowController.cpp" line="81"/>
         <source>Unable to connect to server</source>
         <translation>Неудалось подключиться к серверу</translation>
     </message>
     <message>
-        <location filename="MainWindowController.cpp" line="74"/>
+        <location filename="MainWindowController.cpp" line="81"/>
         <source>Please try to restart application</source>
         <translation>Попробуйте перезапустить приложение</translation>
     </message>
@@ -283,7 +286,7 @@
         <translation>Точки увода</translation>
     </message>
     <message>
-        <location filename="MapInterface/mapclient1.cpp" line="1073"/>
+        <location filename="MapInterface/mapclient1.cpp" line="1068"/>
         <source>Diversion point</source>
         <translation>Точка увода</translation>
     </message>
@@ -303,43 +306,43 @@
         <translation>БПЛА</translation>
     </message>
     <message>
-        <location filename="MapInterface/mapclient1.cpp" line="523"/>
+        <location filename="MapInterface/mapclient1.cpp" line="519"/>
         <source>UAV-C</source>
         <translation>БЛА-Ц</translation>
     </message>
     <message>
-        <location filename="MapInterface/mapclient1.cpp" line="527"/>
-        <location filename="MapInterface/mapclient1.cpp" line="825"/>
+        <location filename="MapInterface/mapclient1.cpp" line="523"/>
+        <location filename="MapInterface/mapclient1.cpp" line="821"/>
         <source>UAV (#</source>
         <translation>БЛА (№</translation>
     </message>
     <message>
-        <location filename="MapInterface/mapclient1.cpp" line="887"/>
+        <location filename="MapInterface/mapclient1.cpp" line="883"/>
         <source>UAV Atlant(#</source>
         <translation>БЛА Атлант(№</translation>
     </message>
     <message>
-        <location filename="MapInterface/mapclient1.cpp" line="1116"/>
+        <location filename="MapInterface/mapclient1.cpp" line="1111"/>
         <source>Ingur</source>
         <translation>Ингур</translation>
     </message>
     <message>
-        <location filename="MapInterface/mapclient1.cpp" line="1213"/>
+        <location filename="MapInterface/mapclient1.cpp" line="1208"/>
         <source>Height = </source>
         <translation>Высота = </translation>
     </message>
     <message>
-        <location filename="MapInterface/mapclient1.cpp" line="1214"/>
+        <location filename="MapInterface/mapclient1.cpp" line="1209"/>
         <source>Radius = </source>
         <translation>Радиус = </translation>
     </message>
     <message>
-        <location filename="MapInterface/mapclient1.cpp" line="1216"/>
+        <location filename="MapInterface/mapclient1.cpp" line="1211"/>
         <source>Speed = </source>
         <translation>Скорость = </translation>
     </message>
     <message>
-        <location filename="MapInterface/mapclient1.cpp" line="1215"/>
+        <location filename="MapInterface/mapclient1.cpp" line="1210"/>
         <source>Course = </source>
         <oldsource>ÐÑÑÑ = </oldsource>
         <translation>Курс = </translation>
@@ -405,22 +408,22 @@
 <context>
     <name>MapTabWidgetController</name>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="21"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="25"/>
         <source>Property</source>
         <translation>Свойство</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="21"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="25"/>
         <source>Value</source>
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="162"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="158"/>
         <source>SPIP DD-1</source>
         <translation>СПИП ДД-1</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="167"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="163"/>
         <source>SPIP DD-2</source>
         <translation>СПИП ДД-2</translation>
     </message>
@@ -563,22 +566,16 @@
 <context>
     <name>RPCClient</name>
     <message>
-        <location filename="Tabs/RPC/Rpcclient.cpp" line="159"/>
-        <location filename="Tabs/RPC/Rpcclient.cpp" line="438"/>
         <source>Latitude</source>
-        <translation>Широта</translation>
+        <translation type="obsolete">Широта</translation>
     </message>
     <message>
-        <location filename="Tabs/RPC/Rpcclient.cpp" line="180"/>
-        <location filename="Tabs/RPC/Rpcclient.cpp" line="459"/>
         <source>Longitude</source>
-        <translation>Долгота</translation>
+        <translation type="obsolete">Долгота</translation>
     </message>
     <message>
-        <location filename="Tabs/RPC/Rpcclient.cpp" line="203"/>
-        <location filename="Tabs/RPC/Rpcclient.cpp" line="482"/>
         <source>Altitude</source>
-        <translation>Высота</translation>
+        <translation type="obsolete">Высота</translation>
     </message>
     <message>
         <source>Height</source>
@@ -746,9 +743,8 @@
         <translation type="obsolete">СПИП ДД-2</translation>
     </message>
     <message>
-        <location filename="Tabs/TabManager.cpp" line="114"/>
         <source>Unknown</source>
-        <translation>Неизвестно</translation>
+        <translation type="obsolete">Неизвестно</translation>
     </message>
 </context>
 <context>
@@ -828,14 +824,12 @@
         <translation type="obsolete">Панорама конец</translation>
     </message>
     <message>
-        <location filename="Tabs/Tree/treemodel.cpp" line="199"/>
         <source>Name</source>
-        <translation>Наименование</translation>
+        <translation type="obsolete">Наименование</translation>
     </message>
     <message>
-        <location filename="Tabs/Tree/treemodel.cpp" line="201"/>
         <source>Property</source>
-        <translation>Свойство</translation>
+        <translation type="obsolete">Свойство</translation>
     </message>
 </context>
 <context>
@@ -867,6 +861,27 @@
     <message>
         <source>Auto</source>
         <translation type="obsolete">Авто</translation>
+    </message>
+</context>
+<context>
+    <name>UavTreeModel</name>
+    <message>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="54"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="103"/>
+        <source>lat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="60"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="104"/>
+        <source>lon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="65"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="105"/>
+        <source>alt</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
