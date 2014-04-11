@@ -55,7 +55,6 @@ HEADERS += \
 	Tabs/ITabManager.h \
 	Tabs/ITabMap.h \
 	Tabs/TabManager.h \
-	Tabs/Tree/UavTreeModel.h \
 	UAV/BLAPerehvatDialog.h \
 	UAV/ZInterception.h \
 	MainWindow.h \
@@ -120,6 +119,7 @@ SOURCES += \
     Tabs/RPC/Rpcclient.cpp \
     Tabs/DbBla/DbUavController.cpp \
     Tabs/DbBla/DbUavManager.cpp \
+    Tabs/Tree/UavTreeModel.cpp \
     Tabs/RPC/RpcClientWrapper.cpp \
 	Map/Map.cpp \
 	Map/MapWidget.cpp \
