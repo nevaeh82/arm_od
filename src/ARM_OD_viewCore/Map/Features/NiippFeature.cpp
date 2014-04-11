@@ -30,6 +30,14 @@ Niipp::~Niipp()
 	delete m_sector;
 }
 
+void Niipp::setPosition(const QPointF& position)
+{
+	FeatureAbstract::setPosition( position );
+
+	m_circle->setOriginPoint( &m_position );
+	m_sector->setOriginPoint( &m_position );
+}
+
 void Niipp::setMode(Niipp::Mode mode)
 {
 	m_mode = mode;

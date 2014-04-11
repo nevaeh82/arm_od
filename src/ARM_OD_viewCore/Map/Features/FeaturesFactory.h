@@ -29,6 +29,8 @@ public:
 	virtual Niipp*        createNiipp( int id, const QPointF& position, Niipp::Mode mode, double radius, double angle = 0 );
 	virtual NiippPoint*   createNiippPoint( const QPointF& position = QPointF() );
 	virtual Station*      createStation( const QString& name, const QPointF& position = QPointF() );
+	virtual Pelengator*   createPelengator(int id, const QPointF& position, double angle );
+	virtual PelengatorPoint* createPelengatorPoint( const QString& name, const QPointF& position );
 };
 
 } // namespace MapFeature

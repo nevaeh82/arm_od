@@ -1,83 +1,71 @@
+#include "Map/IMapStyleManager.h"
 #include "Map/Features/PelengatorFeature.h"
 
 namespace MapFeature {
 
-Pelengator::Pelengator( PwGisWidget* pwwidget,
-	QMap< int, PwGisPointList* > *lastCoord,
-	QString pelengatorLayerId, QString pelengatorPointLayerId ) :
-	m_pwwidget( pwwidget ),
-	m_lastCoord( lastCoord )
+Pelengator::Pelengator(IObjectsFactory* factory, const QString& id, int postId,
+					   const QPointF& position, double angle)
+	: FeatureAbstract( factory, id, "", position )
+	, m_postId( postId )
+	, m_angle( angle )
 {
-	//4 - PelengatorsPoint
-	PwGisStyle* style = m_pwwidget->createStyle( "PelengatorsPoint" );
-	style->setProperty( PwGisStyle::mapFontColor, "green" );
-	style->setProperty( PwGisStyle::mapFontSize, "10pt");
-	style->setProperty( PwGisStyle::externalGraphic, "/profiles/Zav/UAV/images/UAV/BPLA48.png" );
-	style->setProperty( PwGisStyle::fillColor, "green" );
-	style->setProperty( PwGisStyle::graphicWidth, "40" );
-	style->setProperty( PwGisStyle::graphicHeight, "40" );
-	style->setProperty( PwGisStyle::strokeColor, "green" );
-	style->setProperty( PwGisStyle::layer, pelengatorPointLayerId );
-	style->apply();
+	m_sector = m_factory->createSector();
+	m_sector->setOriginPoint( &m_position );
+	m_sector->setRadius( 170000 );
+	m_sector->addStyleByName( MAP_STYLE_NAME_PELENGATOR );
 }
 
 Pelengator::~Pelengator()
 {
+	m_sector->removeFromMap();
+	delete m_sector;
 }
 
-//radius - in projection EPSG:900913 is pseudo meters
-//must use the projection EPSG:28406,28407...; EPSG:32636,32637...
-//http://192.168.13.65/pulse/pulse4/index.php?page=task&id=5004&aspect=plan
-void Pelengator::updatePeleng( int postId, double lat, double lon,
-	double direction )
+void Pelengator::setPosition(const QPointF& position)
 {
-	QString post_id = QString::number( postId );// + "-" + QString::number(id);
-
-	if ( !m_mapPeleng.contains( post_id ) ) {
-		m_mapPeleng.insert( post_id, new PwGisLonLat( lon, lat ) );
-	}
-
-	PwGisLonLat* l = m_mapPeleng.value( post_id );
-
-	direction *= -1;
-	direction += 90;
-	m_pwwidget->addSlice( post_id, l->lon, l->lat, 170000, direction, direction+1, "", "", "Pelengators" );
+	FeatureAbstract::setPosition( position );
+	m_sector->setOriginPoint( &m_position );
 }
 
-void Pelengator::setPointEvilPeleng( int id, QPointF point )
+void Pelengator::setAngle(double angle)
 {
-	PwGisPointList* p;
-	if ( m_lastCoord->contains( id ) ) {
-		p = m_lastCoord->value( id );
-	}
-	else {
-		p = new PwGisPointList();
-		m_lastCoord->insert( id, p );
-	}
-	QString name;
-	name = "БПЛА Атлант(№" + QString::number(id) + ")\\n";
+	m_angle = angle;
 
-	double y = point.y();
-	double x = point.x();
+	double startAngle = m_angle;
+	startAngle *= -1;
+	startAngle += 90;
 
-//	TODO 2014.03.27 alax
-//	PwGisLonLat* platlon = new PwGisLonLat( y, x, this );
-	PwGisLonLat* platlon = new PwGisLonLat( y, x );
+	m_sector->setStartAngle( startAngle );
+	m_sector->setEndAngle( startAngle + 1 );
+}
 
-	p->append( platlon );
-	if ( p->length() > 100 ) {
-		p->removeFirst();
+void Pelengator::update(const QPointF& position, double angle)
+{
+	bool changed = false;
+
+	if( position != this->position() ) {
+		setPosition( position );
+		changed = true;
 	}
 
-	QMap<int, int>::iterator it;
-	for( it = m_mapPelengPoint.begin(); it != m_mapPelengPoint.end(); ++it ) {
-		if ( it.value() != id ) {
-			m_pwwidget->removeObject( QString::number( id ) );
-			m_mapPelengPoint.remove( id );
-		}
+	if( angle != m_angle ) {
+		setAngle( angle );
+		changed = true;
 	}
 
-	m_pwwidget->addMarker( QString::number( id ), y, x, name, "", 0, "PelengatorsPoint" );
+	if( changed ) {
+		updateMap();
+	}
+}
+
+void Pelengator::updateMap()
+{
+	m_sector->updateMap();
+}
+
+void Pelengator::removeFromMap()
+{
+	m_sector->removeFromMap();
 }
 
 } // namespace MapFeature

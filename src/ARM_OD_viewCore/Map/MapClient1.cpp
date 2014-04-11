@@ -68,11 +68,6 @@ MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 MapClient1::~MapClient1()
 {
 	removeAis();
-
-	if( m_niippPoint ) delete m_niippPoint;
-
-	delete m_pelengatorFeature;
-	delete m_interceptionFeature;
 }
 
 void MapClient1::setNiippController( INiiPPController* niippController )
@@ -307,15 +302,15 @@ void MapClient1::init()
 	this->addMarkerLayer( 10, QObject::tr( "СПИП ДД" ) ); //10 - NIIPP
 
 	// create styles for features
-	m_styleManager->createStationStyle( m_mapLayers.value(0) );
-	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(1) );
-	m_styleManager->createFriendBplaStyle( m_mapLayers.value(2) );
-	m_styleManager->createPelengatorStyle( m_mapLayers.value(3) );
-	m_styleManager->createPelengatorPointStyle( m_mapLayers.value(4) );
-	m_styleManager->createInterceptionStyle( m_mapLayers.value(7) );
-	m_styleManager->createAisStyle( m_mapLayers.value(8) );
-	m_styleManager->createNiippPointStyle( m_mapLayers.value(9) );
-	m_styleManager->createNiippStyle( m_mapLayers.value(10) );
+	m_styleManager->createStationStyle( m_mapLayers.value(0) )->apply();
+	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(1) )->apply();
+	m_styleManager->createFriendBplaStyle( m_mapLayers.value(2) )->apply();
+	m_styleManager->createPelengatorStyle( m_mapLayers.value(3) )->apply();
+	m_styleManager->createPelengatorPointStyle( m_mapLayers.value(4) )->apply();
+	m_styleManager->createInterceptionStyle( m_mapLayers.value(7) )->apply();
+	m_styleManager->createAisStyle( m_mapLayers.value(8) )->apply();
+	m_styleManager->createNiippPointStyle( m_mapLayers.value(9) )->apply();
+	m_styleManager->createNiippStyle( m_mapLayers.value(10) )->apply();
 
 	QString niippLayerId = m_niippLayerName + QString::number( m_niippLayerId );
 	addNiippLayer( niippLayerId );
@@ -330,7 +325,7 @@ void MapClient1::init()
 			 this, SLOT( setAisData( QMap<int, QVector<QString> > ) ) );
 
 	connect( this, SIGNAL( pelengUpdated( int, int, double, double, double ) ),
-			 this, SLOT( updatePelengData( int, int, double, double, double ) ) );
+			 this, SLOT( addPeleng( int, int, double, double, double ) ) );
 
 	connect( this, SIGNAL( sectorUpdated( int, double, double, QByteArray ) ),
 			 this, SLOT( addNiippDirected( int, double, double, QByteArray ) ) );
@@ -351,6 +346,7 @@ void MapClient1::mapMouseClicked( double lon, double lat )
 
 	QPointF position( lon, lat );
 	m_niippPoint->setPosition( position );
+	m_niippPoint->updateMap();
 
 	m_mapNiippController.value( 100 )->setPoint( position );
 	m_mapNiippController.value( 101 )->setPoint( position );
@@ -545,17 +541,36 @@ void MapClient1::readStationsFromFile(QString fileName)
 	}
 }
 
-//add Pelengators
-void MapClient1::updatePelengData( int id, int idPost, double lat, double lon, double direction )
+void MapClient1::addPeleng( int id, int idPost, double lat, double lon, double direction )
 {
 	Q_UNUSED( id );
-	m_pelengatorFeature->updatePeleng( idPost, lat, lon, direction );
+	QPointF position( lon, lat );
+
+	// add or update pelengator
+	MapFeature::Pelengator* p = m_pelengatorList.value( idPost, NULL );
+	if( p != NULL ) {
+		p->update( position, direction );
+	} else {
+		p = m_factory->createPelengator( idPost, position, direction );
+		p->updateMap();
+
+		m_pelengatorList.insert( idPost, p );
+	}
 }
 
-//add PelengatorsPoint
 void MapClient1::setPointEvilPeleng( int id, QPointF point )
 {
-	m_pelengatorFeature->setPointEvilPeleng( id, point );
+	// add or update pelengator point
+	MapFeature::PelengatorPoint* p = m_pelengatorPointsList.value( id, NULL );
+	if( p != NULL ) {
+		p->setPosition( point );
+	} else {
+		QString name = "БПЛА Атлант(№" + QString::number(id) + ")\\n";
+		p = m_factory->createPelengatorPoint( name, point );
+		m_pelengatorPointsList.insert( id, p );
+	}
+
+	p->updateMap();
 }
 
 void MapClient1::addNiippDirected( int id, double radius, double angle, QByteArray data )

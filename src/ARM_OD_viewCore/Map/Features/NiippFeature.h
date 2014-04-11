@@ -33,6 +33,8 @@ protected:
 public:
 	virtual ~Niipp();
 
+	virtual void setPosition(const QPointF &position);
+
 	void setMode(Mode mode);
 	/// \param radius In projection EPSG:900913 is pseudo meters. \
 	///					Must use the projection EPSG:28406,28407...; EPSG:32636,32637...

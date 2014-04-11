@@ -34,6 +34,8 @@ protected:
 public:
 	virtual ~Interception();
 
+	virtual void setPosition(const QPointF &position);
+
 	/// \param radius In projection EPSG:900913 is pseudo meters. \
 	///					Must use the projection EPSG:28406,28407...; EPSG:32636,32637...
 	/// \link http://192.168.13.65/pulse/pulse4/index.php?page=task&id=5004&aspect=plan

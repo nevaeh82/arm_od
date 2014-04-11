@@ -31,14 +31,6 @@
 
 #include "Map/IMapStyleManager.h"
 #include "Map/Features/FeaturesFactory.h"
-#include "Map/Features/AisFeature.h"
-#include "Map/Features/NiippFeature.h"
-#include "Map/Features/NiippPointFeature.h"
-#include "Map/Features/PelengatorFeature.h"
-#include "Map/Features/InterceptionFeature.h"
-#include "Map/Features/FriendBplaFeature.h"
-#include "Map/Features/EnemyBplaFeature.h"
-#include "Map/Features/StationFeature.h"
 
 #include "IMapClient.h"
 
@@ -108,11 +100,11 @@ private:
 	QMap<int, MapFeature::FriendBpla*> m_friendBplaList;
 	QMap<int, MapFeature::EnemyBpla*> m_enemyBplaList;
 	QMap<int, MapFeature::Niipp*> m_niippList;
+	QMap<int, MapFeature::Pelengator*> m_pelengatorList;
+	QMap<int, MapFeature::PelengatorPoint*> m_pelengatorPointsList;
 	QMap<QString, MapFeature::Interception*> m_interceptionList;
 	QMap<QString, MapFeature::Ais*> m_aisList;
 	QMap<QString, MapFeature::Station*> m_stationList;
-	MapFeature::Pelengator* m_pelengatorFeature;
-	MapFeature::Interception* m_interceptionFeature;
 
 	void addNiippLayer( QString id );
 	void addMarkerLayer( int id, QString name );
@@ -143,7 +135,7 @@ private slots:
 	void setCurrentPoint( int id, QByteArray data );
 	void setAisData(QMap<int, QVector<QString> > data );
 	void updatePoints();
-	void updatePelengData( int id, int postId, double lat, double lon, double direction );
+	void addPeleng( int id, int postId, double lat, double lon, double direction );
 
 	void addNiippDirected(int id, double radius, double angle, QByteArray data );
 	void addNiippNotDirected(int id, double radius, QByteArray data );

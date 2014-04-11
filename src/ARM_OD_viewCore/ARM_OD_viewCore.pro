@@ -103,7 +103,8 @@ HEADERS += \
     Map/IMapStyleManager.h \
     Map/Features/FeatureAbstract.h \
     Map/Features/MarkerFeature.h \
-    Map/Features/NiippPointFeature.h
+    Map/Features/NiippPointFeature.h \
+    Map/Features/PelengatorPointFeature.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -145,7 +146,8 @@ SOURCES += \
     Map/Features/FeaturesFactory.cpp \
     Map/Features/FeatureAbstract.cpp \
     Map/Features/MarkerFeature.cpp \
-    Map/Features/NiippPointFeature.cpp
+    Map/Features/NiippPointFeature.cpp \
+    Map/Features/PelengatorPointFeature.cpp
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \

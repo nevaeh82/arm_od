@@ -14,6 +14,7 @@
 #include "Map/Features/NiippFeature.h"
 #include "Map/Features/NiippPointFeature.h"
 #include "Map/Features/PelengatorFeature.h"
+#include "Map/Features/PelengatorPointFeature.h"
 #include "Map/Features/StationFeature.h"
 
 namespace MapFeature {
@@ -30,6 +31,8 @@ public:
 	virtual Niipp*        createNiipp( int id, const QPointF& position, Niipp::Mode mode, double radius, double angle = 0 ) = 0;
 	virtual NiippPoint*   createNiippPoint( const QPointF& position = QPointF() ) = 0;
 	virtual Station*      createStation( const QString& name, const QPointF& position = QPointF() ) = 0;
+	virtual Pelengator*   createPelengator( int id, const QPointF& position, double angle ) = 0;
+	virtual PelengatorPoint* createPelengatorPoint( const QString& name, const QPointF& position ) = 0;
 };
 
 } // namespace MapFeature

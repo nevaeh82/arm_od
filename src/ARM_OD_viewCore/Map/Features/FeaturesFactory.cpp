@@ -63,4 +63,16 @@ Station* FeaturesFactory::createStation(const QString& name, const QPointF& posi
 						name, position );
 }
 
+Pelengator *FeaturesFactory::createPelengator(int id, const QPointF& position, double angle)
+{
+	return new Pelengator( m_provider->objectsFactory(), m_provider->idGenerator()->GetNewID(),
+						   id, position, angle );
+}
+
+PelengatorPoint *FeaturesFactory::createPelengatorPoint(const QString& name, const QPointF& position)
+{
+	return new PelengatorPoint( m_provider->objectsFactory(), m_provider->idGenerator()->GetNewID(),
+						   name, position );
+}
+
 } // namespace MapFeature

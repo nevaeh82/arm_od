@@ -1,40 +1,39 @@
 #ifndef PELENGATORFEATURE_H
 #define PELENGATORFEATURE_H
 
-#include <QString>
-#include <QMap>
+#include <PwGis/objects/Sector.h>
 
-#include <PwGis/pwgiswidget.h>
-#include <PwGis/PwGisLonLat.h>
-#include <PwGis/PwGisPointList.h>
-
-#include <PwGis/objects/IconStyle.h>
-#include <PwGis/objects/LineStyle.h>
-#include <PwGis/objects/TextStyle.h>
-#include <PwGis/objects/PwGisStyle.h>
+#include "Map/Features/FeatureAbstract.h"
 
 namespace MapFeature {
 
-/// Pelengator feature draws in PwGis map
-class Pelengator
+class FeaturesFactory;
+
+/// Pelengator feature representation for map
+class Pelengator : public FeatureAbstract
 {
+	friend class FeaturesFactory;
+
+protected:
+	Sector* m_sector;
+	int m_postId;
+	double m_angle;
+
+	Pelengator(IObjectsFactory* factory, const QString& id, int postId,
+			   const QPointF& position, double angle );
 
 public:
-	Pelengator( PwGisWidget* pwwidget, QMap< int, PwGisPointList* > *lastCoord,
-		QString pelengatorLayerId, QString pelengatorPointLayerId );
-	~Pelengator();
+	virtual ~Pelengator();
 
-	//radius - in projection EPSG:900913 is pseudo meters
-	//must use the projection EPSG:28406,28407...; EPSG:32636,32637...
-	//http://192.168.13.65/pulse/pulse4/index.php?page=task&id=5004&aspect=plan
-	void updatePeleng( int postId, double lat, double lon, double direction );
-	void setPointEvilPeleng( int id, QPointF point );
+	virtual void setPosition(const QPointF &position);
 
-private:
-	PwGisWidget* m_pwwidget;
-	QMap< int, PwGisPointList* > *m_lastCoord;
-	QMap<QString, PwGisLonLat *> m_mapPeleng;
-	QMap<int, int> m_mapPelengPoint;
+	void setAngle(double angle);
+	inline float angle() { return m_angle; }
+
+	void update( const QPointF& position, double angle = 0 );
+
+	virtual void updateMap();
+	virtual void removeFromMap();
 };
 
 } // namespace MapFeature

@@ -27,7 +27,6 @@ PwGisStyle* MapStyleManager::createAisStyle(const QString& layerName)
 		style->setProperty( PwGisStyle::graphicHeight, "40" );
 		style->setProperty( PwGisStyle::strokeColor, "black" );
 		style->setProperty( PwGisStyle::layer, layerName ) ;
-		style->apply();
 	}
 
 	return style;
@@ -47,7 +46,6 @@ PwGisStyle* MapStyleManager::createFriendBplaStyle(const QString& layerName)
 		style->setProperty( PwGisStyle::graphicHeight, "60" );
 		style->setProperty( PwGisStyle::strokeColor, "red" );
 		style->setProperty( PwGisStyle::layer, layerName );
-		style->apply();
 	}
 
 	return style;
@@ -86,7 +84,6 @@ PwGisStyle* MapStyleManager::createInterceptionStyle(const QString& layerName)
 		style->setProperty( PwGisStyle::graphicHeight, "40" );
 		style->setProperty( PwGisStyle::strokeColor, "red" );
 		style->setProperty( PwGisStyle::layer, layerName );
-		style->apply();
 	}
 
 	return style;
@@ -106,7 +103,6 @@ PwGisStyle* MapStyleManager::createNiippStyle(const QString& layerName)
 		style->setProperty( PwGisStyle::graphicHeight, "40" );
 		style->setProperty( PwGisStyle::strokeColor, "brown" );
 		style->setProperty( PwGisStyle::layer, layerName );
-		style->apply();
 	}
 
 	return style;
@@ -126,7 +122,6 @@ PwGisStyle* MapStyleManager::createNiippPointStyle(const QString& layerName)
 		style->setProperty( PwGisStyle::graphicHeight, "40" );
 		style->setProperty( PwGisStyle::strokeColor, "brown" );
 		style->setProperty( PwGisStyle::layer, layerName );
-		style->apply();
 	}
 
 	return style;
@@ -145,7 +140,6 @@ PwGisStyle* MapStyleManager::createPelengatorStyle(const QString& layerName)
 		style->setProperty( PwGisStyle::graphicHeight, "40" );
 		style->setProperty( PwGisStyle::strokeColor, "green" );
 		style->setProperty( PwGisStyle::layer, layerName );
-		style->apply();
 	}
 
 	return style;
@@ -165,7 +159,6 @@ PwGisStyle* MapStyleManager::createPelengatorPointStyle(const QString& layerName
 		style->setProperty( PwGisStyle::graphicHeight, "40" );
 		style->setProperty( PwGisStyle::strokeColor, "green" );
 		style->setProperty( PwGisStyle::layer, layerName );
-		style->apply();
 	}
 
 	return style;
@@ -184,7 +177,6 @@ PwGisStyle* MapStyleManager::createStationStyle(const QString& layerName)
 		style->setProperty( PwGisStyle::graphicWidth, "40" );
 		style->setProperty( PwGisStyle::graphicHeight, "40" );
 		style->setProperty( PwGisStyle::layer, layerName );
-		style->apply();
 	}
 
 	return style;

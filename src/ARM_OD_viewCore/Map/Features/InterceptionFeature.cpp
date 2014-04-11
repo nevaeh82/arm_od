@@ -38,6 +38,12 @@ Interception::~Interception()
 	delete m_circle;
 }
 
+void Interception::setPosition(const QPointF& position)
+{
+	FeatureAbstract::setPosition( position );
+	m_circle->setOriginPoint( &m_position );
+}
+
 void Interception::setRadius(float value)
 {
 	m_radius = value;

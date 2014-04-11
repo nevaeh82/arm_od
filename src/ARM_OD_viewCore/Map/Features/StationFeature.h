@@ -7,7 +7,7 @@ namespace MapFeature {
 
 class FeaturesFactory;
 
-/// Station feature representation at map
+/// Station feature representation for map
 class Station : public Marker
 {
 	friend class FeaturesFactory;
