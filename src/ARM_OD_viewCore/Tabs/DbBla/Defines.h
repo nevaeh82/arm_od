@@ -75,7 +75,7 @@ typedef struct Target
 	int uavId;
 	QString ip;
 	uint port;
-	uint type; // FK
+	int type; // FK
 } Target;
 
 // Dictionaries

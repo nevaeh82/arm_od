@@ -126,6 +126,9 @@ public:
 		target.port = 2000;
 		target.type = dbUavController->getTargetTypeByName("testTargetType");
 
+		TS_ASSERT_DIFFERS(INVALID_INDEX, target.uavId);
+		TS_ASSERT_DIFFERS(INVALID_INDEX, target.type);
+
 		int targetId = dbUavController->addTarget(target);
 		TS_ASSERT_DIFFERS(INVALID_INDEX, targetId);
 	}
