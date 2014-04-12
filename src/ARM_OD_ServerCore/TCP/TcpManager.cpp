@@ -252,11 +252,5 @@ void TcpManager::onMethodCalledInternalSlot(const QString& method, const QVarian
 			return;
 		}
 		controller->sendData(MessageSP(new Message<QByteArray>(TCP_ARMR_SEND_SOLVER_DATA, argument.toByteArray())));
-	} else if (method == RPC_METHOD_AIS_REQUEST_GET_DATA) {
-		BaseTcpDeviceController* controller = m_controllersMap.value("AIS", NULL);
-		if (controller == NULL) {
-			return;
-		}
-		controller->sendData(MessageSP(new Message<QByteArray>(TCP_AIS_REQUEST_GET_DATA, argument.toByteArray())));
 	}
 }

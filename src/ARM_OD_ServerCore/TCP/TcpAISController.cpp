@@ -127,11 +127,3 @@ QByteArray TcpAISController::getFullInfo()
 	dataStream << m_AISSettingStruct;
 	return ba;
 }
-
-void TcpAISController::sendData(const MessageSP message)
-{
-	QString messageType = message->type();
-	if (messageType == TCP_AIS_REQUEST_GET_DATA) {
-		connectToHost();
-	}
-}
