@@ -13,7 +13,7 @@ TcpArmrClientController::~TcpArmrClientController()
 
 bool TcpArmrClientController::init()
 {
-	QSettings settings("./TCP/devices.ini", QSettings::IniFormat, this);
+	QSettings settings("./TCP/tcpArmrDevice.ini", QSettings::IniFormat, this);
 
 	QStringList childKeys = settings.childGroups();
 

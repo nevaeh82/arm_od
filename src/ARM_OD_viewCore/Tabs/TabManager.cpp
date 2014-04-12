@@ -9,19 +9,21 @@ TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
 
 	m_tabWidget = tabWidget;
 
-	//Creating db bla settings manager
+	//Creating db uav settings manager
 	m_dbBlaSettingsManager = DbBlaSettingsManager::instance();
 	m_dbBlaSettingsManager->setIniFile("./DB/db_uav.ini");
 
-	//Creating db bla controller
-	m_dbUavController = new DbUavController();
+	//Creating db uav manager
+	m_dbUavManager = new DbUavManager();
+
+	//Creating db uav controller
+	m_dbUavController = new DbUavController(m_dbUavManager);
 	m_dbUavController->connectToDB(getDbBlaConnectionSettings());
 
-	//Creating db bla manager and set its controller
-	m_dbUavManager = new DbUavManager();
+	//Set to db uav manager its controller
 	m_dbUavManager->setDbController(m_dbUavController);
 
-	//Moving db bla manager to another thread
+	//Moving db uav manager to another thread
 	QThread* dbBlaManagerThread = new QThread;
 	connect(m_dbUavManager, SIGNAL(destroyed()), dbBlaManagerThread, SLOT(terminate()));
 	m_dbUavManager->moveToThread(dbBlaManagerThread);
