@@ -49,7 +49,7 @@ QString DbBlaSettingsManager::getBlaDbName()
 {
 	QMutexLocker mutexLocker(&m_mutex);
 	QSettings settings(m_settingsFile, QSettings::IniFormat);
-	return settings.value("UAVDB/Name", "bla").toString();
+	return settings.value("UAVDB/Name", "uav").toString();
 }
 
 QString DbBlaSettingsManager::getBplaDbHost()
@@ -84,5 +84,5 @@ QString DbBlaSettingsManager::getBplaDbName()
 {
 	QMutexLocker mutexLocker(&m_mutex);
 	QSettings settings(m_settingsFile, QSettings::IniFormat);
-	return settings.value("BPLADB/Name", "bpla").toString();
+	return settings.value("BPLADB/Name", "uav").toString();
 }

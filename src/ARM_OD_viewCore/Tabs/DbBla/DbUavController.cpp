@@ -6,6 +6,13 @@ DbUavController::DbUavController(QObject *parent) :
 
 }
 
+DbUavController::DbUavController(QString connectionName, QString dbType, QObject *parent) :
+	DbControllerBase(connectionName, dbType, parent)
+{
+
+}
+
+
 DbUavController::~DbUavController()
 {
 	m_db.close();
@@ -13,6 +20,8 @@ DbUavController::~DbUavController()
 
 int DbUavController::addUav(const Uav& uav)
 {
+	QMutexLocker locker(&m_addGetUavMutex);
+
 	if(!m_db.isOpen()){
 		return INVALID_INDEX;
 	}
@@ -55,6 +64,8 @@ int DbUavController::addUav(const Uav& uav)
 
 Uav DbUavController::getUavByUavId(const uint uavId)
 {
+	QMutexLocker locker(&m_addGetUavMutex);
+
 	Uav uav;
 	uav.id = INVALID_INDEX;
 
@@ -63,6 +74,7 @@ Uav DbUavController::getUavByUavId(const uint uavId)
 	}
 
 	QSqlQuery query(m_db);
+	m_db.transaction();
 	bool succeeded = query.prepare("SELECT * FROM uav WHERE uavId = :id;");
 
 	if (!succeeded) {
@@ -96,6 +108,8 @@ Uav DbUavController::getUavByUavId(const uint uavId)
 
 Uav DbUavController::getUav(const uint id)
 {
+	QMutexLocker locker(&m_addGetUavMutex);
+
 	Uav uav;
 	uav.id = INVALID_INDEX;
 
@@ -136,6 +150,8 @@ Uav DbUavController::getUav(const uint id)
 
 bool DbUavController::getUavsByRole(const QString &role, QList<Uav> &uavs)
 {
+	QMutexLocker locker(&m_addGetUavMutex);
+
 	if(!m_db.isOpen()){
 		return false;
 	}
@@ -183,6 +199,8 @@ bool DbUavController::getUavsByRole(const QString &role, QList<Uav> &uavs)
 
 int DbUavController::getUavsCountByRole(const QString &role)
 {
+	QMutexLocker locker(&m_addGetUavMutex);
+
 	if(!m_db.isOpen()){
 		return INVALID_INDEX;
 	}
@@ -216,6 +234,8 @@ int DbUavController::getUavsCountByRole(const QString &role)
 
 int DbUavController::addUavInfo(const UavInfo& info)
 {
+	QMutexLocker locker(&m_addGetUavInfoMutex);
+
 	if(!m_db.isOpen()){
 		return INVALID_INDEX;
 	}
@@ -255,11 +275,15 @@ int DbUavController::addUavInfo(const UavInfo& info)
 
 int DbUavController::getUavInfoByUavId(const uint)
 {
+	QMutexLocker locker(&m_addGetUavInfoMutex);
+
 	return INVALID_INDEX;
 }
 
 int DbUavController::addDevice(const Devices& device)
 {
+	QMutexLocker locker(&m_addGetDeviceMutex);
+
 	if(!m_db.isOpen()){
 		return INVALID_INDEX;
 	}
@@ -292,6 +316,8 @@ int DbUavController::addDevice(const Devices& device)
 
 bool DbUavController::getDevicesByType(const uint deviceTypeId, QList<Devices>& devicesRecords)
 {
+	QMutexLocker locker(&m_addGetDeviceMutex);
+
 	if(!m_db.isOpen()){
 		return false;
 	}
@@ -327,6 +353,8 @@ bool DbUavController::getDevicesByType(const uint deviceTypeId, QList<Devices>& 
 
 int DbUavController::addUavMission(const UavMission& mission)
 {
+	QMutexLocker locker(&m_addGetUavMissionMutex);
+
 	if(!m_db.isOpen()){
 		return INVALID_INDEX;
 	}
@@ -363,6 +391,8 @@ int DbUavController::addUavMission(const UavMission& mission)
 
 bool DbUavController::getUavMissionsByUavId(const uint uavId, QList<UavMission> &missionsRecords)
 {
+	QMutexLocker locker(&m_addGetUavMissionMutex);
+
 	if(!m_db.isOpen()){
 		return false;
 	}
@@ -404,6 +434,8 @@ bool DbUavController::getUavMissionsByUavId(const uint uavId, QList<UavMission> 
 
 int DbUavController::addTarget(const Target& target)
 {
+	QMutexLocker locker(&m_addGetTargetMutex);
+
 	if(!m_db.isOpen()){
 		return INVALID_INDEX;
 	}
@@ -437,6 +469,8 @@ int DbUavController::addTarget(const Target& target)
 
 bool DbUavController::getTargetsByType(const uint targetTypeId, QList<Target> &targetsRecords)
 {
+	QMutexLocker locker(&m_addGetTargetMutex);
+
 	if(!m_db.isOpen()){
 		return false;
 	}
@@ -475,6 +509,8 @@ bool DbUavController::getTargetsByType(const uint targetTypeId, QList<Target> &t
 
 bool DbUavController::getTargetsByUavId(const uint uavId, QList<Target> &targetsRecords)
 {
+	QMutexLocker locker(&m_addGetTargetMutex);
+
 	if(!m_db.isOpen()){
 		return false;
 	}
@@ -519,6 +555,8 @@ bool DbUavController::getTargetsByUavId(const uint uavId, QList<Target> &targets
 
 bool DbUavController::deleteTargetsByUavId(const uint uavId)
 {
+	QMutexLocker locker(&m_addGetTargetMutex);
+
 	if(!m_db.isOpen()){
 		return false;
 	}
@@ -551,46 +589,55 @@ bool DbUavController::deleteTargetsByUavId(const uint uavId)
 
 int DbUavController::addTargetType(const TargetType& targetType)
 {
+	QMutexLocker locker(&m_addGetTargetTypeMutex);
 	return addDictionaryRecord("targettypes", targetType.name);
 }
 
 int DbUavController::getTargetTypeByName(const QString& name)
 {
+	QMutexLocker locker(&m_addGetTargetTypeMutex);
 	return getDictionaryRecord("targettypes", name);
 }
 
 int DbUavController::addUavType(const UavType &uavType)
 {
+	QMutexLocker locker(&m_addGetUavTypeMutex);
 	return addDictionaryRecord("uavtypes", uavType.name);
 }
 
 int DbUavController::getUavTypeByName(const QString& name)
 {
+	QMutexLocker locker(&m_addGetUavTypeMutex);
 	return getDictionaryRecord("uavtypes", name);
 }
 
 int DbUavController::addDeviceType(const DeviceType& device)
 {
+	QMutexLocker locker(&m_addGetDeviceTypeMutex);
 	return addDictionaryRecord("devicetypes", device.name);
 }
 
 int DbUavController::getDeviceTypeByName(const QString& name)
 {
+	QMutexLocker locker(&m_addGetDeviceTypeMutex);
 	return getDictionaryRecord("devicetypes", name);
 }
 
 int DbUavController::addStatus(const Status& status)
 {
+	QMutexLocker locker(&m_addGetStatusMutex);
 	return addDictionaryRecord("statustypes", status.status);
 }
 
 int DbUavController::getStatusByName(const QString& name)
 {
+	QMutexLocker locker(&m_addGetStatusMutex);
 	return getDictionaryRecord("statustypes", name);
 }
 
 int DbUavController::addUavRole(const UavRole& uavRole)
 {
+	QMutexLocker locker(&m_addGetUavRoleMutex);
 	if(!m_db.isOpen()){
 		return INVALID_INDEX;
 	}
@@ -622,6 +669,8 @@ int DbUavController::addUavRole(const UavRole& uavRole)
 
 UavRole DbUavController::getUavRole(const uint roleId)
 {
+	QMutexLocker locker(&m_addGetUavRoleMutex);
+
 	UavRole uavRole;
 	uavRole.id = INVALID_INDEX;
 
@@ -657,6 +706,8 @@ UavRole DbUavController::getUavRole(const uint roleId)
 
 UavRole DbUavController::getUavRoleByName(const QString& name)
 {
+	QMutexLocker locker(&m_addGetUavRoleMutex);
+
 	UavRole uavRole;
 	uavRole.id = INVALID_INDEX;
 
@@ -693,6 +744,8 @@ UavRole DbUavController::getUavRoleByName(const QString& name)
 
 UavRole DbUavController::getUavRoleByCode(const QString& code)
 {
+	QMutexLocker locker(&m_addGetUavRoleMutex);
+
 	UavRole uavRole;
 	uavRole.id = INVALID_INDEX;
 
@@ -729,6 +782,8 @@ UavRole DbUavController::getUavRoleByCode(const QString& code)
 
 int DbUavController::addDictionaryRecord(const QString& dictionary, const QString& name)
 {
+	QMutexLocker locker(&m_addGetDictionaryMutex);
+
 	if(!m_db.isOpen()){
 		return INVALID_INDEX;
 	}
@@ -758,6 +813,8 @@ int DbUavController::addDictionaryRecord(const QString& dictionary, const QStrin
 
 int DbUavController::getDictionaryRecord(const QString& dictionary, const QString& name)
 {
+	QMutexLocker locker(&m_addGetDictionaryMutex);
+
 	if(!m_db.isOpen()){
 		return INVALID_INDEX;
 	}
