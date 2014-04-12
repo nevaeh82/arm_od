@@ -48,9 +48,8 @@ void MapController::openMapFromLocalFile(/*const QString mapFile*/)
 		tr("Atlas files (*.chart *.sxf *.sit *.map *.gc *.gst);;All files (*.*)") );
 	if( !filename.isNull() )
 	{
+		m_mapModel->openMap(filename);
 	}
-
-	m_mapModel->openMap(filename);
 }
 
 void MapController::onMapReady()
