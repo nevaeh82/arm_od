@@ -18,27 +18,27 @@ AtlantSimulator::~AtlantSimulator()
     emit signalFinished();
 }
 
-void AtlantSimulator::set_id(int id)
+void AtlantSimulator::setId(int id)
 {
     _id = id;
 }
 
-void AtlantSimulator::set_type(int type)
+void AtlantSimulator::setType(int type)
 {
     _type = type;
 }
 
-int AtlantSimulator::get_id()
+int AtlantSimulator::getId()
 {
     return _id;
 }
 
-int AtlantSimulator::get_type()
+int AtlantSimulator::getType()
 {
     return _type;
 }
 
-void AtlantSimulator::send_data(QSharedPointer<IMessageOld> msg_ptr)
+void AtlantSimulator::sendData(QSharedPointer<IMessageOld> msg_ptr)
 {
     emit signalData(msg_ptr);
 }

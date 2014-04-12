@@ -17,6 +17,7 @@
 #include "Common/Simulators/AtlantSimulator.h"
 
 #include "RPC/Client/RPCClient_R.h"
+#include "RPC/Client/RpcClientRWrapper.h"
 
 #include "TCP/TcpManager.h"
 #include "TCP/TcpSettingsManager.h"
@@ -46,11 +47,16 @@ private:
 	Router*         _router;
 	Subscriber*     _subscriber_up;
 
-	RPCClient_R*    _rpc_client1;
+	RpcClientRWrapper*    _rpc_client1;
+
+	QString m_ipRpc;
+	int m_portRpc;
 
 private:
 	void addTcpArmrConnection();
 	void addRpcArmrConnection();
+
+	int readSettings(QString);
 
 signals:
 	void signalStartRPC();

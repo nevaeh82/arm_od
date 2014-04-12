@@ -6,19 +6,14 @@ class IMessageOld;
 
 class IClient
 {
-public:
-    virtual ~IClient(){};
+	public:
+		virtual ~IClient(){}
 
-    virtual void set_id(int id)                                         = 0;
-    virtual int get_id()                                                = 0;
-    virtual void set_type(int type)                                     = 0;
-    virtual int get_type()                                              = 0;
-    virtual void send_data(QSharedPointer<IMessageOld> msg_ptr)            = 0;
-
-
-
-
-
+		virtual void setId(int id) = 0;
+		virtual int getId() = 0;
+		virtual void setType(int type) = 0;
+		virtual int getType() = 0;
+		virtual void sendData(QSharedPointer<IMessageOld> msg_ptr) = 0;
 };
 
 #endif // ICLIENT_H

@@ -121,8 +121,8 @@ void RPCServer::rpc_slot_set_client_id(quint64 client, int id)
 		//delete _map_clients.value(client);
 	}
 	IClient *cl = _map_clients.value(client);
-	cl->set_id(id);
-	cl->set_type(1);
+	cl->setId(id);
+	cl->setType(1);
 	qDebug() << "set id = " << id << "for client = " << client;
 
 	/// added subscription with type == 1001

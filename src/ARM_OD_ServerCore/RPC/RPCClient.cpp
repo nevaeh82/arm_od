@@ -16,27 +16,27 @@ RPCClient::~RPCClient()
 {
 }
 
-void RPCClient::set_id(int id)
+void RPCClient::setId(int id)
 {
     _id = id;
 }
 
-void RPCClient::send_data(QSharedPointer<IMessageOld> msg_ptr)
+void RPCClient::sendData(QSharedPointer<IMessageOld> msg_ptr)
 {
     _slotGetData(msg_ptr);
 }
 
-int RPCClient::get_id()
+int RPCClient::getId()
 {
     return _id;
 }
 
-void RPCClient::set_type(int type)
+void RPCClient::setType(int type)
 {
     _type = type;
 }
 
-int RPCClient::get_type()
+int RPCClient::getType()
 {
     return _type;
 }

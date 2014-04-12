@@ -26,7 +26,7 @@ ARM_OD_Srv::ARM_OD_Srv()
 	_rpc_server->setRouter(_router);
 	_rpc_server->start(24550, QHostAddress::Any);
 
-	_rpc_client1 = NULL;
+	m_rpcClientR = NULL;
 
 	qRegisterMetaType<MessageSP>("MessageSP");
 
@@ -90,25 +90,48 @@ void ARM_OD_Srv::addRpcArmrConnection()
 {
 	log_debug("Adding rpc connection to armr...");
 
-	_rpc_client1 = new RPCClient_R(_router);
+	QString tabsSettingFile = QCoreApplication::applicationDirPath();
+	tabsSettingFile.append("/RPC/RPC_R_Server.ini");
+	if(readSettings(tabsSettingFile) != 0){
+		return;
+	}
 
-	QThread* thread_rpc_client = new QThread;
-	log_debug("create thread for rpc client");
+	m_rpcClientR = new RpcClientRWrapper();
 
-	connect(this, SIGNAL(signalStartRPC()), _rpc_client1, SLOT(slotStart()));
-	connect(_rpc_client1, SIGNAL(signalFinished()), thread_rpc_client, SLOT(quit()));
-	connect(thread_rpc_client, SIGNAL(finished()), thread_rpc_client, SLOT(deleteLater()));
+	QThread* rpcClientThread = new QThread;
+	connect(m_rpcClientR, SIGNAL(destroyed()), rpcClientThread, SLOT(terminate()));
+	m_rpcClientR->moveToThread(rpcClientThread);
+	rpcClientThread->start();
 
-	connect(_rpc_client1, SIGNAL(signalFinished()), _rpc_client1, SLOT(deleteLater()));
-	connect(this, SIGNAL(signalStopRPC()), _rpc_client1, SLOT(slotStop()));
-	connect(this, SIGNAL(signalFinishRPC()), _rpc_client1, SLOT(slotFinish()));
+	m_rpcClientR->init(m_portRpc, QHostAddress(m_ipRpc), _router);
 
-	_rpc_client1->setParent(0);
-	_rpc_client1->moveToThread(thread_rpc_client);
+	_subscriber_up->add_subscription(SOLVER_SET, m_rpcClientR);
+	_subscriber_up->add_subscription(SOLVER_CLEAR, m_rpcClientR);
+}
 
-	_subscriber_up->add_subscription(SOLVER_SET, _rpc_client1);
-	_subscriber_up->add_subscription(SOLVER_CLEAR, _rpc_client1);
+int ARM_OD_Srv::readSettings(QString path_to_ini_file_RPC)
+{
+	int error = -1;
+	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+	QSettings m_settings(path_to_ini_file_RPC, QSettings::IniFormat);
 
-	thread_rpc_client->start();
+	m_settings.setIniCodec(codec);
 
+	QStringList childKeys = m_settings.childGroups();
+	foreach (const QString &childKey, childKeys)
+	{
+		if(childKey.toLatin1() != "RPC_UI")
+		{
+			continue;
+		}
+		m_settings.beginGroup(childKey);
+
+		m_ipRpc = m_settings.value("IP", "127.0.0.1").toString();
+		m_portRpc = m_settings.value("Port", 24550).toInt();
+
+		error = 0;
+		m_settings.endGroup();
+	}
+
+	return error;
 }

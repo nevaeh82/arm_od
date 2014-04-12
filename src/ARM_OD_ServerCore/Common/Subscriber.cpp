@@ -116,11 +116,11 @@ void Subscriber::_slotGetData(int type, rpc_msg msg_ptr)
     {
         if(!cls.at(i))
             return;
-        int cl_id = cls.at(i)->get_id();
-        int cl_type = cls.at(i)->get_type();
+		int cl_id = cls.at(i)->getId();
+		int cl_type = cls.at(i)->getType();
         if((cl_type == 1) || (cl_id == id))
         {
-            cls.at(i)->send_data(msg_ptr);
+			cls.at(i)->sendData(msg_ptr);
         }
     }
 //    _mux.unlock();

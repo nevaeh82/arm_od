@@ -14,7 +14,6 @@
 
 #include "IRPC_R.h"
 #include "../../Common/IMessage.h"
-//#include "../../Common/CommandMessage.h"
 #include "../../Common/IRouter.h"
 #include "../../Common/ISubscriber.h"
 #include "../../RPC/Message.h"
@@ -22,72 +21,54 @@
 #include "../../Common/IClient.h"
 
 #include "Rpc/RpcDefines.h"
+#include <Rpc/RpcRoutedClient.h>
+
 #include "UAVDefines.h"
 
-class RPCClient_R : public QObject, public IClient
+class RPCClient_R : public RpcRoutedClient, public IClient
 {
     Q_OBJECT
-public:
-    RPCClient_R(IRouter* router);
-    ~RPCClient_R();
+private:
+	IMessageOld* m_commandMsg;
+	int m_id;
+	IRouter* m_router;
+	ISubscriber* m_subscriber;
+
+	int m_type;
 
 public:
-    virtual void set_id(int id);
-    virtual int get_id();
-    virtual void set_type(int type);
-    virtual int get_type();
-	virtual void send_data(QSharedPointer<IMessageOld> msg_ptr);
+	RPCClient_R(IRouter* router, QObject *parent = 0);
+	virtual ~RPCClient_R();
 
+public:
+	void setId(int id);
+	int getId();
+	void setType(int type);
+	int getType();
+	void sendData(QSharedPointer<IMessageOld> msg_ptr);
+
+	bool start(quint16 port, QHostAddress address);
+
+	void setCommand(IMessageOld* msg);
+	void pushMsg(QByteArray msg);
 
 private slots:
-    virtual int start();
-    virtual int stop();
-
-public:
-	void set_command(IMessageOld* msg);
-    void push_msg(QByteArray msg);
-
-private slots:
-	void _slotSetCommand(IMessageOld* msg);
-    void _slotPushMsg(QByteArray msg);
-	void _slotGetData(QSharedPointer<IMessageOld> msg_ptr);
-
+	void slotSetCommand(IMessageOld* msg);
+	void slotPushMsg(QByteArray msg);
+	void slotGetData(QSharedPointer<IMessageOld> msg_ptr);
 
 private:
-    QxtRPCPeer*         _rpc_client;
-    QString             _ip_RPC;
-    quint16             _port_RPC;
-	IMessageOld*           _command_msg;
-    int                 _id;
-    IRouter*            _router;
-    ISubscriber*        _subscriber;
-
-    int                 _type;
-
-private:
-//    int     _init();
-
-    int     _read_settings(QString path_to_ini_file_RPC);
-	void    _form_command(IMessageOld *msg);
+	void formCommand(IMessageOld *msg);
 	QByteArray encodeToEnemyUav(const QByteArray& data);
 
 private slots:
-    void _close();
-    void _slotRCPConnetion();
-    void _slotRPCDisconnection();
-    void _slotErrorRPCConnection(QAbstractSocket::SocketError socketError);
-    void _slotReconnection();
+	void slotRCPConnetion();
 
 signals:
 	void signalSetCommand(IMessageOld *msg);
-    void signalPushMsh(QByteArray* data);
-    void signalFinished();
+	void signalPushMsh(QByteArray* data);
 
 	void signalSendData(QSharedPointer<IMessageOld> msg_ptr);
-
-    void signalStart();
-    void signalStop();
-    void signalFinishRPC();
 
     ///RPC signals
 signals:
@@ -95,27 +76,14 @@ signals:
     void signalSetSolver(QByteArray data);
     void signalSetSolverClear(QByteArray data);
 
-
-    void signalReconnection();
-
 public slots:
-    void slotInit();
-    void slotStart();
-    void slotStop();
-    void slotFinish();
 
     ///rpc_server
-    void rpc_slot_server_send_bpla_def(QByteArray ba);
-    void rpc_slot_server_send_bpla_def_auto(QByteArray ba);
+	void rpcSlotServerSendBplaDef(QByteArray ba);
+	void rpcSlotServerSendBplaDefAuto(QByteArray ba);
 
-    void rpc_slot_server_atlant_direction(QByteArray ba);
-    void rpc_slot_server_atlant_position(QByteArray ba);
-
-
-//    void rpc_slot_server_send_bpla_def(QByteArray ba);
-
-//    void _rpc_slot_set_niipp_data(QByteArray data);
-
+	void rpcSlotServerAtlantDirection(QByteArray ba);
+	void rpcSlotServerAtlantPosition(QByteArray ba);
 
 };
 

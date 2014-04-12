@@ -21,11 +21,11 @@ class AtlantSimulator : public QObject, public IClient
         ~AtlantSimulator();
 
     public:
-        virtual void set_id(int id);
-        virtual int get_id();
-        virtual void set_type(int type);
-        virtual int get_type();
-        virtual void send_data(QSharedPointer<IMessageOld> msg_ptr);
+		virtual void setId(int id);
+		virtual int getId();
+		virtual void setType(int type);
+		virtual int getType();
+		virtual void sendData(QSharedPointer<IMessageOld> msg_ptr);
 
     private slots:
         void _slot_simulation(QSharedPointer<IMessageOld> msg_ptr);

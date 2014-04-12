@@ -23,11 +23,11 @@ public:
     ~RPCClient();
 
 public:
-    virtual void set_id(int _id);
-    virtual int  get_id();
-    virtual void set_type(int type);
-    virtual int get_type();
-	virtual void send_data(QSharedPointer<IMessageOld> msg_ptr);
+	virtual void setId(int _id);
+	virtual int  getId();
+	virtual void setType(int type);
+	virtual int getType();
+	virtual void sendData(QSharedPointer<IMessageOld> msg_ptr);
 
 private:
     int             _id;
