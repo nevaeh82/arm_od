@@ -34,7 +34,6 @@ BLAPerehvatDialog::~BLAPerehvatDialog()
 void BLAPerehvatDialog::init(int id, IDbUavManager* dbUav)
 {
 	m_id = id;
-//	m_dbUav = dbUav;
 
 	ui->blaLE->setText(tr("UAV #") + QString::number(m_id));
 
@@ -83,7 +82,7 @@ void BLAPerehvatDialog::treeItemChangedSlot(QTreeWidgetItem *item, int id)
 		target.port = 1000;
 		target.type = interceptTargetTypeId;
 
-		int targetId = m_dbUav->addTarget(target);
+		m_dbUav->addTarget(target);
 		m_mapClient->addInterception(m_id, enemyUavId);
 	} else {
 
