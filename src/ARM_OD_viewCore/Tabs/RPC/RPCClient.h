@@ -33,30 +33,21 @@
 
 class RPCClient : public RpcClientBase
 {
-    Q_OBJECT
+	Q_OBJECT
 private:
 	IMessageOld*        m_commandMsg;
-	IDbUavManager*		m_dbUavManager;
-	Station*			m_station;
-	ITabMap*            m_parentTab;
-	ITabManager*        m_tabManager;
-	IMapController*     m_mapController;
 
-	QMap<int, int>      m_mapPelengEvilIds;
-	int                 m_pelengEvilIds;
-	int                 m_rdsEvilIds;
+	Station*			m_station;
 
 	bool                m_solverAuto;
 
-	QMutex m_mutex;
-
 public:
-	RPCClient(Station *station, IDbUavManager *db_manager, IMapController* map_controller,
-			  ITabMap *parent_tab, ITabManager* tab_manager, QObject *parent = NULL);
+	explicit RPCClient(QObject* parent = NULL);
 	virtual ~RPCClient();
 
 	bool start(quint16 port, QHostAddress ipAddress);
 	void setCommand(IMessageOld* msg);
+	void setStation(Station* station);
 
 private:
 	void formCommand(IMessageOld *msg);
@@ -65,13 +56,8 @@ private:
 	void sendDataToSovler(QByteArray data);
 	void setSolverClear(QByteArray data);
 
-	void sendBplaPoints(QByteArray data);
-
-	void addUavInfoToDb(const UAVPositionDataEnemy&, const QString& role, const QString& uavType, const QString& status, const QString& deviceType);
-	void addUavInfoToDb(const UAVPositionData&, const QString& role, const QString& uavType, const QString& status, const QString& deviceType);
-
 public slots:
-    ///rpc_server
+	///rpc_server
 	void rpcSendBlaPoints(QByteArray data);
 	void rpcSlotServerSendAisData(QByteArray data);
 	void rpcSendBplaPoints(QByteArray data);
@@ -97,8 +83,6 @@ signals:
 	void signalSetSolverDataClear(QByteArray data);
 
 	void startInternalSignal(quint16 port, QString ipAddress);
-
-	void requestGetAisDataSignal();
 
 };
 

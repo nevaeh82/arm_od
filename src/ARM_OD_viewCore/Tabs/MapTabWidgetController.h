@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QWidget>
 #include <QThread>
+#include <QEventLoop>
 
 #include "Station.h"
 
@@ -36,7 +37,7 @@ class MapTabWidgetController: public QObject, public IController<MapTabWidget>, 
 {
 	Q_OBJECT
 public:
-	MapTabWidgetController(Station* station, QMap<int, Station*> map_settings, ITabManager* tabManager, DbUavManager* db_bla, QObject* parent = NULL);
+	explicit MapTabWidgetController(Station* station, QMap<int, Station*> map_settings, ITabManager* tabManager, DbUavManager* db_bla, QObject* parent = NULL);
 	virtual ~MapTabWidgetController();
 
 private:

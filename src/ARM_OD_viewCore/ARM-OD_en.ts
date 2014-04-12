@@ -2,59 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="en_US">
 <context>
-    <name>ARM_OD_view</name>
-    <message>
-        <location filename="arm_od_view.ui" line="14"/>
-        <source>MainWindow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="arm_od_view.ui" line="52"/>
-        <source>Initialization...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="arm_od_view.ui" line="76"/>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="arm_od_view.ui" line="83"/>
-        <source>Map</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="arm_od_view.ui" line="90"/>
-        <source>Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="arm_od_view.ui" line="101"/>
-        <source>New</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="arm_od_view.ui" line="106"/>
-        <source>Exit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="arm_od_view.ui" line="111"/>
-        <source>Open Atlas</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="arm_od_view.ui" line="116"/>
-        <source>Open from file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="arm_od_view.ui" line="121"/>
-        <source>Koordinatometriya parameters</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>BLAPerehvatDialog</name>
     <message>
         <location filename="UAV/blaperehvatdialog.ui" line="14"/>
@@ -87,18 +34,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="20"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="32"/>
         <source>UAV List</source>
         <oldsource>BLA List</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="27"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="39"/>
         <source>Enemy UAV List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="34"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="46"/>
         <source>SPIP DD</source>
         <translation type="unfinished"></translation>
     </message>
@@ -106,8 +53,58 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.cpp" line="21"/>
+        <location filename="MainWindow.cpp" line="19"/>
         <source>Zaviruha</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="14"/>
+        <source>MainWindow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="88"/>
+        <source>Initialization...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="112"/>
+        <source>File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="119"/>
+        <source>Map</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="126"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="140"/>
+        <source>New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="145"/>
+        <source>Exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="150"/>
+        <source>Open Atlas</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="155"/>
+        <source>Open from file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="160"/>
+        <source>Koordinatometriya parameters</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -224,18 +221,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MapTabWidget.ui" line="52"/>
+        <location filename="MapTabWidget.ui" line="64"/>
         <source>BPLA List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MapTabWidget.ui" line="76"/>
+        <location filename="MapTabWidget.ui" line="100"/>
         <source>SPIP DD-1</source>
         <oldsource>SPIP-DD 1</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MapTabWidget.ui" line="84"/>
+        <location filename="MapTabWidget.ui" line="108"/>
         <source>SPIP DD-2</source>
         <oldsource>SPIP-DD 2</oldsource>
         <translation type="unfinished"></translation>
