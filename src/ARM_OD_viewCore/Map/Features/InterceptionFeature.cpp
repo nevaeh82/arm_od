@@ -22,10 +22,10 @@ Interception::Interception(IObjectsFactory* factory, const QString& id,
 
 void Interception::updatePresentation()
 {
-	QString caption = QObject::tr( "Высота" ) + " = " + QString::number( m_height ) + "\\n";
-	caption.append( QObject::tr( "Радиус" ) + " = " + QString::number( m_radius ) + "\\n" );
-	caption.append( QObject::tr( "Курс" ) + " = " + QString::number( m_course ) + "\\n" );
-	caption.append( QObject::tr( "Скорость" ) + " = " + QString::number( m_speed ) );
+	QString caption = QObject::tr( "Altitude" ) + " = " + QString::number( m_height ) + "\\n";
+	caption.append( QObject::tr( "Radius" ) + " = " + QString::number( m_radius ) + "\\n" );
+	caption.append( QObject::tr( "Course" ) + " = " + QString::number( m_course ) + "\\n" );
+	caption.append( QObject::tr( "Speed" ) + " = " + QString::number( m_speed ) );
 
 	m_circle->setName( caption );
 

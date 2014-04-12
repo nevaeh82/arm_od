@@ -15,7 +15,7 @@ void NiippPoint::setPosition(const QPointF& position)
 	Marker::setPosition( position );
 
 	QString caption;
-	caption.append( QObject::tr( "Точка увода" ) );
+	caption.append( QObject::tr("Diversion point") );
 	caption.append( "\\n" );
 	caption.append( QString::number( m_position.lat, 'f', 4 ) );
 	caption.append( "\\n" );

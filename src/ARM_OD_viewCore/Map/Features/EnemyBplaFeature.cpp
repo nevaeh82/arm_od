@@ -25,7 +25,7 @@ EnemyBpla::~EnemyBpla()
 void EnemyBpla::setName(const QString& name)
 {
 	m_originName = name;
-	QString newName = "БПЛА (№%1)\\n%2\\n%3";
+	QString newName = QObject::tr("UAV_enemy (#%1)\\n%2\\n%3");
 
 	double speed = qSqrt( m_speed.x() * m_speed.x() + m_speed.y() * m_speed.y() );
 

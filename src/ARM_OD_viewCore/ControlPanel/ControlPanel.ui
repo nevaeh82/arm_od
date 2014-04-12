@@ -17,14 +17,14 @@
    <item>
     <widget class="QPushButton" name="blaPB">
      <property name="text">
-      <string>BLA List</string>
+      <string>UAV List</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QPushButton" name="bplaPB">
      <property name="text">
-      <string>BPLA List</string>
+      <string>Enemy UAV List</string>
      </property>
     </widget>
    </item>

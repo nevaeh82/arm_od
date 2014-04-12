@@ -14,7 +14,7 @@ MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 	m_factory = new MapFeature::FeaturesFactory( pwWidget->mapProvider(), m_styleManager );
 
 	m_niippPoint = m_factory->createNiippPoint();
-	m_niippLayerName = "NIIPP";
+	m_niippLayerName = tr("NIIPP");
 
 	m_circleRadius = 0;
 	m_circleChanged = false;
@@ -289,17 +289,17 @@ void MapClient1::updateSlice()
 void MapClient1::init()
 {
 	// create marker layers
-	this->addMarkerLayer( 0, QObject::tr( "ОП" ) );//0 - stations
-	this->addMarkerLayer( 1, QObject::tr( "БПЛА" ) ); //1 - BPLA profile
-	this->addMarkerLayer( 2, QObject::tr( "БЛА" ) ); //2 - BLA profile
-	this->addMarkerLayer( 3, QObject::tr( "Атлант" ) ); //3 - Pelengators
-	this->addMarkerLayer( 4, QObject::tr( "Атлант Цель" ) ); //4 - PelengatorsPoint
-	this->addMarkerLayer( 5, QObject::tr( "Сетка" ) ); //5 - Grid
-	this->addMarkerLayer( 6, QObject::tr( "Контрольные точки" ) ); //6 - Control_points
-	this->addMarkerLayer( 7, QObject::tr( "Точка перехвата" ) ); //7 - Perehvat
-	this->addMarkerLayer( 8, QObject::tr( "Гражданские суда" ) ); //8 - AIS - civil plane
-	this->addMarkerLayer( 9, QObject::tr( "Точки увода" ) ); //9 - NIIPPPoint
-	this->addMarkerLayer( 10, QObject::tr( "СПИП ДД" ) ); //10 - NIIPP
+	this->addMarkerLayer( 0, tr( "OP" ) );//0 - stations
+	this->addMarkerLayer( 1, tr( "UAV_enemy" ) ); //1 - BPLA profile
+	this->addMarkerLayer( 2, tr( "UAV" ) ); //2 - BLA profile
+	this->addMarkerLayer( 3, tr( "Atlant" ) ); //3 - Pelengators
+	this->addMarkerLayer( 4, tr( "Atlant target" ) ); //4 - PelengatorsPoint
+	this->addMarkerLayer( 5, tr( "Grid" ) ); //5 - Grid
+	this->addMarkerLayer( 6, tr( "Checkpoints" ) ); //6 - Control_points
+	this->addMarkerLayer( 7, tr( "Interception point" ) ); //7 - Perehvat
+	this->addMarkerLayer( 8, tr( "Civil ships" ) ); //8 - AIS - civil plane
+	this->addMarkerLayer( 9, tr( "Diversion points" ) ); //9 - NIIPPPoint
+	this->addMarkerLayer( 10, tr( "SPIP DD" ) ); //10 - NIIPP
 
 	// create styles for features
 	m_styleManager->createStationStyle( m_mapLayers.value(0) )->apply();
@@ -524,7 +524,7 @@ void MapClient1::readStationsFromFile(QString fileName)
 
 		position = QPointF( lon, lat );
 
-		if( name != QObject::tr( "Ингур" ) ) {
+		if( name != tr( "Ingur" ) ) {
 			MapFeature::Station* station = m_stationList.value( name, NULL );
 
 			if( station = NULL ) {
@@ -565,7 +565,7 @@ void MapClient1::setPointEvilPeleng( int id, QPointF point )
 	if( p != NULL ) {
 		p->setPosition( point );
 	} else {
-		QString name = "БПЛА Атлант(№" + QString::number(id) + ")\\n";
+		QString name = tr("UAV_enemy Atlant(#") + QString::number(id) + ")\\n";
 		p = m_factory->createPelengatorPoint( name, point );
 		m_pelengatorPointsList.insert( id, p );
 	}

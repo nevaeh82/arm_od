@@ -30,7 +30,7 @@ void BLAPerehvatDialog::init(int id, IDbUavManager* dbUav)
 
 	QList<QTreeWidgetItem *> items;
 	foreach (Uav enemyUav, enemyUavs){
-		QTreeWidgetItem *it = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString(tr("UAV_: #%1")).arg(enemyUav.uavId)));
+		QTreeWidgetItem *it = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString(tr("UAV_enemy: #%1")).arg(enemyUav.uavId)));
 
 		QList<Target> targets;
 		m_dbUav->getTargetsByUavId(enemyUav.uavId, targets);

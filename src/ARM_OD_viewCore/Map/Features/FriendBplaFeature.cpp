@@ -26,7 +26,7 @@ void FriendBpla::setName(const QString& name)
 {
 	int id = name.toInt();
 	if( id > 0 ) {
-		QString newName = id == 1044 ? "БЛА-Ц" : (QString( "БЛА (№%1)" ).arg( id ));
+		QString newName = id == 1044 ? QObject::tr("UAV-C") : (QString( QObject::tr("UAV (#%1)") ).arg( id ));
 		Marker::setName( newName );
 	}
 }
