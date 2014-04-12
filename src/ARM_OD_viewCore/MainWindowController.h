@@ -12,7 +12,8 @@
 #include "ServiceHandler/ServiceHandler.h"
 
 #include "Tabs/TabManager.h"
-#include "Tabs/Solver/SolverController.h"
+#include "Tabs/Solver/SolverSettingsDialogController.h"
+#include "Tabs/Solver/SolverSettingsDialog.h"
 
 #include "Tabs/RPC/RpcConfigClient.h"
 #include "Rpc/RpcDefines.h"
@@ -28,10 +29,11 @@ private:
 	Pw::Common::ServiceControl::ServiceHandler* m_serverHandler;
 
 	TabManager*  m_tabManager;
-	SolverController* m_solver;
+	SolverSettingsDialogController* m_solver;
 
 	RpcConfigClient* m_rpcConfigClient;
 
+	SolverSettingsDialogController* solverSettingsController;
 public:
 	explicit MainWindowController(QObject *parent = 0);
 	virtual ~MainWindowController();
@@ -49,6 +51,8 @@ private slots:
 	void startTabManger();
 
 	void rpcConnectionEstablished();
+
+	void solverDialogSlot();
 
 private:
 

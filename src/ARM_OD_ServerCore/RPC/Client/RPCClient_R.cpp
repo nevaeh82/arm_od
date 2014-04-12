@@ -6,7 +6,7 @@ RPCClient_R::RPCClient_R(IRouter* router, QObject *parent):
 	RpcRoutedClient( RPC_METHOD_REGISTER_CLIENT, RPC_METHOD_DEREGISTER_CLIENT, parent )
 {
 	m_id = 701;
-	m_type = 10;
+	m_type = 1;
 	m_router = router;
 
 	m_subscriber = m_router->get_subscriber();
@@ -75,6 +75,20 @@ void RPCClient_R::pushMsg(QByteArray msg)
 {
 }
 
+void RPCClient_R::registerRoute()
+{
+	RpcRoutedClient::registerRoute( 701 );
+}
+
+void RPCClient_R::sendDataByRpc(const QString& signalType, const QByteArray& data)
+{
+	if (signalType == TCP_ARMR_SEND_SOLVER_DATA){
+		emit signalSetSolver(data);
+	} else if (signalType == TCP_ARMR_SEND_SOLVER_CLEAR){
+		emit signalSetSolverClear(data);
+	}
+}
+
 void RPCClient_R::slotSetCommand(IMessageOld *msg)
 {
 	m_commandMsg = msg;
@@ -88,7 +102,7 @@ void RPCClient_R::slotPushMsg(QByteArray msg)
 
 void RPCClient_R::slotGetData(QSharedPointer<IMessageOld> msg_ptr)
 {
-    int type1 = 1;
+	/*int type1 = 1;
     int id = 0;
     IMessageOld *f = (msg_ptr.data());
     QByteArray* dd = f->get(id, type1);
@@ -113,7 +127,7 @@ void RPCClient_R::slotGetData(QSharedPointer<IMessageOld> msg_ptr)
     default:
         return;
         break;
-    }
+	}*/
 }
 
 void RPCClient_R::formCommand(IMessageOld *msg)

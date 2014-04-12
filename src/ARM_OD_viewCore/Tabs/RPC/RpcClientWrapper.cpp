@@ -3,9 +3,6 @@
 RpcClientWrapper::RpcClientWrapper(QObject *parent) :
 	QObject(parent)
 {
-	connect(this, SIGNAL(initSignal()), this, SLOT(initSlot()));
-	connect(this, SIGNAL(stopSignal()), this, SLOT(stopSlot()));
-	connect(this, SIGNAL(signalSetCommand(IMessageOld*)), this, SLOT(slotSetCommand(IMessageOld*)));
 }
 
 RpcClientWrapper::~RpcClientWrapper()
@@ -26,6 +23,9 @@ void RpcClientWrapper::init(quint16 port, QHostAddress& address,
 	m_mapController = mapController;
 	m_parentTab = tabMap;
 	m_tabManager = tabManager;
+
+	connect(this, SIGNAL(initSignal()), this, SLOT(initSlot()));
+	connect(this, SIGNAL(signalSetCommand(IMessageOld*)), this, SLOT(slotSetCommand(IMessageOld*)));
 
 	emit initSignal();
 }

@@ -11,7 +11,6 @@
 #include <QStackedWidget>
 
 #include "Tabs/TabManager.h"
-#include "Tabs/Solver/Solver.h"
 
 typedef QVector<QPointF>         rpc_send_points_vector;
 typedef QPointF                  rpc_QPointF;

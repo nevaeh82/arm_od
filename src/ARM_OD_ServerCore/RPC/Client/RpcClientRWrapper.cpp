@@ -3,9 +3,6 @@
 RpcClientRWrapper::RpcClientRWrapper(QObject *parent) :
 	QObject(parent)
 {
-	connect(this, SIGNAL(initSignal()), this, SLOT(initSlot()));
-	connect(this, SIGNAL(sendDataSignal(QSharedPointer<IMessageOld>))
-			, this, SLOT(sendDataSlot(QSharedPointer<IMessageOld>)));
 }
 
 void RpcClientRWrapper::init(quint16 port, QHostAddress& address, IRouter* router)
@@ -13,6 +10,12 @@ void RpcClientRWrapper::init(quint16 port, QHostAddress& address, IRouter* route
 	m_address = address;
 	m_port = port;
 	m_router = router;
+
+	connect(this, SIGNAL(initSignal()), this, SLOT(initSlot()));
+	connect(this, SIGNAL(sendDataSignal(QSharedPointer<IMessageOld>))
+			, this, SLOT(sendDataSlot(QSharedPointer<IMessageOld>)));
+
+	connect(this, SIGNAL(sendDataByRpcSignal(QString,QByteArray)), this, SLOT(sendDataByRpcSlot(QString,QByteArray)));
 
 	emit initSignal();
 }
@@ -39,7 +42,13 @@ int RpcClientRWrapper::getType()
 
 void RpcClientRWrapper::sendData(QSharedPointer<IMessageOld> msg_ptr)
 {
-	emit sendDataSignal(msg_ptr);
+	m_rpcClient->sendData(msg_ptr);
+	//emit sendDataSignal(msg_ptr);
+}
+
+void RpcClientRWrapper::sendDataByRpc(const QString& signalType, const QByteArray& data)
+{
+	emit sendDataByRpcSignal(signalType, data);
 }
 
 void RpcClientRWrapper::initSlot()
@@ -48,7 +57,7 @@ void RpcClientRWrapper::initSlot()
 	m_rpcClient->start(m_port, m_address);
 }
 
-void RpcClientRWrapper::sendDataSlot(QSharedPointer<IMessageOld> msg_ptr)
+void RpcClientRWrapper::sendDataByRpcSlot(QString signalType, QByteArray data)
 {
-	m_rpcClient->sendData(msg_ptr);
+	m_rpcClient->sendDataByRpc(signalType, data);
 }

@@ -27,6 +27,8 @@
 
 #include "UAVDefines.h"
 
+#include "TCP/TcpDefines.h"
+
 class RPCClient_R : public RpcRoutedClient, public IClient
 {
 	Q_OBJECT
@@ -54,10 +56,13 @@ public:
 	void setCommand(IMessageOld* msg);
 	void pushMsg(QByteArray msg);
 
+	void sendDataByRpc(const QString& signalType, const QByteArray& data);
+
 private slots:
 	void slotSetCommand(IMessageOld* msg);
 	void slotPushMsg(QByteArray msg);
 	void slotGetData(QSharedPointer<IMessageOld> msg_ptr);
+	void registerRoute();
 
 private:
 	void formCommand(IMessageOld *msg);

@@ -15,6 +15,11 @@ TcpManager::~TcpManager()
 	emit threadTerminateSignal();
 }
 
+void TcpManager::setRpcClient(RpcClientRWrapper *rpcClient)
+{
+	m_rpcClient = rpcClient;
+}
+
 void TcpManager::addTcpDevice(const QString& deviceName, const quint32& deviceType)
 {
 	log_debug(QString("Creating %1 with type %2").arg(QString(deviceName)).arg(QString::number(deviceType)));
@@ -240,17 +245,25 @@ QString TcpManager::getTcpClientName()
 void TcpManager::onMethodCalledInternalSlot(const QString& method, const QVariant& argument)
 {
 	if (method == RPC_SLOT_SET_SOLVER_CLEAR) {
-		BaseTcpDeviceController* controller = m_controllersMap.value(getTcpClientName(), NULL);
+		//TODO: REMOVE RPCCLIENT USAGE WHEN TCP CLIENT PROTOBUF WILL BE TESTED
+
+		/*BaseTcpDeviceController* controller = m_controllersMap.value(getTcpClientName(), NULL);
 		if (controller == NULL) {
 			return;
 		}
-		controller->sendData(MessageSP(new Message<QByteArray>(TCP_ARMR_SEND_SOLVER_CLEAR, argument.toByteArray())));
+		controller->sendData(MessageSP(new Message<QByteArray>(TCP_ARMR_SEND_SOLVER_CLEAR, argument.toByteArray())));*/
+
+		m_rpcClient->sendDataByRpc(TCP_ARMR_SEND_SOLVER_CLEAR, argument.toByteArray());
 
 	} else if (method == RPC_SLOT_SET_SOLVER_DATA) {
-		BaseTcpDeviceController* controller = m_controllersMap.value(getTcpClientName(), NULL);
+		//TODO: REMOVE RPCCLIENT USAGE WHEN TCP CLIENT PROTOBUF WILL BE TESTED
+
+		/*BaseTcpDeviceController* controller = m_controllersMap.value(getTcpClientName(), NULL);
 		if (controller == NULL) {
 			return;
 		}
-		controller->sendData(MessageSP(new Message<QByteArray>(TCP_ARMR_SEND_SOLVER_DATA, argument.toByteArray())));
+		controller->sendData(MessageSP(new Message<QByteArray>(TCP_ARMR_SEND_SOLVER_DATA, argument.toByteArray())));*/
+
+		m_rpcClient->sendDataByRpc(TCP_ARMR_SEND_SOLVER_DATA, argument.toByteArray());
 	}
 }

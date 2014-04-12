@@ -25,6 +25,8 @@
 #include "Rpc/RPCServer.h"
 #include "Rpc/RpcDefines.h"
 
+#include "RPC/Client/RpcClientRWrapper.h"
+
 class TcpManager : public QObject, public ITcpManager, public ITcpListener, public IRpcListener
 {
 	Q_OBJECT
@@ -34,6 +36,9 @@ private:
 	/// TODO
 	IRPC* m_rpcServer;
 	ITcpServer* m_tcpServer;
+
+	//TODO: REMOVE RPCCLIENT USAGE WHEN TCP CLIENT PROTOBUF WILL BE TESTED
+	RpcClientRWrapper* m_rpcClient;
 
 	QMap< QString, BaseTcpDeviceController* > m_controllersMap;
 	/**
@@ -46,6 +51,8 @@ private:
 public:
 	explicit TcpManager(QObject* parent = NULL);
 	virtual ~TcpManager();
+
+	virtual void setRpcClient(RpcClientRWrapper* rpcClient);
 
 	// ITcpManager interface
 public:

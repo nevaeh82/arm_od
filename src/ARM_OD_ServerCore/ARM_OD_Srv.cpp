@@ -111,4 +111,6 @@ void ARM_OD_Srv::addRpcArmrConnection()
 
 	_subscriber_up->add_subscription(SOLVER_SET, m_rpcClientR);
 	_subscriber_up->add_subscription(SOLVER_CLEAR, m_rpcClientR);
+
+	m_tcpManager->setRpcClient(m_rpcClientR);
 }

@@ -46,10 +46,8 @@ HEADERS += \
 	NIIPP/NiippController.h \
 	NIIPP/NiippWidget.h \
 	Tabs/RPC/IRPC.h \
-	Tabs/RPC/RPCClient.h \
-	Tabs/Solver/Solver.h \
-	Tabs/Solver/SolverWidget.h \
-	Tabs/Solver/SolverController.h \
+        Tabs/RPC/RPCClient.h \
+        Tabs/Solver/SolverSettingsDialogController.h \
 	Tabs/Tree/TreeWidgetDelegate.h \
 	Tabs/ITabManager.h \
 	Tabs/ITabMap.h \
@@ -97,16 +95,15 @@ HEADERS += \
 	Map/Features/MarkerFeature.h \
 	Map/Features/NiippPointFeature.h \
 	Map/Features/PelengatorPointFeature.h \
+    Tabs/Solver/SolverSettingsDialog.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
 	Icons/IconsGenerator.cpp \
 	NIIPP/NiippController.cpp \
 	NIIPP/Niipp.cpp \
-	NIIPP/NiippWidget.cpp \
-	Tabs/Solver/Solver.cpp \
-	Tabs/Solver/SolverWidget.cpp \
-	Tabs/Solver/SolverController.cpp \
+        NIIPP/NiippWidget.cpp \
+        Tabs/Solver/SolverSettingsDialogController.cpp \
 	Tabs/Tree/TreeWidgetDelegate.cpp \
 	Tabs/TabManager.cpp \
 	UAV/BLAPerehvatDialog.cpp \
@@ -139,13 +136,14 @@ SOURCES += \
 	Map/Features/MarkerFeature.cpp \
 	Map/Features/NiippPointFeature.cpp \
 	Map/Features/PelengatorPointFeature.cpp \
+    Tabs/Solver/SolverSettingsDialog.cpp
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \
-	arm_od_view.ui \
-	Tabs/Solver/SolverWidget.ui \
+        arm_od_view.ui \
 	Map/MapWidget.ui \
 	NIIPP/NiippWidget.ui \
     MapTabWidget.ui \
-    ControlPanel/ControlPanel.ui
+    ControlPanel/ControlPanel.ui \
+    Tabs/Solver/SolverSettingsDialog.ui
 

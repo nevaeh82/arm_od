@@ -24,14 +24,15 @@ public:
 	int getType();
 	void sendData(QSharedPointer<IMessageOld> msg_ptr);
 
+	void sendDataByRpc(const QString& signalType, const QByteArray& data);
+
 signals:
 	void initSignal();
-	void sendDataSignal(QSharedPointer<IMessageOld> msg_ptr);
-
+	void sendDataByRpcSignal(QString signalType, QByteArray data);
 
 private slots:
 	void initSlot();
-	void sendDataSlot(QSharedPointer<IMessageOld> msg_ptr);
+	void sendDataByRpcSlot(QString signalType, QByteArray data);
 
 };
 
