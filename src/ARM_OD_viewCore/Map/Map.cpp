@@ -61,6 +61,16 @@ bool Map::openMap(QString fileName)
 	return m_mapManager->openMap(fileName, 100);
 }
 
+void Map::closeAtlas()
+{
+	m_mapManager->closeAtlas();
+}
+
+void Map::closeMap()
+{
+	m_mapManager->closeMap();
+}
+
 void Map::onMapReady()
 {
 	QMap<int, IMapClient *>::iterator it;

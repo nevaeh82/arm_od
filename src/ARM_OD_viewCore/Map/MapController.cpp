@@ -18,6 +18,7 @@ MapController::MapController(QObject *parent):
 MapController::~MapController()
 {
 	delete m_mapModel;
+	m_mapModel = NULL;
 	log_debug("~MapController()");
 }
 
@@ -64,20 +65,6 @@ void MapController::_slot_station_visible(bool state)
 	m_mapModel->setStationVisible(state);
 }
 
-PwGisWidget *MapController::get_pwwidget()
-{
-	return m_view->getPwGis();
-}
-
-QWidget *MapController::get_widget()
-{
-	return m_view->getWidget();
-}
-
-bool MapController::eventFilter(QObject *obj, QEvent *e)
-{
-	return true;
-}
 
 /// get map client by name
 IMapClient *MapController::getMapClient(int id)
@@ -88,4 +75,14 @@ IMapClient *MapController::getMapClient(int id)
 void MapController::appendView(MapWidget *view)
 {
 	m_view = view;
+}
+
+void MapController::closeMap()
+{
+	m_mapModel->closeMap();
+}
+
+void MapController::closeAtlas()
+{
+	m_mapModel->closeAtlas();
 }

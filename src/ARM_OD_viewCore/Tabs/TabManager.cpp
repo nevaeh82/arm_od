@@ -10,10 +10,12 @@ TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
 	m_tabWidget = tabWidget;
 
 	//Creating db bla controller
-	m_dbUavController = new DbUavController();
 
 	//Creating db bla manager and set its controller
 	m_dbUavManager = new DbUavManager();
+
+	m_dbUavController = new DbUavController(m_dbUavManager);
+
 	m_dbUavManager->setDbController(m_dbUavController);
 
 	//Moving db bla manager to another thread
@@ -27,12 +29,14 @@ TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
 	m_dbUavManager->moveToThread(dbBlaManagerThread);
 	dbBlaManagerThread->start();
 
-	connect(this, SIGNAL(currentChanged(int)), this, SLOT(changeTabSlot(int)));
+	connect(m_tabWidget, SIGNAL(currentChanged(int)), this, SLOT(changeTabSlot(int)));
 }
 
 TabManager::~TabManager()
 {
 	emit finished();
+
+	clearAllInformation();
 }
 
 void TabManager::send_data_niipp_control(int id, QByteArray ba)
@@ -115,8 +119,10 @@ void TabManager::clearAllInformation()
 	}
 
 	foreach (Station* station, m_stationsMap) {
-		delete station;
-		station = NULL;
+		if (NULL != station) {
+			delete station;
+			station = NULL;
+		}
 	}
 
 	m_tabWidgetsMap.clear();

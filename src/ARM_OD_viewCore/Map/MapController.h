@@ -42,21 +42,19 @@ public:
 	virtual ~MapController();
 	void init(QMap<int, Station *> map_settings);
 
-	PwGisWidget *get_pwwidget();
-	QWidget     *get_widget();
-
 	virtual IMapClient  *getMapClient(int id);
 
 	void addMarkerLayer(int id, QString name);
 
 	void appendView(MapWidget* view);
 
+	void closeMap();
+	void closeAtlas();
+
 private:
 	MapWidget* m_view;
 	Map* m_mapModel;
 
-private:
-	bool eventFilter(QObject *obj, QEvent *e);
 
 public slots:
 	void openMapFromAtlas();

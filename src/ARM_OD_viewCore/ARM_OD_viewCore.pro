@@ -46,7 +46,6 @@ HEADERS += \
 	NIIPP/NiippController.h \
 	NIIPP/NiippWidget.h \
 	Tabs/RPC/IRPC.h \
-	Tabs/RPC/RadiolocationInterface.h \
 	Tabs/RPC/RPCClient.h \
 	Tabs/Solver/Solver.h \
 	Tabs/Solver/SolverWidget.h \

@@ -31,7 +31,7 @@ RPCClient::~RPCClient()
 {
 	log_debug("~RPCClient");
 	m_clientPeer->disconnectAll();
-	m_clientPeer->deleteLater();
+	//m_clientPeer->deleteLater();
 }
 
 bool RPCClient::start(quint16 port, QHostAddress ipAddress)
@@ -161,7 +161,13 @@ void RPCClient::rpcSendBlaPoints(QByteArray data)
 		return;
 	}
 
-	m_mapController->getMapClient(1)->addFriendBpla(id, ddd);
+	IMapClient* client = m_mapController->getMapClient(1);
+
+	if (NULL == client) {
+		return;
+	}
+
+	client->addFriendBpla(id, ddd);
 	/*QMap<QString, QVariant>* rec = new QMap<QString, QVariant>;
 
 	rec->insert("id", QVariant::fromValue(id));
@@ -449,7 +455,12 @@ void RPCClient::sendBplaPoints(QByteArray data)
 		return;
 	}
 
-	m_mapController->getMapClient(1)->addEnemyBpla(m_rdsEvilIds, oldDataFormat);
+	IMapClient* client =  m_mapController->getMapClient(1);
+	if (NULL == client) {
+		return;
+	}
+
+	client->addEnemyBpla(m_rdsEvilIds, oldDataFormat);
 
    /* QMap<QString, QVariant>* rec = new QMap<QString, QVariant>;
 

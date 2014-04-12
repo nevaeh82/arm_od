@@ -22,7 +22,6 @@
 #include "Tabs/ITabMap.h"
 #include "Map/IMapController.h"
 
-//#include "RadiolocationInterface.h"
 
 #include "Rpc/RpcDefines.h"
 #include "Rpc/RpcClientBase.h"

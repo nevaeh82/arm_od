@@ -42,11 +42,20 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 
 MapTabWidgetController::~MapTabWidgetController()
 {
+	m_rpcClient->stop();
+
 	//delete m_rpcClient;
 	//m_rpcClient = NULL;
 
-	m_rpcClient->deleteLater();
+	m_mapController->closeAtlas();
+	m_mapController->closeMap();
+
+	delete m_rpcClient;
+
+	//m_rpcClient->deleteLater();
 	m_mapController->deleteLater();
+
+
 	//m_mapController = NULL;
 
 	closeRPC();
@@ -105,10 +114,10 @@ int MapTabWidgetController::createRPC()
 	m_rpcClient = new RpcClientWrapper;
 
 	QThread* rpcClientThread = new QThread;
-	//connect(m_rpcClient, SIGNAL(destroyed()), rpcClientThread, SLOT(terminate()));
-	connect(this, SIGNAL(signalFinishRPC()), rpcClientThread, SLOT(quit()));
-	connect(this, SIGNAL(signalFinishRPC()), m_rpcClient, SLOT(deleteLater()));
-	connect(this, SIGNAL(signalFinishRPC()), rpcClientThread, SLOT(deleteLater()));
+	connect(m_rpcClient, SIGNAL(destroyed()), rpcClientThread, SLOT(terminate()));
+	//connect(this, SIGNAL(signalFinishRPC()), rpcClientThread, SLOT(quit()));
+	//connect(this, SIGNAL(signalFinishRPC()), m_rpcClient, SLOT(deleteLater()));
+	//connect(this, SIGNAL(signalFinishRPC()), rpcClientThread, SLOT(deleteLater()));
 
 	m_rpcClient->moveToThread(rpcClientThread);
 	rpcClientThread->start();
