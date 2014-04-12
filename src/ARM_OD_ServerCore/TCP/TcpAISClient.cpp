@@ -16,7 +16,7 @@ TcpAISClient::TcpAISClient(QObject* parent) :
 		m_tcpSocket = NULL;
 	}
 
-	m_networkAccessManager = new QNetworkAccessManager();
+	m_networkAccessManager = new QNetworkAccessManager(this);
 	connect(m_networkAccessManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onGetQuerySlot(QNetworkReply*)));
 }
 

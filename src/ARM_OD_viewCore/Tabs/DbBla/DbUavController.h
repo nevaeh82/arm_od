@@ -21,6 +21,8 @@ public:
 	explicit DbUavController(QObject *parent = 0);
 	virtual ~DbUavController();
 
+	void disconnectFromDb();
+
 	int addUav(const Uav&);
 	Uav getUavByUavId(const uint uavId);
 	Uav getUav(const uint id);

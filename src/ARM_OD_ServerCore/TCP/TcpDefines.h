@@ -25,7 +25,8 @@
 #define TCP_ARMR_SEND_SOLVER_CLEAR		"tcpArmrSendSolverClear"
 
 /// AIS device internal
-#define TCP_AIS_ANSWER_DATA	"tcpAisAnswerData"
+#define TCP_AIS_ANSWER_DATA			"tcpAisAnswerData"
+#define TCP_AIS_REQUEST_GET_DATA	"tcpAisRequestGetData"
 
 #define TCP_AIS_URL_STANDART		"http://bma.fr24.com/zones/"
 #define TCP_AIS_URL_FULL_MAP		"full_all.js"

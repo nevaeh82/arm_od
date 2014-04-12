@@ -27,8 +27,8 @@
 #include "DbBla/DbUavController.h"
 #include "Db/Defines.h"
 
-#include "Interfaces/IDbBlaSettingsManager.h"
-#include "DbBlaSettingsManager.h"
+#include "SettingsManager/DbBlaSettingsManager.h"
+#include "Info/StationConfiguration.h"
 
 class TabManager: public QObject, public ITabManager
 {
@@ -46,7 +46,6 @@ private:
 
 	QMap<QString, MapTabWidgetController* >    m_tabWidgetsMap;
 
-	IDbBlaSettingsManager* m_dbBlaSettingsManager;
 	DbUavController* m_dbUavController;
 	DbUavManager* m_dbUavManager;
 
@@ -54,18 +53,23 @@ private:
 
     QMutex                      _mux;
 
+	QString m_rpcHost;
+	quint16 m_rpcPort;
+
 public:
 	void start();
 
-	int createSubModules(const QString& settingsFile);
 
     virtual void send_data(int pid, IMessageOld* msg);
     virtual void send_data_niipp_control(int id, QByteArray ba);
 
-private:
-	int readSettings(const QString &settingsFile);
+	void setRpcConfig(const quint16& port, const QString& host);
+	void setDbConnectionStruct(const DBConnectionStruct& connectionStruct);
 
-	DBConnectionStruct getDbBlaConnectionSettings();
+	void setStationsConfiguration(const QList<StationConfiguration>& stationList);
+	void addStationTabs();
+	void clearAllInformation();
+
 
 private slots:
 	void changeTabSlot(int index);
@@ -75,6 +79,10 @@ signals:
 
 	void openAtlasSignal();
 	void openMapSignal();
+
+	void readyToStart();
+
+	void finished();
 };
 
 #endif // TABMANAGER_H

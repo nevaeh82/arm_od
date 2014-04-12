@@ -42,7 +42,25 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 
 MapTabWidgetController::~MapTabWidgetController()
 {
+	m_rpcClient->stop();
+
+	//delete m_rpcClient;
+	//m_rpcClient = NULL;
+
+	m_mapController->closeAtlas();
+	m_mapController->closeMap();
+
+	delete m_rpcClient;
+
+	//m_rpcClient->deleteLater();
+	m_mapController->deleteLater();
+
+
+	//m_mapController = NULL;
+
 	closeRPC();
+	m_uavDbManager->deregisterReceiver(m_allyUavTreeModel);
+	m_uavDbManager->deregisterReceiver(m_enemyUavTreeModel);
 }
 
 int MapTabWidgetController::init()
@@ -90,13 +108,17 @@ void MapTabWidgetController::hide()
 
 int MapTabWidgetController::createRPC()
 {
-	readSettings();
+//	readSettings();
 
 	///TODO: fix deleting
-	m_rpcClient = new RpcClientWrapper();
+	m_rpcClient = new RpcClientWrapper;
 
 	QThread* rpcClientThread = new QThread;
 	connect(m_rpcClient, SIGNAL(destroyed()), rpcClientThread, SLOT(terminate()));
+	//connect(this, SIGNAL(signalFinishRPC()), rpcClientThread, SLOT(quit()));
+	//connect(this, SIGNAL(signalFinishRPC()), m_rpcClient, SLOT(deleteLater()));
+	//connect(this, SIGNAL(signalFinishRPC()), rpcClientThread, SLOT(deleteLater()));
+
 	m_rpcClient->moveToThread(rpcClientThread);
 	rpcClientThread->start();
 
@@ -160,6 +182,12 @@ void MapTabWidgetController::appendView(MapTabWidget *view)
 	init();
 }
 
+void MapTabWidgetController::setRpcConfig(const quint16& port, const QString& host)
+{
+	m_rpcHostAddress = host;
+	m_rpcHostPort = port;
+}
+
 void MapTabWidgetController::openAtlasSlot()
 {
 	m_mapController->openMapFromAtlas();
@@ -211,17 +239,17 @@ void MapTabWidgetController::onSendDataToNiippControl(int id, QByteArray data)
 	}
 }
 
-void MapTabWidgetController::readSettings()
-{
-	QString settingsFile = QCoreApplication::applicationDirPath();
-	settingsFile.append("./Tabs/RPC.ini");
+//void MapTabWidgetController::readSettings()
+//{
+//	QString settingsFile = QCoreApplication::applicationDirPath();
+//	settingsFile.append("./Tabs/RPC.ini");
 
-	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-	QSettings settings(settingsFile, QSettings::IniFormat);
+//	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+//	QSettings settings(settingsFile, QSettings::IniFormat);
 
-	settings.setIniCodec(codec);
+//	settings.setIniCodec(codec);
 
-	m_rpcHostAddress = settings.value("RPC_UI/IP", "127.0.0.1").toString();
-	m_rpcHostPort = settings.value("RPC_UI/Port", DEFAULT_RPC_PORT).toInt();
-}
+//	m_rpcHostAddress = settings.value("RPC_UI/IP", "127.0.0.1").toString();
+//	m_rpcHostPort = settings.value("RPC_UI/Port", DEFAULT_RPC_PORT).toInt();
+//}
 

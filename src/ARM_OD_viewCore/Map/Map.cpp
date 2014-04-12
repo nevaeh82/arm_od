@@ -1,6 +1,7 @@
 #include "Map.h"
 
-Map::Map()
+Map::Map(QObject *parent ) :
+	QObject(parent)
 {
 	m_layersCounter = 0;
 	m_mapManager = 0;
@@ -11,6 +12,7 @@ Map::Map()
 Map::~Map()
 {
 	m_mapManager->closeMap();
+	m_mapManager->closeAtlas();
 }
 
 void Map::init(QMap<int, Station*> map_settings, PwGisWidget* pwwidget)
@@ -59,6 +61,16 @@ bool Map::openAtlas()
 bool Map::openMap(QString fileName)
 {
 	return m_mapManager->openMap(fileName, 100);
+}
+
+void Map::closeAtlas()
+{
+	m_mapManager->closeAtlas();
+}
+
+void Map::closeMap()
+{
+	m_mapManager->closeMap();
 }
 
 void Map::onMapReady()

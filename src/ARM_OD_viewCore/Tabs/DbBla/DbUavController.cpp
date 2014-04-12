@@ -11,6 +11,13 @@ DbUavController::~DbUavController()
 	m_db.close();
 }
 
+void DbUavController::disconnectFromDb()
+{
+	if (m_db.isOpen()) {
+		m_db.close();
+	}
+}
+
 int DbUavController::addUav(const Uav& uav)
 {
 	if(!m_db.isOpen()){

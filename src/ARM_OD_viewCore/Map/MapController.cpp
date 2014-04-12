@@ -3,18 +3,23 @@
 #include <QLabel>
 #include <QCursor>
 
+#include "Logger.h"
+
 #include "../Icons/IconsGenerator.h"
 
 #include "../UAV/ZInterception.h"
 
 MapController::MapController(QObject *parent):
-	QObject(parent), m_mapModel(new Map())
+	QObject(parent)
 {
 	m_view = NULL;
+
+	m_mapModel = new Map(this);
 }
 
 MapController::~MapController()
 {
+	log_debug("~MapController()");
 }
 
 void MapController::init(QMap<int, Station*> map_settings)
@@ -60,20 +65,6 @@ void MapController::_slot_station_visible(bool state)
 	m_mapModel->setStationVisible(state);
 }
 
-PwGisWidget *MapController::get_pwwidget()
-{
-	return m_view->getPwGis();
-}
-
-QWidget *MapController::get_widget()
-{
-	return m_view->getWidget();
-}
-
-bool MapController::eventFilter(QObject *obj, QEvent *e)
-{
-	return true;
-}
 
 /// get map client by name
 IMapClient *MapController::getMapClient(int id)
@@ -84,4 +75,14 @@ IMapClient *MapController::getMapClient(int id)
 void MapController::appendView(MapWidget *view)
 {
 	m_view = view;
+}
+
+void MapController::closeMap()
+{
+	m_mapModel->closeMap();
+}
+
+void MapController::closeAtlas()
+{
+	m_mapModel->closeAtlas();
 }

@@ -4,7 +4,14 @@ RpcClientWrapper::RpcClientWrapper(QObject *parent) :
 	QObject(parent)
 {
 	connect(this, SIGNAL(initSignal()), this, SLOT(initSlot()));
+	connect(this, SIGNAL(stopSignal()), this, SLOT(stopSlot()));
 	connect(this, SIGNAL(signalSetCommand(IMessageOld*)), this, SLOT(slotSetCommand(IMessageOld*)));
+}
+
+RpcClientWrapper::~RpcClientWrapper()
+{
+	m_rpcClient->stop();
+	//m_rpcClient->deleteLater();
 }
 
 void RpcClientWrapper::init(quint16 port, QHostAddress& address,
@@ -28,6 +35,11 @@ void RpcClientWrapper::setCommand(IMessageOld* msg)
 	emit signalSetCommand(msg);
 }
 
+void RpcClientWrapper::stop()
+{
+	emit stopSignal();
+}
+
 void RpcClientWrapper::slotSetCommand(IMessageOld* msg)
 {
 	m_rpcClient->setCommand(msg);
@@ -37,4 +49,9 @@ void RpcClientWrapper::initSlot()
 {
 	m_rpcClient = new RPCClient(m_station, m_dbManager, m_mapController, m_parentTab, m_tabManager, this);
 	m_rpcClient->start(m_port, m_address);
+}
+
+void RpcClientWrapper::stopSlot()
+{
+	m_rpcClient->stop();
 }
