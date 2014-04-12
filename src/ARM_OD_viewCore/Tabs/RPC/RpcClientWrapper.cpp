@@ -6,10 +6,15 @@ RpcClientWrapper::RpcClientWrapper(QObject *parent) :
 	connect(this, SIGNAL(initSignal()), this, SLOT(initSlot()));
 	connect(this, SIGNAL(stopSignal()), this, SLOT(stopSlot()));
 	connect(this, SIGNAL(signalSetCommand(IMessageOld*)), this, SLOT(slotSetCommand(IMessageOld*)));
+	m_rpcClient = NULL;
 }
 
 RpcClientWrapper::~RpcClientWrapper()
 {
+	if (m_rpcClient == NULL) {
+		log_debug("m_rpcClient == NULL");
+		return;
+	}
 	m_rpcClient->stop();
 	//m_rpcClient->deleteLater();
 }
@@ -37,21 +42,37 @@ void RpcClientWrapper::setCommand(IMessageOld* msg)
 
 void RpcClientWrapper::stop()
 {
-	emit stopSignal();
+	if (m_rpcClient == NULL) {
+		log_debug("m_rpcClient == NULL");
+		return;
+	}
+	m_rpcClient->stop();
 }
 
 void RpcClientWrapper::slotSetCommand(IMessageOld* msg)
 {
+	if (m_rpcClient == NULL) {
+		log_debug("m_rpcClient == NULL");
+		return;
+	}
 	m_rpcClient->setCommand(msg);
 }
 
 void RpcClientWrapper::initSlot()
 {
 	m_rpcClient = new RPCClient(m_station, m_dbManager, m_mapController, m_parentTab, m_tabManager, this);
+	if (m_rpcClient == NULL) {
+		log_debug("m_rpcClient == NULL");
+		return;
+	}
 	m_rpcClient->start(m_port, m_address);
 }
 
 void RpcClientWrapper::stopSlot()
 {
+	if (m_rpcClient == NULL) {
+		log_debug("m_rpcClient == NULL");
+		return;
+	}
 	m_rpcClient->stop();
 }

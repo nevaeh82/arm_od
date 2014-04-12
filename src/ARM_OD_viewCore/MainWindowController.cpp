@@ -97,8 +97,6 @@ void MainWindowController::serverStartedSlot()
 	m_tabManager->setRpcConfig(port, host);
 	m_rpcConfigClient->start(port, QHostAddress(host));
 	connect(m_rpcConfigClient, SIGNAL(connectionEstablishedSignal()), this, SLOT(rpcConnectionEstablished()));
-
-
 }
 
 void MainWindowController::startTabManger()

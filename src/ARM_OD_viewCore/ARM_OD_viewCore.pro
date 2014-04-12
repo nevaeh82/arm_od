@@ -142,10 +142,10 @@ SOURCES += \
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \
-	arm_od_view.ui \
 	Tabs/Solver/SolverWidget.ui \
 	Map/MapWidget.ui \
 	NIIPP/NiippWidget.ui \
     MapTabWidget.ui \
-    ControlPanel/ControlPanel.ui
+    ControlPanel/ControlPanel.ui \
+    MainWindow.ui
 

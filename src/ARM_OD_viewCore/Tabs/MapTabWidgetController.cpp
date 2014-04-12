@@ -50,7 +50,7 @@ MapTabWidgetController::~MapTabWidgetController()
 	m_mapController->closeAtlas();
 	m_mapController->closeMap();
 
-	delete m_rpcClient;
+	m_rpcClient->deleteLater();
 
 	//m_rpcClient->deleteLater();
 	m_mapController->deleteLater();
