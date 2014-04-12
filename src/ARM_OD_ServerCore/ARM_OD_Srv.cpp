@@ -22,9 +22,9 @@ ARM_OD_Srv::ARM_OD_Srv()
 
 	_router->set_subscriber(_subscriber_up);
 	m_rpcSettingsManager = RpcSettingsManager::instance();
-	rpcSettingsManager->setIniFile("./RPC/RpcOdServer.ini");
-	QString host = rpcSettingsManager->getRpcHost();
-	quint16 port = rpcSettingsManager->getRpcPort().toUShort();
+	m_rpcSettingsManager->setIniFile("./RPC/RpcOdServer.ini");
+	QString host = m_rpcSettingsManager->getRpcHost();
+	quint16 port = m_rpcSettingsManager->getRpcPort().toUShort();
 	_rpc_server = new RPCServer(this);
 	_rpc_server->setRouter(_router);
 	_rpc_server->start(port, QHostAddress(host));
@@ -97,8 +97,8 @@ void ARM_OD_Srv::addRpcArmrConnection()
 	log_debug("Adding rpc connection to armr...");
 
 	m_rpcSettingsManager->setIniFile("./RPC/RpcRServer.ini");
-	QString host = rpcSettingsManager->getRpcHost();
-	quint16 port = rpcSettingsManager->getRpcPort().toUShort();
+	QString host = m_rpcSettingsManager->getRpcHost();
+	quint16 port = m_rpcSettingsManager->getRpcPort().toUShort();
 
 	m_rpcClientR = new RpcClientRWrapper();
 
