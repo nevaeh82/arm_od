@@ -4,54 +4,40 @@
 <context>
     <name>ARM_OD_view</name>
     <message>
-        <location filename="arm_od_view.ui" line="14"/>
-        <source>MainWindow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="arm_od_view.ui" line="52"/>
         <source>Initialization...</source>
-        <translation>Инициализация...</translation>
+        <translation type="obsolete">Инициализация...</translation>
     </message>
     <message>
-        <location filename="arm_od_view.ui" line="76"/>
         <source>File</source>
-        <translation>Файл</translation>
+        <translation type="obsolete">Файл</translation>
     </message>
     <message>
-        <location filename="arm_od_view.ui" line="83"/>
         <source>Map</source>
-        <translation>Карта</translation>
+        <translation type="obsolete">Карта</translation>
     </message>
     <message>
-        <location filename="arm_od_view.ui" line="90"/>
         <source>Settings</source>
-        <translation>Настройки</translation>
+        <translation type="obsolete">Настройки</translation>
     </message>
     <message>
-        <location filename="arm_od_view.ui" line="101"/>
         <source>New</source>
-        <translation>Новый пункт</translation>
+        <translation type="obsolete">Новый пункт</translation>
     </message>
     <message>
-        <location filename="arm_od_view.ui" line="106"/>
         <source>Exit</source>
-        <translation>Выход</translation>
+        <translation type="obsolete">Выход</translation>
     </message>
     <message>
-        <location filename="arm_od_view.ui" line="111"/>
         <source>Open Atlas</source>
-        <translation>Открыть атлас</translation>
+        <translation type="obsolete">Открыть атлас</translation>
     </message>
     <message>
-        <location filename="arm_od_view.ui" line="116"/>
         <source>Open from file</source>
-        <translation>Открыть из файла</translation>
+        <translation type="obsolete">Открыть из файла</translation>
     </message>
     <message>
-        <location filename="arm_od_view.ui" line="121"/>
         <source>Koordinatometriya parameters</source>
-        <translation>Параметры координатометрии</translation>
+        <translation type="obsolete">Параметры координатометрии</translation>
     </message>
 </context>
 <context>
@@ -144,13 +130,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="20"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="32"/>
         <source>UAV List</source>
         <oldsource>BLA List</oldsource>
         <translation>Список БЛА</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="27"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="39"/>
         <source>Enemy UAV List</source>
         <translation>Список БПЛА</translation>
     </message>
@@ -159,7 +145,7 @@
         <translation type="obsolete">Список БПЛА</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="34"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="46"/>
         <source>SPIP DD</source>
         <translation>СПИП ДД</translation>
     </message>
@@ -208,27 +194,61 @@
 <context>
     <name>MainWindow</name>
     <message>
+        <location filename="MainWindow.ui" line="14"/>
+        <source>MainWindow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="88"/>
+        <source>Initialization...</source>
+        <translation>Инициализация...</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="112"/>
         <source>File</source>
-        <translation type="obsolete">Файл</translation>
+        <translation>Файл</translation>
     </message>
     <message>
+        <location filename="MainWindow.ui" line="119"/>
+        <source>Map</source>
+        <translation>Карта</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="126"/>
         <source>Settings</source>
-        <translation type="obsolete">Настройки</translation>
+        <translation>Настройки</translation>
     </message>
     <message>
+        <location filename="MainWindow.ui" line="140"/>
         <source>New</source>
-        <translation type="obsolete">Новый пункт</translation>
+        <translation>Новый пункт</translation>
     </message>
     <message>
+        <location filename="MainWindow.ui" line="145"/>
         <source>Exit</source>
-        <translation type="obsolete">Выход</translation>
+        <translation>Выход</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="150"/>
+        <source>Open Atlas</source>
+        <translation>Открыть атлас</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="155"/>
+        <source>Open from file</source>
+        <translation>Открыть из файла</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="160"/>
+        <source>Koordinatometriya parameters</source>
+        <translation>Параметры координатометрии</translation>
     </message>
     <message>
         <source>Atlant setup</source>
         <translation type="obsolete">Настройка Атланта</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="21"/>
+        <location filename="MainWindow.cpp" line="19"/>
         <source>Zaviruha</source>
         <translation>Завируха</translation>
     </message>
@@ -446,18 +466,18 @@
         <translation>Список БЛА</translation>
     </message>
     <message>
-        <location filename="MapTabWidget.ui" line="52"/>
+        <location filename="MapTabWidget.ui" line="64"/>
         <source>BPLA List</source>
         <translation>Список БПЛА</translation>
     </message>
     <message>
-        <location filename="MapTabWidget.ui" line="76"/>
+        <location filename="MapTabWidget.ui" line="100"/>
         <source>SPIP DD-1</source>
         <oldsource>SPIP-DD 1</oldsource>
         <translation>СПИП ДД-1</translation>
     </message>
     <message>
-        <location filename="MapTabWidget.ui" line="84"/>
+        <location filename="MapTabWidget.ui" line="108"/>
         <source>SPIP DD-2</source>
         <oldsource>SPIP-DD 2</oldsource>
         <translation>СПИП ДД-2</translation>

@@ -20,7 +20,11 @@ private:
 
 public:
 	explicit RpcClientWrapper(QObject *parent = 0);
-	~RpcClientWrapper();
+	virtual ~RpcClientWrapper();
+
+	void registerReceiver(IRpcListener* receiver);
+	void deregisterReceiver(IRpcListener* receiver);
+
 	void init(quint16, QHostAddress&, Station*, IDbUavManager*, IMapController*, ITabMap*, ITabManager*);
 	void setCommand(IMessageOld* msg);
 

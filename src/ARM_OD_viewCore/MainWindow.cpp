@@ -1,11 +1,9 @@
 #include "MainWindow.h"
-#include "ui_arm_od_view.h"
-
-#include <QDebug>
+#include "ui_MainWindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
-	ui(new Ui::ARM_OD_view)
+	ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
 
@@ -26,8 +24,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	this->showMaximized();
 
 	init();
-
-
 }
 
 MainWindow::~MainWindow()
