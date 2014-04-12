@@ -64,6 +64,8 @@ public:
 	UavRole getUavRoleByName(const QString&);
 	UavRole getUavRoleByCode(const QString&);
 
+	void deleteAllUav();
+
 	// IRpcListener interface
 public:
 	virtual void onMethodCalled(const QString& method, const QVariant& argument);

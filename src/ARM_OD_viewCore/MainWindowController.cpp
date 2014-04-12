@@ -112,7 +112,10 @@ void MainWindowController::startTabManger()
 void MainWindowController::rpcConnectionEstablished()
 {
 	m_rpcConfigClient->requestGetStationList("./Tabs/Tabs.ini");
-	m_rpcConfigClient->requestGetDbConfiguration("./DB/db_uav.ini");
+
+	/// BUG HERE!!!
+//	m_rpcConfigClient->requestGetDbConfiguration("./DB/db_uav.ini");
+
 //	m_rpcConfigClient->requestGetMapObjects("./Map/map_objects.ini");
 //	m_rpcConfigClient->requestGetMapObjects("./Map/map_points.ini");
 }

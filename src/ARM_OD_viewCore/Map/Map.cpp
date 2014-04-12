@@ -11,6 +11,8 @@ Map::Map(QObject *parent ) :
 
 Map::~Map()
 {
+	m_mapClients.clear();
+
 	m_mapManager->closeMap();
 	m_mapManager->closeAtlas();
 }
@@ -22,7 +24,7 @@ void Map::init(QMap<int, Station*> map_settings, PwGisWidget* pwwidget)
 	QMap<int, Station*>::iterator it;
 	for (it = m_mapSettings.begin(); it != m_mapSettings.end(); ++it)
 	{
-		MapClient1* client = new MapClient1(pwwidget, it.value());
+		MapClient1* client = new MapClient1(pwwidget, it.value(), this);
 		m_mapClients[(it.value())->id] = client;
 
 		connect( this, SIGNAL(modelMapReady()), client, SLOT(init()) );

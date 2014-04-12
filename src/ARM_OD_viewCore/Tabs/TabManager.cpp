@@ -30,6 +30,19 @@ TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
 	dbBlaManagerThread->start();
 
 	connect(m_tabWidget, SIGNAL(currentChanged(int)), this, SLOT(changeTabSlot(int)));
+
+	IDbBlaSettingsManager* dbUavSettingsManager = DbBlaSettingsManager::instance();
+	dbUavSettingsManager->setIniFile("./DB/db_uav.ini");
+
+	DBConnectionStruct connectionStruct;
+
+	connectionStruct.host		= dbUavSettingsManager->getBlaDbHost();
+	connectionStruct.port		= dbUavSettingsManager->getBlaDbPort();
+	connectionStruct.login		= dbUavSettingsManager->getBlaDbLogin();
+	connectionStruct.password	= dbUavSettingsManager->getBlaDbPassword();
+	connectionStruct.dbName		= dbUavSettingsManager->getBlaDbName();
+
+	m_dbUavController->connectToDB(connectionStruct);
 }
 
 TabManager::~TabManager()
@@ -53,6 +66,7 @@ void TabManager::setRpcConfig(const quint16& port, const QString& host)
 
 void TabManager::setDbConnectionStruct(const DBConnectionStruct& connectionStruct)
 {
+	/// BUG HERE!!!
 	m_dbUavController->disconnectFromDb();
 	m_dbUavController->connectToDB(connectionStruct);
 }
@@ -127,6 +141,8 @@ void TabManager::clearAllInformation()
 	m_tabWidgetsMap.clear();
 	m_tabWidget->clear();
 	m_stationsMap.clear();
+
+	m_dbUavManager->deleteAllUav();
 }
 
 void TabManager::start()

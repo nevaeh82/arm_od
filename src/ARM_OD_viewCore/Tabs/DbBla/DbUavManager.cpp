@@ -182,6 +182,12 @@ UavRole DbUavManager::getUavRoleByCode(const QString& code)
 	return m_dbController->getUavRoleByCode(code);
 }
 
+void DbUavManager::deleteAllUav()
+{
+	QMutexLocker locker(&m_mutex);
+	m_knownUavsList.clear();
+}
+
 void DbUavManager::onMethodCalled(const QString& method, const QVariant& argument)
 {
 	QByteArray data = argument.toByteArray();

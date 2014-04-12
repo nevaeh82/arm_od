@@ -50,11 +50,8 @@ MapTabWidgetController::~MapTabWidgetController()
 	m_mapController->closeAtlas();
 	m_mapController->closeMap();
 
-	m_rpcClient->deleteLater();
-
-	m_mapController->deleteLater();
-
 	closeRPC();
+
 	m_uavDbManager->deregisterReceiver(m_allyUavTreeModel);
 	m_uavDbManager->deregisterReceiver(m_enemyUavTreeModel);
 }
@@ -247,18 +244,3 @@ void MapTabWidgetController::onSendDataToNiippControl(int id, QByteArray data)
 			break;
 	}
 }
-
-//void MapTabWidgetController::readSettings()
-//{
-//	QString settingsFile = QCoreApplication::applicationDirPath();
-//	settingsFile.append("./Tabs/RPC.ini");
-
-//	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-//	QSettings settings(settingsFile, QSettings::IniFormat);
-
-//	settings.setIniCodec(codec);
-
-//	m_rpcHostAddress = settings.value("RPC_UI/IP", "127.0.0.1").toString();
-//	m_rpcHostPort = settings.value("RPC_UI/Port", DEFAULT_RPC_PORT).toInt();
-//}
-
