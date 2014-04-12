@@ -46,7 +46,7 @@ private:
 //	int                 m_pelengEvilIds;
 //	int                 m_rdsEvilIds;
 
-//	bool                m_solverAuto;
+	bool                m_solverAuto;
 
 //	QMutex m_mutex;
 

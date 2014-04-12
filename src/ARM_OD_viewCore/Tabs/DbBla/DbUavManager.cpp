@@ -6,6 +6,10 @@ DbUavManager::DbUavManager(QObject *parent) :
 	m_dbController = NULL;
 }
 
+DbUavManager::~DbUavManager()
+{
+}
+
 void DbUavManager::setDbController(IDbUavController* dbController)
 {
 	m_dbController = dbController;
@@ -176,4 +180,128 @@ UavRole DbUavManager::getUavRoleByName(const QString& name)
 UavRole DbUavManager::getUavRoleByCode(const QString& code)
 {
 	return m_dbController->getUavRoleByCode(code);
+}
+
+void DbUavManager::onMethodCalled(const QString& method, const QVariant& argument)
+{
+	QByteArray data = argument.toByteArray();
+
+	if (method == RPC_SLOT_SERVER_SEND_BLA_POINTS) {
+		QDataStream inputDataStream(&data, QIODevice::ReadOnly);
+		QVector<UAVPositionData> positionDataVector;
+		inputDataStream >> positionDataVector;
+
+		if (positionDataVector.size() < 1) {
+			log_debug("Size uavpositiondata vector < 1");
+			return;
+		}
+
+		/// Now we take first point, but we need to take more than 1 point
+		UAVPositionData positionData = positionDataVector.at(0);
+		addUavInfoToDb(positionData, OUR_UAV_ROLE, "UnknownUavType", "UnknownStatus", "UnknownDeviceType");
+	} else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS) {
+		sendEnemyUavPoints(data);
+	} else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO) {
+		sendEnemyUavPoints(data);
+	}
+}
+
+void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QString& role, const QString& uavType, const QString& status, const QString& deviceType)
+{
+	QMutexLocker locker(&m_mutex);
+
+	int uavId = getUavByUavId(positionData.boardID).id;
+	if (uavId < 0){
+		int uavUnknownTypeId = getUavTypeByName(uavType);
+
+		if (uavUnknownTypeId < 0){
+			UavType uavTypeStruct;
+			uavTypeStruct.name = uavType;
+			uavUnknownTypeId = addUavType(uavTypeStruct);
+		}
+
+		Uav uav;
+		uav.uavId = positionData.boardID;
+		uav.uavTypeId = uavUnknownTypeId;
+		uav.ip = "127.0.0.1";
+
+		UavRole uavRole = getUavRoleByCode(role);
+		if (uavRole.id < 0){
+			uavRole.code = role;
+			uavRole.name = role;
+			uavRole.id = addUavRole(uavRole);
+		}
+		uav.roleId = uavRole.id;
+
+		uavId = addUav(uav);
+	}
+
+	int statusUnknownId = getStatusByName(status);
+	if (statusUnknownId < 0){
+		Status statusStruct;
+		statusStruct.status = status;
+		statusUnknownId = addStatus(statusStruct);
+	}
+
+	QList<Devices> devices;
+	int unknownDeviceTypeId = getDeviceTypeByName(deviceType);
+
+	if (unknownDeviceTypeId < 0){
+		DeviceType deviceTypeStruct;
+		deviceTypeStruct.name = deviceType;
+		unknownDeviceTypeId = addDeviceType(deviceTypeStruct);
+	}
+
+	getDevicesByType(unknownDeviceTypeId, devices);
+
+	int deviceUnknownId = -1;
+	if (0 == devices.count()){
+		Devices device;
+		device.uavId = positionData.boardID;
+		device.deviceId = unknownDeviceTypeId;
+		device.port = 0;
+		deviceUnknownId = addDevice(device);
+	} else {
+		deviceUnknownId = devices.at(0).id;
+	}
+
+	UavInfo uavInfo;
+	uavInfo.uavId = uavId; // FK
+	uavInfo.device = deviceUnknownId; // FK
+	uavInfo.lat = positionData.latitude;
+	uavInfo.lon = positionData.longitude;
+	uavInfo.alt = positionData.altitude;
+	uavInfo.speed = positionData.speed;
+	uavInfo.yaw = positionData.course;
+	uavInfo.restTime = QTime(1, 0);
+	uavInfo.statusId = statusUnknownId; // FK
+	uavInfo.dateTime = positionData.dateTime;
+
+	addUavInfo(uavInfo);
+}
+
+void DbUavManager::sendEnemyUavPoints(const QByteArray& data)
+{
+	QByteArray inputData = data;
+	QDataStream inputDataStream(&inputData, QIODevice::ReadOnly);
+	UAVPositionDataEnemy uavEnemy;
+	inputDataStream >> uavEnemy;
+
+	addUavInfoToDb(uavEnemy, ENEMY_UAV_ROLE, "UnknownUavType", "UnknownStatus", "UnknownDeviceType");
+}
+
+void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy, const QString &role, const QString &uavType, const QString &status, const QString &deviceType)
+{
+	UAVPositionData positionData;
+	positionData.altitude = positionDataEnemy.altitude;
+	positionData.course = positionDataEnemy.course;
+	positionData.speed = positionDataEnemy.speed;
+	positionData.state = positionDataEnemy.state;
+
+	positionData.latitude = positionDataEnemy.pointStdDev.x();
+	positionData.longitude = positionDataEnemy.pointStdDev.y();
+
+	positionData.boardID = ENEMY_UAV_ID_OFFSET;
+
+	addUavInfoToDb(positionData, role, uavType, status, deviceType);
 }

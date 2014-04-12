@@ -42,6 +42,9 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 
 MapTabWidgetController::~MapTabWidgetController()
 {
+	m_rpcClient->deregisterReceiver(m_uavDbManager);
+	m_rpcClient->deregisterReceiver(m_mapController);
+
 	m_rpcClient->stop();
 
 	//delete m_rpcClient;
@@ -122,7 +125,14 @@ int MapTabWidgetController::createRPC()
 	m_rpcClient->moveToThread(rpcClientThread);
 	rpcClientThread->start();
 
-	m_rpcClient->init(m_rpcHostPort, QHostAddress(m_rpcHostAddress), m_station, m_uavDbManager, m_mapController, this, m_tabManager);
+	m_rpcClient->init(m_rpcHostPort, QHostAddress(m_rpcHostAddress), m_station/*, m_uavDbManager, m_mapController, this, m_tabManager*/);
+
+	QEventLoop loop;
+	connect(m_rpcClient, SIGNAL(initFinishedSignal()), &loop, SLOT(quit()));
+	loop.exec();
+
+	m_rpcClient->registerReceiver(m_mapController);
+	m_rpcClient->registerReceiver(m_uavDbManager);
 
 	return 0;
 }

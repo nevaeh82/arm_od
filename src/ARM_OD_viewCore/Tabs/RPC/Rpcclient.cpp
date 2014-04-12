@@ -24,7 +24,7 @@ RPCClient::RPCClient(QObject* parent) :
 void RPCClient::setStation(Station* station)
 {
 //	m_tabManager = tab_manager;
-//	m_solverAuto = false;
+	m_solverAuto = false;
 //	m_mapController = map_controller;
 //	m_parentTab = parent_tab;
 	m_station = station;
@@ -120,8 +120,8 @@ void RPCClient::formCommand(IMessageOld *msg)
 
 void RPCClient::setSolverAuto(QByteArray ba)
 {
-//	QDataStream ds(&ba, QIODevice::ReadOnly);
-//	ds >> m_solverAuto;
+	QDataStream ds(&ba, QIODevice::ReadOnly);
+	ds >> m_solverAuto;
 }
 
 /// slot when connection complete
@@ -287,9 +287,12 @@ void RPCClient::rpcSlotServerSendAisData(QByteArray data)
 
 void RPCClient::rpcSendBplaPoints(QByteArray data)
 {
-	foreach (IRpcListener* reciever, m_receiversList) {
-		reciever->onMethodCalled(RPC_SLOT_SERVER_SEND_BPLA_POINTS, QVariant(data));
+	if(m_solverAuto == false) {
+		foreach (IRpcListener* reciever, m_receiversList) {
+			reciever->onMethodCalled(RPC_SLOT_SERVER_SEND_BPLA_POINTS, QVariant(data));
+		}
 	}
+
 	/**
 	 * Need move to rpc receiver
 	 **/
@@ -304,9 +307,12 @@ void RPCClient::rpcSendBplaPoints(QByteArray data)
 
 void RPCClient::rpcSendBplaPointsAuto(QByteArray data)
 {
-	foreach (IRpcListener* reciever, m_receiversList) {
-		reciever->onMethodCalled(RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO, QVariant(data));
+	if(m_solverAuto == true) {
+		foreach (IRpcListener* reciever, m_receiversList) {
+			reciever->onMethodCalled(RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO, QVariant(data));
+		}
 	}
+
 	/**
 	 * Need move to rpc receiver
 	 **/
