@@ -35,19 +35,13 @@ void RpcClientWrapper::deregisterReceiver(IRpcListener* receiver)
 }
 
 void RpcClientWrapper::init(quint16 port, QHostAddress& address,
-							Station* station/*, IDbUavManager* uavDbManager,
-							IMapController* mapController, ITabMap* tabMap, ITabManager* tabManager*/)
+							Station* station)
 {
 	m_address = address;
 	m_port = port;
 
 	m_station = station;
-/*
-	m_dbManager = uavDbManager;
-	m_mapController = mapController;
-	m_parentTab = tabMap;
-	m_tabManager = tabManager;
-*/
+
 	connect(this, SIGNAL(initSignal()), this, SLOT(initSlot()));
 	connect(this, SIGNAL(signalSetCommand(IMessageOld*)), this, SLOT(slotSetCommand(IMessageOld*)));
 
@@ -79,7 +73,6 @@ void RpcClientWrapper::slotSetCommand(IMessageOld* msg)
 
 void RpcClientWrapper::initSlot()
 {
-//	m_rpcClient = new RPCClient(m_station, m_dbManager, m_mapController, m_parentTab, m_tabManager, this);
 	m_rpcClient = new RPCClient(this);
 	m_rpcClient->setStation(m_station);
 	if (m_rpcClient == NULL) {

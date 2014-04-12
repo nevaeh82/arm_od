@@ -47,19 +47,12 @@ MapTabWidgetController::~MapTabWidgetController()
 
 	m_rpcClient->stop();
 
-	//delete m_rpcClient;
-	//m_rpcClient = NULL;
-
 	m_mapController->closeAtlas();
 	m_mapController->closeMap();
 
 	m_rpcClient->deleteLater();
 
-	//m_rpcClient->deleteLater();
 	m_mapController->deleteLater();
-
-
-	//m_mapController = NULL;
 
 	closeRPC();
 	m_uavDbManager->deregisterReceiver(m_allyUavTreeModel);
@@ -111,7 +104,6 @@ void MapTabWidgetController::hide()
 
 int MapTabWidgetController::createRPC()
 {
-//	readSettings();
 
 	///TODO: fix deleting
 	m_rpcClient = new RpcClientWrapper;
@@ -125,7 +117,7 @@ int MapTabWidgetController::createRPC()
 	m_rpcClient->moveToThread(rpcClientThread);
 	rpcClientThread->start();
 
-	m_rpcClient->init(m_rpcHostPort, QHostAddress(m_rpcHostAddress), m_station/*, m_uavDbManager, m_mapController, this, m_tabManager*/);
+	m_rpcClient->init(m_rpcHostPort, QHostAddress(m_rpcHostAddress), m_station);
 
 	QEventLoop loop;
 	connect(m_rpcClient, SIGNAL(initFinishedSignal()), &loop, SLOT(quit()));

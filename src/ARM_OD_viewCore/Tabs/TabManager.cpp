@@ -54,7 +54,6 @@ void TabManager::setRpcConfig(const quint16& port, const QString& host)
 void TabManager::setDbConnectionStruct(const DBConnectionStruct& connectionStruct)
 {
 	m_dbUavController->disconnectFromDb();
-
 	m_dbUavController->connectToDB(connectionStruct);
 }
 
@@ -146,7 +145,6 @@ void TabManager::send_data(int index, IMessageOld *msg)
 
 	controller->set_command(msg);
 }
-
 
 /// slot tab change
 void TabManager::changeTabSlot(int index)
