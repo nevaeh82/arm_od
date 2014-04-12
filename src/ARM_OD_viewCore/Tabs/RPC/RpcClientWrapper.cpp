@@ -74,12 +74,7 @@ void RpcClientWrapper::initSlot()
 {
 	m_rpcClient = new RPCClient(this);
 	m_rpcClient->setStation(m_station);
-	if (m_rpcClient == NULL) {
-		log_debug("m_rpcClient == NULL");
-		return;
-	}
 	m_rpcClient->start(m_port, m_address);
-
 	emit initFinishedSignal();
 }
 

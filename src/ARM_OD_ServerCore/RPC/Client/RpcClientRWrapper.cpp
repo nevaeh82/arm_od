@@ -71,10 +71,6 @@ void RpcClientRWrapper::sendDataByRpc(const QString& signalType, const QByteArra
 void RpcClientRWrapper::initSlot()
 {
 	m_rpcClient = new RPCClient_R(m_router, this);
-	if (m_rpcClient == NULL) {
-		log_debug("m_rpcClient == NULL");
-		return;
-	}
 	m_rpcClient->start(m_port, m_address);
 }
 
