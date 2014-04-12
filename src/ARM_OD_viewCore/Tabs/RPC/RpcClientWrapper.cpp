@@ -19,6 +19,24 @@ RpcClientWrapper::~RpcClientWrapper()
 	//m_rpcClient->deleteLater();
 }
 
+void RpcClientWrapper::registerReceiver(IRpcListener* receiver)
+{
+	if (m_rpcClient == NULL) {
+		log_debug("m_rpcClient == NULL");
+		return;
+	}
+	m_rpcClient->registerReceiver(receiver);
+}
+
+void RpcClientWrapper::deregisterReceiver(IRpcListener* receiver)
+{
+	if (m_rpcClient == NULL) {
+		log_debug("m_rpcClient == NULL");
+		return;
+	}
+	m_rpcClient->deregisterReceiver(receiver);
+}
+
 void RpcClientWrapper::init(quint16 port, QHostAddress& address,
 							Station* station, IDbUavManager* uavDbManager,
 							IMapController* mapController, ITabMap* tabMap, ITabManager* tabManager)
@@ -60,7 +78,9 @@ void RpcClientWrapper::slotSetCommand(IMessageOld* msg)
 
 void RpcClientWrapper::initSlot()
 {
-	m_rpcClient = new RPCClient(m_station, m_dbManager, m_mapController, m_parentTab, m_tabManager, this);
+//	m_rpcClient = new RPCClient(m_station, m_dbManager, m_mapController, m_parentTab, m_tabManager, this);
+	m_rpcClient = new RPCClient(this);
+	m_rpcClient->setStation(m_station);
 	if (m_rpcClient == NULL) {
 		log_debug("m_rpcClient == NULL");
 		return;
