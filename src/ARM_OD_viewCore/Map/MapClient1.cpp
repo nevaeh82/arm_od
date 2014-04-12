@@ -3,6 +3,8 @@
 #include "Map/MapStyleManager.h"
 #include "Map/MapClient1.h"
 
+#define clearObjectsList(type, map) foreach( type* item, map ) { delete item; } map.clear();
+
 MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 	: QObject( parent )
 	, m_mux( QMutex::Recursive )
@@ -67,7 +69,15 @@ MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 
 MapClient1::~MapClient1()
 {
-	removeAis();
+	delete m_niippPoint;
+	clearObjectsList( MapFeature::Ais, m_aisList );
+	clearObjectsList( MapFeature::FriendBpla, m_friendBplaList );
+	clearObjectsList( MapFeature::EnemyBpla, m_enemyBplaList );
+	clearObjectsList( MapFeature::Niipp, m_niippList );
+	clearObjectsList( MapFeature::Pelengator, m_pelengatorList );
+	clearObjectsList( MapFeature::PelengatorPoint, m_pelengatorPointsList );
+	clearObjectsList( MapFeature::Interception, m_interceptionList );
+	clearObjectsList( MapFeature::Station, m_stationList );
 }
 
 void MapClient1::setNiippController( INiiPPController* niippController )
@@ -489,17 +499,9 @@ void MapClient1::setAisData( QMap<int, QVector<QString> > data )
 	}
 
 	// now remove remains AIS from old list
-	removeAis();
+	clearObjectsList( MapFeature::Ais, m_aisList );
 
 	m_aisList = newAisList;
-}
-
-void MapClient1::removeAis()
-{
-	QMap<QString, MapFeature::Ais*>::iterator i;
-	for( i = m_aisList.begin(); i != m_aisList.end(); ++i ) {
-		delete i.value();
-	}
 }
 
 void MapClient1::readStationsFromFile(QString fileName)

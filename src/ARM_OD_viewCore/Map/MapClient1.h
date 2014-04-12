@@ -106,7 +106,6 @@ private:
 
 	void addNiippLayer( QString id );
 	void addMarkerLayer( int id, QString name );
-	void removeAis();
 
 	void readStationsFromFile(QString fileName);
 
