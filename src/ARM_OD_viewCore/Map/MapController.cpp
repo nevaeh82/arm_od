@@ -10,15 +10,15 @@
 #include "../UAV/ZInterception.h"
 
 MapController::MapController(QObject *parent):
-	QObject(parent), m_mapModel(new Map())
+	QObject(parent)
 {
 	m_view = NULL;
+
+	m_mapModel = new Map(this);
 }
 
 MapController::~MapController()
 {
-	delete m_mapModel;
-	m_mapModel = NULL;
 	log_debug("~MapController()");
 }
 

@@ -15,7 +15,7 @@ class Map : public QObject
 	Q_OBJECT
 
 public:
-	Map();
+	Map(QObject* parent = NULL);
 	~Map();
 
 	void init(QMap<int, Station *> map_settings, PwGisWidget* pwwidget);
