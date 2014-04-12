@@ -22,8 +22,8 @@
 #include "Tabs/DbBla/DbUavController.h"
 #include "Db/Defines.h"
 
-#include "Interfaces/IDbBlaSettingsManager.h"
-#include "DbBlaSettingsManager.h"
+#include "Interfaces/SettingsManager/IDbBlaSettingsManager.h"
+#include "SettingsManager/DbBlaSettingsManager.h"
 
 namespace Ui {
 class BLAPerehvatDialog;

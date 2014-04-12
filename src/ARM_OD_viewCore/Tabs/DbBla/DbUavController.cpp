@@ -447,6 +447,8 @@ int DbUavController::addTarget(const Target& target)
 		return INVALID_INDEX;
 	}
 
+	m_db.transaction();
+
 	QSqlQuery query(m_db);
 	bool succeeded = query.prepare(QString("INSERT INTO target (uavID, ip, port, targetTypeId)")
 								   + QString("VALUES(:uavId, :ip, :port, :targetTypeId);"));
@@ -454,6 +456,7 @@ int DbUavController::addTarget(const Target& target)
 	if (!succeeded){
 		QString er = query.lastError().text();
 		log_debug("SQL is wrong! " + er);
+		m_db.commit();
 		return INVALID_INDEX;
 	}
 
@@ -465,12 +468,14 @@ int DbUavController::addTarget(const Target& target)
 	succeeded = query.exec();
 
 	if (succeeded){
+		m_db.commit();
 		return query.lastInsertId().toUInt();
 	} else {
 		QString er = query.lastError().databaseText() + "\n" + query.lastError().driverText();
 		log_debug("SQL query is wrong! " + er);
 	}
 
+	m_db.commit();
 	return INVALID_INDEX;
 }
 
@@ -568,18 +573,22 @@ bool DbUavController::deleteTargetsByUavId(const uint uavId)
 		return false;
 	}
 
+	m_db.transaction();
+
 	Uav uav = getUavByUavId(uavId);
 
 	if (INVALID_INDEX == uav.id){
+		m_db.commit();
 		return false;
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare(QString("DELETE FROM target WHERE uavId = :uavId;"));
+	bool succeeded = query.prepare(QString("DELETE FROM target WHERE uavID = :uavId;"));
 
 	if (!succeeded) {
 		QString er = query.lastError().text();
 		log_debug("SQL is wrong! " + er);
+		m_db.commit();
 		return false;
 	}
 
@@ -588,9 +597,11 @@ bool DbUavController::deleteTargetsByUavId(const uint uavId)
 	succeeded = query.exec();
 
 	if (!succeeded){
+		m_db.commit();
 		return false;
 	}
 
+	m_db.commit();
 	return true;
 }
 

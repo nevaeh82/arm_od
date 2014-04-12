@@ -27,6 +27,7 @@ BLAPerehvatDialog::BLAPerehvatDialog(IMapClient* mapClient, QWidget* parent) :
 
 BLAPerehvatDialog::~BLAPerehvatDialog()
 {
+	m_dbUavController->disconnectFromDb();
 	delete ui;
 }
 
