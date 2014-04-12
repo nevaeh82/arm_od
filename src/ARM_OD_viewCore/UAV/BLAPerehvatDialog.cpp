@@ -11,6 +11,18 @@ BLAPerehvatDialog::BLAPerehvatDialog(IMapClient* mapClient, QWidget* parent) :
 
 	m_id = 0;
 	m_dbUav = NULL;
+
+	//Creating db bla settings manager
+	m_dbBlaSettingsManager = DbBlaSettingsManager::instance();
+	m_dbBlaSettingsManager->setIniFile("./DB/db_uav.ini");
+
+	//Creating db bla controller
+	m_dbUavController = new DbUavController("DBPEREHVATDIALOGCONNECTION", "QMYSQL", this);
+	m_dbUavController->connectToDB(getDbBlaConnectionSettings());
+
+	//Creating db bla manager and set its controller
+	m_dbUav = new DbUavManager(this);
+	m_dbUav->setDbController(m_dbUavController);
 }
 
 BLAPerehvatDialog::~BLAPerehvatDialog()
@@ -21,7 +33,7 @@ BLAPerehvatDialog::~BLAPerehvatDialog()
 void BLAPerehvatDialog::init(int id, IDbUavManager* dbUav)
 {
 	m_id = id;
-	m_dbUav = dbUav;
+//	m_dbUav = dbUav;
 
 	ui->blaLE->setText(tr("UAV #") + QString::number(m_id));
 
@@ -70,7 +82,7 @@ void BLAPerehvatDialog::treeItemChangedSlot(QTreeWidgetItem *item, int id)
 		target.port = 1000;
 		target.type = interceptTargetTypeId;
 
-		m_dbUav->addTarget(target);
+		int targetId = m_dbUav->addTarget(target);
 		m_mapClient->addInterception(m_id, enemyUavId);
 	} else {
 
@@ -78,4 +90,17 @@ void BLAPerehvatDialog::treeItemChangedSlot(QTreeWidgetItem *item, int id)
 			m_mapClient->removeInterception(m_id, enemyUavId);
 		}
 	}
+}
+
+DBConnectionStruct BLAPerehvatDialog::getDbBlaConnectionSettings()
+{
+	DBConnectionStruct connectionStruct;
+
+	connectionStruct.dbName = m_dbBlaSettingsManager->getBlaDbName();
+	connectionStruct.host = m_dbBlaSettingsManager->getBlaDbHost();
+	connectionStruct.login = m_dbBlaSettingsManager->getBlaDbLogin();
+	connectionStruct.password = m_dbBlaSettingsManager->getBlaDbPassword();
+	connectionStruct.port = m_dbBlaSettingsManager->getBlaDbPort();
+
+	return connectionStruct;
 }

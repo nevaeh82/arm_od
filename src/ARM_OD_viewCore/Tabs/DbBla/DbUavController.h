@@ -2,6 +2,8 @@
 #define DbUavController_H
 
 #include <QObject>
+#include <QMutex>
+#include <QMutexLocker>
 #include <QSqlDatabase>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
@@ -17,8 +19,23 @@
 class DbUavController : public DbControllerBase, public IDbUavController
 {
 	Q_OBJECT
+private:
+	QMutex m_addGetUavMutex;
+	QMutex m_addGetUavInfoMutex;
+	QMutex m_addGetDeviceMutex;
+	QMutex m_addGetUavMissionMutex;
+	QMutex m_addGetTargetMutex;
+	QMutex m_addGetTargetTypeMutex;
+	QMutex m_addGetUavTypeMutex;
+	QMutex m_addGetDeviceTypeMutex;
+	QMutex m_addGetStatusMutex;
+	QMutex m_addGetUavRoleMutex;
+
+	QMutex m_addGetDictionaryMutex;
+
 public:
 	explicit DbUavController(QObject *parent = 0);
+	explicit DbUavController(QString connectionName, QString dbType, QObject *parent = 0);
 	virtual ~DbUavController();
 
 	void disconnectFromDb();
