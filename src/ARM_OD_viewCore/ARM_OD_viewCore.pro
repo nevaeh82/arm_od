@@ -46,7 +46,6 @@ HEADERS += \
 	NIIPP/NiippController.h \
 	NIIPP/NiippWidget.h \
 	Tabs/RPC/IRPC.h \
-	Tabs/RPC/RadiolocationInterface.h \
 	Tabs/RPC/RPCClient.h \
 	Tabs/Solver/Solver.h \
 	Tabs/Solver/SolverWidget.h \
@@ -76,6 +75,7 @@ HEADERS += \
     Interfaces/IDbUavManager.h \
     Tabs/Tree/UavTreeModel.h \
     Tabs/RPC/RpcClientWrapper.h \
+	Tabs/RPC/RpcConfigClient.h \
 	Map/Map.h \
 	Map/MapWidget.h \
 	Map/IMapClient.h \
@@ -121,6 +121,7 @@ SOURCES += \
     Tabs/DbBla/DbUavManager.cpp \
     Tabs/Tree/UavTreeModel.cpp \
     Tabs/RPC/RpcClientWrapper.cpp \
+	Tabs/RPC/RpcConfigClient.cpp \
 	Map/Map.cpp \
 	Map/MapWidget.cpp \
 	Map/MapClient1.cpp \

@@ -21,10 +21,16 @@ ARM_OD_Srv::ARM_OD_Srv()
 	_subscriber_up = new Subscriber();
 
 	_router->set_subscriber(_subscriber_up);
-
+	m_rpcSettingsManager = RpcSettingsManager::instance();
+	rpcSettingsManager->setIniFile("./RPC/RpcOdServer.ini");
+	QString host = rpcSettingsManager->getRpcHost();
+	quint16 port = rpcSettingsManager->getRpcPort().toUShort();
 	_rpc_server = new RPCServer(this);
 	_rpc_server->setRouter(_router);
-	_rpc_server->start(24550, QHostAddress::Any);
+	_rpc_server->start(port, QHostAddress(host));
+
+	m_rpcConfigReader = new RpcConfigReader(this);
+	m_rpcConfigReader->setRpcServer(_rpc_server);
 
 	m_rpcClientR = NULL;
 
@@ -90,11 +96,9 @@ void ARM_OD_Srv::addRpcArmrConnection()
 {
 	log_debug("Adding rpc connection to armr...");
 
-	QString tabsSettingFile = QCoreApplication::applicationDirPath();
-	tabsSettingFile.append("/RPC/RPC_R_Server.ini");
-	if(readSettings(tabsSettingFile) != 0){
-		return;
-	}
+	m_rpcSettingsManager->setIniFile("./RPC/RpcRServer.ini");
+	QString host = rpcSettingsManager->getRpcHost();
+	quint16 port = rpcSettingsManager->getRpcPort().toUShort();
 
 	m_rpcClientR = new RpcClientRWrapper();
 
@@ -103,35 +107,8 @@ void ARM_OD_Srv::addRpcArmrConnection()
 	m_rpcClientR->moveToThread(rpcClientThread);
 	rpcClientThread->start();
 
-	m_rpcClientR->init(m_portRpc, QHostAddress(m_ipRpc), _router);
+	m_rpcClientR->init(port, QHostAddress(host), _router);
 
 	_subscriber_up->add_subscription(SOLVER_SET, m_rpcClientR);
 	_subscriber_up->add_subscription(SOLVER_CLEAR, m_rpcClientR);
-}
-
-int ARM_OD_Srv::readSettings(QString path_to_ini_file_RPC)
-{
-	int error = -1;
-	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-	QSettings m_settings(path_to_ini_file_RPC, QSettings::IniFormat);
-
-	m_settings.setIniCodec(codec);
-
-	QStringList childKeys = m_settings.childGroups();
-	foreach (const QString &childKey, childKeys)
-	{
-		if(childKey.toLatin1() != "RPC_UI")
-		{
-			continue;
-		}
-		m_settings.beginGroup(childKey);
-
-		m_ipRpc = m_settings.value("IP", "127.0.0.1").toString();
-		m_portRpc = m_settings.value("Port", 24550).toInt();
-
-		error = 0;
-		m_settings.endGroup();
-	}
-
-	return error;
 }

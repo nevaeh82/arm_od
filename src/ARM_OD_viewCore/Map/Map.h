@@ -15,7 +15,7 @@ class Map : public QObject
 	Q_OBJECT
 
 public:
-	Map();
+	Map(QObject* parent = NULL);
 	~Map();
 
 	void init(QMap<int, Station *> map_settings, PwGisWidget* pwwidget);
@@ -24,6 +24,9 @@ public:
 	void setProfileManager(Pw::Gis::IProfileManager* profileManager);
 	bool openAtlas();
 	bool openMap(QString fileName);
+	void closeAtlas();
+	void closeMap();
+
 	void setLayerManager(Pw::Gis::ILayerManager* layerManager);
 	void setStationVisible(bool state);
 	IMapClient*getMapClient(int id);

@@ -12,6 +12,8 @@
 #include <QSettings>
 #include <QStringList>
 
+#include <SettingsManager/RpcSettingsManager.h>
+
 #include "IRPC_R.h"
 #include "../../Common/IMessage.h"
 #include "../../Common/IRouter.h"
@@ -27,7 +29,7 @@
 
 class RPCClient_R : public RpcRoutedClient, public IClient
 {
-    Q_OBJECT
+	Q_OBJECT
 private:
 	IMessageOld* m_commandMsg;
 	int m_id;
@@ -70,15 +72,15 @@ signals:
 
 	void signalSendData(QSharedPointer<IMessageOld> msg_ptr);
 
-    ///RPC signals
+	///RPC signals
 signals:
-    void signalSetClientId(int id);
-    void signalSetSolver(QByteArray data);
-    void signalSetSolverClear(QByteArray data);
+	void signalSetClientId(int id);
+	void signalSetSolver(QByteArray data);
+	void signalSetSolverClear(QByteArray data);
 
 public slots:
 
-    ///rpc_server
+	///rpc_server
 	void rpcSlotServerSendBplaDef(QByteArray ba);
 	void rpcSlotServerSendBplaDefAuto(QByteArray ba);
 

@@ -8,7 +8,10 @@
 
 #include <QPointF>
 
+#include <SettingsManager/RpcSettingsManager.h>
+
 #include "RPC/RPCServer.h"
+#include "RPC/RpcConfigReader.h"
 
 #include "Common/Router.h"
 #include "Common/Subscriber.h"
@@ -40,23 +43,18 @@ public:
 	ARM_OD_Srv();
 	~ARM_OD_Srv();
 
-public:
-
 private:
 	RPCServer*      _rpc_server;
 	Router*         _router;
 	Subscriber*     _subscriber_up;
 
-	RpcClientRWrapper*    _rpc_client1;
-
-	QString m_ipRpc;
-	int m_portRpc;
+	RpcClientRWrapper*    m_rpcClientR;
+	RpcConfigReader* m_rpcConfigReader;
+	IRpcSettingsManager* m_rpcSettingsManager;
 
 private:
 	void addTcpArmrConnection();
 	void addRpcArmrConnection();
-
-	int readSettings(QString);
 
 signals:
 	void signalStartRPC();

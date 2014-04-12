@@ -20,15 +20,20 @@ private:
 
 public:
 	explicit RpcClientWrapper(QObject *parent = 0);
+	~RpcClientWrapper();
 	void init(quint16, QHostAddress&, Station*, IDbUavManager*, IMapController*, ITabMap*, ITabManager*);
 	void setCommand(IMessageOld* msg);
 
+	void stop();
+
 signals:
 	void initSignal();
+	void stopSignal();
 	void signalSetCommand(IMessageOld*);
 
 private slots:
 	void initSlot();
+	void stopSlot();
 	void slotSetCommand(IMessageOld* msg);
 	
 };

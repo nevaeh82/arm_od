@@ -22,7 +22,6 @@
 #include "Tabs/ITabMap.h"
 #include "Map/IMapController.h"
 
-//#include "RadiolocationInterface.h"
 
 #include "Rpc/RpcDefines.h"
 #include "Rpc/RpcClientBase.h"
@@ -54,7 +53,7 @@ private:
 public:
 	RPCClient(Station *station, IDbUavManager *db_manager, IMapController* map_controller,
 			  ITabMap *parent_tab, ITabManager* tab_manager, QObject *parent = NULL);
-    ~RPCClient();
+	virtual ~RPCClient();
 
 	bool start(quint16 port, QHostAddress ipAddress);
 	void setCommand(IMessageOld* msg);
@@ -98,6 +97,8 @@ signals:
 	void signalSetSolverDataClear(QByteArray data);
 
 	void startInternalSignal(quint16 port, QString ipAddress);
+
+	void requestGetAisDataSignal();
 
 };
 

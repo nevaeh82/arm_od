@@ -123,7 +123,7 @@ void RPCClient_R::formCommand(IMessageOld *msg)
 /// slot when connection complete
 void RPCClient_R::slotRCPConnetion()
 {
-    qDebug() << "Connection complete!";
+	log_debug("Connection complete!");
 	emit signalSetClientId(m_id);
 }
 

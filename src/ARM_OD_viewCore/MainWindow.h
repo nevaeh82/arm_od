@@ -8,6 +8,7 @@
 #include <QMenu>
 #include <QAction>
 #include <QTabWidget>
+#include <QStackedWidget>
 
 #include "Tabs/TabManager.h"
 #include "Tabs/Solver/Solver.h"
@@ -32,6 +33,7 @@ public:
 	~MainWindow();
 
 	QTabWidget* getMainTabWidget() const;
+	QStackedWidget* getStackedWidget() const;
     
 private:
 	void init();
