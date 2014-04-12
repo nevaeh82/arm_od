@@ -29,7 +29,6 @@ private:
 	Pw::Common::ServiceControl::ServiceHandler* m_serverHandler;
 
 	TabManager*  m_tabManager;
-	SolverSettingsDialogController* m_solver;
 
 	RpcConfigClient* m_rpcConfigClient;
 
