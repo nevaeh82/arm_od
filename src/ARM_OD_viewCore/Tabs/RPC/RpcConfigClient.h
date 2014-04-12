@@ -9,9 +9,12 @@
 class RpcConfigClient : public RpcClientBase, public IRpcConfigClient
 {
 	Q_OBJECT
+
 public:
 	explicit RpcConfigClient(QObject* parent = NULL);
 	virtual ~RpcConfigClient();
+
+	virtual inline bool isConnected() { return m_clientPeer->isClient(); }
 
 	// IRpcConfigClient interface
 public:
@@ -30,7 +33,7 @@ signals:
 	void getMapPointsSignal(QString);
 	void getDbConfigurationSignal(QString);
 
-	void connectionEstablishedSignal();	
+	void connectionEstablishedSignal();
 
 private slots:
 	void receivedStationListSlot(QByteArray data);

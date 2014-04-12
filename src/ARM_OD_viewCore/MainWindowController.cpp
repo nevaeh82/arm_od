@@ -89,14 +89,17 @@ void MainWindowController::serverStartedSlot()
 	timer.stop();
 	log_debug("Sleeper is off");
 
-	IRpcSettingsManager* rpcSettingsManager = RpcSettingsManager::instance();
-	rpcSettingsManager->setIniFile("./RPC/RpcOdServer.ini");
-	QString host = rpcSettingsManager->getRpcHost();
-	quint16 port = rpcSettingsManager->getRpcPort().toUShort();
+	if( !m_rpcConfigClient->isConnected() ) {
+		IRpcSettingsManager* rpcSettingsManager = RpcSettingsManager::instance();
+		rpcSettingsManager->setIniFile("./RPC/RpcOdServer.ini");
+		QString host = rpcSettingsManager->getRpcHost();
+		quint16 port = rpcSettingsManager->getRpcPort().toUShort();
 
-	m_tabManager->setRpcConfig(port, host);
-	m_rpcConfigClient->start(port, QHostAddress(host));
-	connect(m_rpcConfigClient, SIGNAL(connectionEstablishedSignal()), this, SLOT(rpcConnectionEstablished()));
+		m_tabManager->setRpcConfig(port, host);
+
+		m_rpcConfigClient->start(port, QHostAddress(host));
+		connect(m_rpcConfigClient, SIGNAL(connectionEstablishedSignal()), this, SLOT(rpcConnectionEstablished()));
+	}
 }
 
 void MainWindowController::startTabManger()
@@ -111,7 +114,7 @@ void MainWindowController::rpcConnectionEstablished()
 	m_rpcConfigClient->requestGetStationList("./Tabs/Tabs.ini");
 	m_rpcConfigClient->requestGetDbConfiguration("./DB/db_uav.ini");
 //	m_rpcConfigClient->requestGetMapObjects("./Map/map_objects.ini");
-	//	m_rpcConfigClient->requestGetMapObjects("./Map/map_points.ini");
+//	m_rpcConfigClient->requestGetMapObjects("./Map/map_points.ini");
 }
 
 void MainWindowController::solverDialogSlot()
