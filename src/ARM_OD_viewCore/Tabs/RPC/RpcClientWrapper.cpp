@@ -34,8 +34,7 @@ void RpcClientWrapper::deregisterReceiver(IRpcListener* receiver)
 	m_rpcClient->deregisterReceiver(receiver);
 }
 
-void RpcClientWrapper::init(quint16 port, QHostAddress& address,
-							Station* station)
+void RpcClientWrapper::init(quint16 port, QHostAddress& address, Station* station)
 {
 	m_address = address;
 	m_port = port;

@@ -27,7 +27,7 @@ public:
 	void registerReceiver(IRpcListener* receiver);
 	void deregisterReceiver(IRpcListener* receiver);
 
-	void init(quint16, QHostAddress&, Station*/*, IDbUavManager*, IMapController*, ITabMap*, ITabManager**/);
+	void init(quint16, QHostAddress&, Station*);
 	void setCommand(IMessageOld* msg);
 
 	void stop();
