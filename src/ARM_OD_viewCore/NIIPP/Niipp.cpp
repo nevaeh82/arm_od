@@ -1,12 +1,5 @@
 #include "Niipp.h"
 
-const double m_zone[24] = {1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5,
-					   5, 6, 7, 8, 9, 10, 11, 12, 14, 16,
-					   18, 20, 22, 24, 28, 30};
-const double m_zoneDir[28] = {2.5, 3, 4, 5,
-					   6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20,
-					   22, 26, 29, 33, 37, 41, 47, 52, 57, 62, 68, 72, 76};
-
 Niipp::Niipp(int id, QString name, QPointF latlon, MapController* mapController, ITabManager* parentTab)
 	: m_numberCommand("0200")
 	, m_antenaType(0)

@@ -2,21 +2,29 @@
 #define DBBLAMANAGER_H
 
 #include <QObject>
+#include <QMutex>
+#include <Interfaces/IRpcListener.h>
 
 #include "DbUavController.h"
 #include "Interfaces/IDbUavManager.h"
 #include "Interfaces/IUavDbChangedListener.h"
 #include "BaseSubject.h"
 
-class DbUavManager : public QObject, public IDbUavManager, public BaseSubject<IUavDbChangedListener>
+#include "RPC/RpcDefines.h"
+#include "UAVDefines.h"
+
+class DbUavManager : public QObject, public IDbUavManager, public BaseSubject<IUavDbChangedListener>, public IRpcListener
 {
 	Q_OBJECT
 private:
 	IDbUavController* m_dbController;
 	QMap<uint, Uav> m_knownUavsList;
 
+	QMutex m_mutex;
+
 public:
 	explicit DbUavManager(QObject *parent = 0);
+	virtual ~DbUavManager();
 
 	void setDbController(IDbUavController*);
 
@@ -55,10 +63,15 @@ public:
 	UavRole getUavRole(const uint roleId);
 	UavRole getUavRoleByName(const QString&);
 	UavRole getUavRoleByCode(const QString&);
-signals:
 
-private slots:
-	
+	// IRpcListener interface
+public:
+	virtual void onMethodCalled(const QString& method, const QVariant& argument);
+
+private:
+	void addUavInfoToDb(const UAVPositionData& positionData, const QString& role, const QString& uavType, const QString& status, const QString& deviceType);
+	void sendEnemyUavPoints(const QByteArray& data);
+	void addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy, const QString &role, const QString &uavType, const QString &status, const QString &deviceType);
 };
 
 #endif // DBBLAMANAGER_H

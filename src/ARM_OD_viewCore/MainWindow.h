@@ -17,23 +17,23 @@ typedef QPointF                  rpc_QPointF;
 typedef QVector<DataFly>         rpc_data_fly;
 
 namespace Ui {
-class ARM_OD_view;
+class MainWindow;
 }
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
 private:
-	Ui::ARM_OD_view*     ui;
-    
+	Ui::MainWindow* ui;
+
 public:
 	explicit MainWindow(QWidget *parent = 0);
-	~MainWindow();
+	virtual ~MainWindow();
 
 	QTabWidget* getMainTabWidget() const;
 	QStackedWidget* getStackedWidget() const;
-    
+
 private:
 	void init();
 
