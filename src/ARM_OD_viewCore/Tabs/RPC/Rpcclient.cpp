@@ -6,14 +6,12 @@ RPCClient::RPCClient(QObject* parent) :
 {
 	connect(this, SIGNAL(startInternalSignal(quint16, QString)), this, SLOT(startInternalSlot(quint16, QString)));
 	m_station = NULL;
+	m_solverAuto = false;
 }
 
 void RPCClient::setStation(Station* station)
 {
-	m_solverAuto = false;
 	m_station = station;
-
-	connect(this, SIGNAL(startInternalSignal(quint16, QString)), this, SLOT(startInternalSlot(quint16, QString)));
 }
 
 RPCClient::~RPCClient()

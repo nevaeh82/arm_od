@@ -2,72 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="ru_RU">
 <context>
-    <name>ARM_OD_view</name>
-    <message>
-        <source>Initialization...</source>
-        <translation type="obsolete">Инициализация...</translation>
-    </message>
-    <message>
-        <source>File</source>
-        <translation type="obsolete">Файл</translation>
-    </message>
-    <message>
-        <source>Map</source>
-        <translation type="obsolete">Карта</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation type="obsolete">Настройки</translation>
-    </message>
-    <message>
-        <source>New</source>
-        <translation type="obsolete">Новый пункт</translation>
-    </message>
-    <message>
-        <source>Exit</source>
-        <translation type="obsolete">Выход</translation>
-    </message>
-    <message>
-        <source>Open Atlas</source>
-        <translation type="obsolete">Открыть атлас</translation>
-    </message>
-    <message>
-        <source>Open from file</source>
-        <translation type="obsolete">Открыть из файла</translation>
-    </message>
-    <message>
-        <source>Koordinatometriya parameters</source>
-        <translation type="obsolete">Параметры координатометрии</translation>
-    </message>
-</context>
-<context>
-    <name>AtlantTabWidget</name>
-    <message>
-        <source>Adaptation</source>
-        <translation type="obsolete">Адаптация</translation>
-    </message>
-    <message>
-        <source>Watch</source>
-        <translation type="obsolete">Дежурство</translation>
-    </message>
-    <message>
-        <source>Check</source>
-        <translation type="obsolete">Проверка</translation>
-    </message>
-    <message>
-        <source>Work</source>
-        <translation type="obsolete">Работа</translation>
-    </message>
-    <message>
-        <source>Send</source>
-        <translation type="obsolete">Отправить</translation>
-    </message>
-    <message>
-        <source>Atlant</source>
-        <translation type="obsolete">Атлант</translation>
-    </message>
-</context>
-<context>
     <name>BLAPerehvatDialog</name>
     <message>
         <location filename="UAV/blaperehvatdialog.ui" line="14"/>
@@ -75,51 +9,21 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="26"/>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="38"/>
         <source>UAV #</source>
         <oldsource>UAV â</oldsource>
         <translation>БЛА №</translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="33"/>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="45"/>
         <source>UAV_enemy: #%1</source>
         <oldsource>UAV_: #%1</oldsource>
         <translation>БПЛА: №%1</translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="54"/>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="66"/>
         <source>#</source>
         <translation>№</translation>
-    </message>
-    <message>
-        <source>Target #</source>
-        <translation type="obsolete">Цель №</translation>
-    </message>
-</context>
-<context>
-    <name>BLAWidgetDelegate</name>
-    <message>
-        <source>Center f (MHz)</source>
-        <translation type="obsolete">Центр f (МГц)</translation>
-    </message>
-    <message>
-        <source>Filter (kHz)</source>
-        <translation type="obsolete">Фильтр (кГц)</translation>
-    </message>
-    <message>
-        <source>Offset (kHz)</source>
-        <translation type="obsolete">Смещение (кГц)</translation>
-    </message>
-</context>
-<context>
-    <name>CommonSpectrumTabWidget</name>
-    <message>
-        <source>Name</source>
-        <translation type="obsolete">Свойство</translation>
-    </message>
-    <message>
-        <source>Property</source>
-        <translation type="obsolete">Значение</translation>
     </message>
 </context>
 <context>
@@ -141,54 +45,9 @@
         <translation>Список БПЛА</translation>
     </message>
     <message>
-        <source>BPLA List</source>
-        <translation type="obsolete">Список БПЛА</translation>
-    </message>
-    <message>
         <location filename="ControlPanel/ControlPanel.ui" line="46"/>
         <source>SPIP DD</source>
         <translation>СПИП ДД</translation>
-    </message>
-</context>
-<context>
-    <name>ControlPanelWidget</name>
-    <message>
-        <source>-</source>
-        <translation type="obsolete">-</translation>
-    </message>
-    <message>
-        <source>Set panorama</source>
-        <translation type="obsolete">Установить панораму</translation>
-    </message>
-    <message>
-        <source>Autosearch</source>
-        <translation type="obsolete">Автопоиск</translation>
-    </message>
-    <message>
-        <source>Panorama</source>
-        <translation type="obsolete">Панорама</translation>
-    </message>
-    <message>
-        <source>Set common frequency</source>
-        <translation type="obsolete">Установить общую частоту</translation>
-    </message>
-</context>
-<context>
-    <name>CorrelationWidget</name>
-    <message>
-        <source>m</source>
-        <translation type="obsolete">м</translation>
-    </message>
-</context>
-<context>
-    <name>CorrelationWidgetController</name>
-    <message>
-        <source>m</source>
-        <translation type="obsolete">м</translation>
-    </message>
-    <message>
-        <source>Level</source>
-        <translation type="obsolete">Уровень</translation>
     </message>
 </context>
 <context>
@@ -240,12 +99,8 @@
     </message>
     <message>
         <location filename="MainWindow.ui" line="160"/>
-        <source>Koordinatometriya parameters</source>
+        <source>Solver settings</source>
         <translation>Параметры координатометрии</translation>
-    </message>
-    <message>
-        <source>Atlant setup</source>
-        <translation type="obsolete">Настройка Атланта</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="19"/>
@@ -269,188 +124,88 @@
 <context>
     <name>MapClient1</name>
     <message>
-        <location filename="Map/MapClient1.cpp" line="17"/>
+        <location filename="Map/MapClient1.cpp" line="19"/>
         <source>NIIPP</source>
         <translation>НИИПП</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="293"/>
+        <location filename="Map/MapClient1.cpp" line="303"/>
         <source>UAV_enemy</source>
         <translation>БПЛА</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="294"/>
+        <location filename="Map/MapClient1.cpp" line="304"/>
         <source>UAV</source>
         <translation>БЛА</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="295"/>
+        <location filename="Map/MapClient1.cpp" line="305"/>
         <source>Atlant</source>
         <translation>Атлант</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="296"/>
+        <location filename="Map/MapClient1.cpp" line="306"/>
         <source>Atlant target</source>
         <translation>Атлант цель</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="297"/>
+        <location filename="Map/MapClient1.cpp" line="307"/>
         <source>Grid</source>
         <translation>Сетка</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="298"/>
+        <location filename="Map/MapClient1.cpp" line="308"/>
         <source>Checkpoints</source>
         <translation>Контрольные точки</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="299"/>
+        <location filename="Map/MapClient1.cpp" line="309"/>
         <source>Interception point</source>
         <translation>Точка перехвата</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="300"/>
+        <location filename="Map/MapClient1.cpp" line="310"/>
         <source>Civil ships</source>
         <translation>Гражданские суда</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="301"/>
+        <location filename="Map/MapClient1.cpp" line="311"/>
         <source>Diversion points</source>
         <translation>Точки увода</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="568"/>
+        <location filename="Map/MapClient1.cpp" line="570"/>
         <source>UAV_enemy Atlant(#</source>
         <translation>БПЛА Атлант(№</translation>
     </message>
     <message>
-        <source>Diversion point</source>
-        <translation type="obsolete">Точка увода</translation>
-    </message>
-    <message>
-        <location filename="Map/MapClient1.cpp" line="302"/>
+        <location filename="Map/MapClient1.cpp" line="312"/>
         <source>SPIP DD</source>
         <translation>СПИП ДД</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="292"/>
+        <location filename="Map/MapClient1.cpp" line="302"/>
         <source>OP</source>
         <translation>ОП</translation>
     </message>
     <message>
-        <source>UAV_</source>
-        <translation type="obsolete">БПЛА</translation>
-    </message>
-    <message>
-        <source>UAV-C</source>
-        <translation type="obsolete">БЛА-Ц</translation>
-    </message>
-    <message>
-        <source>UAV (#</source>
-        <translation type="obsolete">БЛА (№</translation>
-    </message>
-    <message>
-        <source>UAV Atlant(#</source>
-        <translation type="obsolete">БЛА Атлант(№</translation>
-    </message>
-    <message>
-        <location filename="Map/MapClient1.cpp" line="527"/>
+        <location filename="Map/MapClient1.cpp" line="529"/>
         <source>Ingur</source>
         <translation>Ингур</translation>
-    </message>
-    <message>
-        <source>Height = </source>
-        <translation type="obsolete">Высота = </translation>
-    </message>
-    <message>
-        <source>Radius = </source>
-        <translation type="obsolete">Радиус = </translation>
-    </message>
-    <message>
-        <source>Speed = </source>
-        <translation type="obsolete">Скорость = </translation>
-    </message>
-    <message>
-        <source>Course = </source>
-        <oldsource>ÐÑÑÑ = </oldsource>
-        <translation type="obsolete">Курс = </translation>
     </message>
 </context>
 <context>
     <name>MapController</name>
     <message>
-        <location filename="Map/MapController.cpp" line="46"/>
+        <location filename="Map/MapController.cpp" line="48"/>
         <source>Open atlas</source>
         <translation>Открыть карту</translation>
     </message>
     <message>
-        <location filename="Map/MapController.cpp" line="48"/>
+        <location filename="Map/MapController.cpp" line="50"/>
         <source>Atlas files (*.chart *.sxf *.sit *.map *.gc *.gst);;All files (*.*)</source>
         <oldsource>Ð¤Ð¾ÑÐ¼Ð°Ñ ÑÐ¸ÑÑÐ¾Ð²ÑÑ ÐºÐ°ÑÑ (*.chart *.sxf *.sit *.map *.gc *.gst);;ÐÑÐµ ÑÐ°Ð¹Ð»Ñ (*.*)</oldsource>
         <translation>Формат цифровых карт (*.chart *.sxf *.sit *.map *.gc *.gst);;Все файлы (*.*)</translation>
-    </message>
-</context>
-<context>
-    <name>MapControllerWidget</name>
-    <message>
-        <source>UAV list</source>
-        <translation type="obsolete">Список БЛА</translation>
-    </message>
-    <message>
-        <source>Target list</source>
-        <translation type="obsolete">Список целей</translation>
-    </message>
-    <message>
-        <source>SPIP DD</source>
-        <translation type="obsolete">СПИП ДД</translation>
-    </message>
-</context>
-<context>
-    <name>MapFeature::EnemyBpla</name>
-    <message>
-        <source>UAV_enemy (â%1)\n%2\n%3</source>
-        <oldsource>Enemy UAV (#%1)\n%2\n%3</oldsource>
-        <translation type="obsolete">БПЛА (№%1)\n%2\n%3</translation>
-    </message>
-</context>
-<context>
-    <name>MapFeature::FriendBpla</name>
-    <message>
-        <source>UAV-C</source>
-        <translation type="obsolete">БЛА-Ц</translation>
-    </message>
-</context>
-<context>
-    <name>MapFeature::Interception</name>
-    <message>
-        <source>Altitude</source>
-        <translation type="obsolete">Высота</translation>
-    </message>
-    <message>
-        <source>Radius</source>
-        <translation type="obsolete">Радиус</translation>
-    </message>
-    <message>
-        <source>Course</source>
-        <translation type="obsolete">Курс</translation>
-    </message>
-    <message>
-        <source>Speed</source>
-        <translation type="obsolete">Скорость</translation>
-    </message>
-</context>
-<context>
-    <name>MapFeature::NiippPoint</name>
-    <message>
-        <source>Diversion point</source>
-        <translation type="obsolete">Точка увода</translation>
-    </message>
-</context>
-<context>
-    <name>MapFeature::Station</name>
-    <message>
-        <source>OP</source>
-        <translation type="obsolete">ОП</translation>
     </message>
 </context>
 <context>
@@ -462,12 +217,13 @@
     </message>
     <message>
         <location filename="MapTabWidget.ui" line="35"/>
-        <source>BLA List</source>
+        <source>UAV List</source>
+        <oldsource>BLA List</oldsource>
         <translation>Список БЛА</translation>
     </message>
     <message>
         <location filename="MapTabWidget.ui" line="64"/>
-        <source>BPLA List</source>
+        <source>Enemy UAV List</source>
         <translation>Список БПЛА</translation>
     </message>
     <message>
@@ -496,12 +252,12 @@
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="172"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="171"/>
         <source>SPIP DD-1</source>
         <translation>СПИП ДД-1</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="177"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="176"/>
         <source>SPIP DD-2</source>
         <translation>СПИП ДД-2</translation>
     </message>
@@ -686,303 +442,56 @@
     </message>
 </context>
 <context>
-    <name>RPCClient</name>
+    <name>SolverSettingsDialog</name>
     <message>
-        <source>Latitude</source>
-        <translation type="obsolete">Широта</translation>
-    </message>
-    <message>
-        <source>Longitude</source>
-        <translation type="obsolete">Долгота</translation>
-    </message>
-    <message>
-        <source>Altitude</source>
-        <translation type="obsolete">Высота</translation>
-    </message>
-    <message>
-        <source>Height</source>
-        <translation type="obsolete">Высота</translation>
-    </message>
-</context>
-<context>
-    <name>SolverWidget</name>
-    <message>
-        <location filename="Tabs/Solver/SolverWidget.ui" line="14"/>
-        <source>Form</source>
+        <location filename="Tabs/Solver/SolverSettingsDialog.ui" line="20"/>
+        <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverWidget.ui" line="91"/>
-        <source>Clear</source>
-        <translation>Очистить</translation>
-    </message>
-    <message>
-        <location filename="Tabs/Solver/SolverWidget.ui" line="84"/>
-        <source>Cancel</source>
-        <translation>Отклонить</translation>
-    </message>
-    <message>
-        <location filename="Tabs/Solver/SolverWidget.ui" line="29"/>
-        <source>Samples count</source>
-        <oldsource>Sample count</oldsource>
-        <translation>Число отсчетов</translation>
-    </message>
-    <message>
-        <location filename="Tabs/Solver/SolverWidget.ui" line="61"/>
-        <source>Altitude</source>
-        <translation>Высота</translation>
-    </message>
-    <message>
-        <location filename="Tabs/Solver/SolverWidget.ui" line="68"/>
+        <location filename="Tabs/Solver/SolverSettingsDialog.ui" line="26"/>
         <source>Automatic mode</source>
         <translation>Автоматический режим</translation>
     </message>
     <message>
-        <source>Height</source>
-        <translation type="obsolete">Высота</translation>
+        <location filename="Tabs/Solver/SolverSettingsDialog.ui" line="33"/>
+        <source>Altitude</source>
+        <translation>Высота</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverWidget.ui" line="45"/>
+        <location filename="Tabs/Solver/SolverSettingsDialog.ui" line="43"/>
         <source>Track length</source>
         <translation>Длина трека</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverWidget.ui" line="77"/>
+        <location filename="Tabs/Solver/SolverSettingsDialog.ui" line="53"/>
+        <source>Samples count</source>
+        <translation>Число отсчетов</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSettingsDialog.ui" line="63"/>
         <source>Accept</source>
         <translation>Принять</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverWidget.cpp" line="12"/>
+        <location filename="Tabs/Solver/SolverSettingsDialog.ui" line="70"/>
+        <source>Cancel</source>
+        <translation>Отклонить</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSettingsDialog.ui" line="77"/>
+        <source>Clear</source>
+        <translation>Очистить</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSettingsDialog.cpp" line="10"/>
         <source>Detector</source>
         <translation>Обнаружитель</translation>
     </message>
-</context>
-<context>
-    <name>SpectrumWidget</name>
     <message>
-        <source>Autosearch</source>
-        <translation type="obsolete">Автопоиск</translation>
-    </message>
-    <message>
-        <source>Panorama</source>
-        <translation type="obsolete">Панорама</translation>
-    </message>
-    <message>
-        <source>Threshold</source>
-        <translation type="obsolete">Порог</translation>
-    </message>
-    <message>
-        <source>Get spectrum</source>
-        <translation type="obsolete">Получить спектры</translation>
-    </message>
-    <message>
-        <source> Maximums</source>
-        <translation type="obsolete">Максимумы</translation>
-    </message>
-    <message>
-        <source>PRM control</source>
-        <translation type="obsolete">Управление ПРМ</translation>
-    </message>
-    <message>
-        <source>Unknown</source>
-        <translation type="obsolete">Неизвестно</translation>
-    </message>
-</context>
-<context>
-    <name>SpectrumWidgetController</name>
-    <message>
-        <source>File error</source>
-        <translation type="obsolete">Ошибка в файле</translation>
-    </message>
-    <message>
-        <source>Very small file or file not found</source>
-        <translation type="obsolete">Файл не найден или его размер слишком мал</translation>
-    </message>
-    <message>
-        <source>Level</source>
-        <translation type="obsolete">Уровень</translation>
-    </message>
-    <message>
-        <source>Attention!</source>
-        <translation type="obsolete">Внимание!</translation>
-    </message>
-    <message>
-        <source>Signal was detected!</source>
-        <translation type="obsolete">Сигнал был распознан!</translation>
-    </message>
-    <message>
-        <source>Hz</source>
-        <translation type="obsolete">Гц</translation>
-    </message>
-    <message>
-        <source>Add to white list</source>
-        <translation type="obsolete">Добавить в белый список</translation>
-    </message>
-    <message>
-        <source>Add to black list</source>
-        <translation type="obsolete">Добавить в черный список</translation>
-    </message>
-    <message>
-        <source>Determine signal</source>
-        <translation type="obsolete">Распознать сигнал</translation>
-    </message>
-    <message>
-        <source>Enable correlation</source>
-        <translation type="obsolete">Включить корреляцию</translation>
-    </message>
-    <message>
-        <source>Cleanup text fields</source>
-        <translation type="obsolete">Очистить текстовые данные</translation>
-    </message>
-    <message>
-        <source>Disable correlation</source>
-        <translation type="obsolete">Отключить корреляцию</translation>
-    </message>
-</context>
-<context>
-    <name>Station</name>
-    <message>
-        <source>Unknown</source>
-        <translation type="obsolete">Неизвестно</translation>
-    </message>
-</context>
-<context>
-    <name>TabManager</name>
-    <message>
-        <source>Common</source>
-        <translation type="obsolete">Общее</translation>
-    </message>
-    <message>
-        <source>Atlant</source>
-        <translation type="obsolete">Атлант</translation>
-    </message>
-    <message>
-        <source>SPIP DD-1</source>
-        <translation type="obsolete">СПИП ДД-1</translation>
-    </message>
-    <message>
-        <source>SPIP DD-2</source>
-        <translation type="obsolete">СПИП ДД-2</translation>
-    </message>
-    <message>
-        <source>Unknown</source>
-        <translation type="obsolete">Неизвестно</translation>
-    </message>
-</context>
-<context>
-    <name>TabMap</name>
-    <message>
-        <source>Name</source>
-        <translation type="obsolete">Наименование</translation>
-    </message>
-    <message>
-        <source>Property2</source>
-        <translation type="obsolete">Свойство2</translation>
-    </message>
-    <message>
-        <source>Property1</source>
-        <translation type="obsolete">Свойство1</translation>
-    </message>
-    <message>
-        <source>Property</source>
-        <translation type="obsolete">Свойство</translation>
-    </message>
-    <message>
-        <source>UAV list</source>
-        <translation type="obsolete">Список БЛА</translation>
-    </message>
-    <message>
-        <source>Target list</source>
-        <translation type="obsolete">Список целей</translation>
-    </message>
-</context>
-<context>
-    <name>TabSpectrumWidgetController</name>
-    <message>
-        <source>Name</source>
-        <translation type="obsolete">Свойство</translation>
-    </message>
-    <message>
-        <source>Property</source>
-        <translation type="obsolete">Значение</translation>
-    </message>
-</context>
-<context>
-    <name>TreeModel</name>
-    <message>
-        <source>Frequency</source>
-        <translation type="obsolete">Частота</translation>
-    </message>
-    <message>
-        <source>Selected</source>
-        <translation type="obsolete">Выделено</translation>
-    </message>
-    <message>
-        <source>Center</source>
-        <translation type="obsolete">Центр</translation>
-    </message>
-    <message>
-        <source>Start</source>
-        <translation type="obsolete">Начало</translation>
-    </message>
-    <message>
-        <source>Stop</source>
-        <translation type="obsolete">Конец</translation>
-    </message>
-    <message>
-        <source>Averaging</source>
-        <translation type="obsolete">Усреднение</translation>
-    </message>
-    <message>
-        <source>Leading OP</source>
-        <translation type="obsolete">Ведуший ОП</translation>
-    </message>
-    <message>
-        <source>Panorama start</source>
-        <translation type="obsolete">Панорама начало</translation>
-    </message>
-    <message>
-        <source>Panorama end</source>
-        <translation type="obsolete">Панорама конец</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation type="obsolete">Наименование</translation>
-    </message>
-    <message>
-        <source>Property</source>
-        <translation type="obsolete">Свойство</translation>
-    </message>
-</context>
-<context>
-    <name>TreeWidgetDelegate</name>
-    <message>
-        <source>Gal</source>
-        <translation type="obsolete">Гал</translation>
-    </message>
-    <message>
-        <source>Pichora</source>
-        <translation type="obsolete">Пичора</translation>
-    </message>
-    <message>
-        <source>Nabakia</source>
-        <translation type="obsolete">Набакиа</translation>
-    </message>
-    <message>
-        <source>Taglan</source>
-        <translation type="obsolete">Таглан</translation>
-    </message>
-    <message>
-        <source>Ochamchir</source>
-        <translation type="obsolete">Очамчир</translation>
-    </message>
-    <message>
-        <source>Papinrhua</source>
-        <translation type="obsolete">Папынрхуа</translation>
-    </message>
-    <message>
-        <source>Auto</source>
-        <translation type="obsolete">Авто</translation>
+        <location filename="Tabs/Solver/SolverSettingsDialog.cpp" line="11"/>
+        <source>Solver settings</source>
+        <translation>Параметры координатометрии</translation>
     </message>
 </context>
 <context>

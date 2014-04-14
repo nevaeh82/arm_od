@@ -9,19 +9,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="26"/>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="38"/>
         <source>UAV #</source>
         <oldsource>UAV â</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="33"/>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="45"/>
         <source>UAV_enemy: #%1</source>
         <oldsource>UAV_: #%1</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="54"/>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="66"/>
         <source>#</source>
         <translation type="unfinished"></translation>
     </message>
@@ -104,7 +104,7 @@
     </message>
     <message>
         <location filename="MainWindow.ui" line="160"/>
-        <source>Koordinatometriya parameters</source>
+        <source>Solver settings</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -124,72 +124,72 @@
 <context>
     <name>MapClient1</name>
     <message>
-        <location filename="Map/MapClient1.cpp" line="17"/>
+        <location filename="Map/MapClient1.cpp" line="19"/>
         <source>NIIPP</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="292"/>
+        <location filename="Map/MapClient1.cpp" line="302"/>
         <source>OP</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="293"/>
+        <location filename="Map/MapClient1.cpp" line="303"/>
         <source>UAV_enemy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="294"/>
+        <location filename="Map/MapClient1.cpp" line="304"/>
         <source>UAV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="295"/>
+        <location filename="Map/MapClient1.cpp" line="305"/>
         <source>Atlant</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="296"/>
+        <location filename="Map/MapClient1.cpp" line="306"/>
         <source>Atlant target</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="297"/>
+        <location filename="Map/MapClient1.cpp" line="307"/>
         <source>Grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="298"/>
+        <location filename="Map/MapClient1.cpp" line="308"/>
         <source>Checkpoints</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="299"/>
+        <location filename="Map/MapClient1.cpp" line="309"/>
         <source>Interception point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="300"/>
+        <location filename="Map/MapClient1.cpp" line="310"/>
         <source>Civil ships</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="301"/>
+        <location filename="Map/MapClient1.cpp" line="311"/>
         <source>Diversion points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="302"/>
+        <location filename="Map/MapClient1.cpp" line="312"/>
         <source>SPIP DD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="527"/>
+        <location filename="Map/MapClient1.cpp" line="529"/>
         <source>Ingur</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="568"/>
+        <location filename="Map/MapClient1.cpp" line="570"/>
         <source>UAV_enemy Atlant(#</source>
         <translation type="unfinished"></translation>
     </message>
@@ -197,12 +197,12 @@
 <context>
     <name>MapController</name>
     <message>
-        <location filename="Map/MapController.cpp" line="46"/>
+        <location filename="Map/MapController.cpp" line="48"/>
         <source>Open atlas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapController.cpp" line="48"/>
+        <location filename="Map/MapController.cpp" line="50"/>
         <source>Atlas files (*.chart *.sxf *.sit *.map *.gc *.gst);;All files (*.*)</source>
         <oldsource>Ð¤Ð¾ÑÐ¼Ð°Ñ ÑÐ¸ÑÑÐ¾Ð²ÑÑ ÐºÐ°ÑÑ (*.chart *.sxf *.sit *.map *.gc *.gst);;ÐÑÐµ ÑÐ°Ð¹Ð»Ñ (*.*)</oldsource>
         <translation type="unfinished"></translation>
@@ -217,12 +217,13 @@
     </message>
     <message>
         <location filename="MapTabWidget.ui" line="35"/>
-        <source>BLA List</source>
+        <source>UAV List</source>
+        <oldsource>BLA List</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="MapTabWidget.ui" line="64"/>
-        <source>BPLA List</source>
+        <source>Enemy UAV List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -251,12 +252,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="172"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="171"/>
         <source>SPIP DD-1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="177"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="176"/>
         <source>SPIP DD-2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -441,51 +442,55 @@
     </message>
 </context>
 <context>
-    <name>SolverWidget</name>
+    <name>SolverSettingsDialog</name>
     <message>
-        <location filename="Tabs/Solver/SolverWidget.ui" line="14"/>
-        <source>Form</source>
+        <location filename="Tabs/Solver/SolverSettingsDialog.ui" line="20"/>
+        <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverWidget.ui" line="29"/>
-        <source>Samples count</source>
-        <oldsource>Sample count</oldsource>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Tabs/Solver/SolverWidget.ui" line="45"/>
-        <source>Track length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Tabs/Solver/SolverWidget.ui" line="61"/>
-        <source>Altitude</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Tabs/Solver/SolverWidget.ui" line="68"/>
+        <location filename="Tabs/Solver/SolverSettingsDialog.ui" line="26"/>
         <source>Automatic mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverWidget.ui" line="77"/>
+        <location filename="Tabs/Solver/SolverSettingsDialog.ui" line="33"/>
+        <source>Altitude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSettingsDialog.ui" line="43"/>
+        <source>Track length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSettingsDialog.ui" line="53"/>
+        <source>Samples count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSettingsDialog.ui" line="63"/>
         <source>Accept</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverWidget.ui" line="84"/>
+        <location filename="Tabs/Solver/SolverSettingsDialog.ui" line="70"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverWidget.ui" line="91"/>
+        <location filename="Tabs/Solver/SolverSettingsDialog.ui" line="77"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverWidget.cpp" line="12"/>
+        <location filename="Tabs/Solver/SolverSettingsDialog.cpp" line="10"/>
         <source>Detector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSettingsDialog.cpp" line="11"/>
+        <source>Solver settings</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
