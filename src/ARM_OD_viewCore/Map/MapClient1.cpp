@@ -170,29 +170,6 @@ void MapClient1::removePointUvoda()
 /// set central control point
 void MapClient1::setPoint()
 {
-	//define style
-	//5 - Grid
-	PwGisStyle* gridStyle = m_pwWidget->createStyle( "Grid" );
-	gridStyle->setProperty( PwGisStyle::mapFontColor, "black" );
-	gridStyle->setProperty( PwGisStyle::mapFontSize, "10pt");
-	gridStyle->setProperty( PwGisStyle::fillColor, "black" );
-	gridStyle->setProperty( PwGisStyle::graphicWidth, "40" );
-	gridStyle->setProperty( PwGisStyle::graphicHeight, "40" );
-	gridStyle->setProperty( PwGisStyle::strokeColor, "black" );
-	gridStyle->setProperty( PwGisStyle::layer, m_mapLayers.value(5) );
-	gridStyle->apply();
-	showLayer(5, false);
-
-	//6 - Control_points
-	PwGisStyle* pointsStyle = m_pwWidget->createStyle( "Control_points" );
-	pointsStyle->setProperty( PwGisStyle::mapFontColor, "black" );
-	pointsStyle->setProperty( PwGisStyle::mapFontSize, "10pt" );
-	pointsStyle->setProperty( PwGisStyle::graphicWidth, "40" );
-	pointsStyle->setProperty( PwGisStyle::graphicHeight, "40" );
-	pointsStyle->setProperty( PwGisStyle::strokeColor, "black" );
-	pointsStyle->setProperty( PwGisStyle::layer, m_mapLayers.value(6) );
-	pointsStyle->apply();
-
 	QString mapObjectsSettingFile = QCoreApplication::applicationDirPath();
 	mapObjectsSettingFile.append( "/Map/map_objects.ini" );
 
@@ -317,6 +294,9 @@ void MapClient1::init()
 	m_styleManager->createFriendBplaStyle( m_mapLayers.value(2) )->apply();
 	m_styleManager->createPelengatorStyle( m_mapLayers.value(3) )->apply();
 	m_styleManager->createPelengatorPointStyle( m_mapLayers.value(4) )->apply();
+	m_styleManager->createPelengatorPointStyle( m_mapLayers.value(5) )->apply();
+	showLayer( 5, false );
+	m_styleManager->createInterceptionStyle( m_mapLayers.value(6) )->apply();
 	m_styleManager->createInterceptionStyle( m_mapLayers.value(7) )->apply();
 	m_styleManager->createAisStyle( m_mapLayers.value(8) )->apply();
 	m_styleManager->createNiippPointStyle( m_mapLayers.value(9) )->apply();

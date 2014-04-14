@@ -14,21 +14,25 @@
 #define MAP_STYLE_NAME_PELENGATOR			"Pelengator"
 #define MAP_STYLE_NAME_PELENGATOR_POINT		"PelengatorPoint"
 #define MAP_STYLE_NAME_STATION				"Station"
+#define MAP_STYLE_NAME_GRID					"Grid"
+#define MAP_STYLE_CHECK_POINTS				"Control_points"
 
 class IMapStyleManager
 {
 public:
 	virtual ~IMapStyleManager() {}
 
-	virtual PwGisStyle* createAisStyle(const QString& layerName) = 0;
-	virtual PwGisStyle* createFriendBplaStyle(const QString& layerName) = 0;
-	virtual PwGisStyle* createEnemyBplaStyle(const QString& layerName) = 0;
-	virtual PwGisStyle* createInterceptionStyle(const QString& layerName) = 0;
-	virtual PwGisStyle* createNiippStyle(const QString& layerName) = 0;
-	virtual PwGisStyle* createNiippPointStyle(const QString& layerName) = 0;
-	virtual PwGisStyle* createPelengatorStyle(const QString& layerName) = 0;
-	virtual PwGisStyle* createPelengatorPointStyle(const QString& layerName) = 0;
-	virtual PwGisStyle* createStationStyle(const QString& layerName) = 0;
+	virtual PwGisStyle* createAisStyle(const QString& layerId) = 0;
+	virtual PwGisStyle* createFriendBplaStyle(const QString& layerId) = 0;
+	virtual PwGisStyle* createEnemyBplaStyle(const QString& layerId) = 0;
+	virtual PwGisStyle* createInterceptionStyle(const QString& layerId) = 0;
+	virtual PwGisStyle* createNiippStyle(const QString& layerId) = 0;
+	virtual PwGisStyle* createNiippPointStyle(const QString& layerId) = 0;
+	virtual PwGisStyle* createPelengatorStyle(const QString& layerId) = 0;
+	virtual PwGisStyle* createPelengatorPointStyle(const QString& layerId) = 0;
+	virtual PwGisStyle* createStationStyle(const QString& layerId) = 0;
+	virtual PwGisStyle* createGridStyle(const QString& layerId) = 0;
+	virtual PwGisStyle* createCheckpointsStyle(const QString& layerId) = 0;
 
 	virtual PwGisStyle* getAisStyle() = 0;
 	virtual PwGisStyle* getFriendBplaStyle() = 0;
@@ -39,6 +43,9 @@ public:
 	virtual PwGisStyle* getPelengatorStyle() = 0;
 	virtual PwGisStyle* getPelengatorPointStyle() = 0;
 	virtual PwGisStyle* getStationStyle() = 0;
+	virtual PwGisStyle* getGridStyle() = 0;
+	virtual PwGisStyle* getCheckpointsStyle() = 0;
+
 };
 
 #endif // IMAPSTYLEMANAGER_H
