@@ -5,13 +5,9 @@
 
 #include <pwgiswidget.h>
 
-#include "MapController.h"
-
 namespace Ui {
 class MapWidget;
 }
-
-class MapController;
 
 class MapWidget : public QWidget
 {

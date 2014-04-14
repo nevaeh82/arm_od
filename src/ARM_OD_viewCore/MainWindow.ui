@@ -157,7 +157,7 @@
   </action>
   <action name="actionKoordinatometriyaParameters">
    <property name="text">
-    <string>Koordinatometriya parameters</string>
+    <string>Solver settings</string>
    </property>
   </action>
  </widget>

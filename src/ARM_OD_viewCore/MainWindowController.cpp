@@ -123,7 +123,6 @@ void MainWindowController::rpcConnectionEstablished()
 void MainWindowController::solverDialogSlot()
 {
 	SolverSettingsDialog solverSettingsDialog(m_view);
-	solverSettingsDialog.setModal(true);
 
 	solverSettingsController->appendView(&solverSettingsDialog);
 

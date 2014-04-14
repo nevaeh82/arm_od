@@ -2,7 +2,7 @@
 #include "ui_SolverSettingsDialog.h"
 
 SolverSettingsDialog::SolverSettingsDialog(QWidget *parent) :
-	QDialog(parent),
+	QDialog(parent, Qt::WindowSystemMenuHint | Qt::WindowTitleHint),
 	ui(new Ui::SolverSettingsDialog)
 {
 	ui->setupUi(this);

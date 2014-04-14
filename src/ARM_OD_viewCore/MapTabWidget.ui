@@ -32,7 +32,7 @@
    <item row="0" column="0" rowspan="2">
     <widget class="QDockWidget" name="blaDockWidget">
      <property name="windowTitle">
-      <string>BLA List</string>
+      <string>UAV List</string>
      </property>
      <widget class="QWidget" name="dockWidgetContents">
       <layout class="QHBoxLayout" name="horizontalLayout">
@@ -61,7 +61,7 @@
    <item row="0" column="2" rowspan="2">
     <widget class="QDockWidget" name="bplaDockWidget">
      <property name="windowTitle">
-      <string>BPLA List</string>
+      <string>Enemy UAV List</string>
      </property>
      <widget class="QWidget" name="dockWidgetContents_3">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
