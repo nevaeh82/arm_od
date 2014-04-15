@@ -65,6 +65,9 @@ MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 MapClient1::~MapClient1()
 {
 	delete m_niippPoint;
+	delete m_factory;
+	delete m_styleManager;
+
 	clearObjectsList( MapFeature::Ais, m_aisList );
 	clearObjectsList( MapFeature::FriendBpla, m_friendBplaList );
 	clearObjectsList( MapFeature::EnemyBpla, m_enemyBplaList );
@@ -78,6 +81,14 @@ MapClient1::~MapClient1()
 void MapClient1::init()
 {
 	m_mapLayers.clear();
+	clearObjectsList( MapFeature::Ais, m_aisList );
+	clearObjectsList( MapFeature::FriendBpla, m_friendBplaList );
+	clearObjectsList( MapFeature::EnemyBpla, m_enemyBplaList );
+	clearObjectsList( MapFeature::Niipp, m_niippList );
+	clearObjectsList( MapFeature::Pelengator, m_pelengatorList );
+	clearObjectsList( MapFeature::PelengatorPoint, m_pelengatorPointsList );
+	clearObjectsList( MapFeature::Interception, m_interceptionList );
+	clearObjectsList( MapFeature::Station, m_stationList );
 
 	// create marker layers
 	this->addMarkerLayer( 0, "layer_0_OP", tr( "OP" ) );//0 - stations
