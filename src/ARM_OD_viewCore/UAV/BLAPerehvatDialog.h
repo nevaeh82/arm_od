@@ -5,6 +5,7 @@
 #include <QComboBox>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QPushButton>
 
 #include <QTreeView>
 #include <QTreeWidget>

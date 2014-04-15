@@ -7,6 +7,19 @@ BLAPerehvatDialog::BLAPerehvatDialog(IMapClient* mapClient, QWidget* parent) :
 {
 	ui->setupUi(this);
 
+	QPushButton* btnOk = ui->buttonBox->button(QDialogButtonBox::Ok);
+	btnOk->setText(tr("Ok"));
+
+	QPushButton* btnCancel = ui->buttonBox->button(QDialogButtonBox::Cancel);
+	btnCancel->setText(tr("Cancel"));
+
+	Qt::WindowFlags flags=windowFlags();
+	Qt::WindowFlags helpFlag=Qt::WindowContextHelpButtonHint;
+	flags=flags&(~helpFlag);
+
+	setWindowFlags(flags);
+	setWindowIcon(QIcon(":/images/map/images/Tabs/fix_128.png"));
+
 	m_mapClient = mapClient;
 
 	m_id = 0;

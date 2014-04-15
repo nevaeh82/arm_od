@@ -6,22 +6,32 @@
     <message>
         <location filename="UAV/blaperehvatdialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Диалог перехвата БЛА</translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="38"/>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="11"/>
+        <source>Ok</source>
+        <translation>Ок</translation>
+    </message>
+    <message>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="14"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="51"/>
         <source>UAV #</source>
         <oldsource>UAV â</oldsource>
         <translation>БЛА №</translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="45"/>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="58"/>
         <source>UAV_enemy: #%1</source>
         <oldsource>UAV_: #%1</oldsource>
         <translation>БПЛА: №%1</translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="66"/>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="79"/>
         <source>#</source>
         <translation>№</translation>
     </message>
@@ -31,7 +41,7 @@
     <message>
         <location filename="ControlPanel/ControlPanel.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ControlPanel/ControlPanel.ui" line="32"/>
@@ -55,7 +65,7 @@
     <message>
         <location filename="MainWindow.ui" line="14"/>
         <source>MainWindow</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="MainWindow.ui" line="88"/>
@@ -213,7 +223,7 @@
     <message>
         <location filename="MapTabWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="MapTabWidget.ui" line="35"/>
@@ -252,12 +262,12 @@
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="171"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="178"/>
         <source>SPIP DD-1</source>
         <translation>СПИП ДД-1</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="176"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="183"/>
         <source>SPIP DD-2</source>
         <translation>СПИП ДД-2</translation>
     </message>
@@ -267,7 +277,7 @@
     <message>
         <location filename="Map/MapWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -275,7 +285,7 @@
     <message>
         <location filename="NIIPP/NiippWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="NIIPP/NiippWidget.ui" line="63"/>
@@ -446,7 +456,7 @@
     <message>
         <location filename="Tabs/Solver/SolverSettingsDialog.ui" line="20"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="Tabs/Solver/SolverSettingsDialog.ui" line="26"/>
