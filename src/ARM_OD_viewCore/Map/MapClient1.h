@@ -56,7 +56,6 @@ private:
 	IMapStyleManager* m_styleManager;
 	MapFeature::FeaturesFactory* m_factory;
 
-	int m_niippLayerId;
 	QMap<int, IMapObjectInfo*> m_mapObjects;
 
 	ZInterception* m_perehvat;
@@ -86,13 +85,10 @@ private:
 
 	QMap<int, QString> m_mapLayers;
 	Pw::Gis::ILayerManager* m_layerManager;
-	int m_layersCounter;
 
 	double m_circleRadius;
 	bool m_circleChanged;
 	bool m_sliceChanged;
-
-	QString m_niippLayerName;
 
 	MapFeature::NiippPoint* m_niippPoint;
 	QMap<int, MapFeature::FriendBpla*> m_friendBplaList;
@@ -104,8 +100,8 @@ private:
 	QMap<QString, MapFeature::Ais*> m_aisList;
 	QMap<QString, MapFeature::Station*> m_stationList;
 
-	void addNiippLayer( QString id );
-	void addMarkerLayer( int id, QString name );
+	void addMarkerLayer(int id, const QString& layerId,
+		const QString& name );
 
 	void readStationsFromFile(QString fileName);
 
