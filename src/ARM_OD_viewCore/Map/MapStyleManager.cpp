@@ -13,7 +13,7 @@ MapStyleManager::MapStyleManager(IStyleFactory* factory)
 {
 }
 
-PwGisStyle* MapStyleManager::createAisStyle(const QString& layerName)
+PwGisStyle* MapStyleManager::createAisStyle(const QString& layerId)
 {
 	bool exists;
 	PwGisStyle* style = createStyle( MAP_STYLE_NAME_AIS, &exists );
@@ -26,13 +26,13 @@ PwGisStyle* MapStyleManager::createAisStyle(const QString& layerName)
 		style->setProperty( PwGisStyle::graphicWidth, "40" );
 		style->setProperty( PwGisStyle::graphicHeight, "40" );
 		style->setProperty( PwGisStyle::strokeColor, "black" );
-		style->setProperty( PwGisStyle::layer, layerName ) ;
+		style->setProperty( PwGisStyle::layer, layerId ) ;
 	}
 
 	return style;
 }
 
-PwGisStyle* MapStyleManager::createFriendBplaStyle(const QString& layerName)
+PwGisStyle* MapStyleManager::createFriendBplaStyle(const QString& layerId)
 {
 	bool exists;
 	PwGisStyle* style = createStyle( MAP_STYLE_NAME_FRIEND_BPLA, &exists );
@@ -45,13 +45,13 @@ PwGisStyle* MapStyleManager::createFriendBplaStyle(const QString& layerName)
 		style->setProperty( PwGisStyle::graphicWidth, "40" );
 		style->setProperty( PwGisStyle::graphicHeight, "60" );
 		style->setProperty( PwGisStyle::strokeColor, "red" );
-		style->setProperty( PwGisStyle::layer, layerName );
+		style->setProperty( PwGisStyle::layer, layerId );
 	}
 
 	return style;
 }
 
-PwGisStyle* MapStyleManager::createEnemyBplaStyle(const QString& layerName)
+PwGisStyle* MapStyleManager::createEnemyBplaStyle(const QString& layerId)
 {
 	bool exists;
 	PwGisStyle* style = createStyle( MAP_STYLE_NAME_ENEMY_BPLA, &exists );
@@ -64,13 +64,13 @@ PwGisStyle* MapStyleManager::createEnemyBplaStyle(const QString& layerName)
 		style->setProperty( PwGisStyle::graphicWidth, "40" );
 		style->setProperty( PwGisStyle::graphicHeight, "60" );
 		style->setProperty( PwGisStyle::strokeColor, "blue" );
-		style->setProperty( PwGisStyle::layer, layerName );
+		style->setProperty( PwGisStyle::layer, layerId );
 	}
 
 	return style;
 }
 
-PwGisStyle* MapStyleManager::createInterceptionStyle(const QString& layerName)
+PwGisStyle* MapStyleManager::createInterceptionStyle(const QString& layerId)
 {
 	bool exists;
 	PwGisStyle* style = createStyle( MAP_STYLE_NAME_INTERCEPTION, &exists );
@@ -82,13 +82,13 @@ PwGisStyle* MapStyleManager::createInterceptionStyle(const QString& layerName)
 		style->setProperty( PwGisStyle::graphicWidth, "40" );
 		style->setProperty( PwGisStyle::graphicHeight, "40" );
 		style->setProperty( PwGisStyle::strokeColor, "red" );
-		style->setProperty( PwGisStyle::layer, layerName );
+		style->setProperty( PwGisStyle::layer, layerId );
 	}
 
 	return style;
 }
 
-PwGisStyle* MapStyleManager::createNiippStyle(const QString& layerName)
+PwGisStyle* MapStyleManager::createNiippStyle(const QString& layerId)
 {
 	bool exists;
 	PwGisStyle* style = createStyle( MAP_STYLE_NAME_NIIPP, &exists );
@@ -101,13 +101,13 @@ PwGisStyle* MapStyleManager::createNiippStyle(const QString& layerName)
 		style->setProperty( PwGisStyle::graphicWidth, "20" );
 		style->setProperty( PwGisStyle::graphicHeight, "40" );
 		style->setProperty( PwGisStyle::strokeColor, "brown" );
-		style->setProperty( PwGisStyle::layer, layerName );
+		style->setProperty( PwGisStyle::layer, layerId );
 	}
 
 	return style;
 }
 
-PwGisStyle* MapStyleManager::createNiippPointStyle(const QString& layerName)
+PwGisStyle* MapStyleManager::createNiippPointStyle(const QString& layerId)
 {
 	bool exists;
 	PwGisStyle* style = createStyle( MAP_STYLE_NAME_NIIPP_POINT, &exists );
@@ -120,13 +120,13 @@ PwGisStyle* MapStyleManager::createNiippPointStyle(const QString& layerName)
 		style->setProperty( PwGisStyle::graphicWidth, "20" );
 		style->setProperty( PwGisStyle::graphicHeight, "40" );
 		style->setProperty( PwGisStyle::strokeColor, "brown" );
-		style->setProperty( PwGisStyle::layer, layerName );
+		style->setProperty( PwGisStyle::layer, layerId );
 	}
 
 	return style;
 }
 
-PwGisStyle* MapStyleManager::createPelengatorStyle(const QString& layerName)
+PwGisStyle* MapStyleManager::createPelengatorStyle(const QString& layerId)
 {
 	bool exists;
 	PwGisStyle* style = createStyle( MAP_STYLE_NAME_PELENGATOR, &exists );
@@ -138,13 +138,13 @@ PwGisStyle* MapStyleManager::createPelengatorStyle(const QString& layerName)
 		style->setProperty( PwGisStyle::graphicWidth, "40" );
 		style->setProperty( PwGisStyle::graphicHeight, "40" );
 		style->setProperty( PwGisStyle::strokeColor, "green" );
-		style->setProperty( PwGisStyle::layer, layerName );
+		style->setProperty( PwGisStyle::layer, layerId );
 	}
 
 	return style;
 }
 
-PwGisStyle* MapStyleManager::createPelengatorPointStyle(const QString& layerName)
+PwGisStyle* MapStyleManager::createPelengatorPointStyle(const QString& layerId)
 {
 	bool exists;
 	PwGisStyle* style = createStyle( MAP_STYLE_NAME_PELENGATOR_POINT, &exists );
@@ -157,13 +157,13 @@ PwGisStyle* MapStyleManager::createPelengatorPointStyle(const QString& layerName
 		style->setProperty( PwGisStyle::graphicWidth, "40" );
 		style->setProperty( PwGisStyle::graphicHeight, "40" );
 		style->setProperty( PwGisStyle::strokeColor, "green" );
-		style->setProperty( PwGisStyle::layer, layerName );
+		style->setProperty( PwGisStyle::layer, layerId );
 	}
 
 	return style;
 }
 
-PwGisStyle* MapStyleManager::createStationStyle(const QString& layerName)
+PwGisStyle* MapStyleManager::createStationStyle(const QString& layerId)
 {
 	bool exists;
 	PwGisStyle* style = createStyle( MAP_STYLE_NAME_STATION, &exists );
@@ -175,7 +175,42 @@ PwGisStyle* MapStyleManager::createStationStyle(const QString& layerName)
 		style->setProperty( PwGisStyle::fillColor, "red" );
 		style->setProperty( PwGisStyle::graphicWidth, "40" );
 		style->setProperty( PwGisStyle::graphicHeight, "40" );
-		style->setProperty( PwGisStyle::layer, layerName );
+		style->setProperty( PwGisStyle::layer, layerId );
+	}
+
+	return style;
+}
+
+PwGisStyle* MapStyleManager::createGridStyle(const QString& layerId)
+{
+	bool exists;
+	PwGisStyle* style = createStyle( MAP_STYLE_NAME_GRID, &exists );
+
+	if( !exists ) {
+		style->setProperty( PwGisStyle::mapFontColor, "black" );
+		style->setProperty( PwGisStyle::mapFontSize, "10pt");
+		style->setProperty( PwGisStyle::fillColor, "black" );
+		style->setProperty( PwGisStyle::graphicWidth, "40" );
+		style->setProperty( PwGisStyle::graphicHeight, "40" );
+		style->setProperty( PwGisStyle::strokeColor, "black" );
+		style->setProperty( PwGisStyle::layer, layerId );
+	}
+
+	return style;
+}
+
+PwGisStyle* MapStyleManager::createCheckpointsStyle(const QString& layerId)
+{
+	bool exists;
+	PwGisStyle* style = createStyle( MAP_STYLE_CHECK_POINTS, &exists );
+
+	if( !exists ) {
+		style->setProperty( PwGisStyle::mapFontColor, "black" );
+		style->setProperty( PwGisStyle::mapFontSize, "10pt" );
+		style->setProperty( PwGisStyle::graphicWidth, "40" );
+		style->setProperty( PwGisStyle::graphicHeight, "40" );
+		style->setProperty( PwGisStyle::strokeColor, "black" );
+		style->setProperty( PwGisStyle::layer, layerId );
 	}
 
 	return style;

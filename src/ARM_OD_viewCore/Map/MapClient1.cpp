@@ -8,15 +8,12 @@
 MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 	: QObject( parent )
 	, m_mux( QMutex::Recursive )
-	, m_niippLayerId( 0 )
-	, m_layersCounter( 0 )
 {
 	m_styleManager = new MapStyleManager( pwWidget->mapProvider()->styleFactory() );
 
 	m_factory = new MapFeature::FeaturesFactory( pwWidget->mapProvider(), m_styleManager );
 
 	m_niippPoint = m_factory->createNiippPoint();
-	m_niippLayerName = tr("NIIPP");
 
 	m_circleRadius = 0;
 	m_circleChanged = false;
@@ -53,8 +50,6 @@ MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 	connect( m_uiTimerSlice, SIGNAL( timeout() ), this, SLOT( updateSlice() ) );
 	m_uiTimerSlice->setInterval( 100 );
 
-	m_layerManager = m_pwWidget->mapProvider()->layerManager();
-
 	m_perehvat = new ZInterception( this );
 	QThread* thread = new QThread;
 	connect( m_perehvat, SIGNAL( finished() ), thread, SLOT( quit() ) );
@@ -70,6 +65,9 @@ MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 MapClient1::~MapClient1()
 {
 	delete m_niippPoint;
+	delete m_factory;
+	delete m_styleManager;
+
 	clearObjectsList( MapFeature::Ais, m_aisList );
 	clearObjectsList( MapFeature::FriendBpla, m_friendBplaList );
 	clearObjectsList( MapFeature::EnemyBpla, m_enemyBplaList );
@@ -78,6 +76,70 @@ MapClient1::~MapClient1()
 	clearObjectsList( MapFeature::PelengatorPoint, m_pelengatorPointsList );
 	clearObjectsList( MapFeature::Interception, m_interceptionList );
 	clearObjectsList( MapFeature::Station, m_stationList );
+}
+
+void MapClient1::init()
+{
+	m_mapLayers.clear();
+	clearObjectsList( MapFeature::Ais, m_aisList );
+	clearObjectsList( MapFeature::FriendBpla, m_friendBplaList );
+	clearObjectsList( MapFeature::EnemyBpla, m_enemyBplaList );
+	clearObjectsList( MapFeature::Niipp, m_niippList );
+	clearObjectsList( MapFeature::Pelengator, m_pelengatorList );
+	clearObjectsList( MapFeature::PelengatorPoint, m_pelengatorPointsList );
+	clearObjectsList( MapFeature::Interception, m_interceptionList );
+	clearObjectsList( MapFeature::Station, m_stationList );
+
+	// create marker layers
+	this->addMarkerLayer( 0, "layer_0_OP", tr( "OP" ) );//0 - stations
+	this->addMarkerLayer( 1, "layer_1_UAV_enemy", tr( "UAV_enemy" ) ); //1 - BPLA profile
+	this->addMarkerLayer( 2, "layer_2_UAV", tr( "UAV" ) ); //2 - BLA profile
+	this->addMarkerLayer( 3, "layer_3_Atlant", tr( "Atlant" ) ); //3 - Pelengators
+	this->addMarkerLayer( 4, "layer_4_Atlant_target", tr( "Atlant target" ) ); //4 - PelengatorsPoint
+	this->addMarkerLayer( 5, "layer_5_Grid", tr( "Grid" ) ); //5 - Grid
+	this->addMarkerLayer( 6, "layer_6_Checkpoints", tr( "Checkpoints" ) ); //6 - Control_points
+	this->addMarkerLayer( 7, "layer_7_Interception_point", tr( "Interception point" ) ); //7 - Perehvat
+	this->addMarkerLayer( 8, "layer_8_Civil_ships", tr( "Civil ships" ) ); //8 - AIS - civil plane
+	this->addMarkerLayer( 9, "layer_9_Diversion_points", tr( "Diversion points" ) ); //9 - NIIPPPoint
+	this->addMarkerLayer( 10, "layer_10_SPIP_DD",tr( "SPIP DD" ) ); //10 - NIIPP
+
+	// create styles for features
+	m_styleManager->createStationStyle( m_mapLayers.value(0) )->apply();
+	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(1) )->apply();
+	m_styleManager->createFriendBplaStyle( m_mapLayers.value(2) )->apply();
+	m_styleManager->createPelengatorStyle( m_mapLayers.value(3) )->apply();
+	m_styleManager->createPelengatorPointStyle( m_mapLayers.value(4) )->apply();
+	m_styleManager->createPelengatorPointStyle( m_mapLayers.value(5) )->apply();
+	showLayer( 5, false );
+	m_styleManager->createInterceptionStyle( m_mapLayers.value(6) )->apply();
+	m_styleManager->createInterceptionStyle( m_mapLayers.value(7) )->apply();
+	m_styleManager->createAisStyle( m_mapLayers.value(8) )->apply();
+	m_styleManager->createNiippPointStyle( m_mapLayers.value(9) )->apply();
+	m_styleManager->createNiippStyle( m_mapLayers.value(10) )->apply();
+
+	//addNiippLayer
+	m_pwWidget->mapProvider()->layerManager()->addVectorLayer( "layer_11_NIIPP", tr("NIIPP") );
+
+	foreach( IMapObjectInfo* value, m_mapObjects ) {
+		dynamic_cast<Sector*>(value)->updateMap();
+	}
+
+	m_updateTimer->start( 1000 );
+
+	connect( this, SIGNAL( aisAdded( QMap<int, QVector<QString> >) ),
+			 this, SLOT( setAisData( QMap<int, QVector<QString> > ) ) );
+
+	connect( this, SIGNAL( pelengUpdated( int, int, double, double, double ) ),
+			 this, SLOT( addPeleng( int, int, double, double, double ) ) );
+
+	connect( this, SIGNAL( sectorUpdated( int, double, double, QByteArray ) ),
+			 this, SLOT( addNiippDirected( int, double, double, QByteArray ) ) );
+
+	connect( this, SIGNAL( cicleUpdated( int, double, QByteArray ) ),
+			 this, SLOT( addNiippNotDirected( int, double, QByteArray ) ) );
+
+	connect( m_pwWidget, SIGNAL( mapClicked( double, double ) ),
+			 this, SLOT( mapMouseClicked( double, double ) ) );
 }
 
 void MapClient1::setNiippController( INiiPPController* niippController )
@@ -89,7 +151,7 @@ void MapClient1::setNiippController( INiiPPController* niippController )
 void MapClient1::showLayer( int index, bool state )
 {
 	if ( m_mapLayers.contains( index ) ) {
-		m_layerManager->setLayerVisibility( m_mapLayers.value( index ), state );
+		m_pwWidget->mapProvider()->layerManager()->setLayerVisibility( m_mapLayers.value( index ), state );
 	}
 }
 
@@ -170,29 +232,6 @@ void MapClient1::removePointUvoda()
 /// set central control point
 void MapClient1::setPoint()
 {
-	//define style
-	//5 - Grid
-	PwGisStyle* gridStyle = m_pwWidget->createStyle( "Grid" );
-	gridStyle->setProperty( PwGisStyle::mapFontColor, "black" );
-	gridStyle->setProperty( PwGisStyle::mapFontSize, "10pt");
-	gridStyle->setProperty( PwGisStyle::fillColor, "black" );
-	gridStyle->setProperty( PwGisStyle::graphicWidth, "40" );
-	gridStyle->setProperty( PwGisStyle::graphicHeight, "40" );
-	gridStyle->setProperty( PwGisStyle::strokeColor, "black" );
-	gridStyle->setProperty( PwGisStyle::layer, m_mapLayers.value(5) );
-	gridStyle->apply();
-	showLayer(5, false);
-
-	//6 - Control_points
-	PwGisStyle* pointsStyle = m_pwWidget->createStyle( "Control_points" );
-	pointsStyle->setProperty( PwGisStyle::mapFontColor, "black" );
-	pointsStyle->setProperty( PwGisStyle::mapFontSize, "10pt" );
-	pointsStyle->setProperty( PwGisStyle::graphicWidth, "40" );
-	pointsStyle->setProperty( PwGisStyle::graphicHeight, "40" );
-	pointsStyle->setProperty( PwGisStyle::strokeColor, "black" );
-	pointsStyle->setProperty( PwGisStyle::layer, m_mapLayers.value(6) );
-	pointsStyle->apply();
-
 	QString mapObjectsSettingFile = QCoreApplication::applicationDirPath();
 	mapObjectsSettingFile.append( "/Map/map_objects.ini" );
 
@@ -200,10 +239,10 @@ void MapClient1::setPoint()
 	readStationsFromFile( mapObjectsSettingFile );
 }
 
-void MapClient1::addMarkerLayer( int id, QString name )
+void MapClient1::addMarkerLayer( int id, const QString& layerId,
+	const QString& name )
 {
-	QString layerId = QString( "layer_%1" ).arg( ++m_layersCounter );
-	m_layerManager->addMarkerLayer( layerId, name );
+	m_pwWidget->mapProvider()->layerManager()->addMarkerLayer( layerId, name );
 	m_mapLayers.insert( id, layerId );
 }
 
@@ -267,11 +306,6 @@ void MapClient1::updatePoints()
 
 }
 
-void MapClient1::addNiippLayer( QString id )
-{
-	m_pwWidget->mapProvider()->layerManager()->addVectorLayer( id, m_niippLayerName );
-}
-
 void MapClient1::addPerehvatData( int bla_id, int bpla_id )
 {
 	m_mapBattle.insert( bla_id, bpla_id );
@@ -294,57 +328,6 @@ void MapClient1::updateSlice()
 	if ( !m_sliceChanged ) {
 		return;
 	}
-}
-
-void MapClient1::init()
-{
-	// create marker layers
-	this->addMarkerLayer( 0, tr( "OP" ) );//0 - stations
-	this->addMarkerLayer( 1, tr( "UAV_enemy" ) ); //1 - BPLA profile
-	this->addMarkerLayer( 2, tr( "UAV" ) ); //2 - BLA profile
-	this->addMarkerLayer( 3, tr( "Atlant" ) ); //3 - Pelengators
-	this->addMarkerLayer( 4, tr( "Atlant target" ) ); //4 - PelengatorsPoint
-	this->addMarkerLayer( 5, tr( "Grid" ) ); //5 - Grid
-	this->addMarkerLayer( 6, tr( "Checkpoints" ) ); //6 - Control_points
-	this->addMarkerLayer( 7, tr( "Interception point" ) ); //7 - Perehvat
-	this->addMarkerLayer( 8, tr( "Civil ships" ) ); //8 - AIS - civil plane
-	this->addMarkerLayer( 9, tr( "Diversion points" ) ); //9 - NIIPPPoint
-	this->addMarkerLayer( 10, tr( "SPIP DD" ) ); //10 - NIIPP
-
-	// create styles for features
-	m_styleManager->createStationStyle( m_mapLayers.value(0) )->apply();
-	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(1) )->apply();
-	m_styleManager->createFriendBplaStyle( m_mapLayers.value(2) )->apply();
-	m_styleManager->createPelengatorStyle( m_mapLayers.value(3) )->apply();
-	m_styleManager->createPelengatorPointStyle( m_mapLayers.value(4) )->apply();
-	m_styleManager->createInterceptionStyle( m_mapLayers.value(7) )->apply();
-	m_styleManager->createAisStyle( m_mapLayers.value(8) )->apply();
-	m_styleManager->createNiippPointStyle( m_mapLayers.value(9) )->apply();
-	m_styleManager->createNiippStyle( m_mapLayers.value(10) )->apply();
-
-	QString niippLayerId = m_niippLayerName + QString::number( m_niippLayerId );
-	addNiippLayer( niippLayerId );
-
-	foreach( IMapObjectInfo* value, m_mapObjects ) {
-		dynamic_cast<Sector*>(value)->updateMap();
-	}
-
-	m_updateTimer->start( 1000 );
-
-	connect( this, SIGNAL( aisAdded( QMap<int, QVector<QString> >) ),
-			 this, SLOT( setAisData( QMap<int, QVector<QString> > ) ) );
-
-	connect( this, SIGNAL( pelengUpdated( int, int, double, double, double ) ),
-			 this, SLOT( addPeleng( int, int, double, double, double ) ) );
-
-	connect( this, SIGNAL( sectorUpdated( int, double, double, QByteArray ) ),
-			 this, SLOT( addNiippDirected( int, double, double, QByteArray ) ) );
-
-	connect( this, SIGNAL( cicleUpdated( int, double, QByteArray ) ),
-			 this, SLOT( addNiippNotDirected( int, double, QByteArray ) ) );
-
-	connect( m_pwWidget, SIGNAL( mapClicked( double, double ) ),
-			 this, SLOT( mapMouseClicked( double, double ) ) );
 }
 
 /// get coordinates

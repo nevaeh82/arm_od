@@ -18,15 +18,17 @@ private:
 public:
 	MapStyleManager(IStyleFactory *factory);
 
-	virtual PwGisStyle* createAisStyle(const QString& layerName);
-	virtual PwGisStyle* createFriendBplaStyle(const QString& layerName);
-	virtual PwGisStyle* createEnemyBplaStyle(const QString& layerName);
-	virtual PwGisStyle* createInterceptionStyle(const QString& layerName);
-	virtual PwGisStyle* createNiippStyle(const QString& layerName);
-	virtual PwGisStyle* createNiippPointStyle(const QString& layerName);
-	virtual PwGisStyle* createPelengatorStyle(const QString& layerName);
-	virtual PwGisStyle* createPelengatorPointStyle(const QString& layerName);
-	virtual PwGisStyle* createStationStyle(const QString& layerName);
+	virtual PwGisStyle* createAisStyle(const QString& layerId);
+	virtual PwGisStyle* createFriendBplaStyle(const QString& layerId);
+	virtual PwGisStyle* createEnemyBplaStyle(const QString& layerId);
+	virtual PwGisStyle* createInterceptionStyle(const QString& layerId);
+	virtual PwGisStyle* createNiippStyle(const QString& layerId);
+	virtual PwGisStyle* createNiippPointStyle(const QString& layerId);
+	virtual PwGisStyle* createPelengatorStyle(const QString& layerId);
+	virtual PwGisStyle* createPelengatorPointStyle(const QString& layerId);
+	virtual PwGisStyle* createStationStyle(const QString& layerId);
+	virtual PwGisStyle* createGridStyle(const QString& layerId);
+	virtual PwGisStyle* createCheckpointsStyle(const QString& layerId);
 
 	inline virtual PwGisStyle* getAisStyle() { return getStyle( MAP_STYLE_NAME_AIS ); }
 	inline virtual PwGisStyle* getFriendBplaStyle() { return getStyle( MAP_STYLE_NAME_FRIEND_BPLA ); }
@@ -37,6 +39,9 @@ public:
 	inline virtual PwGisStyle* getPelengatorStyle() { return getStyle( MAP_STYLE_NAME_PELENGATOR ); }
 	inline virtual PwGisStyle* getPelengatorPointStyle() { return getStyle( MAP_STYLE_NAME_PELENGATOR_POINT ); }
 	inline virtual PwGisStyle* getStationStyle() { return getStyle( MAP_STYLE_NAME_STATION ); }
+	inline virtual PwGisStyle* getGridStyle() { return getStyle( MAP_STYLE_NAME_GRID ); }
+	inline virtual PwGisStyle* getCheckpointsStyle() { return getStyle( MAP_STYLE_CHECK_POINTS ); }
+
 
 protected:
 	/// Creates style with \a name
