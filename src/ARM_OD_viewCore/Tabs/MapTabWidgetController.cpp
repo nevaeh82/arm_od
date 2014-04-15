@@ -204,6 +204,11 @@ void MapTabWidgetController::onBlaTreeItemDoubleClicked(QModelIndex index)
 	int data = index.data().toInt();
 
 	if (parent.isValid()){
+		parent = parent.sibling(parent.row(), 0);
+		data = parent.data().toInt();
+	}
+	else {
+		parent = index.sibling(index.row(), 0);
 		data = parent.data().toInt();
 	}
 
