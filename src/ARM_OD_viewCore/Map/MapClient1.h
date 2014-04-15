@@ -84,7 +84,6 @@ private:
 	QTimer* m_TimerSimulator;
 
 	QMap<int, QString> m_mapLayers;
-	Pw::Gis::ILayerManager* m_layerManager;
 
 	double m_circleRadius;
 	bool m_circleChanged;

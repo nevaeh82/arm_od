@@ -50,8 +50,6 @@ MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 	connect( m_uiTimerSlice, SIGNAL( timeout() ), this, SLOT( updateSlice() ) );
 	m_uiTimerSlice->setInterval( 100 );
 
-	m_layerManager = m_pwWidget->mapProvider()->layerManager();
-
 	m_perehvat = new ZInterception( this );
 	QThread* thread = new QThread;
 	connect( m_perehvat, SIGNAL( finished() ), thread, SLOT( quit() ) );
@@ -79,6 +77,8 @@ MapClient1::~MapClient1()
 
 void MapClient1::init()
 {
+	m_mapLayers.clear();
+
 	// create marker layers
 	this->addMarkerLayer( 0, "layer_0_OP", tr( "OP" ) );//0 - stations
 	this->addMarkerLayer( 1, "layer_1_UAV_enemy", tr( "UAV_enemy" ) ); //1 - BPLA profile
@@ -140,7 +140,7 @@ void MapClient1::setNiippController( INiiPPController* niippController )
 void MapClient1::showLayer( int index, bool state )
 {
 	if ( m_mapLayers.contains( index ) ) {
-		m_layerManager->setLayerVisibility( m_mapLayers.value( index ), state );
+		m_pwWidget->mapProvider()->layerManager()->setLayerVisibility( m_mapLayers.value( index ), state );
 	}
 }
 
@@ -231,7 +231,7 @@ void MapClient1::setPoint()
 void MapClient1::addMarkerLayer( int id, const QString& layerId,
 	const QString& name )
 {
-	m_layerManager->addMarkerLayer( layerId, name );
+	m_pwWidget->mapProvider()->layerManager()->addMarkerLayer( layerId, name );
 	m_mapLayers.insert( id, layerId );
 }
 
