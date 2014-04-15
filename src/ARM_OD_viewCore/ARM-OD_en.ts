@@ -9,19 +9,29 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="38"/>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="11"/>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="14"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="51"/>
         <source>UAV #</source>
         <oldsource>UAV â</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="45"/>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="58"/>
         <source>UAV_enemy: #%1</source>
         <oldsource>UAV_: #%1</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="66"/>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="79"/>
         <source>#</source>
         <translation type="unfinished"></translation>
     </message>
@@ -252,12 +262,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="171"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="178"/>
         <source>SPIP DD-1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="176"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="183"/>
         <source>SPIP DD-2</source>
         <translation type="unfinished"></translation>
     </message>
