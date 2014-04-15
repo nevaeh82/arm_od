@@ -130,10 +130,21 @@ void UavTreeModel::onUavAdded(const Uav &uav, const QString& uavRole)
 
 void UavTreeModel::onUavRemoved(const Uav &uav, const QString& uavRole)
 {
-	Q_UNUSED(uav);
-
 	if (uavRole != m_targetRole){
 		return;
+	}
+
+	for (int i= 0; i< m_rootItem->childCount(); ++i) {
+
+		TreeItem* childItem = m_rootItem->child(i);
+		if (childItem->data().id != uav.uavId) {
+			continue;
+		}
+
+		emit layoutAboutToBeChanged();
+		m_rootItem->removeChild(childItem);
+		emit layoutChanged();
+		break;
 	}
 }
 
