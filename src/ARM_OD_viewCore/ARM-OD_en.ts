@@ -208,13 +208,12 @@
     <name>MapController</name>
     <message>
         <location filename="Map/MapController.cpp" line="48"/>
-        <source>Open atlas</source>
+        <source>Open map</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="Map/MapController.cpp" line="50"/>
-        <source>Atlas files (*.chart *.sxf *.sit *.map *.gc *.gst);;All files (*.*)</source>
-        <oldsource>Ð¤Ð¾ÑÐ¼Ð°Ñ ÑÐ¸ÑÑÐ¾Ð²ÑÑ ÐºÐ°ÑÑ (*.chart *.sxf *.sit *.map *.gc *.gst);;ÐÑÐµ ÑÐ°Ð¹Ð»Ñ (*.*)</oldsource>
+        <source>Map files (*.chart *.sxf *.sit *.map *.gc *.gst)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

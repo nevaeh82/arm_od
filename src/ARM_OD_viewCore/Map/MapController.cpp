@@ -45,11 +45,10 @@ void MapController::openMapFromLocalFile(/*const QString mapFile*/)
 {
 	QString filename = QFileDialog::getOpenFileName(
 		m_view,
-		tr("Open atlas"),
+		tr("Open map"),
 		QDir::currentPath(),
-		tr("Atlas files (*.chart *.sxf *.sit *.map *.gc *.gst);;All files (*.*)") );
-	if( !filename.isNull() )
-	{
+		tr( "Map files (*.chart *.sxf *.sit *.map *.gc *.gst)" ) );
+	if ( !filename.isNull() ) {
 		m_mapModel->openMap(filename);
 	}
 }
