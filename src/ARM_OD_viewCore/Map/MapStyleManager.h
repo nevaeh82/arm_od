@@ -40,7 +40,7 @@ public:
 	inline virtual PwGisStyle* getPelengatorPointStyle() { return getStyle( MAP_STYLE_NAME_PELENGATOR_POINT ); }
 	inline virtual PwGisStyle* getStationStyle() { return getStyle( MAP_STYLE_NAME_STATION ); }
 	inline virtual PwGisStyle* getGridStyle() { return getStyle( MAP_STYLE_NAME_GRID ); }
-	inline virtual PwGisStyle* getCheckpointsStyle() { return getStyle( MAP_STYLE_CHECK_POINTS ); }
+	inline virtual PwGisStyle* getCheckpointsStyle() { return getStyle( MAP_STYLE_NAME_CHECK_POINTS ); }
 
 
 protected:

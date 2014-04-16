@@ -202,7 +202,7 @@ PwGisStyle* MapStyleManager::createGridStyle(const QString& layerId)
 PwGisStyle* MapStyleManager::createCheckpointsStyle(const QString& layerId)
 {
 	bool exists;
-	PwGisStyle* style = createStyle( MAP_STYLE_CHECK_POINTS, &exists );
+	PwGisStyle* style = createStyle( MAP_STYLE_NAME_CHECK_POINTS, &exists );
 
 	if( !exists ) {
 		style->setProperty( PwGisStyle::mapFontColor, "black" );

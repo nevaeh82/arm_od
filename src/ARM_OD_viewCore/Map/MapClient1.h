@@ -30,7 +30,7 @@
 #include "Map/IMapStyleManager.h"
 #include "Map/Features/FeaturesFactory.h"
 
-#include "IMapClient.h"
+#include "Map/IMapClient.h"
 
 class MapClient1 : public QObject, public IMapClient
 {
@@ -54,7 +54,7 @@ public:
 
 private:
 	IMapStyleManager* m_styleManager;
-	MapFeature::FeaturesFactory* m_factory;
+	MapFeature::IFeaturesFactory* m_factory;
 
 	QMap<int, IMapObjectInfo*> m_mapObjects;
 
@@ -98,11 +98,13 @@ private:
 	QMap<QString, MapFeature::Interception*> m_interceptionList;
 	QMap<QString, MapFeature::Ais*> m_aisList;
 	QMap<QString, MapFeature::Station*> m_stationList;
+	QList<MapFeature::CheckPoint*> m_checkPointsList;
 
 	void addMarkerLayer(int id, const QString& layerId,
 		const QString& name );
 
 	void readStationsFromFile(QString fileName);
+	void readCheckPointsFromFile(QString fileName);
 
 public slots:
 	virtual void init();
@@ -118,6 +120,8 @@ public slots:
 	void updateNiippPowerCicle( int id, double radius, QByteArray ba );
 
 	virtual void updatePeleng( int id, int idPost, double lat, double lon, double direction );
+
+	virtual void removeAll();
 
 private slots:
 	void setPointBla( int id, QPointF point, double alt, double speed, double course, int state );

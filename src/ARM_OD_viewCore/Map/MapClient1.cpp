@@ -1,4 +1,6 @@
-﻿#include <Logger.h>
+﻿#include <QVariant>
+
+#include <Logger.h>
 
 #include "Map/MapStyleManager.h"
 #include "Map/MapClient1.h"
@@ -68,27 +70,13 @@ MapClient1::~MapClient1()
 	delete m_factory;
 	delete m_styleManager;
 
-	clearObjectsList( MapFeature::Ais, m_aisList );
-	clearObjectsList( MapFeature::FriendBpla, m_friendBplaList );
-	clearObjectsList( MapFeature::EnemyBpla, m_enemyBplaList );
-	clearObjectsList( MapFeature::Niipp, m_niippList );
-	clearObjectsList( MapFeature::Pelengator, m_pelengatorList );
-	clearObjectsList( MapFeature::PelengatorPoint, m_pelengatorPointsList );
-	clearObjectsList( MapFeature::Interception, m_interceptionList );
-	clearObjectsList( MapFeature::Station, m_stationList );
+	removeAll();
 }
 
 void MapClient1::init()
 {
 	m_mapLayers.clear();
-	clearObjectsList( MapFeature::Ais, m_aisList );
-	clearObjectsList( MapFeature::FriendBpla, m_friendBplaList );
-	clearObjectsList( MapFeature::EnemyBpla, m_enemyBplaList );
-	clearObjectsList( MapFeature::Niipp, m_niippList );
-	clearObjectsList( MapFeature::Pelengator, m_pelengatorList );
-	clearObjectsList( MapFeature::PelengatorPoint, m_pelengatorPointsList );
-	clearObjectsList( MapFeature::Interception, m_interceptionList );
-	clearObjectsList( MapFeature::Station, m_stationList );
+	removeAll();
 
 	// create marker layers
 	this->addMarkerLayer( 0, "layer_0_OP", tr( "OP" ) );//0 - stations
@@ -207,6 +195,19 @@ void MapClient1::updatePeleng( int id, int idPost, double lat, double lon, doubl
 	emit pelengUpdated( id, idPost, lat, lon, direction );
 }
 
+void MapClient1::removeAll()
+{
+	clearObjectsList( MapFeature::Ais, m_aisList );
+	clearObjectsList( MapFeature::FriendBpla, m_friendBplaList );
+	clearObjectsList( MapFeature::EnemyBpla, m_enemyBplaList );
+	clearObjectsList( MapFeature::Niipp, m_niippList );
+	clearObjectsList( MapFeature::Pelengator, m_pelengatorList );
+	clearObjectsList( MapFeature::PelengatorPoint, m_pelengatorPointsList );
+	clearObjectsList( MapFeature::Interception, m_interceptionList );
+	clearObjectsList( MapFeature::Station, m_stationList );
+	clearObjectsList( MapFeature::CheckPoint, m_checkPointsList );
+}
+
 void MapClient1::addInterception(int blaId, int bplaId )
 {
 	emit interceptionAdded( blaId, bplaId );
@@ -229,14 +230,45 @@ void MapClient1::removePointUvoda()
 	m_pwWidget->removeMarker( "NIIPMarker" );
 }
 
-/// set central control point
+void MapClient1::readCheckPointsFromFile(QString fileName)
+{
+	QSettings settings( fileName, QSettings::IniFormat );
+	settings.setIniCodec( QTextCodec::codecForName("UTF-8") );
+
+	QStringList childKeys = settings.childGroups();
+	foreach( const QString &childKey, childKeys ) {
+		settings.beginGroup( childKey );
+
+		QVariant name = settings.value( "Name" );
+		QVariant lat = settings.value( "Latitude" );
+		QVariant lon = settings.value( "Longitude" );
+
+		if( name.isNull() || !name.canConvert( QVariant::String ) ) continue;
+		if( lat.isNull() || !lat.canConvert( QVariant::Double ) ) continue;
+		if( lon.isNull() || !lon.canConvert( QVariant::Double ) ) continue;
+
+		MapFeature::CheckPoint *p = m_factory->createCheckPoint(
+					name.toString(), QPointF( lon.toDouble(), lat.toDouble() ) );
+
+		p->updateMap();
+		m_checkPointsList << p;
+
+		settings.endGroup();
+	}
+}
+
 void MapClient1::setPoint()
 {
 	QString mapObjectsSettingFile = QCoreApplication::applicationDirPath();
 	mapObjectsSettingFile.append( "/Map/map_objects.ini" );
 
-	/// read settings for generated (positions)
+	// read settings for generated (positions)
 	readStationsFromFile( mapObjectsSettingFile );
+
+	QString mapPointsSettingFile = QCoreApplication::applicationDirPath();
+	mapPointsSettingFile.append( "/Map/map_points.ini" );
+
+	readCheckPointsFromFile( mapPointsSettingFile );
 }
 
 void MapClient1::addMarkerLayer( int id, const QString& layerId,

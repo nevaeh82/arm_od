@@ -16,6 +16,7 @@
 #include "Map/Features/PelengatorFeature.h"
 #include "Map/Features/PelengatorPointFeature.h"
 #include "Map/Features/StationFeature.h"
+#include "Map/Features/CheckPointFeature.h"
 
 namespace MapFeature {
 
@@ -33,6 +34,7 @@ public:
 	virtual Station*      createStation( const QString& name, const QPointF& position = QPointF() ) = 0;
 	virtual Pelengator*   createPelengator( int id, const QPointF& position, double angle ) = 0;
 	virtual PelengatorPoint* createPelengatorPoint( const QString& name, const QPointF& position ) = 0;
+	virtual CheckPoint*   createCheckPoint( const QString& name, const QPointF& position ) = 0;
 };
 
 } // namespace MapFeature

@@ -50,6 +50,7 @@ public:
 	virtual void addPerehvatPoint( int blaId, int bplaId, QPointF coord, float hgt, float radius, int time, float intcCourse, float intcSpeed ) = 0;
 
 	virtual void removePointUvoda() = 0;
+	virtual void removeAll() = 0;
 };
 
 #endif // IMAPCLIENT_H

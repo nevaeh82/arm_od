@@ -15,7 +15,7 @@
 #define MAP_STYLE_NAME_PELENGATOR_POINT		"PelengatorPoint"
 #define MAP_STYLE_NAME_STATION				"Station"
 #define MAP_STYLE_NAME_GRID					"Grid"
-#define MAP_STYLE_CHECK_POINTS				"Control_points"
+#define MAP_STYLE_NAME_CHECK_POINTS			"Control_points"
 
 class IMapStyleManager
 {

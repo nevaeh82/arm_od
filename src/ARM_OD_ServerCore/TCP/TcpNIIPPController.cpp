@@ -46,7 +46,6 @@ bool TcpNIIPPController::init()
 			QDataStream dsBaseInfo(&baseInfo, QIODevice::WriteOnly);
 			dsBaseInfo << m_NIIPPSettingStruct;
 
-
 			settings.endGroup();
 			return true;
 		}

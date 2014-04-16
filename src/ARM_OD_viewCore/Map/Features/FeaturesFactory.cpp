@@ -72,7 +72,13 @@ Pelengator *FeaturesFactory::createPelengator(int id, const QPointF& position, d
 PelengatorPoint *FeaturesFactory::createPelengatorPoint(const QString& name, const QPointF& position)
 {
 	return new PelengatorPoint( m_provider->objectsFactory(), m_provider->idGenerator()->GetNewID(),
-						   name, position );
+								name, position );
+}
+
+CheckPoint* FeaturesFactory::createCheckPoint(const QString& name, const QPointF& position)
+{
+	return new CheckPoint( m_provider->objectsFactory(), m_provider->idGenerator()->GetNewID(),
+								name, position );
 }
 
 } // namespace MapFeature

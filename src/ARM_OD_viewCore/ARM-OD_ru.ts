@@ -134,72 +134,72 @@
 <context>
     <name>MapClient1</name>
     <message>
-        <location filename="Map/MapClient1.cpp" line="19"/>
+        <location filename="Map/MapClient1.cpp" line="109"/>
         <source>NIIPP</source>
         <translation>НИИПП</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="303"/>
+        <location filename="Map/MapClient1.cpp" line="83"/>
         <source>UAV_enemy</source>
         <translation>БПЛА</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="304"/>
+        <location filename="Map/MapClient1.cpp" line="84"/>
         <source>UAV</source>
         <translation>БЛА</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="305"/>
+        <location filename="Map/MapClient1.cpp" line="85"/>
         <source>Atlant</source>
         <translation>Атлант</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="306"/>
+        <location filename="Map/MapClient1.cpp" line="86"/>
         <source>Atlant target</source>
         <translation>Атлант цель</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="307"/>
+        <location filename="Map/MapClient1.cpp" line="87"/>
         <source>Grid</source>
         <translation>Сетка</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="308"/>
+        <location filename="Map/MapClient1.cpp" line="88"/>
         <source>Checkpoints</source>
         <translation>Контрольные точки</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="309"/>
+        <location filename="Map/MapClient1.cpp" line="89"/>
         <source>Interception point</source>
         <translation>Точка перехвата</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="310"/>
+        <location filename="Map/MapClient1.cpp" line="90"/>
         <source>Civil ships</source>
         <translation>Гражданские суда</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="311"/>
+        <location filename="Map/MapClient1.cpp" line="91"/>
         <source>Diversion points</source>
         <translation>Точки увода</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="570"/>
+        <location filename="Map/MapClient1.cpp" line="582"/>
         <source>UAV_enemy Atlant(#</source>
         <translation>БПЛА Атлант(№</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="312"/>
+        <location filename="Map/MapClient1.cpp" line="92"/>
         <source>SPIP DD</source>
         <translation>СПИП ДД</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="302"/>
+        <location filename="Map/MapClient1.cpp" line="82"/>
         <source>OP</source>
         <translation>ОП</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="529"/>
+        <location filename="Map/MapClient1.cpp" line="541"/>
         <source>Ingur</source>
         <translation>Ингур</translation>
     </message>
@@ -261,12 +261,12 @@
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="178"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="171"/>
         <source>SPIP DD-1</source>
         <translation>СПИП ДД-1</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="183"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="176"/>
         <source>SPIP DD-2</source>
         <translation>СПИП ДД-2</translation>
     </message>

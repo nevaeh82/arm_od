@@ -81,11 +81,10 @@ void Map::onMapReady()
 
 	emit modelMapReady();
 
-	for (it = m_mapClients.begin(); it != m_mapClients.end(); ++it)
-	{
-		if(!it.value())
-			continue;
-		(it.value())->setPoint();
+	for (it = m_mapClients.begin(); it != m_mapClients.end(); ++it) {
+		if(!it.value()) continue;
+
+		it.value()->setPoint();
 	}
 }
 

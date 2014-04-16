@@ -31,6 +31,7 @@ public:
 	virtual Station*      createStation( const QString& name, const QPointF& position = QPointF() );
 	virtual Pelengator*   createPelengator(int id, const QPointF& position, double angle );
 	virtual PelengatorPoint* createPelengatorPoint( const QString& name, const QPointF& position );
+	virtual CheckPoint*   createCheckPoint( const QString& name, const QPointF& position );
 };
 
 } // namespace MapFeature
