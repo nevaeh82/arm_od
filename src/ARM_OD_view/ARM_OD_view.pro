@@ -26,3 +26,9 @@ applyReferences()
 RESOURCES += \
 	../ARM_OD_viewCore/rc.qrc \
 	../ARM_OD_viewCore/translations.qrc
+
+win32{
+    HEADERS = version.h
+    RC_FILE = details_res.rc
+}
+

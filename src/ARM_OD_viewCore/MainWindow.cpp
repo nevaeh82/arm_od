@@ -18,8 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	this->setWindowTitle(tr("Zaviruha"));
 
-	QIcon icon("images/zaviruha.png");
-	this->setWindowIcon(icon);
+	this->setWindowIcon(QIcon(":/images/zaviruha.png"));
 
 	this->showMaximized();
 
