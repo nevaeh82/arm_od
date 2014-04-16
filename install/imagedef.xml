@@ -1,8 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <imagedef>
-	<product name="Zaviruha" version="1.0.0.0" code="zaviruha"/>
+	<product name="ARM_OD" version="__VERSION__" code="ARM_OD"/>
 	<files path="build\tmprel\bin\*.*"/>
-	<link  name="$DESKTOP\Завируха-АРМ-ОД" target="$INSTDIR\ARM_OD_view.exe"/>
-	<imagefile path="build\tmprel\image\ARM_OD_Setup.exe"/>
-	<installdir path="c:\Zaviruha\ARM-OD\"/>
+	<link  name="$DESKTOP\ARM-OD-__VERSION__" target="$INSTDIR\ARM_OD_view.exe"/>
+	<postinstall>
+		<execute command="&quot;$EXEDIR\PwGis\PwGis-1.4.57-msvc.exe&quot; /q" description="PwGis"/>
+	</postinstall>
+	<imagefile path="build\tmprel\image\ARM_OD_Setup-__VERSION__.exe"/>
+	<installdir path="c:\Zaviruha\ARM-OD-__VERSION__\"/>
 </imagedef>
