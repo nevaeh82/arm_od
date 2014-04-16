@@ -2,7 +2,10 @@
 #define DBBLAMANAGER_H
 
 #include <QObject>
+#include <QSignalMapper>
 #include <QMutex>
+#include <QMutexLocker>
+#include <QTimer>
 #include <Interfaces/IRpcListener.h>
 
 #include "DbUavController.h"
@@ -13,12 +16,20 @@
 #include "RPC/RpcDefines.h"
 #include "UAVDefines.h"
 
+/// 5 minutes	= 300000 msec
+/// 10 minutes	= 600000 msec
+#define MAX_LIFE_TIME	600000
+
 class DbUavManager : public QObject, public IDbUavManager, public BaseSubject<IUavDbChangedListener>, public IRpcListener
 {
 	Q_OBJECT
 private:
 	IDbUavController* m_dbController;
+
 	QMap<uint, Uav> m_knownUavsList;
+	QMap<QString, QTimer*> m_lifeTimerMap;
+	QSignalMapper* m_timeoutSignalMapper;
+	QMutex m_deleteMutex;
 
 	QMutex m_mutex;
 
@@ -74,6 +85,9 @@ private:
 	void addUavInfoToDb(const UAVPositionData& positionData, const QString& role, const QString& uavType, const QString& status, const QString& deviceType);
 	void sendEnemyUavPoints(const QByteArray& data);
 	void addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy, const QString &role, const QString &uavType, const QString &status, const QString &deviceType);
+
+private slots:
+	void timeoutSlot(const QString& key);
 };
 
 #endif // DBBLAMANAGER_H
