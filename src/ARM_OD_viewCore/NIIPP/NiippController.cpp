@@ -91,9 +91,9 @@ void NiippController::setPoint(QPointF coord)
 {
 	m_controlModel->setPoint(coord);
 
-	QString lat_s = QString::number(coord.x(), 'f', 4);
+	QString lat_s = QString::number(coord.y(), 'f', 4);
 	m_view->setLatText(lat_s);
-	QString lon_s = QString::number(coord.y(), 'f', 4);
+	QString lon_s = QString::number(coord.x(), 'f', 4);
 	m_view->setLonText(lon_s);
 }
 
