@@ -1,18 +1,18 @@
+#include "Tabs/DbBla/Defines.h"
 #include "NIIPPController.h"
 
-#include <QDebug>
-
-NiippController::NiippController(int id, QString name, QPointF latlon, MapController* map_controller, ITabManager* parent_tab,  QObject* parent)
-	: QObject(parent),
-	 m_controlModel( new Niipp(id, name, latlon, map_controller, parent_tab) )
+NiippController::NiippController(int id, QString name, QPointF latlon, IMapController* mapController,
+								 ITabManager* parentTab, QObject* parent)
+	: QObject(parent)
+	, m_model( new Niipp( id, name, latlon, parentTab ) )
 {
 	m_view = NULL;
 
-	connect(this, SIGNAL(angleChanged(double)), this, SLOT(changeAngel(double)));
-	map_controller->getMapClient(1)->setNiippController(this);
-	m_controlModel->create();
+	m_mapController = mapController;
+	m_mapController->setNiippController( this );
+	m_mapController->updateNiippPowerZone( *m_model );
 
-
+	connect( this, SIGNAL(angleChanged(double)), this, SLOT(changeAngel(double)) );
 }
 
 NiippController::~NiippController()
@@ -37,29 +37,32 @@ void NiippController::setData(QByteArray data)
 
 void NiippController::stopClicked()
 {
-	m_controlModel->stopCommad();
+	m_model->stopCommad();
 }
 
 void NiippController::enableComplex(bool state)
 {
-	m_controlModel->enableComplex(state);
+	m_model->enableComplex(state);
 }
 
 void NiippController::clear()
 {
-	m_controlModel->clear();
+	m_model->clear();
+	m_mapController->removeNiippPoint();
 }
 
 void NiippController::changeValuePower(int value)
 {
-	m_controlModel->changeValuePower(value);
-	m_view->changeValuePower( value, m_controlModel->getRadiusCircle()
-									, m_controlModel->getRadiusSector(), m_controlModel->getAntenaType() );
+	m_model->changeValuePower( value );
+	m_view->changeValuePower( value, m_model->getRadiusCircle(),
+							  m_model->getRadiusSector(), m_model->getAntenaType() );
+
+	m_mapController->updateNiippPowerZone( *m_model );
 }
 
 void NiippController::changeAngel(double value)
 {
-	m_controlModel->setAngel(value);
+	m_model->setAngel(value);
 }
 
 void NiippController::setPower(double value)
@@ -74,22 +77,23 @@ void NiippController::setSwitchOn(bool state)
 
 void NiippController::setAntennaType(int value)
 {
-	if(value == 1) {
-		m_controlModel->setMode(m_view->getModeIndex());
+	if( value == 1 ) {
+		m_model->setMode( m_view->getModeIndex() );
 	}
-	m_controlModel->setAntennaType(value);
 
-	m_view->setAntennaType(value, getModeCurrentIndex());
+	m_model->setAntennaType( value );
+	m_view->setAntennaType( m_model->getAntenaType(), getModeCurrentIndex() );
+	m_mapController->updateNiippPowerZone( *m_model );
 }
 
 int NiippController::getId()
 {
-	return m_controlModel->getId();
+	return m_model->getId();
 }
 
 void NiippController::setPoint(QPointF coord)
 {
-	m_controlModel->setPoint(coord);
+	m_model->setPoint(coord);
 
 	QString lat_s = QString::number(coord.y(), 'f', 4);
 	m_view->setLatText(lat_s);
@@ -104,10 +108,10 @@ void NiippController::sendEnemyBpla(QPointF point, QPointF point_uvoda, double a
 		return;
 	}
 
-	m_controlModel->setAntenaIndex(m_view->getAntenaIndex());
-	m_controlModel->setSBpowerValue(m_view->getSbPowerValue());
+	m_model->setAntenaIndex(m_view->getAntenaIndex());
+	m_model->setSBpowerValue(m_view->getSbPowerValue());
 
-	m_controlModel->sendEvil(point, point_uvoda, alt, bearing);
+	m_model->sendEvil(point, point_uvoda, alt, bearing);
 
 }
 
@@ -118,32 +122,43 @@ void NiippController::setAngle(double angle)
 
 QByteArray NiippController::encode(QStringList list)
 {
-	return m_controlModel->encode(list);
+	return m_model->encode(list);
 }
 
 void NiippController::changeMode(int value)
 {
-	m_controlModel->changeMode(value);
+	m_model->changeMode(value);
 }
 
 int NiippController::getAntenaType()
 {
-	return m_controlModel->getAntenaType();
+	return m_model->getAntenaType();
 }
 
 double NiippController::getRadiusCircle()
 {
-	return m_controlModel->getRadiusCircle();
+	return m_model->getRadiusCircle();
 }
 
 double NiippController::getRadiusSector()
 {
-	return m_controlModel->getRadiusSector();
+	return m_model->getRadiusSector();
 }
 
 Niipp::WorkMode NiippController::getModeCurrentIndex()
 {
-	return m_controlModel->getModeCurrentIndex();
+	return m_model->getModeCurrentIndex();
+}
+
+void NiippController::onUavInfoChanged(const UavInfo& uavInfo, const QString& uavRole)
+{
+	if( uavRole != ENEMY_UAV_ROLE ) return;
+
+	/// \todo: I don't know why numbers are 100 and 101. It's became from MapClient1
+	if( getId() == 100 || getId() == 101 ) {
+		QPointF point( uavInfo.lon, uavInfo.lat );
+		sendEnemyBpla( point, m_model->getPoint(), uavInfo.alt, uavInfo.yaw );
+	}
 }
 
 void NiippController::appendView(NiippWidget *view)

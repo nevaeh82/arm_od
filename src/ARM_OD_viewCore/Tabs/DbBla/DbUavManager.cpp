@@ -4,6 +4,8 @@ DbUavManager::DbUavManager(QObject *parent) :
 	QObject(parent)
 {
 	m_dbController = NULL;
+	m_timeoutSignalMapper = new QSignalMapper(this);
+	connect(m_timeoutSignalMapper, SIGNAL(mapped(const QString &)), this, SLOT(timeoutSlot(const QString &)));
 }
 
 DbUavManager::~DbUavManager()
@@ -37,6 +39,8 @@ bool DbUavManager::getUavsByRole(const QString &role, QList<Uav> &uavs)
 
 int DbUavManager::addUavInfo(const UavInfo &uavInfo)
 {
+	QMutexLocker deleteLocker(&m_deleteMutex);
+
 	//	  , _ ,
 	//   ( o o )
 	//  /'` ' `'\
@@ -55,13 +59,28 @@ int DbUavManager::addUavInfo(const UavInfo &uavInfo)
 	}
 
 	QString uavRole = getUavRole(uav.roleId).code;
+	QString key = QString::number(uav.uavId);
 
-	if (!m_knownUavsList.contains(uav.uavId)) {
+	if (!m_knownUavsList.contains(uav.uavId) && !m_lifeTimerMap.contains(key)) {
+
 		m_knownUavsList.insert(uav.uavId, uav);
+
+		QTimer* lifeTimer = new QTimer();
+		connect(lifeTimer, SIGNAL(timeout()), m_timeoutSignalMapper, SLOT(map()));
+		m_timeoutSignalMapper->setMapping(lifeTimer, key);
+		m_lifeTimerMap.insert(key, lifeTimer);
 
 		foreach (IUavDbChangedListener* receiver, m_receiversList){
 			receiver->onUavAdded(uav, uavRole);
 		}
+	}
+
+	//Need to update lifetimer
+	QTimer* lifeTimer = m_lifeTimerMap.value(key, NULL);
+	if (lifeTimer == NULL) {
+		log_debug(QString("...Hmm... lifeTimer is NULL for %1...").arg(QString::number(uav.uavId)));
+	} else {
+		lifeTimer->start(MAX_LIFE_TIME);
 	}
 
 	int newUavInfo = m_dbController->addUavInfo(uavInfo);
@@ -310,4 +329,24 @@ void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy,
 	positionData.boardID = ENEMY_UAV_ID_OFFSET;
 
 	addUavInfoToDb(positionData, role, uavType, status, deviceType);
+}
+
+void DbUavManager::timeoutSlot(const QString& key)
+{
+	QMutexLocker deleteLocker(&m_deleteMutex);
+
+	Uav uav = m_knownUavsList.take(key.toUInt());
+	QTimer* lifeTimer = m_lifeTimerMap.take(key);
+
+	log_debug(QString("DELETING UAV BY ID = %1...").arg(QString::number(uav.uavId)));
+
+	QString uavRole = getUavRole(uav.roleId).code;
+	foreach (IUavDbChangedListener* receiver, m_receiversList){
+		receiver->onUavRemoved(uav, uavRole);
+	}
+
+	if (lifeTimer != NULL){
+		lifeTimer->stop();
+		lifeTimer->deleteLater();
+	}
 }

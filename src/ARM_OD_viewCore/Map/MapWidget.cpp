@@ -8,6 +8,8 @@ MapWidget::MapWidget(QWidget *parent) :
 	, ui(new Ui::MapWidget)
 {
 	ui->setupUi(this);
+
+	connect( ui->_pwwidget, SIGNAL(mapClicked(double,double)), this, SIGNAL(mapClicked(double, double)) );
 }
 
 MapWidget::~MapWidget()

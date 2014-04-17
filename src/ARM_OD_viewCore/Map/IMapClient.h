@@ -11,8 +11,8 @@
 #include <QPointF>
 #include <QByteArray>
 
-#include "NIIPP/INiippController.h"
-
+#include "NIIPP/Niipp.h"
+#include "Tabs/DbBla/Defines.h"
 
 struct DataFly {
 	QString height;
@@ -31,16 +31,17 @@ public:
 	virtual void centerMap() = 0;
 	virtual void justifyMap() = 0;
 
-	virtual void setNiippController( INiiPPController* niippController ) = 0;
-
 	virtual void showLayer( int index, bool state ) = 0;
 
-	virtual void addFriendBpla( int id, QByteArray data ) = 0;
-	virtual void addEnemyBpla( int id, QByteArray data ) = 0;
+	virtual void addFriendBpla( const UavInfo& uav ) = 0;
+	virtual void addEnemyBpla( const UavInfo& uav ) = 0;
+	virtual void removeBpla( const Uav& uav ) = 0;
+
 	virtual void addAis( QMap<int, QVector<QString> > vec ) = 0;
 
-	virtual void updateNiippPowerSector( int id, double radius, double bis, QByteArray ba ) = 0;
-	virtual void updateNiippPowerCicle( int id, double radius, QByteArray ba ) = 0;
+	virtual void addNiippPoint( const QPointF& point ) = 0;
+
+	virtual void updateNiippPowerZone( const Niipp& niipp ) = 0;
 
 	virtual void updatePeleng( int id, int idPost, double lat, double lon, double direction ) = 0;
 
@@ -49,7 +50,7 @@ public:
 
 	virtual void addPerehvatPoint( int blaId, int bplaId, QPointF coord, float hgt, float radius, int time, float intcCourse, float intcSpeed ) = 0;
 
-	virtual void removePointUvoda() = 0;
+	virtual void removeNiippPoint() = 0;
 	virtual void removeAll() = 0;
 };
 

@@ -11,6 +11,8 @@ MainWindowController::MainWindowController(QObject *parent) :
 	m_tabManager = NULL;
 	m_serverHandler = 0;
 	m_rpcConfigClient = NULL;
+
+	qRegisterMetaType<UavInfo>( "UavInfo" );
 }
 
 MainWindowController::~MainWindowController()

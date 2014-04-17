@@ -45,6 +45,7 @@ private:
 	IDbBlaSettingsManager* m_dbBlaSettingsManager;
 	DbUavController* m_dbUavController;
 	DbUavManager* m_dbUav;
+
 public:
 	explicit BLAPerehvatDialog(IMapClient*, QWidget *parent = NULL);
 	~BLAPerehvatDialog();

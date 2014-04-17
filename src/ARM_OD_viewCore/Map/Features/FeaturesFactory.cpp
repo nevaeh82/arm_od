@@ -16,23 +16,14 @@ Ais* FeaturesFactory::createAis(const QString& name, const QPointF& position, do
 					name, position, course );
 }
 
-FriendBpla* FeaturesFactory::createFriendBpla(int id, const QPointF& position)
+FriendBpla* FeaturesFactory::createFriendBpla(const UavInfo& uav)
 {
-	return new FriendBpla( m_provider->objectsFactory(), m_provider->idGenerator()->GetNewID(),
-						   id, position );
+	return new FriendBpla( m_provider->objectsFactory(), m_provider->idGenerator()->GetNewID(), uav );
 }
 
-EnemyBpla* FeaturesFactory::createEnemyBpla(int id, const QPointF& speed,
-											const QVector<QPointF> track, double altitude)
+EnemyBpla* FeaturesFactory::createEnemyBpla(const UavInfo& uav)
 {
-	EnemyBpla* bpla = new EnemyBpla( m_provider->objectsFactory(),
-									 m_provider->idGenerator()->GetNewID(), id );
-
-	bpla->setSpeed( speed );
-	bpla->setTrack( track );
-	bpla->setAltitude( altitude );
-
-	return bpla;
+	return new EnemyBpla( m_provider->objectsFactory(), m_provider->idGenerator()->GetNewID(), uav );
 }
 
 Interception* FeaturesFactory::createInterception(int friendBplaId, int enemyBplaId,
@@ -44,11 +35,9 @@ Interception* FeaturesFactory::createInterception(int friendBplaId, int enemyBpl
 							 speed);
 }
 
-Niipp* FeaturesFactory::createNiipp(int id, const QPointF& position, Niipp::Mode mode, double radius,
-									double angle)
+Niipp* FeaturesFactory::createNiipp( const ::Niipp& niipp )
 {
-	return new Niipp( m_provider->objectsFactory(), m_provider->idGenerator()->GetNewID(),
-					  id, position, mode, radius, angle );
+	return new Niipp( m_provider->objectsFactory(), m_provider->idGenerator()->GetNewID(), niipp );
 }
 
 NiippPoint* FeaturesFactory::createNiippPoint(const QPointF& position)

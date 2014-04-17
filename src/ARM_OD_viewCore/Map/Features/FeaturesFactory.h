@@ -23,10 +23,10 @@ public:
 					QObject* parent = NULL);
 
 	virtual Ais*          createAis( const QString& name, const QPointF& position, double course );
-	virtual FriendBpla*   createFriendBpla( int id, const QPointF& position );
-	virtual EnemyBpla*    createEnemyBpla( int id, const QPointF& speed, const QVector<QPointF> track, double altitude );
+	virtual FriendBpla*   createFriendBpla( const UavInfo& uav );
+	virtual EnemyBpla*    createEnemyBpla( const UavInfo& uav );
 	virtual Interception* createInterception( int friendBplaId, int enemyBplaId, const QPointF& position, float height, float radius, float angle, float speed );
-	virtual Niipp*        createNiipp( int id, const QPointF& position, Niipp::Mode mode, double radius, double angle = 0 );
+	virtual Niipp*        createNiipp( const ::Niipp& niipp );
 	virtual NiippPoint*   createNiippPoint( const QPointF& position = QPointF() );
 	virtual Station*      createStation( const QString& name, const QPointF& position = QPointF() );
 	virtual Pelengator*   createPelengator(int id, const QPointF& position, double angle );

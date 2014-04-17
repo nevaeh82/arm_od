@@ -3,10 +3,10 @@
 
 #include <QPointF>
 
-class INiiPPController
+class INiippController
 {
 public:
-	virtual ~INiiPPController() {}
+	virtual ~INiippController() {}
 
 	virtual void setPower(double value) = 0;
 	virtual void setSwitchOn(bool state) = 0;

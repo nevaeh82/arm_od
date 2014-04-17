@@ -96,7 +96,8 @@ HEADERS += \
 	Map/Features/NiippPointFeature.h \
 	Map/Features/PelengatorPointFeature.h \
 	Tabs/Solver/SolverSettingsDialog.h \
-    Map/Features/CheckPointFeature.h
+    Map/Features/CheckPointFeature.h \
+    Map/Features/BplaAbstractFeature.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -138,7 +139,8 @@ SOURCES += \
 	Map/Features/NiippPointFeature.cpp \
 	Map/Features/PelengatorPointFeature.cpp \
 	Tabs/Solver/SolverSettingsDialog.cpp \
-    Map/Features/CheckPointFeature.cpp
+    Map/Features/CheckPointFeature.cpp \
+    Map/Features/BplaAbstractFeature.cpp
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \

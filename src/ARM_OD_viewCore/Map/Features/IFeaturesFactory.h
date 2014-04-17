@@ -7,6 +7,8 @@
 
 #include <PwGis/objects/MapObjectsFactory.h>
 
+#include "Tabs/DbBla/Defines.h"
+
 #include "Map/Features/AisFeature.h"
 #include "Map/Features/EnemyBplaFeature.h"
 #include "Map/Features/FriendBplaFeature.h"
@@ -18,6 +20,8 @@
 #include "Map/Features/StationFeature.h"
 #include "Map/Features/CheckPointFeature.h"
 
+#include "NIIPP/Niipp.h"
+
 namespace MapFeature {
 
 class IFeaturesFactory
@@ -26,10 +30,10 @@ public:
 	virtual ~IFeaturesFactory() {}
 
 	virtual Ais*          createAis( const QString& name, const QPointF& position, double course ) = 0;
-	virtual FriendBpla*   createFriendBpla( int id, const QPointF& position ) = 0;
-	virtual EnemyBpla*    createEnemyBpla( int id, const QPointF& speed, const QVector<QPointF> track, double altitude ) = 0;
+	virtual FriendBpla*   createFriendBpla( const UavInfo& uav ) = 0;
+	virtual EnemyBpla*    createEnemyBpla( const UavInfo& uav ) = 0;
 	virtual Interception* createInterception( int friendBplaId, int enemyBplaId, const QPointF& position, float height, float radius, float angle, float speed ) = 0;
-	virtual Niipp*        createNiipp( int id, const QPointF& position, Niipp::Mode mode, double radius, double angle = 0 ) = 0;
+	virtual Niipp*        createNiipp( const ::Niipp& niipp ) = 0;
 	virtual NiippPoint*   createNiippPoint( const QPointF& position = QPointF() ) = 0;
 	virtual Station*      createStation( const QString& name, const QPointF& position = QPointF() ) = 0;
 	virtual Pelengator*   createPelengator( int id, const QPointF& position, double angle ) = 0;

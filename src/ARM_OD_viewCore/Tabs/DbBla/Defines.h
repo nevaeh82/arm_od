@@ -4,6 +4,7 @@
 #include <QtGlobal>
 #include <QTime>
 #include <QDateTime>
+#include <QMetaType>
 
 #define FRIEND_UAV_ROLE "friendUavRole"
 #define OUR_UAV_ROLE "ourUavRole"
@@ -26,6 +27,8 @@ typedef struct Uav
 	}
 
 } Uav;
+
+Q_DECLARE_METATYPE( Uav )
 
 typedef struct UavRole
 {
