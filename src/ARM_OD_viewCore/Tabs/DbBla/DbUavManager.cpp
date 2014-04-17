@@ -304,8 +304,8 @@ void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy,
 	positionData.speed = positionDataEnemy.speed;
 	positionData.state = positionDataEnemy.state;
 
-	positionData.latitude = positionDataEnemy.pointStdDev.x();
-	positionData.longitude = positionDataEnemy.pointStdDev.y();
+	positionData.latitude=positionDataEnemy.track.at(0).x();
+	positionData.longitude=positionDataEnemy.track.at(0).y();
 
 	positionData.boardID = ENEMY_UAV_ID_OFFSET;
 
