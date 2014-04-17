@@ -3,20 +3,18 @@
 #include <QLabel>
 #include <QCursor>
 
-#include "Logger.h"
+#include <Logger.h>
 
-#include "../Icons/IconsGenerator.h"
-
-#include "../UAV/ZInterception.h"
+#include "Icons/IconsGenerator.h"
+#include "UAV/ZInterception.h"
+#include "Tabs/DbBla/Defines.h"
 
 MapController::MapController(QObject *parent):
 	QObject(parent)
 {
 	m_view = NULL;
-
 	m_mapModel = new Map(this);
 	m_pelengEvilIds = 0;
-	m_rdsEvilIds = 50;
 }
 
 MapController::~MapController()
@@ -24,16 +22,15 @@ MapController::~MapController()
 	log_debug("~MapController()");
 }
 
-void MapController::init(QMap<int, Station*> map_settings)
+void MapController::init(QMap<int, Station*> stations)
 {
-	m_mapModel->setMapManager(m_view->getPwGis()->mapProvider()->mapManager());
-	m_mapModel->setProfileManager(m_view->getPwGis()->mapProvider()->profileManager());
-
-	connect(m_mapModel, SIGNAL(modelMapReady()), this, SLOT(onMapReady()));
+	m_mapModel->setMapManager( m_view->getPwGis()->mapProvider()->mapManager() );
+	m_mapModel->setProfileManager( m_view->getPwGis()->mapProvider()->profileManager() );
+	m_mapModel->init( stations, m_view->getPwGis() );
 
 	m_view->getPwGis()->enableDebugger(false);
 
-	m_mapModel->init(map_settings, m_view->getPwGis());
+	connect( m_mapModel, SIGNAL(modelMapReady()), this, SLOT(onMapReady()) );
 }
 
 void MapController::openMapFromAtlas()
@@ -41,11 +38,11 @@ void MapController::openMapFromAtlas()
 	m_mapModel->openAtlas();
 }
 
-void MapController::openMapFromLocalFile(/*const QString mapFile*/)
+void MapController::openMapFromLocalFile()
 {
 	QString filename = QFileDialog::getOpenFileName(
 		m_view,
-		tr("Open map"),
+		tr( "Open map" ),
 		QDir::currentPath(),
 		tr( "Map files (*.chart *.sxf *.sit *.map *.gc *.gst)" ) );
 	if ( !filename.isNull() ) {
@@ -60,16 +57,53 @@ void MapController::onMapReady()
 	emit mapOpened();
 }
 
-void MapController::_slot_station_visible(bool state)
+void MapController::onMapClicked(double lon, double lat)
+{
+	IMapClient* client = getMapClient();
+	if( NULL == client ) return;
+
+	QPointF point( lon, lat );
+
+	client->addNiippPoint( point );
+
+	if( m_niippControllers.contains( 100 ) ) {
+		m_niippControllers.value( 100 )->setPoint( point );
+	}
+
+	if( m_niippControllers.contains( 101 ) ) {
+		m_niippControllers.value( 101 )->setPoint( point );
+	}
+}
+
+void MapController::setStationVisible(bool state)
 {
 	m_mapModel->setStationVisible(state);
 }
 
-
-/// get map client by name
 IMapClient *MapController::getMapClient(int id)
 {
 	return m_mapModel->getMapClient(id);
+}
+
+void MapController::setNiippController(INiippController* controller)
+{
+	m_niippControllers.insert( controller->getId(), controller );
+}
+
+void MapController::updateNiippPowerZone(const Niipp& niipp)
+{
+	IMapClient* client = getMapClient();
+	if( NULL == client ) return;
+
+	client->updateNiippPowerZone( niipp );
+}
+
+void MapController::removeNiippPoint()
+{
+	IMapClient* client = getMapClient();
+	if( NULL == client ) return;
+
+	client->removeNiippPoint();
 }
 
 void MapController::appendView(MapWidget *view)
@@ -87,67 +121,54 @@ void MapController::closeAtlas()
 	m_mapModel->closeAtlas();
 }
 
-/// TODO : Refactor this peace of shit
-void MapController::onMethodCalled(const QString& method, const QVariant& argument)
+IMapClient* MapController::getMapClient()
 {
 	int mapClientId = 1; // I do not know, why.. Don't ask me.
+	return getMapClient( mapClientId );
+}
+
+void MapController::onUavRemoved(const Uav& uav, const QString&)
+{
+	IMapClient* client = getMapClient();
+	if( NULL == client ) return;
+
+	client->removeBpla( uav );
+}
+
+void MapController::onUavInfoChanged(const UavInfo& uavInfo, const QString& uavRole)
+{
+	IMapClient* client = getMapClient();
+	if( NULL == client ) return;
+
+	if( uavRole == OUR_UAV_ROLE ) {
+		client->addFriendBpla( uavInfo );
+		return;
+	}
+
+	if( uavRole == ENEMY_UAV_ROLE ) {
+		client->addEnemyBpla( uavInfo );
+		return;
+	}
+}
+
+/// \todo Refactor this peace of shit
+void MapController::onMethodCalled(const QString& method, const QVariant& argument)
+{
+	IMapClient* client = getMapClient();
+	if( NULL == client ) return;
+
 	QByteArray data = argument.toByteArray();
 
-	if (method == RPC_SLOT_SERVER_SEND_BLA_POINTS) {
-
-		QDataStream inputDataStream(&data, QIODevice::ReadOnly);
-		QVector<UAVPositionData> positionDataVector;
-		inputDataStream >> positionDataVector;
-
-		if (positionDataVector.size() < 1) {
-			log_debug("Size uavpositiondata vector < 1");
-			return;
-		}
-
-		/// Now we take first point, but we need to take more than 1 point
-		UAVPositionData positionData = positionDataVector.at(0);
-
-		int id = positionData.boardID; /// need quint16
-		QPointF point;
-		point.setX(positionData.latitude);
-		point.setY(positionData.longitude);
-		double alt = positionData.altitude;
-		double speed = positionData.speed;
-		double course = positionData.course;
-		int state = positionData.state;
-
-		QByteArray ddd;
-		QDataStream ds(&ddd, QIODevice::WriteOnly);
-		ds << point;
-		ds << alt;
-		ds << speed;
-		ds << course;
-		ds << state;
-
-		IMapClient* client = getMapClient(mapClientId);
-
-		if (NULL == client) {
-			return;
-		}
-
-		client->addFriendBpla(id, ddd);
-	} else if (method == RPC_SLOT_SERVER_SEND_AIS_DATA) {
-
+	if( method == RPC_SLOT_SERVER_SEND_AIS_DATA ) {
 		QDataStream ds(&data, QIODevice::ReadOnly);
 		QMap<int, QVector<QString> > map;
 		ds >> map;
 
-		IMapClient* client = getMapClient(mapClientId);
-
-		if (NULL == client) {
-			return;
-		}
-
 		client->addAis(map);
-	} else if (method == RPC_SLOT_SERVER_SEND_NIIPP_DATA) {
-
+	} else if( method == RPC_SLOT_SERVER_SEND_NIIPP_DATA ) {
 		QDataStream ds(&data, QIODevice::ReadOnly);
 
+		int id;
 		QDateTime dt;
 		QTime time;
 		int mode;
@@ -159,10 +180,7 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 		int course;
 		int angle;
 
-		int id;
-
 		ds >> id;
-
 		ds >> dt;
 		ds >> time;
 		ds >> mode;
@@ -174,52 +192,31 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 		ds >> course;
 		ds >> angle;
 
-		QByteArray ba;
-		QDataStream ds1(&ba, QIODevice::WriteOnly);
-
 		QPointF latlon;
-		if (id == 100) {
-			latlon.setX(42.511183);
-			latlon.setY(41.6905);
-		}
-		if (id == 101) {
-			latlon.setX(42.634183);
-			latlon.setY(41.912167);
-		}
+		switch( id ) {
+			case 100:
+				latlon.setX(42.511183);
+				latlon.setY(41.6905);
+				break;
 
-		QString name = QString::number(id) + " - niipp";
-		double wid = 25;
-		ds1 << name;
-		ds1 << latlon;
-		ds1 << wid;
-
-
-		if(mode == 01) {
-			IMapClient* client = getMapClient(mapClientId);
-
-			if (NULL == client) {
-				return;
-			}
-
-			client->updateNiippPowerCicle(id, m_zone[zone], ba);
+			case 101:
+				latlon.setX(42.634183);
+				latlon.setY(41.912167);
+				break;
 		}
 
-		if(mode == 10) {
-			IMapClient* client = getMapClient(mapClientId);
+		Niipp niipp( id, QString::number( id ), latlon, NULL );
+		niipp.setAntennaType( mode == 1 ? 1 : 0 );
+		niipp.changeValuePower( zone );
 
-			if (NULL == client) {
-				return;
-			}
-
-			client->updateNiippPowerSector(id, m_zoneDir[zone], course, NULL);
-		}
+		client->updateNiippPowerZone( niipp );
 
 		/// TODO: recheck following. WTF?!
 //		QByteArray ba1;
 //		QDataStream ds2(&ba1, QIODevice::WriteOnly);
 //		ds2 << mode;
 //		m_tabManager->send_data_niipp_control(id, ba1);
-	} else if (method == RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION) {
+	} else if( method == RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION ) {
 
 		QDataStream ds(&data, QIODevice::ReadWrite);
 		A_Dir_Ans_msg msg;
@@ -241,14 +238,8 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 
 		int id_post = msg.post.right(1).toInt();
 
-		IMapClient* client = getMapClient(mapClientId);
-
-		if (NULL == client) {
-			return;
-		}
-
 		client->updatePeleng(msg.sourceId, id_post, msg.postLatitude, msg.postLongitude, msg.direction);
-	} else if (method == RPC_SLOT_SERVER_SEND_ATLANT_POSITION) {
+	} else if( method == RPC_SLOT_SERVER_SEND_ATLANT_POSITION ) {
 
 		QDataStream ds(&data, QIODevice::ReadWrite);
 		A_Pos_Ans_msg msg;
@@ -259,57 +250,19 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 		ds >> msg.longitude;
 		ds >> msg.quality;
 
-		if(!m_mapPelengEvilIds.contains(msg.sourceId)) {
-			m_mapPelengEvilIds.insert(msg.sourceId, ++m_pelengEvilIds);
-			if(m_pelengEvilIds > 49) {
+		if( !m_mapPelengEvilIds.contains( msg.sourceId ) ) {
+			m_mapPelengEvilIds.insert( msg.sourceId, ++m_pelengEvilIds );
+			if( m_pelengEvilIds > 49 ) {
 				m_pelengEvilIds = 0;
 				m_mapPelengEvilIds.clear();
 			}
 		}
 
-		QPointF point(msg.longitude, msg.latitude);
+		UavInfo uav;
+		uav.uavId = m_mapPelengEvilIds.value( msg.sourceId );
+		uav.lon = msg.longitude;
+		uav.lat = msg.latitude;
 
-		QByteArray ba1;
-		QDataStream ds1(&ba1, QIODevice::WriteOnly);
-		ds1 << point;
-
-		log_debug(QString("ID = %1 %2 %3").arg(m_mapPelengEvilIds.size()).arg(m_pelengEvilIds).arg(m_mapPelengEvilIds.value(msg.sourceId)));
-
-		IMapClient* client = getMapClient(mapClientId);
-
-		if (NULL == client) {
-			return;
-		}
-
-		client->addEnemyBpla(m_mapPelengEvilIds.value(msg.sourceId), ba1);
-	} else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS) {
-		sendEnemyUavPoints(data, mapClientId);
-	} else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO) {
-		sendEnemyUavPoints(data, mapClientId);
+		client->addEnemyBpla( uav );
 	}
-}
-
-void MapController::sendEnemyUavPoints(const QByteArray& data, const int& mapClientId)
-{
-	QByteArray inputData = data;
-	QDataStream inputDataStream(&inputData, QIODevice::ReadOnly);
-	UAVPositionDataEnemy uavEnemy;
-	inputDataStream >> uavEnemy;
-
-	QByteArray oldDataFormat;
-	QDataStream ds(&oldDataFormat, QIODevice::WriteOnly);
-	ds << 10 << uavEnemy.state << uavEnemy.pointStdDev << uavEnemy.track << uavEnemy.speed
-	   << uavEnemy.altitude << uavEnemy.course;
-
-	if(m_rdsEvilIds > 99){
-		m_rdsEvilIds = 50;
-	}
-
-	IMapClient* client =  getMapClient(mapClientId);
-
-	if (NULL == client) {
-		return;
-	}
-
-	client->addEnemyBpla(m_rdsEvilIds, oldDataFormat);
 }

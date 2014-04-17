@@ -6,6 +6,8 @@
 
 #include "Map/Features/FeatureAbstract.h"
 
+#include "Niipp/Niipp.h"
+
 namespace MapFeature {
 
 class FeaturesFactory;
@@ -27,8 +29,7 @@ protected:
 	double m_radius;
 	double m_angle;
 
-	Niipp(IObjectsFactory* factory, const QString& id, int niippId, const QPointF& position,
-				 Mode mode, double radius, double angle = 0);
+	Niipp(IObjectsFactory* factory, const QString& id, const ::Niipp& niipp);
 
 public:
 	virtual ~Niipp();
@@ -40,13 +41,13 @@ public:
 	///					Must use the projection EPSG:28406,28407...; EPSG:32636,32637...
 	/// \link http://192.168.13.65/pulse/pulse4/index.php?page=task&id=5004&aspect=plan
 	void setRadius(double value);
-	void setAngle(float value);
+	void setAngle(double value);
 
 	inline Mode mode() { return m_mode; }
 	inline float radius() { return m_radius; }
 	inline float angle() { return m_angle; }
 
-	void update( const QPointF& position, Mode mode, double radius, double angle = 0 );
+	void update(const ::Niipp& niipp);
 
 	virtual void updateMap();
 	virtual void removeFromMap();

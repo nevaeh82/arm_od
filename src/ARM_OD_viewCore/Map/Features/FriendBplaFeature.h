@@ -4,30 +4,28 @@
 #include <PwGis/PwGisPointList.h>
 #include <PwGis/objects/Path.h>
 
-#include "Map/Features/MarkerFeature.h"
+#include "Map/IMapStyleManager.h"
+#include "Map/Features/BplaAbstractFeature.h"
 
 namespace MapFeature {
 
 class FeaturesFactory;
 
 /// Friend BPLA feature representation on map
-class FriendBpla : public Marker
+class FriendBpla : public BplaAbstract
 {
 	friend class FeaturesFactory;
 
 protected:
-	Path* m_tail;
+	inline void updateName() {}
+	virtual inline QString getStyleName() const { return MAP_STYLE_NAME_FRIEND_BPLA; }
 
-	FriendBpla(IObjectsFactory* factory, const QString& id, int bplaId , QPointF position);
+	FriendBpla(IObjectsFactory* factory, const QString& id, const UavInfo& uav);
 
 public:
-	virtual ~FriendBpla();
+	virtual ~FriendBpla() {}
 
 	virtual void setName(const QString &name);
-	virtual void setPosition(const QPointF &position);
-
-	virtual void updateMap();
-	virtual void removeFromMap();
 };
 
 } // namespace MapFeature

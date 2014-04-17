@@ -4,47 +4,30 @@
 #include <PwGis/PwGisPointList.h>
 #include <PwGis/objects/Path.h>
 
-#include "Map/Features/MarkerFeature.h"
+#include "Map/IMapStyleManager.h"
+#include "Map/Features/BplaAbstractFeature.h"
 
 namespace MapFeature {
 
 class FeaturesFactory;
 
 /// Enemy BPLA feature representation on map
-class EnemyBpla : public Marker
+class EnemyBpla : public BplaAbstract
 {
 	friend class FeaturesFactory;
 
 protected:
-	Path* m_tail;
 	QString m_originName;
-	QVector<QPointF> m_track;
-	double m_altitude;
-	QPointF m_speed;
 
-	EnemyBpla(IObjectsFactory* factory, const QString& id, int bplaId);
+	inline void updateName() { setName( m_originName ); }
+	virtual inline QString getStyleName() const { return MAP_STYLE_NAME_ENEMY_BPLA; }
 
-	void inline updateName() { setName( m_originName ); }
+	EnemyBpla(IObjectsFactory* factory, const QString& id, const UavInfo& uav);
 
 public:
-	virtual ~EnemyBpla();
+	virtual ~EnemyBpla() {}
 
 	virtual void setName(const QString &name);
-	virtual void setPosition(const QPointF &position);
-
-	void setAltitude(double altitude);
-	inline double altitude() { return m_altitude; }
-
-	void setTrack(const QVector<QPointF>& track);
-	inline const QVector<QPointF>& track() { return m_track; }
-
-	void setSpeed(const QPointF& speed);
-	inline const QPointF& speed() { return m_speed; }
-
-	void update(double altitude, const QPointF& speed, const QVector<QPointF>& track);
-
-	virtual void updateMap();
-	virtual void removeFromMap();
 };
 
 } // namespace MapFeature

@@ -1,6 +1,16 @@
+#include <QDateTime>
+#include <QStringList>
+
 #include "Niipp.h"
 
-Niipp::Niipp(int id, QString name, QPointF latlon, MapController* mapController, ITabManager* parentTab)
+const double m_zone[24] = {1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5,
+					   5, 6, 7, 8, 9, 10, 11, 12, 14, 16,
+					   18, 20, 22, 24, 28, 30};
+const double m_zoneDir[28] = {2.5, 3, 4, 5,
+					   6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20,
+					   22, 26, 29, 33, 37, 41, 47, 52, 57, 62, 68, 72, 76};
+
+Niipp::Niipp(int id, QString name, QPointF latlon, ITabManager* parentTab)
 	: m_numberCommand("0200")
 	, m_antenaType(0)
 	, m_widthAngle(25)
@@ -14,22 +24,9 @@ Niipp::Niipp(int id, QString name, QPointF latlon, MapController* mapController,
 	m_name = name;
 	m_latlon = latlon;
 	m_parentTab = parentTab;
-	m_mapController = mapController;
 	m_radiusSector = 0;
 	m_radiusCircle = 0;
 	m_angel = 0;
-}
-
-void Niipp::create()
-{
-	QByteArray ba;
-	QDataStream ds(&ba, QIODevice::WriteOnly);
-
-	ds << m_name;
-	ds << m_latlon;
-	ds << m_widthAngle;
-
-	m_mapController->getMapClient(1)->updateNiippPowerSector(m_id, 0, m_angel, ba);
 }
 
 void Niipp::setAngel(double value)
@@ -39,6 +36,8 @@ void Niipp::setAngel(double value)
 
 void Niipp::stopCommad()
 {
+	if( m_parentTab == NULL ) return;
+
 	QByteArray ba;
 	QDataStream ds(&ba, QIODevice::WriteOnly);
 
@@ -83,6 +82,8 @@ void Niipp::stopCommad()
 
 void Niipp::enableComplex(bool state)
 {
+	if( m_parentTab == NULL ) return;
+
 	QByteArray ba;
 	QDataStream ds(&ba, QIODevice::WriteOnly);
 
@@ -139,55 +140,31 @@ void Niipp::clear()
 {
 	m_pointUvodeNiipp.setX(0);
 	m_pointUvodeNiipp.setY(0);
-
-	m_mapController->getMapClient(1)->removePointUvoda();
 }
 
 void Niipp::changeValuePower(int value)
 {
-	QByteArray ba;
-	QDataStream ds(&ba, QIODevice::WriteOnly);
+	switch( m_antenaType ) {
+		case 0:
+			m_radiusSector = m_zoneDir[value];
+			break;
 
-	ds << m_name;
-	ds << m_latlon;
-	ds << m_widthAngle;
-
-	if(m_antenaType == 0)
-	{
-		m_mapController->getMapClient(1)->updateNiippPowerSector(m_id, m_zoneDir[value], m_angel, ba);
-		m_radiusSector = m_zoneDir[value];
-	}
-	if(m_antenaType == 1)
-	{
-		m_mapController->getMapClient(1)->updateNiippPowerCicle(m_id, m_zone[value], ba);
-		m_radiusCircle = m_zone[value];
+		case 1:
+			m_radiusCircle = m_zone[value];
+			break;
 	}
 }
 
 void Niipp::setAntennaType(int value)
 {
 	m_antenaType = value;
-
-	QByteArray ba;
-	QDataStream ds(&ba, QIODevice::WriteOnly);
-
-	ds << m_name;
-	ds << m_latlon;
-	ds << m_widthAngle;
-
-	if(m_antenaType == 1)
-	{
-		m_mapController->getMapClient(1)->updateNiippPowerCicle(m_id, m_radiusCircle, ba);
-	}
-	else
-	{
-		m_mapController->getMapClient(1)->updateNiippPowerSector(m_id, m_radiusSector, m_angel, ba);
-	}
 }
 
 void Niipp::sendEvil(const QPointF& point, const QPointF& point_uvoda, double alt, double bearing)
 {
 	Q_UNUSED(point_uvoda);
+
+	if( m_parentTab == NULL ) return;
 
 	QByteArray ba;
 	QDataStream ds(&ba, QIODevice::ReadWrite);
@@ -251,29 +228,13 @@ void Niipp::sendEvil(const QPointF& point, const QPointF& point_uvoda, double al
 	m_parentTab->send_data(0, msg);
 }
 
-int Niipp::getId()
+double Niipp::getRadius() const
 {
-	return m_id;
-}
-
-int Niipp::getAntenaType()
-{
-	return m_antenaType;
-}
-
-double Niipp::getRadiusCircle()
-{
-	return m_radiusCircle;
-}
-
-double Niipp::getRadiusSector()
-{
-	return m_radiusSector;
-}
-
-Niipp::WorkMode Niipp::getModeCurrentIndex()
-{
-	return m_modeCurrentIndex;
+	switch( m_antenaType ) {
+		case 0: return m_radiusSector;
+		case 1: return m_radiusCircle;
+		default: return 0;
+	}
 }
 
 QByteArray Niipp::encode(QStringList list)

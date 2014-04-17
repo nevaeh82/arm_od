@@ -3,11 +3,10 @@
 
 namespace MapFeature {
 
-Niipp::Niipp(IObjectsFactory* factory, const QString& id, int niippId, const QPointF& position,
-			 Niipp::Mode mode, double radius, double angle)
-	: FeatureAbstract( factory, id, "", position )
-	, m_niippId( niippId )
-	, m_mode( mode )
+Niipp::Niipp(IObjectsFactory* factory, const QString& id, const ::Niipp& niipp)
+	: FeatureAbstract( factory, id, niipp.getName(), niipp.getPoint() )
+	, m_niippId( niipp.getId() )
+	, m_mode( (Mode) niipp.getAntenaType() )
 {
 	m_circle = factory->createCircle();
 	m_circle->setOriginPoint( &m_position );
@@ -17,8 +16,8 @@ Niipp::Niipp(IObjectsFactory* factory, const QString& id, int niippId, const QPo
 	m_sector->setOriginPoint( &m_position );
 	m_sector->addStyleByName( MAP_STYLE_NAME_NIIPP );
 
-	setRadius( radius );
-	setAngle( angle );
+	setRadius( niipp.getRadius() );
+	setAngle( niipp.getAngle() );
 }
 
 Niipp::~Niipp()
@@ -60,7 +59,7 @@ void Niipp::setRadius(double value)
 	m_sector->setRadius( m_radius );
 }
 
-void Niipp::setAngle(float value)
+void Niipp::setAngle(double value)
 {
 	m_angle = value;
 
@@ -79,27 +78,27 @@ void Niipp::setAngle(float value)
 	m_sector->setEndAngle( endAngle );
 }
 
-void Niipp::update(const QPointF& position, Niipp::Mode mode, double radius, double angle)
+void Niipp::update(const ::Niipp& niipp)
 {
 	bool changed = false;
 
-	if( position != this->position() ) {
-		setPosition( position );
+	if( niipp.getPoint() != this->position() ) {
+		setPosition( niipp.getPoint() );
 		changed = true;
 	}
 
-	if( mode != m_mode ) {
-		setMode( mode );
+	if( niipp.getAntenaType() != m_mode ) {
+		setMode( (Mode) niipp.getAntenaType() );
 		changed = true;
 	}
 
-	if( radius != m_radius) {
-		setRadius( m_radius );
+	if( niipp.getRadius() != m_radius) {
+		setRadius( niipp.getRadius() );
 		changed = true;
 	}
 
-	if( angle != m_angle ) {
-		setAngle( m_angle );
+	if( niipp.getAngle() != m_angle ) {
+		setAngle( niipp.getAngle() );
 		changed = m_mode == Directed;
 	}
 

@@ -23,6 +23,8 @@ public:
 private:
 	Ui::MapWidget *ui;
 
+signals:
+	void mapClicked(double, double);
 };
 
 #endif // MAPCONTROLLERWIDGET_H

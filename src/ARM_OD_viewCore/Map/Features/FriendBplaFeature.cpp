@@ -3,62 +3,23 @@
 
 namespace MapFeature {
 
-FriendBpla::FriendBpla(IObjectsFactory* factory , const QString& id, int bplaId,
-					   QPointF position)
-	: Marker( factory, id, QString(), position )
+FriendBpla::FriendBpla(IObjectsFactory* factory, const QString& id, const UavInfo& uav)
+	: BplaAbstract( factory, id, uav )
 {
-	m_marker->addStyleByName( MAP_STYLE_NAME_FRIEND_BPLA );
-
-	m_tail = factory->createPath();
-	m_tail->addStyleByName( MAP_STYLE_NAME_FRIEND_BPLA );
-
-	setName( QString::number( bplaId ) );
-	setPosition( position );
-}
-
-FriendBpla::~FriendBpla()
-{
-	m_tail->removeFromMap();
-	delete m_tail;
+	registerStyle();
+	setName( QString::number( uav.uavId ) );
 }
 
 void FriendBpla::setName(const QString& name)
 {
 	int id = name.toInt();
-	if( id > 0 ) {
-		QString newName = id == 1044 ? QObject::tr("UAV-C") : (QString( QObject::tr("UAV (#%1)") ).arg( id ));
-		Marker::setName( newName );
-	}
-}
-
-void FriendBpla::setPosition(const QPointF& position)
-{
-	Marker::setPosition( position );
-
-	PwGisPointList* points = m_tail->points();
-
-	points->append( new PwGisLonLat( m_position ) );
-
-	while( points->length() > 100 ) {
-		points->removeFirst();
-	}
-
-	if ( points->first() == points->last() ) {
-		removeFromMap();
+	if( id <= 0 ) {
+		Marker::setName( name );
 		return;
 	}
-}
 
-void FriendBpla::updateMap()
-{
-	m_tail->updateMap();
-	Marker::updateMap();
-}
-
-void FriendBpla::removeFromMap()
-{
-	m_tail->removeFromMap();
-	Marker::removeFromMap();
+	QString newName = id == 1044 ? QObject::tr( "UAV-C" ) : QObject::tr( "UAV (#%1)" ).arg( id );
+	Marker::setName( newName );
 }
 
 } // namespace MapFeature

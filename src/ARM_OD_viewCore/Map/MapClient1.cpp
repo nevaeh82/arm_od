@@ -22,46 +22,50 @@ MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 	m_sliceChanged = false;
 
 	m_pwWidget = pwWidget;
-	m_mapBounds = m_pwWidget->mapProvider()->mapBounds();
+	m_bounds = m_pwWidget->mapProvider()->mapBounds();
 	m_station = station;
-	m_mainLatitude = m_station->latitude;
-	m_mainLongitude = m_station->longitude;
-	m_lastCoord = new QMap<int, PwGisPointList* >;
 
-	m_updateTimer = new QTimer();
-	connect( m_updateTimer, SIGNAL( timeout() ), this, SLOT( updatePoints() ) );
-
-	connect( this, SIGNAL( friendBplaAdded( int,QByteArray ) ),
-			 this, SLOT( setCurrentPoint( int,QByteArray ) ) );
-
-	connect( this, SIGNAL( enemyBplaAdded( int,QByteArray ) ),
-			 this, SLOT( setCurrentPoint( int,QByteArray ) ) );
-
-	connect( this, SIGNAL( interceptionAdded( int, int ) ),
-			 this, SLOT( addPerehvatData( int, int ) ) );
-
-	connect( this, SIGNAL( interceptionRemoved( int, int ) ),
-			 this, SLOT( removeInterceptionData( int, int ) ) );
-
+	/// \todo I don't know what is there for these timers, maybe it was some code for demo?
 	m_uiTimer = new QTimer( this );
 	connect( m_uiTimer, SIGNAL( timeout() ), this, SLOT( updateCircle() ) );
 	m_uiTimer->setInterval( 100 );
-	m_uiTimer->start();
+	//m_uiTimer->start();
 
 	m_uiTimerSlice = new QTimer( this );
 	connect( m_uiTimerSlice, SIGNAL( timeout() ), this, SLOT( updateSlice() ) );
-	m_uiTimerSlice->setInterval( 100 );
+	//m_uiTimerSlice->setInterval( 100 );
 
-	m_perehvat = new ZInterception( this );
+	m_interception = new ZInterception( this );
 	QThread* thread = new QThread;
-	connect( m_perehvat, SIGNAL( finished() ), thread, SLOT( quit() ) );
-	connect( m_perehvat, SIGNAL( finished() ), m_perehvat, SLOT( deleteLater() ) );
+	connect( m_interception, SIGNAL( finished() ), thread, SLOT( quit() ) );
+	connect( m_interception, SIGNAL( finished() ), m_interception, SLOT( deleteLater() ) );
 	connect( thread, SIGNAL( finished() ), thread, SLOT( deleteLater() ) );
-	m_perehvat->moveToThread( thread );
+	m_interception->moveToThread( thread );
 	thread->start();
 
-	connect( this, SIGNAL( interceptionPointAdded( int, int, QPointF, float, float, int, float, float) ),
-		this, SLOT( addInterceptionPointData( int, int, QPointF, float, float, int, float, float ) ) );
+	connect( &m_bplaRedrawTimer, SIGNAL( timeout() ), SLOT( redrawAllBpla()) );
+	m_bplaRedrawTimer.start( 1000 );
+
+	connect( this, SIGNAL(friendBplaAdded(UavInfo)),
+			 this, SLOT(addFriendBplaInternal(UavInfo)) );
+
+	connect( this, SIGNAL(enemyBplaAdded(UavInfo)),
+			 this, SLOT(addEnemyBplaInternal(UavInfo)) );
+
+	connect( this, SIGNAL(bplaRemoved(Uav)),
+			 this, SLOT(removeBplaInternal(Uav)) );
+
+	connect( this, SIGNAL(niippPowerZoneUpdated(Niipp)),
+			 this, SLOT(addNiipInternal(Niipp)) );
+
+	connect( this, SIGNAL(interceptionAdded(int, int)),
+			 this, SLOT(addPerehvatData(int, int)) );
+
+	connect( this, SIGNAL(interceptionRemoved(int, int)),
+			 this, SLOT(removeInterceptionData(int, int)) );
+
+	connect( this, SIGNAL(interceptionPointAdded(int, int, QPointF, float, float, int, float, float)),
+			 this, SLOT(addInterceptionPointData(int, int, QPointF, float, float, int, float, float)) );
 }
 
 MapClient1::~MapClient1()
@@ -108,32 +112,11 @@ void MapClient1::init()
 	//addNiippLayer
 	m_pwWidget->mapProvider()->layerManager()->addVectorLayer( "layer_11_NIIPP", tr("NIIPP") );
 
-	foreach( IMapObjectInfo* value, m_mapObjects ) {
-		dynamic_cast<Sector*>(value)->updateMap();
-	}
-
-	m_updateTimer->start( 1000 );
-
 	connect( this, SIGNAL( aisAdded( QMap<int, QVector<QString> >) ),
 			 this, SLOT( setAisData( QMap<int, QVector<QString> > ) ) );
 
 	connect( this, SIGNAL( pelengUpdated( int, int, double, double, double ) ),
 			 this, SLOT( addPeleng( int, int, double, double, double ) ) );
-
-	connect( this, SIGNAL( sectorUpdated( int, double, double, QByteArray ) ),
-			 this, SLOT( addNiippDirected( int, double, double, QByteArray ) ) );
-
-	connect( this, SIGNAL( cicleUpdated( int, double, QByteArray ) ),
-			 this, SLOT( addNiippNotDirected( int, double, QByteArray ) ) );
-
-	connect( m_pwWidget, SIGNAL( mapClicked( double, double ) ),
-			 this, SLOT( mapMouseClicked( double, double ) ) );
-}
-
-void MapClient1::setNiippController( INiiPPController* niippController )
-{
-	m_mapNiippController.insert( niippController->getId(),
-		niippController );
 }
 
 void MapClient1::showLayer( int index, bool state )
@@ -143,55 +126,28 @@ void MapClient1::showLayer( int index, bool state )
 	}
 }
 
-/// set point from another thread
-void MapClient1::addFriendBpla( int id, QByteArray data )
+void MapClient1::addFriendBpla(const UavInfo& uav)
 {
-	QMutexLocker lock( &m_mux );
-
-	emit friendBplaAdded( id, data );
+	emit friendBplaAdded( uav );
 }
 
-/// set point from another thread
-void MapClient1::addEnemyBpla( int id, QByteArray data )
+void MapClient1::addEnemyBpla(const UavInfo& uav)
 {
-	QMutexLocker lock( &m_mux );
-
-	emit enemyBplaAdded( id, data );
+	emit enemyBplaAdded( uav );
 }
 
-/// set cur point
-void MapClient1::setCurrentPoint( int id, QByteArray data )
+void MapClient1::removeBpla(const Uav& uav)
 {
-	QMutexLocker lock( &m_mux );
-
-	m_mapCurPoints.insert( id, data );
+	emit bplaRemoved( uav );
 }
 
 void MapClient1::addAis( QMap<int, QVector<QString> > vec )
 {
-	QMutexLocker lock( &m_mux );
-
 	emit aisAdded( vec );
-}
-
-void MapClient1::updateNiippPowerSector( int id, double radius, double bis, QByteArray ba )
-{
-	QMutexLocker lock( &m_mux );
-
-	emit sectorUpdated( id, radius, bis, ba );
-}
-
-void MapClient1::updateNiippPowerCicle( int id, double radius, QByteArray ba )
-{
-	QMutexLocker lock( &m_mux );
-
-	emit cicleUpdated( id, radius, ba );
 }
 
 void MapClient1::updatePeleng( int id, int idPost, double lat, double lon, double direction )
 {
-	QMutexLocker lock( &m_mux );
-
 	emit pelengUpdated( id, idPost, lat, lon, direction );
 }
 
@@ -225,9 +181,9 @@ void MapClient1::addPerehvatPoint(int blaId, int bplaId, QPointF coord,
 		time, intcCourse, intcSpeed );
 }
 
-void MapClient1::removePointUvoda()
+void MapClient1::removeNiippPoint()
 {
-	m_pwWidget->removeMarker( "NIIPMarker" );
+	delete m_niippPoint;
 }
 
 void MapClient1::readCheckPointsFromFile(QString fileName)
@@ -281,61 +237,14 @@ void MapClient1::addMarkerLayer( int id, const QString& layerId,
 /// set map centred to point
 void MapClient1::centerMap()
 {
-	m_mapBounds->setMapCenter( m_mainLongitude, m_mainLatitude );
+	m_bounds->setMapCenter( m_station->longitude, m_station->latitude );
 }
 
-/// set justify map
 void MapClient1::justifyMap()
 {
 	int h = m_pwWidget->maximumHeight();
 	int w = m_pwWidget->maximumWidth();
-	m_mapBounds->zoomMapTo( 0, 0, w, h );
-}
-
-void MapClient1::updatePoints()
-{
-	QMutexLocker lock( &m_mux );
-
-	QMap<int, QByteArray>::iterator it;
-	for( it = m_mapCurPoints.begin(); it != m_mapCurPoints.end(); ++it ) {
-		int id = it.key();
-		QString s = QString::number( id );
-		s = s.left(2);
-		if ( id > 100 ) {
-			QDataStream ds( &it.value(), QIODevice::ReadOnly );
-			QPointF point;
-			ds >> point;
-			double alt;
-			ds >> alt;
-			double speed;
-			ds >> speed;
-			double course;
-			ds >> course;
-			int state;
-			ds >> state;
-			setPointBla( id, point, alt, speed, course, state );
-		}
-		else if( id >= 50 ) {
-			setPointEvil( id, it.value() );
-		}
-		else if( id > 0 ) {
-			QDataStream ds1( &it.value(), QIODevice::ReadOnly );
-			QPointF point;
-			ds1 >> point;
-			setPointEvilPeleng( id, point );
-		}
-
-		if ( m_mapBattle.contains( id ) ) {
-			int per_id = id;
-			int target_id = m_mapBattle.value( per_id );
-			QByteArray target_ba = m_mapCurPoints.value( target_id );
-			QByteArray per_ba = m_mapCurPoints.value( per_id );
-			if ( !( target_ba.size() == 0 || per_ba.size() == 0 ) ) {
-				m_perehvat->set(per_id, target_id, per_ba, target_ba);
-			}
-		}
-	}
-
+	m_bounds->zoomMapTo( 0, 0, w, h );
 }
 
 void MapClient1::addPerehvatData( int bla_id, int bpla_id )
@@ -355,26 +264,19 @@ void MapClient1::updateCircle()
 		m_circleRadius*1000, 40, 0, "ОП1 Гроза", "", "yellow selectAndDrag" );
 }
 
-void MapClient1::updateSlice()
-{
-	if ( !m_sliceChanged ) {
-		return;
-	}
-}
-
-/// get coordinates
-void MapClient1::mapMouseClicked( double lon, double lat )
+void MapClient1::addNiippPoint( const QPointF& point )
 {
 	if( !m_niippPoint ) {
 		m_niippPoint = m_factory->createNiippPoint( );
 	}
 
-	QPointF position( lon, lat );
-	m_niippPoint->setPosition( position );
+	m_niippPoint->setPosition( point );
 	m_niippPoint->updateMap();
+}
 
-	m_mapNiippController.value( 100 )->setPoint( position );
-	m_mapNiippController.value( 101 )->setPoint( position );
+void MapClient1::updateNiippPowerZone(const Niipp& niipp)
+{
+	emit niippPowerZoneUpdated( niipp );
 }
 
 void MapClient1::removeInterceptionData( int friendBplaId, int enemyBplaId )
@@ -384,79 +286,41 @@ void MapClient1::removeInterceptionData( int friendBplaId, int enemyBplaId )
 	m_mapBattle.remove( friendBplaId );
 }
 
-
-// --- draw features on the map ---
-
-//add BLA
-/// set point in this thread
-void MapClient1::setPointBla( int id, QPointF point, double alt, double speed,
-	double course, int state )
+void MapClient1::addFriendBplaInternal(const UavInfo& uav)
 {
-	Q_UNUSED( alt );
-	Q_UNUSED( speed );
-	Q_UNUSED( course );
-	Q_UNUSED( state );
+	MapFeature::FriendBpla* bpla = m_friendBplaList.value( uav.uavId, NULL );
 
-	QMutexLocker lock( &m_mux );
-
-	point = QPointF(point.y(), point.x());
-
-	MapFeature::FriendBpla* bpla = m_friendBplaList.value( id, NULL );
 	if( bpla != NULL ) {
 		// update, if BPLA already added and position changed
-		if( bpla->position() == point ) return;
-
-		bpla->setPosition( point );
+		bpla->update( uav );
 	} else {
 		// else create new one
-		bpla = m_factory->createFriendBpla( id, point );
-		m_friendBplaList.insert( id, bpla );
+		bpla = m_factory->createFriendBpla( uav );
+		m_friendBplaList.insert( uav.uavId, bpla );
 	}
-
-	bpla->updateMap();
 }
 
-//add BPLA - Evil
-/// set point in this thread
-void MapClient1::setPointEvil( int id, QByteArray data )
+void MapClient1::addEnemyBplaInternal(const UavInfo& uav)
 {
-	QDataStream ds( &data, QIODevice::ReadOnly );
-	int time;
-	ds >> time;
+	MapFeature::EnemyBpla* bpla = m_enemyBplaList.value( uav.uavId, NULL );
 
-	int state;
-	ds >> state;
-
-	QPointF sko;
-	ds >> sko;
-
-	QVector<QPointF> track;
-	ds >> track;
-
-	double speed;
-	ds >> speed;
-
-	double alt;
-	ds >> alt;
-
-	double bearing;
-	ds >> bearing;
-
-	MapFeature::EnemyBpla* bpla = m_enemyBplaList.value( id, NULL );
 	if( bpla != NULL ) {
-		bpla->update( alt, sko, track );
+		bpla->update( uav );
 	} else {
-		bpla = m_factory->createEnemyBpla( id, sko, track, alt );
-		m_enemyBplaList.insert( id, bpla );
-		bpla->updateMap();
+		bpla = m_factory->createEnemyBpla( uav );
+		m_enemyBplaList.insert( uav.uavId, bpla );
+	}
+}
+
+void MapClient1::removeBplaInternal(const Uav& uav)
+{
+	if( m_friendBplaList.contains( uav.uavId ) ) {
+		delete m_friendBplaList.take( uav.uavId );
 	}
 
-	if ( !track.size() ) return;
-
-	m_mapNiippController.value( 100 )->sendEnemyBpla( track.at( track.size()-1 ),
-		m_niippPoint->position(), alt, bearing );
-	m_mapNiippController.value( 101 )->sendEnemyBpla( track.at( track.size()-1 ),
-		m_niippPoint->position(), alt, bearing );
+	if( m_enemyBplaList.contains( uav.uavId ) ) {
+		delete m_enemyBplaList.take( uav.uavId );
+	}
 }
 
 //add AIS
@@ -558,7 +422,7 @@ void MapClient1::readStationsFromFile(QString fileName)
 	}
 }
 
-void MapClient1::addPeleng( int id, int idPost, double lat, double lon, double direction )
+void MapClient1::addPeleng(int id, int idPost, double lat, double lon, double direction)
 {
 	Q_UNUSED( id );
 	QPointF position( lon, lat );
@@ -575,52 +439,17 @@ void MapClient1::addPeleng( int id, int idPost, double lat, double lon, double d
 	}
 }
 
-void MapClient1::setPointEvilPeleng( int id, QPointF point )
+void MapClient1::addNiipInternal( const Niipp& niipp )
 {
-	// add or update pelengator point
-	MapFeature::PelengatorPoint* p = m_pelengatorPointsList.value( id, NULL );
-	if( p != NULL ) {
-		p->setPosition( point );
-	} else {
-		QString name = tr("UAV_enemy Atlant(#") + QString::number(id) + ")\\n";
-		p = m_factory->createPelengatorPoint( name, point );
-		m_pelengatorPointsList.insert( id, p );
-	}
-
-	p->updateMap();
-}
-
-void MapClient1::addNiippDirected( int id, double radius, double angle, QByteArray data )
-{
-	addNiip( id, MapFeature::Niipp::Directed, radius, data, angle );
-}
-
-void MapClient1::addNiippNotDirected( int id, double radius, QByteArray data )
-{
-	addNiip( id, MapFeature::Niipp::NotDirected, radius, data );
-}
-
-void MapClient1::addNiip(int id, MapFeature::Niipp::Mode mode, double radius, QByteArray data,
-						 double angle)
-{
-	// get position from bytes
-	QDataStream stream( data );
-
-	QString name;
-	stream >> name;
-
-	QPointF position;
-	stream >> position;
-
 	// add or update NIIPP
-	MapFeature::Niipp* niipp = m_niippList.value( id, NULL );
-	if( niipp != NULL ) {
-		niipp->update( position, mode, radius, angle );
+	MapFeature::Niipp* niippFeature = m_niippList.value( niipp.getId(), NULL );
+	if( niippFeature != NULL ) {
+		niippFeature->update( niipp );
 	} else {
-		niipp = m_factory->createNiipp( id, position, mode, radius, angle );
-		niipp->updateMap();
+		niippFeature = m_factory->createNiipp( niipp );
+		niippFeature->updateMap();
 
-		m_niippList.insert( id, niipp );
+		m_niippList.insert( niipp.getId(), niippFeature );
 	}
 }
 
@@ -639,5 +468,16 @@ void MapClient1::addInterceptionPointData( int friendBplaId, int enemyBplaId, QP
 											  speed );
 		intc->updateMap();
 		m_interceptionList.insert( key, intc );
+	}
+}
+
+void MapClient1::redrawAllBpla()
+{
+	foreach( MapFeature::FriendBpla* bpla, m_friendBplaList ) {
+		bpla->updateMap();
+	}
+
+	foreach( MapFeature::EnemyBpla* bpla, m_enemyBplaList ) {
+		bpla->updateMap();
 	}
 }

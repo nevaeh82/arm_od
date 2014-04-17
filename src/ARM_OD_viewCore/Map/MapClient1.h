@@ -23,72 +23,29 @@
 
 #include "Station.h"
 
-#include "NIIPP/INiippController.h"
-
 #include "UAV/ZInterception.h"
-
+#include "Map/IMapClient.h"
 #include "Map/IMapStyleManager.h"
 #include "Map/Features/FeaturesFactory.h"
-
-#include "Map/IMapClient.h"
 
 class MapClient1 : public QObject, public IMapClient
 {
 	Q_OBJECT
 
-public:
-	MapClient1( PwGisWidget* pwwidget, Station* station, QObject* parent = NULL );
-	~MapClient1();
-
-	virtual void setNiippController( INiiPPController* niippController );
-
-	virtual void showLayer( int index, bool state );
-
-	virtual void addInterception( int blaId, int bplaId );
-	virtual void removeInterception( int blaId, int bplaId );
-
-	virtual void addPerehvatPoint( int blaId, int bplaId, QPointF coord,
-		float hgt, float radius, int time, float intcCourse, float intcSpeed );
-
-	virtual void removePointUvoda();
-
 private:
 	IMapStyleManager* m_styleManager;
 	MapFeature::IFeaturesFactory* m_factory;
-
-	QMap<int, IMapObjectInfo*> m_mapObjects;
-
-	ZInterception* m_perehvat;
-
-	QMap<int, INiiPPController* > m_mapNiippController;
-
+	Pw::Gis::IMapBounds* m_bounds;
 	PwGisWidget* m_pwWidget;
-	Pw::Gis::IMapBounds* m_mapBounds;
+
 	Station* m_station;
-
-	QMap<int, QByteArray> m_mapCurPoints;
-
-	QMap<int, int> m_mapBattle;
-
-	QPointF m_pointUvodaNiipp;
-
-	double m_mainLatitude;
-	double m_mainLongitude;
-	QMap< int, PwGisPointList* > *m_lastCoord;
-
-	QMutex m_mux;
-
-	QTimer* m_uiTimer;
-	QTimer* m_uiTimerSlice;
-	QTimer* m_updateTimer;
-	QTimer* m_TimerSimulator;
+	ZInterception* m_interception;
 
 	QMap<int, QString> m_mapLayers;
 
-	double m_circleRadius;
-	bool m_circleChanged;
-	bool m_sliceChanged;
+	QMutex m_mux;
 
+	// Map features
 	MapFeature::NiippPoint* m_niippPoint;
 	QMap<int, MapFeature::FriendBpla*> m_friendBplaList;
 	QMap<int, MapFeature::EnemyBpla*> m_enemyBplaList;
@@ -100,8 +57,29 @@ private:
 	QMap<QString, MapFeature::Station*> m_stationList;
 	QList<MapFeature::CheckPoint*> m_checkPointsList;
 
-	void addMarkerLayer(int id, const QString& layerId,
-		const QString& name );
+	QTimer m_bplaRedrawTimer;
+
+	/// \todo: I don't what for this variables
+	QMap<int, int> m_mapBattle;
+	QTimer* m_uiTimer;
+	QTimer* m_uiTimerSlice;
+	double m_circleRadius;
+	bool m_circleChanged;
+	bool m_sliceChanged;
+
+public:
+	MapClient1( PwGisWidget* pwwidget, Station* station, QObject* parent = NULL );
+	virtual ~MapClient1();
+
+	virtual void showLayer( int index, bool state );
+
+	virtual void addInterception( int blaId, int bplaId );
+	virtual void removeInterception( int blaId, int bplaId );
+
+	virtual void addPerehvatPoint( int blaId, int bplaId, QPointF coord, float hgt, float radius, int time, float intcCourse, float intcSpeed );
+
+private:
+	void addMarkerLayer( int id, const QString& layerId, const QString& name );
 
 	void readStationsFromFile(QString fileName);
 	void readCheckPointsFromFile(QString fileName);
@@ -112,31 +90,31 @@ public slots:
 	virtual void centerMap();
 	virtual void justifyMap();
 
-	void addFriendBpla( int id, QByteArray data );
-	void addEnemyBpla( int id, QByteArray data );
-	void addAis( QMap<int, QVector<QString> > vec );
+	virtual void addFriendBpla( const UavInfo& uav );
+	virtual void addEnemyBpla( const UavInfo& uav );
+	virtual void removeBpla( const Uav &uav );
 
-	virtual void updateNiippPowerSector( int id, double radius, double bis, QByteArray ba );
-	void updateNiippPowerCicle( int id, double radius, QByteArray ba );
+	virtual void addAis( QMap<int, QVector<QString> > vec );
+
+	virtual void addNiippPoint( const QPointF& point );
+
+	virtual void updateNiippPowerZone( const Niipp& niipp );
 
 	virtual void updatePeleng( int id, int idPost, double lat, double lon, double direction );
 
+	virtual void removeNiippPoint();
 	virtual void removeAll();
 
 private slots:
-	void setPointBla( int id, QPointF point, double alt, double speed, double course, int state );
-	void setPointEvil( int id, QByteArray data );
-	void setPointEvilPeleng( int id, QPointF point );
+	void addFriendBplaInternal( const UavInfo& uav );
+	void addEnemyBplaInternal( const UavInfo& uav );
+	void removeBplaInternal( const Uav& uav );
 
-	void setCurrentPoint( int id, QByteArray data );
 	void setAisData(QMap<int, QVector<QString> > data );
-	void updatePoints();
+
 	void addPeleng( int id, int postId, double lat, double lon, double direction );
 
-	void addNiippDirected(int id, double radius, double angle, QByteArray data );
-	void addNiippNotDirected(int id, double radius, QByteArray data );
-	void addNiip( int id, MapFeature::Niipp::Mode mode, double radius, QByteArray data,
-				  double angle = 0 );
+	void addNiipInternal( const Niipp& niipp );
 
 	void addPerehvatData( int bla_id, int bpla_id );
 	void removeInterceptionData(int friendBplaId, int enemyBplaId );
@@ -144,18 +122,18 @@ private slots:
 								  float height, float radius, int time,
 								  float course, float speed );
 
+	void redrawAllBpla();
 	void updateCircle();
-	void updateSlice();
-
-	void mapMouseClicked( double, double );
 
 signals:
-	void friendBplaAdded( int id, QByteArray data );
-	void enemyBplaAdded( int id, QByteArray data );
+	void friendBplaAdded( const UavInfo& uav );
+	void enemyBplaAdded( const UavInfo& uav );
+	void bplaRemoved( const Uav& uav );
+
 	void aisAdded( QMap<int, QVector<QString> > vec );
 
-	void cicleUpdated( int, double, QByteArray );
-	void sectorUpdated( int,double,double, QByteArray );
+	void niippPowerZoneUpdated( const Niipp& );
+
 	void pelengUpdated( int id, int post_id, double lat, double lon, double direction );
 
 	void interceptionAdded( int blaId, int bplaId );

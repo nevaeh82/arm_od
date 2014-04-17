@@ -9,25 +9,22 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 	m_niipp1 = NULL;
 	m_niipp2 = NULL;
 	m_rpcClient = NULL;
-
-	m_tabManager = tabManager;
-
-	/// create map controller
-	m_mapController = new MapController(this);
-
 	m_station = station;
+	m_tabManager = tabManager;
 
 	/// TODO: refactor
 	m_uavDbManager = db_bla;
 
+	/// create map controller
+	m_mapController = new MapController( this );
+	m_uavDbManager->registerReceiver( m_mapController );
+
 	QStringList headers;
 	headers << tr("Property") << tr("Value");
-
 
 	m_allyUavTreeModel =  new UavTreeModel(headers, this);
 	m_allyUavTreeModel->setTargetRole(OUR_UAV_ROLE);
 	m_uavDbManager->registerReceiver(m_allyUavTreeModel);
-
 
 	m_enemyUavTreeModel = new UavTreeModel(headers, this);
 	m_enemyUavTreeModel->setTargetRole(ENEMY_UAV_ROLE);

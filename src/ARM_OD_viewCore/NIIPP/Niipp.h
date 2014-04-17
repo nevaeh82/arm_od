@@ -1,10 +1,10 @@
 #ifndef NIIPPCONTROLMODEL_H
 #define NIIPPCONTROLMODEL_H
 
-#include "../Map/MapController.h"
-#include "../Tabs/ITabManager.h"
+#include <QPointF>
 
-#include "../Common/CommandMessage.h"
+#include "Tabs/ITabManager.h"
+#include "Common/CommandMessage.h"
 
 class Niipp
 {
@@ -18,10 +18,9 @@ public:
 	};
 
 public:
-	Niipp(int id, QString name, QPointF latlon, MapController* mapController, ITabManager* parentTab);
-	~Niipp();
+	Niipp(int id, QString name, QPointF latlon, ITabManager* parentTab);
+	~Niipp() {}
 
-	void create();
 	void setAntennaType(int value);
 	void setMode(int value);
 	void setAntenaIndex(int value);
@@ -37,11 +36,16 @@ public:
 	QByteArray encode(QStringList list);
 	void changeMode(int value);
 
-	int getId();
-	int getAntenaType();
-	double getRadiusCircle();
-	double getRadiusSector();
-	Niipp::WorkMode getModeCurrentIndex();
+	double getRadius() const;
+
+	inline int getId() const { return m_id; }
+	inline int getAntenaType() const { return m_antenaType; }
+	inline double getRadiusCircle() const { return m_radiusCircle; }
+	inline double getRadiusSector() const { return m_radiusSector; }
+	inline Niipp::WorkMode getModeCurrentIndex() const { return m_modeCurrentIndex; }
+	inline QPointF getPoint() const { return m_pointUvodeNiipp; }
+	inline QString getName() const { return m_name; }
+	inline double  getAngle() const { return m_angel; }
 
 private:
 	int             m_id;
@@ -64,7 +68,6 @@ private:
 	QPointF         m_pointUvodeNiipp;
 
 	ITabManager*    m_parentTab;
-	MapController*  m_mapController;
 };
 
 #endif // NIIPPCONTROLMODEL_H

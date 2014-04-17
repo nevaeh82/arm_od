@@ -7,44 +7,34 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QCheckBox>
-
 #include <QMenu>
 #include <QEvent>
-
 #include <QMap>
 
 #include <MapManager.h>
 #include <pwgiswidget.h>
-
 #include <IMapManager.h>
 #include <IProfileManager.h>
-
-#include "MapWidget.h"
-#include "Map.h"
-
-#include "Station.h"
-
-#include "MapClient1.h"
-#include "IMapController.h"
-
-#include "../UAV/ZInterception.h"
 
 #include <Interfaces/IController.h>
 #include <Interfaces/IRpcListener.h>
 
-#include "RPC/RpcDefines.h"
+#include "Station.h"
 #include "UAVDefines.h"
 
-const double m_zone[24] = {1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5,
-					   5, 6, 7, 8, 9, 10, 11, 12, 14, 16,
-					   18, 20, 22, 24, 28, 30};
-const double m_zoneDir[28] = {2.5, 3, 4, 5,
-					   6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20,
-					   22, 26, 29, 33, 37, 41, 47, 52, 57, 62, 68, 72, 76};
+#include "Interfaces/IUavDbChangedListener.h"
 
-class MapWidget;
+#include "Map/Map.h"
+#include "Map/MapWidget.h"
+#include "Map/MapClient1.h"
+#include "Map/IMapController.h"
 
-class MapController : public QObject, public IMapController, public IController<MapWidget>, public IRpcListener
+#include "UAV/ZInterception.h"
+
+#include "RPC/RpcDefines.h"
+
+class MapController : public QObject, public IMapController, public IController<MapWidget>,
+		public IRpcListener, public IUavDbChangedListener
 {
 	Q_OBJECT
 
@@ -52,41 +42,51 @@ private:
 	MapWidget* m_view;
 	Map* m_mapModel;
 
+	QMap<int, INiippController*> m_niippControllers;
+
 	QMap<int, int> m_mapPelengEvilIds;
 	int m_pelengEvilIds;
-	int m_rdsEvilIds;
 
 public:
-	MapController(QObject* parent =NULL);
+	MapController(QObject* parent = NULL);
 	virtual ~MapController();
-	void init(QMap<int, Station *> map_settings);
 
-	virtual IMapClient  *getMapClient(int id);
-
-	void addMarkerLayer(int id, QString name);
-
-	void appendView(MapWidget* view);
+	void init(QMap<int, Station *> stations);
 
 	void closeMap();
 	void closeAtlas();
+
+	// interface IMapController
+	virtual IMapClient* getMapClient(int id);
+	virtual void setNiippController(INiippController* controller);
+	virtual void updateNiippPowerZone(const Niipp& niipp);
+	virtual void removeNiippPoint();
+
+	// interface IController
+	virtual void appendView(MapWidget* view);
+
+	// interface IRpcListener
+	virtual void onMethodCalled(const QString& method, const QVariant& argument);
+
+	// interface IUavDbChangedListener
+	virtual void onUavAdded(const Uav&, const QString&) {}
+	virtual void onUavRemoved(const Uav& uav, const QString&);
+	virtual void onUavInfoChanged(const UavInfo& uavInfo, const QString& uavRole);
+
+private:
+	IMapClient* getMapClient();
 
 public slots:
 	void openMapFromAtlas();
 	void openMapFromLocalFile();
 	void onMapReady();
+	void onMapClicked(double lon, double lat);
 
-private slots:
-	void _slot_station_visible(bool state);
+	void setStationVisible(bool state);
 
 signals:
 	void mapOpened();
 
-	// IRpcListener interface
-public:
-	virtual void onMethodCalled(const QString& method, const QVariant& argument);
-
-private:
-	void sendEnemyUavPoints(const QByteArray& data, const int& mapClientId);
 };
 
 #endif // MAPCONTROLLER_H
