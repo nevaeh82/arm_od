@@ -28,7 +28,7 @@ public:
 	virtual PwGisStyle* createPelengatorPointStyle(const QString& layerId);
 	virtual PwGisStyle* createStationStyle(const QString& layerId);
 	virtual PwGisStyle* createGridStyle(const QString& layerId);
-	virtual PwGisStyle* createCheckpointsStyle(const QString& layerId);
+	virtual PwGisStyle* createCheckPointStyle(const QString& layerId);
 
 	inline virtual PwGisStyle* getAisStyle() { return getStyle( MAP_STYLE_NAME_AIS ); }
 	inline virtual PwGisStyle* getFriendBplaStyle() { return getStyle( MAP_STYLE_NAME_FRIEND_BPLA ); }

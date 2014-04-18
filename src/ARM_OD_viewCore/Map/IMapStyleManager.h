@@ -32,7 +32,7 @@ public:
 	virtual PwGisStyle* createPelengatorPointStyle(const QString& layerId) = 0;
 	virtual PwGisStyle* createStationStyle(const QString& layerId) = 0;
 	virtual PwGisStyle* createGridStyle(const QString& layerId) = 0;
-	virtual PwGisStyle* createCheckpointsStyle(const QString& layerId) = 0;
+	virtual PwGisStyle* createCheckPointStyle(const QString& layerId) = 0;
 
 	virtual PwGisStyle* getAisStyle() = 0;
 	virtual PwGisStyle* getFriendBplaStyle() = 0;
