@@ -88,7 +88,9 @@ void MapClient1::init()
 	this->addMarkerLayer( 7, "layer_7_Interception_point", tr( "Interception point" ) ); //7 - Perehvat
 	this->addMarkerLayer( 8, "layer_8_Civil_ships", tr( "Civil ships" ) ); //8 - AIS - civil plane
 	this->addMarkerLayer( 9, "layer_9_Diversion_points", tr( "Diversion points" ) ); //9 - NIIPPPoint
-	this->addMarkerLayer( 10, "layer_10_SPIP_DD",tr( "SPIP DD" ) ); //10 - NIIPP
+	this->addMarkerLayer( 10, "layer_10_SPIP_DD", tr( "SPIP DD" ) ); //10 - NIIPP
+
+	showLayer( 5, false );
 
 	// create styles for features
 	m_styleManager->createStationStyle( m_mapLayers.value(0) )->apply();
@@ -96,9 +98,8 @@ void MapClient1::init()
 	m_styleManager->createFriendBplaStyle( m_mapLayers.value(2) )->apply();
 	m_styleManager->createPelengatorStyle( m_mapLayers.value(3) )->apply();
 	m_styleManager->createPelengatorPointStyle( m_mapLayers.value(4) )->apply();
-	m_styleManager->createPelengatorPointStyle( m_mapLayers.value(5) )->apply();
-	showLayer( 5, false );
-	m_styleManager->createInterceptionStyle( m_mapLayers.value(6) )->apply();
+	m_styleManager->createGridStyle( m_mapLayers.value(5) )->apply();
+	m_styleManager->createCheckPointStyle( m_mapLayers.value(6) )->apply();
 	m_styleManager->createInterceptionStyle( m_mapLayers.value(7) )->apply();
 	m_styleManager->createAisStyle( m_mapLayers.value(8) )->apply();
 	m_styleManager->createNiippPointStyle( m_mapLayers.value(9) )->apply();

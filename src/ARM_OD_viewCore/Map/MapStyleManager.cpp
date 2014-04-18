@@ -199,7 +199,7 @@ PwGisStyle* MapStyleManager::createGridStyle(const QString& layerId)
 	return style;
 }
 
-PwGisStyle* MapStyleManager::createCheckpointsStyle(const QString& layerId)
+PwGisStyle* MapStyleManager::createCheckPointStyle(const QString& layerId)
 {
 	bool exists;
 	PwGisStyle* style = createStyle( MAP_STYLE_NAME_CHECK_POINTS, &exists );
