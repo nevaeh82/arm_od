@@ -19,19 +19,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="51"/>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="54"/>
         <source>UAV #</source>
         <oldsource>UAV â</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="58"/>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="61"/>
         <source>UAV_enemy: #%1</source>
         <oldsource>UAV_: #%1</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="79"/>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="84"/>
         <source>#</source>
         <translation type="unfinished"></translation>
     </message>
@@ -121,12 +121,12 @@
 <context>
     <name>MainWindowController</name>
     <message>
-        <location filename="MainWindowController.cpp" line="76"/>
+        <location filename="MainWindowController.cpp" line="95"/>
         <source>Unable to connect to server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindowController.cpp" line="76"/>
+        <location filename="MainWindowController.cpp" line="95"/>
         <source>Please try to restart application</source>
         <translation type="unfinished"></translation>
     </message>
@@ -139,80 +139,75 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="82"/>
+        <location filename="Map/MapClient1.cpp" line="81"/>
         <source>OP</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="83"/>
+        <location filename="Map/MapClient1.cpp" line="82"/>
         <source>UAV_enemy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="84"/>
+        <location filename="Map/MapClient1.cpp" line="83"/>
         <source>UAV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="85"/>
+        <location filename="Map/MapClient1.cpp" line="84"/>
         <source>Atlant</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="86"/>
+        <location filename="Map/MapClient1.cpp" line="85"/>
         <source>Atlant target</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="87"/>
+        <location filename="Map/MapClient1.cpp" line="86"/>
         <source>Grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="88"/>
+        <location filename="Map/MapClient1.cpp" line="87"/>
         <source>Checkpoints</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="89"/>
+        <location filename="Map/MapClient1.cpp" line="88"/>
         <source>Interception point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="90"/>
+        <location filename="Map/MapClient1.cpp" line="89"/>
         <source>Civil ships</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="91"/>
+        <location filename="Map/MapClient1.cpp" line="90"/>
         <source>Diversion points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="92"/>
+        <location filename="Map/MapClient1.cpp" line="91"/>
         <source>SPIP DD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="541"/>
+        <location filename="Map/MapClient1.cpp" line="418"/>
         <source>Ingur</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Map/MapClient1.cpp" line="582"/>
-        <source>UAV_enemy Atlant(#</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MapController</name>
     <message>
-        <location filename="Map/MapController.cpp" line="48"/>
+        <location filename="Map/MapController.cpp" line="46"/>
         <source>Open map</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapController.cpp" line="50"/>
+        <location filename="Map/MapController.cpp" line="48"/>
         <source>Map files (*.chart *.sxf *.sit *.map *.gc *.gst)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -251,22 +246,22 @@
 <context>
     <name>MapTabWidgetController</name>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="24"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="23"/>
         <source>Property</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="24"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="23"/>
         <source>Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="171"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="168"/>
         <source>SPIP DD-1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="176"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="173"/>
         <source>SPIP DD-2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -409,12 +404,17 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="Map/Features/FriendBplaFeature.cpp" line="29"/>
+        <location filename="Map/Features/FriendBplaFeature.cpp" line="21"/>
         <source>UAV (#%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/Features/EnemyBplaFeature.cpp" line="28"/>
+        <location filename="Map/Features/FriendBplaFeature.cpp" line="21"/>
+        <source>UAV-C</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="15"/>
         <source>UAV_enemy (#%1)\n%2\n%3</source>
         <oldsource>UAV_enemy (â%1)\n%2\n%3</oldsource>
         <translation type="unfinished"></translation>
@@ -506,21 +506,33 @@
 <context>
     <name>UavTreeModel</name>
     <message>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="97"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="146"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="99"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="169"/>
         <source>lat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="103"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="147"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="105"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="170"/>
         <source>lon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="108"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="148"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="110"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="171"/>
         <source>alt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="115"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="173"/>
+        <source>lat (ktr)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="120"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="174"/>
+        <source>lon (ktr)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

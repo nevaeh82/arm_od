@@ -5,6 +5,7 @@
 #include <QTime>
 #include <QDateTime>
 #include <QMetaType>
+#include "UAVDefines.h"
 
 #define FRIEND_UAV_ROLE "friendUavRole"
 #define OUR_UAV_ROLE "ourUavRole"
@@ -29,12 +30,6 @@ typedef struct Uav
 } Uav;
 
 Q_DECLARE_METATYPE( Uav )
-
-typedef enum UavSourceType
-{
-	UavAutopilotSource,
-	UavSlicesSource
-} UavSourceType;
 
 typedef struct UavRole
 {

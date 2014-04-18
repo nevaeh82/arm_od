@@ -9,6 +9,8 @@
 #define LON_PROPERTY_ID		2
 #define ALT_PROPERTY_ID		3
 
+#define LAT_KTR_PROPERTY_ID		4
+#define LON_KTR_PROPERTY_ID		5
 
 UavTreeModel::UavTreeModel(const QStringList &headers, QObject *parent) :
 	TreeModelBase(headers, parent)
@@ -18,7 +20,7 @@ UavTreeModel::UavTreeModel(const QStringList &headers, QObject *parent) :
 
 	connect(&m_treeUpdater,SIGNAL(timeout()),this,SLOT(updateData()));
 
-	m_isNeedRedraw =false;
+	m_isNeedRedraw = false;
 
 	m_targetRole = OUR_UAV_ROLE;
 }
@@ -109,13 +111,22 @@ void UavTreeModel::onUavAdded(const Uav &uav, const QString& uavRole)
 	inProperty.value = 0;
 	inSettingsNode.properties.append(inProperty);
 
+	inProperty.id = LAT_KTR_PROPERTY_ID;
+	inProperty.name = tr("lat (ktr)");
+	inProperty.value = 0;
+	inSettingsNode.properties.append(inProperty);
+
+	inProperty.id = LON_KTR_PROPERTY_ID;
+	inProperty.name = tr("lon (ktr)");
+	inProperty.value = 0;
+	inSettingsNode.properties.append(inProperty);
+
 	if (inSettingsNode.object.pid == 0) {
 		emit layoutAboutToBeChanged();
 
 		TreeItem* item =  new TreeItem(inSettingsNode.object, m_rootItem);
 
 		foreach (Property property, inSettingsNode.properties) {
-
 			TreeItem* childItem =  new TreeItem(property, item);
 			item->appendChild(childItem);
 		}
@@ -154,9 +165,14 @@ void UavTreeModel::onUavInfoChanged(const UavInfo &uavInfo, const QString& uavRo
 		return;
 	}
 
-	onPropertyChanged(uavInfo, 1, tr("lat"), QString::number(uavInfo.lat, 'g', 6));
-	onPropertyChanged(uavInfo, 2, tr("lon"), QString::number(uavInfo.lon, 'g', 6));
-	onPropertyChanged(uavInfo, 3, tr("alt"), QString::number(uavInfo.alt, 'g', 6));
+	if (UavAutopilotSource ==  uavInfo.sourceType) {
+		onPropertyChanged(uavInfo, LAT_PROPERTY_ID, tr("lat"), QString::number(uavInfo.lat, 'g', 6));
+		onPropertyChanged(uavInfo, LON_PROPERTY_ID, tr("lon"), QString::number(uavInfo.lon, 'g', 6));
+		onPropertyChanged(uavInfo, ALT_PROPERTY_ID, tr("alt"), QString::number(uavInfo.alt, 'g', 6));
+	} else {
+		onPropertyChanged(uavInfo, LAT_KTR_PROPERTY_ID, tr("lat (ktr)"), QString::number(uavInfo.lat, 'g', 6));
+		onPropertyChanged(uavInfo, LON_KTR_PROPERTY_ID, tr("lon (ktr)"), QString::number(uavInfo.lon, 'g', 6));
+	}
 
 	if(m_isNeedRedraw){
 		return;
@@ -175,7 +191,11 @@ void UavTreeModel::setTargetRole(const QString &role)
 void UavTreeModel::onPropertyChanged(const UavInfo &uavInfo, const uint propId, const QString &name, const QVariant &value)
 {
 	/// TODO: need to uncomment after imlementing of speed receiving from KTR
-	bool isInFlight = /*(uavInfo.speed > 0) && */(uavInfo.alt > 0);
+	bool isInFlight = true;
+
+	if (uavInfo.sourceType == UavAutopilotSource) {
+		isInFlight = /*(uavInfo.speed > 0) && */(uavInfo.alt > 0);
+	}
 
 	Property inProperty;
 	inProperty.pid = uavInfo.uavId;
@@ -204,5 +224,4 @@ void UavTreeModel::onPropertyChanged(const UavInfo &uavInfo, const uint propId, 
 			}
 		}
 	}
-
 }

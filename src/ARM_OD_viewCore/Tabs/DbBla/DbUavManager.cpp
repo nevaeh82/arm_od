@@ -309,9 +309,7 @@ void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QSt
 	uavInfo.restTime = QTime(1, 0);
 	uavInfo.statusId = statusUnknownId; // FK
 	uavInfo.dateTime = positionData.dateTime;
-
-	/// \todo Change it to real data!!!!
-	uavInfo.sourceType = (UavSourceType) (qrand() % 2);
+	uavInfo.sourceType = positionData.sourceType;
 
 	addUavInfo(uavInfo);
 }
