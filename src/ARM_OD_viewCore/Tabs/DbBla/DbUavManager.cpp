@@ -1,9 +1,12 @@
 #include "DbUavManager.h"
 
-DbUavManager::DbUavManager(QObject *parent) :
+DbUavManager::DbUavManager(int lifeTime, QObject *parent) :
 	QObject(parent)
 {
 	m_dbController = NULL;
+
+	setLifeTime( lifeTime );
+
 	m_timeoutSignalMapper = new QSignalMapper(this);
 	connect(m_timeoutSignalMapper, SIGNAL(mapped(const QString &)), this, SLOT(timeoutSlot(const QString &)));
 }
@@ -15,6 +18,11 @@ DbUavManager::~DbUavManager()
 void DbUavManager::setDbController(IDbUavController* dbController)
 {
 	m_dbController = dbController;
+}
+
+void DbUavManager::setLifeTime(int msecs)
+{
+	m_lifeTime = msecs < 1 ? MAX_LIFE_TIME : msecs;
 }
 
 int DbUavManager::addUav(const Uav &uav)
@@ -80,7 +88,7 @@ int DbUavManager::addUavInfo(const UavInfo &uavInfo)
 	if (lifeTimer == NULL) {
 		log_debug(QString("...Hmm... lifeTimer is NULL for %1...").arg(QString::number(uav.uavId)));
 	} else {
-		lifeTimer->start(MAX_LIFE_TIME);
+		lifeTimer->start( m_lifeTime );
 	}
 
 	int newUavInfo = m_dbController->addUavInfo(uavInfo);

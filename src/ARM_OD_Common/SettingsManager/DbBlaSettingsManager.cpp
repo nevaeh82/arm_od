@@ -52,6 +52,13 @@ QString DbBlaSettingsManager::getBlaDbName()
 	return settings.value("UAVDB/Name", "bla").toString();
 }
 
+int DbBlaSettingsManager::getBlaLifeTime()
+{
+	QMutexLocker mutexLocker(&m_mutex);
+	QSettings settings(m_settingsFile, QSettings::IniFormat);
+	return settings.value("UAVDB/DisplayLifeTime", "0").toUInt();
+}
+
 QString DbBlaSettingsManager::getBplaDbHost()
 {
 	QMutexLocker mutexLocker(&m_mutex);
@@ -85,4 +92,11 @@ QString DbBlaSettingsManager::getBplaDbName()
 	QMutexLocker mutexLocker(&m_mutex);
 	QSettings settings(m_settingsFile, QSettings::IniFormat);
 	return settings.value("BPLADB/Name", "bpla").toString();
+}
+
+int DbBlaSettingsManager::getBplaLifeTime()
+{
+	QMutexLocker mutexLocker(&m_mutex);
+	QSettings settings(m_settingsFile, QSettings::IniFormat);
+	return settings.value("BPLADB/DisplayLifeTime", "0").toUInt();
 }

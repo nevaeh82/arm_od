@@ -19,7 +19,6 @@ MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 
 	m_circleRadius = 0;
 	m_circleChanged = false;
-	m_sliceChanged = false;
 
 	m_pwWidget = pwWidget;
 	m_bounds = m_pwWidget->mapProvider()->mapBounds();
@@ -30,10 +29,6 @@ MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 	connect( m_uiTimer, SIGNAL( timeout() ), this, SLOT( updateCircle() ) );
 	m_uiTimer->setInterval( 100 );
 	//m_uiTimer->start();
-
-	m_uiTimerSlice = new QTimer( this );
-	connect( m_uiTimerSlice, SIGNAL( timeout() ), this, SLOT( updateSlice() ) );
-	//m_uiTimerSlice->setInterval( 100 );
 
 	m_interception = new ZInterception( this );
 	QThread* thread = new QThread;

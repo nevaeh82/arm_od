@@ -20,12 +20,13 @@ public:
 
 	void setIniFile(const QString&);
 
-	//FRIEND
+	// FRIEND
 	QString getBlaDbHost();
 	quint16 getBlaDbPort();
 	QString getBlaDbLogin();
 	QString getBlaDbPassword();
 	QString getBlaDbName();
+	int getBlaLifeTime();
 
 	// ENEMY
 	QString getBplaDbHost();
@@ -33,6 +34,7 @@ public:
 	QString getBplaDbLogin();
 	QString getBplaDbPassword();
 	QString getBplaDbName();
+	int getBplaLifeTime();
 };
 
 #endif // DBBLASETTINGSMANAGER_H

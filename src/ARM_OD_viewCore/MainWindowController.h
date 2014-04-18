@@ -33,6 +33,9 @@ private:
 	RpcConfigClient* m_rpcConfigClient;
 
 	SolverSettingsDialogController* solverSettingsController;
+
+	int m_uavLifeTime;
+
 public:
 	explicit MainWindowController(QObject *parent = 0);
 	virtual ~MainWindowController();
@@ -40,6 +43,8 @@ public:
 	void appendView(MainWindow *view);
 
 	void startServer();
+
+	void setUavLifeTime(int msecs);
 
 signals:
 

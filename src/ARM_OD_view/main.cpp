@@ -17,7 +17,7 @@ typedef QVector<QPointF>         rpc_send_points_vector;
 int main(int argc, char *argv[])
 {
 
-    QApplication a(argc, argv);
+	QApplication a(argc, argv);
 	Logger::setupLogger("./logs/ArmOD.log");
 
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
@@ -42,10 +42,5 @@ int main(int argc, char *argv[])
 
 	controller.startServer();
 
-
-	qRegisterMetaType<QVector<QPointF> >("rpc_send_points_vector");
-    qRegisterMetaType<quint32>("quint32");
-
-
-    return a.exec();
+	return a.exec();
 }

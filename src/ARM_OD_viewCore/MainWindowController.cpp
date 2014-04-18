@@ -11,7 +11,12 @@ MainWindowController::MainWindowController(QObject *parent) :
 	m_tabManager = NULL;
 	m_serverHandler = 0;
 	m_rpcConfigClient = NULL;
+	m_uavLifeTime = 0;
 
+	qRegisterMetaType<QVector<QPointF> >("rpc_send_points_vector");
+	qRegisterMetaType<quint32>("quint32");
+
+	qRegisterMetaType<Uav>( "Uav" );
 	qRegisterMetaType<UavInfo>( "UavInfo" );
 }
 
@@ -30,6 +35,15 @@ void MainWindowController::appendView(MainWindow *view)
 void MainWindowController::startServer()
 {
 	start();
+}
+
+void MainWindowController::setUavLifeTime(int msecs)
+{
+	if( m_tabManager != NULL ) {
+		m_tabManager->setUavLifeTime( msecs );
+	} else {
+		m_uavLifeTime = msecs;
+	}
 }
 
 void MainWindowController::start()
@@ -59,6 +73,9 @@ void MainWindowController::init()
 	m_view->getStackedWidget()->setCurrentIndex(1);
 
 	m_tabManager = new TabManager(m_view->getMainTabWidget(), this);
+
+	if( m_uavLifeTime > 0 ) m_tabManager->setUavLifeTime( m_uavLifeTime );
+
 	connect(m_tabManager, SIGNAL(readyToStart()), this, SLOT(startTabManger()));
 
 	connect(m_view, SIGNAL(openAtlasSignal()), m_tabManager, SIGNAL(openAtlasSignal()));
