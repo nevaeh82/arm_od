@@ -12,4 +12,9 @@ prebuild::
 	$(call begin-build, Prebuild OK )
 	
 postbuild::
-	
+	$(mkdir) $(DESTDIR)/plugins/imageformats
+ifeq "$(OS)" "Windows_NT"
+	-$(cp) $(PRODUCT_PLATFORM)/qt/$(PLATFORM)/plugins/imageformats/qjpeg*.dll $(DESTDIR)/plugins/imageformats
+else
+	-$(cp) $(LINUX_QT_DIR)/../plugins/imageformats/qjpeg*.so $(DESTDIR)/plugins/imageformats
+endif
