@@ -14,11 +14,13 @@ class BplaAbstract : public Marker
 {
 protected:
 	Path* m_tail;
+	Path* m_slices;
 
 	double m_altitude;
 	double m_speed;
 	double m_angle;
 
+	bool m_possible;
 	bool m_initialized;
 
 	BplaAbstract(IObjectsFactory* factory, const QString& id, const UavInfo& uav);
@@ -37,6 +39,11 @@ public:
 	void setAngle(double angle);
 	inline double angle() { return m_angle; }
 
+	void setPossible(bool value);
+	inline bool possible() { return m_possible; }
+
+	void setSlice(const QPointF &slice);
+
 	void update(const UavInfo& uav);
 
 	virtual void updateMap();
@@ -46,6 +53,7 @@ protected:
 	void registerStyle();
 
 	virtual inline QString getStyleName() const = 0;
+	virtual inline QString getSlicesStyleName() const = 0;
 	virtual void updateName() {}
 };
 

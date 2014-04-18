@@ -5,6 +5,7 @@
 #include <QTime>
 #include <QDateTime>
 #include <QMetaType>
+#include "UAVDefines.h"
 
 #define FRIEND_UAV_ROLE "friendUavRole"
 #define OUR_UAV_ROLE "ourUavRole"
@@ -50,6 +51,7 @@ typedef struct UavInfo
 	QTime restTime;
 	uint statusId; // FK
 	QDateTime dateTime;
+	UavSourceType sourceType;
 } UavInfo;
 
 typedef struct Devices

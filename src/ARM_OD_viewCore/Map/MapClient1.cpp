@@ -96,6 +96,7 @@ void MapClient1::init()
 	m_styleManager->createStationStyle( m_mapLayers.value(0) )->apply();
 	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(1) )->apply();
 	m_styleManager->createFriendBplaStyle( m_mapLayers.value(2) )->apply();
+	m_styleManager->createFriendBplaSliceStyle( m_mapLayers.value(2) )->apply();
 	m_styleManager->createPelengatorStyle( m_mapLayers.value(3) )->apply();
 	m_styleManager->createPelengatorPointStyle( m_mapLayers.value(4) )->apply();
 	m_styleManager->createGridStyle( m_mapLayers.value(5) )->apply();
@@ -286,13 +287,27 @@ void MapClient1::addFriendBplaInternal(const UavInfo& uav)
 {
 	MapFeature::FriendBpla* bpla = m_friendBplaList.value( uav.uavId, NULL );
 
-	if( bpla != NULL ) {
-		// update, if BPLA already added and position changed
-		bpla->update( uav );
-	} else {
-		// else create new one
-		bpla = m_factory->createFriendBpla( uav );
-		m_friendBplaList.insert( uav.uavId, bpla );
+	switch( uav.sourceType ) {
+		// if we get data about UAV from slices source...
+		case UavSlicesSource:
+			// and UAV exists, update slice track
+			if( bpla != NULL ) {
+				bpla->setSlice( QPointF( uav.lon, uav.lat ) );
+			}
+
+			return;
+
+		case UavAutopilotSource:
+			if( bpla != NULL ) {
+				// update, if BPLA already added and position changed
+				bpla->update( uav );
+			} else {
+				// else create new one
+				bpla = m_factory->createFriendBpla( uav );
+				m_friendBplaList.insert( uav.uavId, bpla );
+			}
+
+			return;
 	}
 }
 

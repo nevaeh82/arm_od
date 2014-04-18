@@ -175,6 +175,7 @@ MessageSP TcpKTRCoder::parseLocationFromBoard(const QByteArray& data)
 	positionData.latitude = latitude;
 	positionData.longitude = longitude;
 	positionData.altitude = m_altitude;
+	positionData.sourceType = UavAutopilotSource;
 
 	QVector<UAVPositionData> positionDataVector;
 	positionDataVector.push_back(positionData);
@@ -249,6 +250,7 @@ MessageSP TcpKTRCoder::parseLocationFromKTR(const QByteArray& data)
 		UAVPositionData positionData;
 		positionData.latitude = lat_f;
 		positionData.longitude = lon_f;
+		positionData.sourceType = UavSlicesSource;
 
 		positionDataVector.push_back(positionData);
 	}
