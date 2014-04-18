@@ -7,6 +7,7 @@
 
 #define MAP_STYLE_NAME_AIS					"AIS"
 #define MAP_STYLE_NAME_FRIEND_BPLA			"FriendBPLA"
+#define MAP_STYLE_NAME_FRIEND_BPLA_SLICE	"FriendBPLA_Slice"
 #define MAP_STYLE_NAME_ENEMY_BPLA			"EmenyBPLA"
 #define MAP_STYLE_NAME_INTERCEPTION			"Interception"
 #define MAP_STYLE_NAME_NIIPP				"Niipp"
@@ -24,6 +25,7 @@ public:
 
 	virtual PwGisStyle* createAisStyle(const QString& layerId) = 0;
 	virtual PwGisStyle* createFriendBplaStyle(const QString& layerId) = 0;
+	virtual PwGisStyle* createFriendBplaSliceStyle(const QString& layerId) = 0;
 	virtual PwGisStyle* createEnemyBplaStyle(const QString& layerId) = 0;
 	virtual PwGisStyle* createInterceptionStyle(const QString& layerId) = 0;
 	virtual PwGisStyle* createNiippStyle(const QString& layerId) = 0;
@@ -36,6 +38,7 @@ public:
 
 	virtual PwGisStyle* getAisStyle() = 0;
 	virtual PwGisStyle* getFriendBplaStyle() = 0;
+	virtual PwGisStyle* getFriendBplaSliceStyle() = 0;
 	virtual PwGisStyle* getEnemyBplaStyle() = 0;
 	virtual PwGisStyle* getInterceptionStyle() = 0;
 	virtual PwGisStyle* getNiippStyle() = 0;

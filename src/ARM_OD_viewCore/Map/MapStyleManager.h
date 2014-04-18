@@ -20,6 +20,7 @@ public:
 
 	virtual PwGisStyle* createAisStyle(const QString& layerId);
 	virtual PwGisStyle* createFriendBplaStyle(const QString& layerId);
+	virtual PwGisStyle* createFriendBplaSliceStyle(const QString& layerId);
 	virtual PwGisStyle* createEnemyBplaStyle(const QString& layerId);
 	virtual PwGisStyle* createInterceptionStyle(const QString& layerId);
 	virtual PwGisStyle* createNiippStyle(const QString& layerId);
@@ -32,6 +33,7 @@ public:
 
 	inline virtual PwGisStyle* getAisStyle() { return getStyle( MAP_STYLE_NAME_AIS ); }
 	inline virtual PwGisStyle* getFriendBplaStyle() { return getStyle( MAP_STYLE_NAME_FRIEND_BPLA ); }
+	inline virtual PwGisStyle* getFriendBplaSliceStyle() { return getStyle( MAP_STYLE_NAME_FRIEND_BPLA_SLICE ); }
 	inline virtual PwGisStyle* getEnemyBplaStyle() { return getStyle( MAP_STYLE_NAME_ENEMY_BPLA ); }
 	inline virtual PwGisStyle* getInterceptionStyle() { return getStyle( MAP_STYLE_NAME_INTERCEPTION ); }
 	inline virtual PwGisStyle* getNiippStyle() { return getStyle( MAP_STYLE_NAME_NIIPP ); }

@@ -1,6 +1,8 @@
 #include "Map/IMapStyleManager.h"
 #include "Map/Features/BplaAbstractFeature.h"
 
+#define TRACK_LENGTH 100
+
 namespace MapFeature {
 
 BplaAbstract::BplaAbstract(IObjectsFactory* factory, const QString& id, const UavInfo& uav)
@@ -8,6 +10,7 @@ BplaAbstract::BplaAbstract(IObjectsFactory* factory, const QString& id, const Ua
 	, m_initialized( false )
 {
 	m_tail = factory->createPath();
+	m_slices = factory->createPath();
 
 	setPosition( position() );
 	setAltitude( uav.alt );
@@ -20,7 +23,9 @@ BplaAbstract::BplaAbstract(IObjectsFactory* factory, const QString& id, const Ua
 BplaAbstract::~BplaAbstract()
 {
 	m_tail->removeFromMap();
+	m_slices->removeFromMap();
 	delete m_tail;
+	delete m_slices;
 }
 
 void BplaAbstract::setPosition(const QPointF& position)
@@ -31,7 +36,7 @@ void BplaAbstract::setPosition(const QPointF& position)
 
 	points->append( new PwGisLonLat( m_position ) );
 
-	while( points->length() > 100 ) {
+	while( points->length() > TRACK_LENGTH ) {
 		PwGisLonLat* point = points->first();
 		points->removeFirst();
 		delete point;
@@ -62,6 +67,19 @@ void BplaAbstract::setAngle(double angle)
 	/// \todo: Uncomment, when we going to support BPLA rotation
 //	m_marker->setRotate( angle );
 	m_angle = angle;
+}
+
+void BplaAbstract::setSlice(const QPointF& slice)
+{
+	PwGisPointList* points = m_tail->points();
+
+	points->append( new PwGisLonLat( slice.x(), slice.y() ) );
+
+	while( points->length() > TRACK_LENGTH ) {
+		PwGisLonLat* point = points->first();
+		points->removeFirst();
+		delete point;
+	}
 }
 
 void BplaAbstract::update(const UavInfo& uav)
@@ -101,11 +119,13 @@ void BplaAbstract::updateMap()
 
 	Marker::updateMap();
 	m_tail->updateMap();
+	m_slices->updateMap();
 }
 
 void BplaAbstract::removeFromMap()
 {
 	m_tail->removeFromMap();
+	m_slices->removeFromMap();
 	Marker::removeFromMap();
 }
 
@@ -113,6 +133,7 @@ void BplaAbstract::registerStyle()
 {
 	m_marker->addStyleByName( getStyleName() );
 	m_tail->addStyleByName( getStyleName() );
+	m_slices->addStyleByName( getSlicesStyleName() );
 }
 
 } // namespace MapFeature

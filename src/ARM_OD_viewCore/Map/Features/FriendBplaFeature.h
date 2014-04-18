@@ -19,6 +19,7 @@ class FriendBpla : public BplaAbstract
 protected:
 	inline void updateName() {}
 	virtual inline QString getStyleName() const { return MAP_STYLE_NAME_FRIEND_BPLA; }
+	virtual inline QString getSlicesStyleName() const { return MAP_STYLE_NAME_FRIEND_BPLA_SLICE; }
 
 	FriendBpla(IObjectsFactory* factory, const QString& id, const UavInfo& uav);
 

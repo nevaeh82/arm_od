@@ -30,6 +30,12 @@ typedef struct Uav
 
 Q_DECLARE_METATYPE( Uav )
 
+typedef enum UavSourceType
+{
+	UavAutopilotSource,
+	UavSlicesSource
+} UavSourceType;
+
 typedef struct UavRole
 {
 	int id; // PK
@@ -50,6 +56,7 @@ typedef struct UavInfo
 	QTime restTime;
 	uint statusId; // FK
 	QDateTime dateTime;
+	UavSourceType sourceType;
 } UavInfo;
 
 typedef struct Devices

@@ -51,6 +51,20 @@ PwGisStyle* MapStyleManager::createFriendBplaStyle(const QString& layerId)
 	return style;
 }
 
+PwGisStyle*MapStyleManager::createFriendBplaSliceStyle(const QString& layerId)
+{
+	bool exists;
+	PwGisStyle* style = createStyle( MAP_STYLE_NAME_FRIEND_BPLA_SLICE, &exists );
+
+	if( !exists ) {
+		style->setProperty( PwGisStyle::strokeColor, "red" );
+		style->setProperty( PwGisStyle::strokeOpacity, "0.3" );
+		style->setProperty( PwGisStyle::layer, layerId );
+	}
+
+	return style;
+}
+
 PwGisStyle* MapStyleManager::createEnemyBplaStyle(const QString& layerId)
 {
 	bool exists;
