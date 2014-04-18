@@ -18,6 +18,8 @@
 
 class DbUavController : public DbControllerBase, public IDbUavController
 {
+	friend class testDbUav;
+
 	Q_OBJECT
 private:
 	QMutex m_addGetUavMutex;
