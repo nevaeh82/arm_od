@@ -305,6 +305,7 @@ void MapClient1::addFriendBplaInternal(const UavInfo& uav)
 				bpla = m_factory->createFriendBpla( uav );
 				m_friendBplaList.insert( uav.uavId, bpla );
 			}
+
 			return;
 	}
 }

@@ -71,7 +71,7 @@ void BplaAbstract::setAngle(double angle)
 
 void BplaAbstract::setSlice(const QPointF& slice)
 {
-	PwGisPointList* points = m_tail->points();
+	PwGisPointList* points = m_slices->points();
 
 	points->append( new PwGisLonLat( slice.x(), slice.y() ) );
 
