@@ -531,13 +531,13 @@
         <location filename="Tabs/Tree/UavTreeModel.cpp" line="115"/>
         <location filename="Tabs/Tree/UavTreeModel.cpp" line="173"/>
         <source>lat (ktr)</source>
-        <translation>Широта (КТР)</translation>
+        <translation>Широта(К)</translation>
     </message>
     <message>
         <location filename="Tabs/Tree/UavTreeModel.cpp" line="120"/>
         <location filename="Tabs/Tree/UavTreeModel.cpp" line="174"/>
         <source>lon (ktr)</source>
-        <translation>Долгота (КТР)</translation>
+        <translation>Долгота(К)</translation>
     </message>
 </context>
 </TS>
