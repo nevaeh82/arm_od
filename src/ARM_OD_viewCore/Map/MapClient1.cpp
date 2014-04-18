@@ -10,6 +10,7 @@
 MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 	: QObject( parent )
 	, m_mux( QMutex::Recursive )
+	, m_niippPoint( 0 )
 {
 	m_styleManager = new MapStyleManager( pwWidget->mapProvider()->styleFactory() );
 
@@ -180,7 +181,10 @@ void MapClient1::addPerehvatPoint(int blaId, int bplaId, QPointF coord,
 
 void MapClient1::removeNiippPoint()
 {
-	delete m_niippPoint;
+	if(m_niippPoint != 0) {
+		delete m_niippPoint;
+	}
+	m_niippPoint = 0;
 }
 
 void MapClient1::readCheckPointsFromFile(QString fileName)
