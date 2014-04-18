@@ -18,6 +18,8 @@
 
 class DbUavController : public DbControllerBase, public IDbUavController
 {
+	friend class testDbUav;
+
 	Q_OBJECT
 private:
 	QMutex m_addGetUavMutex;
@@ -54,11 +56,14 @@ public:
 
 	int addUavMission(const UavMission&);
 	bool getUavMissionsByUavId(const uint uavId, QList<UavMission>& missionsRecords);
+	bool deleteUavMissionsByUavId(const uint uavId);
 
 	int addTarget(const Target&);
 	bool getTargetsByType(const uint targetTypeId, QList<Target>& targetsRecords);
 	bool getTargetsByUavId(const uint uavId, QList<Target>& targetsRecords);
+	bool getTargetsByMission(const uint missionId, QList<Target> &targetsRecords);
 	bool deleteTargetsByUavId(const uint uavId);
+	bool deleteTargetsById(const uint id);
 
 	int addTargetType(const TargetType&);
 	int getTargetTypeByName(const QString&);

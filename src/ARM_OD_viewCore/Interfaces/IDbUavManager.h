@@ -38,11 +38,14 @@ public:
 
 	virtual int addUavMission(const UavMission&) = 0;
 	virtual bool getUavMissionsByUavId(const uint uavId, QList<UavMission>& missionsRecords) = 0;
+	virtual bool deleteUavMissionsByUavId(const uint uavId) = 0;
 
 	virtual int addTarget(const Target&) = 0;
 	virtual bool getTargetsByType(const uint targetTypeId, QList<Target>& targetsRecords) = 0;
 	virtual bool getTargetsByUavId(const uint uavId, QList<Target>& targetsRecords) = 0;
+	virtual bool getTargetsByUavIdAndTargetType(const uint uavId, const QString& targetType, QList<Target>& targetsRecords) = 0;
 	virtual bool deleteTargetsByUavId(const uint uavId) = 0;
+	virtual bool deleteTargetsById(const uint id) = 0;
 
 	virtual int addTargetType(const TargetType&) = 0;
 	virtual int getTargetTypeByName(const QString&) = 0;

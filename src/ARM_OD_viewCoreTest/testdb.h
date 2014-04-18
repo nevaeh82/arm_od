@@ -220,6 +220,91 @@ public:
 		int newUavInfoId = dbUavController->addUavInfo(uavInfo);
 		TS_ASSERT_DIFFERS(INVALID_INDEX, newUavInfoId);
 	}
+
+	void testGetTargetsByMission()
+	{
+		TS_ASSERT_EQUALS( true, isConnected );
+
+		QList<Target> targetList;
+		//append Target for test
+		Target target;
+		target.ip = "127.1.1.1";
+		target.port = 1000;
+		target.type = 1;
+		target.uavId = 1;
+		int targetId = dbUavController->addTarget(target);
+		TS_ASSERT_DIFFERS( INVALID_INDEX, targetId );
+
+		//append Mission for test
+		UavMission mission;
+		mission.regionCenterAltitude = 0.0;
+		mission.regionCenterLat = 0.0;
+		mission.regionCenterLon = 0.0;
+		mission.regionRadius = 0.0;
+		mission.targetId = targetId;
+		mission.timeToTarget = QTime(0,0,0);
+		mission.uavId = 1;
+		int missionId = dbUavController->addUavMission(mission);
+		TS_ASSERT_DIFFERS( INVALID_INDEX, missionId );
+
+		bool getOk = dbUavController->getTargetsByMission(missionId, targetList);
+		TS_ASSERT_EQUALS( true, getOk );
+		TS_ASSERT_DIFFERS( 0, targetList.size() );
+
+		//remove test objects
+		dbUavController->deleteUavMissionsByUavId(1);
+		dbUavController->deleteTargetsById(targetId);
+	}
+
+	void testDeleteUavMissionByUavId()
+	{
+		TS_ASSERT_EQUALS( true, isConnected );
+
+		//append Mission and Target for test
+		const uint uavId = 1;
+
+		//append Target
+		Target target;
+		target.ip = "127.1.1.1";
+		target.port = 1000;
+		target.type = 1;
+		target.uavId = 1;
+		int targetId = dbUavController->addTarget(target);
+
+		UavMission mission;
+		mission.regionCenterAltitude = 0.0;
+		mission.regionCenterLat = 0.0;
+		mission.regionCenterLon = 0.0;
+		mission.regionRadius = 0.0;
+		mission.targetId = targetId;
+		mission.timeToTarget = QTime(0,0,0);
+		mission.uavId = uavId;
+		int missionId = dbUavController->addUavMission(mission);
+		TS_ASSERT_DIFFERS( INVALID_INDEX, missionId );
+
+		bool result = dbUavController->deleteUavMissionsByUavId(uavId);
+		TS_ASSERT_EQUALS( true, result );
+
+		//removing extra target
+		dbUavController->deleteTargetsById(targetId);
+	}
+
+	void testDeleteTargetsById()
+	{
+		TS_ASSERT_EQUALS( true, isConnected );
+
+		//append Target for test
+		Target target;
+		target.ip = "127.1.1.1";
+		target.port = 1000;
+		target.type = 1;
+		target.uavId = 1;
+		int targetId = dbUavController->addTarget(target);
+		TS_ASSERT_DIFFERS( INVALID_INDEX, targetId );
+
+		bool result = dbUavController->deleteTargetsById(targetId);
+		TS_ASSERT_EQUALS( true, result );
+	}
 };
 
 #endif // TESTDB_H
