@@ -31,6 +31,7 @@ void MapController::init(QMap<int, Station*> stations)
 	m_view->getPwGis()->enableDebugger(false);
 
 	connect( m_mapModel, SIGNAL(modelMapReady()), this, SLOT(onMapReady()) );
+	connect( m_view->getPwGis(), SIGNAL(mapClicked(double,double)), this, SLOT(onMapClicked(double,double)) );
 }
 
 void MapController::openMapFromAtlas()
