@@ -9,54 +9,12 @@
 #include "UAV/ZInterception.h"
 #include "Tabs/DbBla/Defines.h"
 
-#include <QCoreApplication>
-#include <QSettings>
-
-
-#define PWGIS_DIRECTORY	"HKEY_LOCAL_MACHINE\\SOFTWARE\\PostWin Software\\PwGis\\"
-
-
 MapController::MapController(QObject *parent):
 	QObject(parent)
 {
 	m_view = NULL;
 	m_mapModel = new Map(this);
 	m_pelengEvilIds = 0;
-
-
-	//add directory with PwGis files
-	QSettings postWinPwGis( PWGIS_DIRECTORY, QSettings::NativeFormat );
-
-	QString postWinItem = "";
-	for( int i=postWinPwGis.childGroups().count() - 1; i >= 0; --i ) {
-		postWinItem = postWinPwGis.childGroups().at( i );
-		if ( postWinItem.indexOf( "msvc" ) >= 0 ) {
-			break;
-		}
-		postWinItem = "";
-	}
-	if ( postWinItem.isEmpty() ) {
-		log_error( "Directory with `PwGis` files is not defined." );
-		return;
-	}
-
-	QSettings postWinPwGisDir( PWGIS_DIRECTORY + postWinItem, QSettings::NativeFormat );
-	QString pwgisLibraryPath = postWinPwGisDir.value( "InstallationDir" ).toString();
-	if ( !QDir( pwgisLibraryPath ).exists() ) {
-		log_error( "Directory with `PwGis` files is not exists." );
-		return;
-	}
-
-	bool isPwGisExists = false;
-	foreach ( QString zaviruhaLibrary, QCoreApplication::libraryPaths() ) {
-		if ( zaviruhaLibrary.indexOf( pwgisLibraryPath ) >= 0 ) {
-			isPwGisExists = true;
-			break;
-		}
-	}
-	if ( !isPwGisExists ) {
-		QCoreApplication::addLibraryPath( pwgisLibraryPath );
-	}
 }
 
 MapController::~MapController()
