@@ -61,19 +61,18 @@ void BLAPerehvatDialog::init(int id, IDbUavManager* dbUav)
 		QTreeWidgetItem *it = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString(tr("UAV_enemy: #%1")).arg(enemyUav.uavId)));
 
 		QList<Target> targets;
-		m_dbUav->getTargetsByUavId(enemyUav.uavId, targets);
+		Uav uavFriend = m_dbUav->getUavByUavId(m_id);
+		m_dbUav->getTargetsByUavIdAndTargetType(uavFriend.id, "InterceptType", targets);
 
 		if (targets.count() > 0){
 			it->setCheckState(0, Qt::Checked);
 		} else {
 			it->setCheckState(0, Qt::Unchecked);
 		}
-
 		items.append(it);
 	}
 
 	ui->bplaTreeWidget->insertTopLevelItems(0, items);
-
 	connect(ui->bplaTreeWidget, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this, SLOT(treeItemChangedSlot(QTreeWidgetItem*, int)));
 }
 
@@ -93,18 +92,37 @@ void BLAPerehvatDialog::treeItemChangedSlot(QTreeWidgetItem *item, int id)
 		}
 
 		Target target;
-		Uav uav = m_dbUav->getUavByUavId(enemyUavId);
+		UavMission mission;
+		Uav uavEnemy = m_dbUav->getUavByUavId(enemyUavId);
+		Uav uavFriend = m_dbUav->getUavByUavId(m_id);
 
-		target.uavId = uav.id;
-		target.ip = uav.ip;
+		target.uavId = uavEnemy.id;
+		target.ip = uavEnemy.ip;
 		target.port = 1000;
 		target.type = interceptTargetTypeId;
+		int targetId = m_dbUav->addTarget(target);
 
-		m_dbUav->addTarget(target);
+		//creating mission with current target and friendly bla id
+		mission.regionCenterAltitude = 0.0;
+		mission.regionCenterLat = 0.0;
+		mission.regionCenterLon = 0.0;
+		mission.regionRadius = 0.0;
+		mission.timeToTarget = QTime(0, 0, 0);
+		mission.targetId = targetId;
+		mission.uavId = uavFriend.id;;
+		m_dbUav->addUavMission(mission);
+
 		m_mapClient->addInterception(m_id, enemyUavId);
-	} else {
-
-		if (m_dbUav->deleteTargetsByUavId(enemyUavId)){
+	}
+	else {
+		Uav uavF = m_dbUav->getUavByUavId(m_id);
+		QList<UavMission> missionsList;
+		m_dbUav->getUavMissionsByUavId(uavF.id, missionsList);
+		if ( m_dbUav->deleteUavMissionsByUavId(uavF.id) ) {
+			//remove target from just deleted mission
+			foreach ( UavMission mission, missionsList ) {
+				m_dbUav->deleteTargetsById(mission.targetId);
+			}
 			m_mapClient->removeInterception(m_id, enemyUavId);
 		}
 	}

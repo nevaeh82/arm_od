@@ -220,6 +220,37 @@ public:
 		int newUavInfoId = dbUavController->addUavInfo(uavInfo);
 		TS_ASSERT_DIFFERS(INVALID_INDEX, newUavInfoId);
 	}
+
+	void testGetTargetsByMission()
+	{
+		TS_ASSERT_EQUALS( true, isConnected );
+
+		const uint missionId = 1;
+		QList<Target> targetList;
+		bool getOk = dbUavController->getTargetsByMission(missionId, targetList);
+
+		TS_ASSERT_EQUALS( true, getOk );
+	}
+
+	void testDeleteUavMissionByUavId()
+	{
+		TS_ASSERT_EQUALS( true, isConnected );
+
+		const uint uavId = 1;
+		bool delOk = dbUavController->deleteUavMissionsByUavId(uavId);
+
+		TS_ASSERT_EQUALS( true, delOk );
+	}
+
+	void testDeleteTargetsById()
+	{
+		TS_ASSERT_EQUALS( true, isConnected );
+
+		const uint targetId = 1;
+		bool delOk = dbUavController->deleteTargetsById(targetId);
+
+		TS_ASSERT_EQUALS( true, delOk );
+	}
 };
 
 #endif // TESTDB_H

@@ -439,6 +439,51 @@ bool DbUavController::getUavMissionsByUavId(const uint uavId, QList<UavMission> 
 	return true;
 }
 
+bool DbUavController::deleteUavMissionsByUavId(const uint uavId)
+{
+	QMutexLocker locker(&m_addGetTargetMutex);
+
+	if(!m_db.isOpen()){
+		return false;
+	}
+
+	QList<UavMission> missionList;
+	if(!getUavMissionsByUavId(uavId, missionList)) {
+		return false;
+	}
+
+	foreach (UavMission mission, missionList) {
+
+		if (INVALID_INDEX == mission.id){
+			return false;
+		}
+
+		QSqlQuery query(m_db);
+		bool succeeded = query.prepare(QString("DELETE FROM uavmission WHERE uavID = :uavId;"));
+
+		if (!succeeded) {
+			QString er = query.lastError().text();
+			log_debug("SQL is wrong! " + er);
+			return false;
+		}
+
+		query.bindValue(":uavId", uavId);
+
+		succeeded = query.exec();
+
+		if (!succeeded){
+			QString er = query.lastError().text();
+			log_debug("SQL is wrong! " + er);
+			m_db.commit();
+			return false;
+		}
+
+		m_db.commit();
+	}
+
+	return true;
+}
+
 int DbUavController::addTarget(const Target& target)
 {
 	QMutexLocker locker(&m_addGetTargetMutex);
@@ -565,6 +610,68 @@ bool DbUavController::getTargetsByUavId(const uint uavId, QList<Target> &targets
 	return true;
 }
 
+bool DbUavController::getTargetsByMission(const uint missionId, QList<Target>& targetsRecords)
+{
+	QMutexLocker locker(&m_addGetTargetMutex);
+
+	if(!m_db.isOpen()){
+		return false;
+	}
+
+	QSqlQuery query0(m_db);
+	bool succeeded = query0.prepare(QString("SELECT targetID FROM uavmission WHERE id = :missionID"));
+	if (!succeeded) {
+		QString er = query0.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		return false;
+	}
+
+	query0.bindValue(":missionID", missionId);
+
+	succeeded = query0.exec();
+
+	if (!succeeded){
+		return false;
+	}
+
+	int targetID;
+	while (query0.next()){
+		targetID = query0.value(0).toInt();
+		break;
+	}
+
+	QSqlQuery query(m_db);
+	succeeded = query.prepare(QString("SELECT * FROM target WHERE id = :targetID;"));
+
+	if (!succeeded) {
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		return false;
+	}
+
+	query.bindValue(":targetID", targetID);
+
+	succeeded = query.exec();
+
+	if (!succeeded){
+		return false;
+	}
+
+	while (query.next()){
+		Target target;
+
+		target.id = query.value(0).toInt();
+		target.uavId = query.value(1).toInt();
+		target.ip = query.value(2).toString();
+		target.port = query.value(3).toInt();
+		target.type = query.value(4).toInt();
+
+		targetsRecords.append(target);
+	}
+
+	return true;
+}
+
 bool DbUavController::deleteTargetsByUavId(const uint uavId)
 {
 	QMutexLocker locker(&m_addGetTargetMutex);
@@ -597,6 +704,43 @@ bool DbUavController::deleteTargetsByUavId(const uint uavId)
 	succeeded = query.exec();
 
 	if (!succeeded){
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		m_db.commit();
+		return false;
+	}
+
+	m_db.commit();
+	return true;
+}
+
+bool DbUavController::deleteTargetsById(const uint id)
+{
+	QMutexLocker locker(&m_addGetTargetMutex);
+
+	if(!m_db.isOpen()){
+		return false;
+	}
+
+	m_db.transaction();
+
+	QSqlQuery query(m_db);
+	bool succeeded = query.prepare(QString("DELETE FROM target WHERE id = :id;"));
+
+	if (!succeeded) {
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		m_db.commit();
+		return false;
+	}
+
+	query.bindValue(":id", id);
+
+	succeeded = query.exec();
+
+	if (!succeeded){
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
 		m_db.commit();
 		return false;
 	}

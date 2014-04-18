@@ -129,6 +129,11 @@ bool DbUavManager::getUavMissionsByUavId(const uint uavId, QList<UavMission> &mi
 	return m_dbController->getUavMissionsByUavId(uavId, missionsRecords);
 }
 
+bool DbUavManager::deleteUavMissionsByUavId(const uint uavId)
+{
+	return m_dbController->deleteUavMissionsByUavId(uavId);
+}
+
 int DbUavManager::addTarget(const Target& target)
 {
 	return m_dbController->addTarget(target);
@@ -144,9 +149,34 @@ bool DbUavManager::getTargetsByUavId(const uint uavId, QList<Target> &targetsRec
 	return m_dbController->getTargetsByUavId(uavId, targetsRecords);
 }
 
+bool DbUavManager::getTargetsByUavIdAndTargetType(const uint uavId, const QString& targetType, QList<Target>& targetsRecords)
+{
+	QList<UavMission> uavMissions;
+	m_dbController->getUavMissionsByUavId(uavId, uavMissions);
+
+	foreach(UavMission mission, uavMissions){
+
+		QList<Target> targets;
+		m_dbController->getTargetsByMission(mission.id, targets);
+
+		foreach(Target target, targets){
+			if (target.type == m_dbController->getTargetTypeByName(targetType)){
+				targetsRecords.append(target);
+			}
+		}
+	}
+
+	return true;
+}
+
 bool DbUavManager::deleteTargetsByUavId(const uint uavId)
 {
 	return m_dbController->deleteTargetsByUavId(uavId);
+}
+
+bool DbUavManager::deleteTargetsById(const uint id)
+{
+	return m_dbController->deleteTargetsById(id);
 }
 
 int DbUavManager::addTargetType(const TargetType& targetType)
