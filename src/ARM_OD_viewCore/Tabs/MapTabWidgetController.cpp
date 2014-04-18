@@ -51,6 +51,7 @@ MapTabWidgetController::~MapTabWidgetController()
 
 	m_uavDbManager->deregisterReceiver(m_allyUavTreeModel);
 	m_uavDbManager->deregisterReceiver(m_enemyUavTreeModel);
+	m_uavDbManager->deregisterReceiver(m_mapController);
 }
 
 int MapTabWidgetController::init()
