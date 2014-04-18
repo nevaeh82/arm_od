@@ -29,15 +29,18 @@ private:
 	QMap<uint, Uav> m_knownUavsList;
 	QMap<QString, QTimer*> m_lifeTimerMap;
 	QSignalMapper* m_timeoutSignalMapper;
-	QMutex m_deleteMutex;
 
+	QMutex m_deleteMutex;
 	QMutex m_mutex;
 
+	int m_lifeTime;
+
 public:
-	explicit DbUavManager(QObject *parent = 0);
+	explicit DbUavManager(int lifeTime = MAX_LIFE_TIME, QObject *parent = 0);
 	virtual ~DbUavManager();
 
 	void setDbController(IDbUavController*);
+	void setLifeTime(int msecs);
 
 	int addUav(const Uav&);
 	Uav getUavByUavId(const uint uavId);

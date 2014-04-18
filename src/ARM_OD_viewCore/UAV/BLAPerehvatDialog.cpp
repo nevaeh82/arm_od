@@ -34,8 +34,9 @@ BLAPerehvatDialog::BLAPerehvatDialog(IMapClient* mapClient, QWidget* parent) :
 	m_dbUavController->connectToDB(getDbBlaConnectionSettings());
 
 	//Creating db bla manager and set its controller
-	m_dbUav = new DbUavManager(this);
-	m_dbUav->setDbController(m_dbUavController);
+	m_dbUav = new DbUavManager( 0, this );
+	m_dbUav->setDbController( m_dbUavController );
+	m_dbUav->setLifeTime( m_dbBlaSettingsManager->getBlaLifeTime() );
 }
 
 BLAPerehvatDialog::~BLAPerehvatDialog()
@@ -46,6 +47,8 @@ BLAPerehvatDialog::~BLAPerehvatDialog()
 
 void BLAPerehvatDialog::init(int id, IDbUavManager* dbUav)
 {
+	Q_UNUSED( dbUav );
+
 	m_id = id;
 
 	ui->blaLE->setText(tr("UAV #") + QString::number(m_id));
@@ -76,6 +79,8 @@ void BLAPerehvatDialog::init(int id, IDbUavManager* dbUav)
 
 void BLAPerehvatDialog::treeItemChangedSlot(QTreeWidgetItem *item, int id)
 {
+	Q_UNUSED( id );
+
 	int enemyUavId = item->text(0).split(tr("#")).at(1).toInt();
 
 	if(item->checkState(0) == Qt::Checked) {

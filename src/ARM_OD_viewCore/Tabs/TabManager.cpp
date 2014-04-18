@@ -43,6 +43,8 @@ TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
 	connectionStruct.dbName		= dbUavSettingsManager->getBlaDbName();
 
 	m_dbUavController->connectToDB(connectionStruct);
+
+	m_dbUavManager->setLifeTime( dbUavSettingsManager->getBlaLifeTime() );
 }
 
 TabManager::~TabManager()
@@ -143,6 +145,11 @@ void TabManager::clearAllInformation()
 	m_stationsMap.clear();
 
 	m_dbUavManager->deleteAllUav();
+}
+
+void TabManager::setUavLifeTime(int msecs)
+{
+	m_dbUavManager->setLifeTime( msecs );
 }
 
 void TabManager::start()

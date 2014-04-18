@@ -61,6 +61,7 @@ public:
 	void addStationTabs();
 	void clearAllInformation();
 
+	void setUavLifeTime(int msecs);
 
 private slots:
 	void changeTabSlot(int index);

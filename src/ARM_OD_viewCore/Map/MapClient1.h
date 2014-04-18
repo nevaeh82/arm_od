@@ -62,10 +62,8 @@ private:
 	/// \todo: I don't what for this variables
 	QMap<int, int> m_mapBattle;
 	QTimer* m_uiTimer;
-	QTimer* m_uiTimerSlice;
 	double m_circleRadius;
 	bool m_circleChanged;
-	bool m_sliceChanged;
 
 public:
 	MapClient1( PwGisWidget* pwwidget, Station* station, QObject* parent = NULL );
