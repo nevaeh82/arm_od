@@ -97,7 +97,9 @@ HEADERS += \
 	Map/Features/PelengatorPointFeature.h \
 	Tabs/Solver/SolverSettingsDialog.h \
     Map/Features/CheckPointFeature.h \
-    Map/Features/BplaAbstractFeature.h
+    Map/Features/BplaAbstractFeature.h \
+    Map/Features/PolylineAbstract.h \
+    Map/Features/HyperboleFeature.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -140,7 +142,9 @@ SOURCES += \
 	Map/Features/PelengatorPointFeature.cpp \
 	Tabs/Solver/SolverSettingsDialog.cpp \
     Map/Features/CheckPointFeature.cpp \
-    Map/Features/BplaAbstractFeature.cpp
+    Map/Features/BplaAbstractFeature.cpp \
+    Map/Features/PolylineAbstract.cpp \
+    Map/Features/HyperboleFeature.cpp
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \
