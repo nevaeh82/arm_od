@@ -45,9 +45,6 @@ void MainWindow::init()
 {
 	connect(ui->actionNew, SIGNAL(triggered()), this, SLOT(newFile()));
 	connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(close()));
-
-//	connect(ui->actionOpen_Atlas, SIGNAL(triggered()), this, SIGNAL(openAtlasSignal()));
-//	connect(ui->actionOpen_from_file, SIGNAL(triggered()), this, SIGNAL(openMapSignal()));
 	connect( ui->actionOpen_Atlas, SIGNAL( triggered() ),
 		this, SLOT( openAtlasAction() ) );
 	connect( ui->actionOpen_from_file, SIGNAL( triggered() ),
@@ -55,7 +52,6 @@ void MainWindow::init()
 
 	connect(ui->actionKoordinatometriyaParameters, SIGNAL(triggered()), this, SIGNAL(setupKoordinatometriyaSignal()));
 }
-
 
 void MainWindow::setStateMapAction( bool value )
 {
