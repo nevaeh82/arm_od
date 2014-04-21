@@ -44,6 +44,18 @@ PwGisStyle* MapStyleManager::createFriendBplaStyle(const QString& layerId)
 		style->setProperty( PwGisStyle::fillColor, "red" );
 		style->setProperty( PwGisStyle::graphicWidth, "40" );
 		style->setProperty( PwGisStyle::graphicHeight, "60" );
+		style->setProperty( PwGisStyle::layer, layerId );
+	}
+
+	return style;
+}
+
+PwGisStyle* MapStyleManager::createFriendBplaTrackStyle(const QString& layerId)
+{
+	bool exists;
+	PwGisStyle* style = createStyle( MAP_STYLE_NAME_FRIEND_BPLA_TRACK, &exists );
+
+	if( !exists ) {
 		style->setProperty( PwGisStyle::strokeColor, "red" );
 		style->setProperty( PwGisStyle::layer, layerId );
 	}
@@ -51,7 +63,7 @@ PwGisStyle* MapStyleManager::createFriendBplaStyle(const QString& layerId)
 	return style;
 }
 
-PwGisStyle*MapStyleManager::createFriendBplaSliceStyle(const QString& layerId)
+PwGisStyle* MapStyleManager::createFriendBplaSliceStyle(const QString& layerId)
 {
 	bool exists;
 	PwGisStyle* style = createStyle( MAP_STYLE_NAME_FRIEND_BPLA_SLICE, &exists );
@@ -77,6 +89,18 @@ PwGisStyle* MapStyleManager::createEnemyBplaStyle(const QString& layerId)
 		style->setProperty( PwGisStyle::fillColor, "blue" );
 		style->setProperty( PwGisStyle::graphicWidth, "40" );
 		style->setProperty( PwGisStyle::graphicHeight, "60" );
+		style->setProperty( PwGisStyle::layer, layerId );
+	}
+
+	return style;
+}
+
+PwGisStyle* MapStyleManager::createEnemyBplaTrackStyle(const QString& layerId)
+{
+	bool exists;
+	PwGisStyle* style = createStyle( MAP_STYLE_NAME_ENEMY_BPLA_TRACK, &exists );
+
+	if( !exists ) {
 		style->setProperty( PwGisStyle::strokeColor, "blue" );
 		style->setProperty( PwGisStyle::layer, layerId );
 	}

@@ -79,36 +79,48 @@ void MapClient1::init()
 	removeAll();
 
 	// create marker layers
-	this->addMarkerLayer( 0, "layer_0_OP", tr( "OP" ) );//0 - stations
-	this->addMarkerLayer( 1, "layer_1_UAV_enemy", tr( "UAV_enemy" ) ); //1 - BPLA profile
-	this->addMarkerLayer( 2, "layer_2_UAV", tr( "UAV" ) ); //2 - BLA profile
-	this->addMarkerLayer( 3, "layer_3_Atlant", tr( "Atlant" ) ); //3 - Pelengators
-	this->addMarkerLayer( 4, "layer_4_Atlant_target", tr( "Atlant target" ) ); //4 - PelengatorsPoint
-	this->addMarkerLayer( 5, "layer_5_Grid", tr( "Grid" ) ); //5 - Grid
-	this->addMarkerLayer( 6, "layer_6_Checkpoints", tr( "Checkpoints" ) ); //6 - Control_points
-	this->addMarkerLayer( 7, "layer_7_Interception_point", tr( "Interception point" ) ); //7 - Perehvat
-	this->addMarkerLayer( 8, "layer_8_Civil_ships", tr( "Civil ships" ) ); //8 - AIS - civil plane
-	this->addMarkerLayer( 9, "layer_9_Diversion_points", tr( "Diversion points" ) ); //9 - NIIPPPoint
-	this->addMarkerLayer( 10, "layer_10_SPIP_DD", tr( "SPIP DD" ) ); //10 - NIIPP
+	this->addMarkerLayer( 0, "OP", tr( "OP" ) );
 
-	showLayer( 5, false );
+	this->addMarkerLayer( 1, "UAV_enemy", tr( "UAV_enemy" ) );
+	this->addMarkerLayer( 2, "UAV_enemy_track", tr( "UAV_enemy_track" ) );
+
+	this->addMarkerLayer( 3, "UAV", tr( "UAV" ) );
+	this->addMarkerLayer( 4, "UAV_track_autopilot", tr( "UAV_track_autopilot" ) );
+	this->addMarkerLayer( 5, "UAV_track_KTR", tr( "UAV_track_KTR" ) );
+
+	this->addMarkerLayer( 6, "Atlant", tr( "Atlant" ) );
+	this->addMarkerLayer( 7, "Atlant_target", tr( "Atlant target" ) );
+	this->addMarkerLayer( 8, "Grid", tr( "Grid" ) );
+	this->addMarkerLayer( 9, "Checkpoints", tr( "Checkpoints" ) );
+	this->addMarkerLayer( 10, "Interception_point", tr( "Interception point" ) );
+	this->addMarkerLayer( 11, "Civil_ships", tr( "Civil ships" ) );
+	this->addMarkerLayer( 12, "Diversion_points", tr( "Diversion points" ) );
+	this->addMarkerLayer( 13, "SPIP_DD", tr( "SPIP DD" ) );
+	this->addMarkerLayer( 14, "Hyperbole", tr( "Hyperbole" ) );
+
+	showLayer( 8, false );
 
 	// create styles for features
 	m_styleManager->createStationStyle( m_mapLayers.value(0) )->apply();
+
 	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(1) )->apply();
-	m_styleManager->createFriendBplaStyle( m_mapLayers.value(2) )->apply();
-	m_styleManager->createFriendBplaSliceStyle( m_mapLayers.value(2) )->apply();
-	m_styleManager->createPelengatorStyle( m_mapLayers.value(3) )->apply();
-	m_styleManager->createPelengatorPointStyle( m_mapLayers.value(4) )->apply();
-	m_styleManager->createGridStyle( m_mapLayers.value(5) )->apply();
-	m_styleManager->createCheckPointStyle( m_mapLayers.value(6) )->apply();
-	m_styleManager->createInterceptionStyle( m_mapLayers.value(7) )->apply();
-	m_styleManager->createAisStyle( m_mapLayers.value(8) )->apply();
-	m_styleManager->createNiippPointStyle( m_mapLayers.value(9) )->apply();
-	m_styleManager->createNiippStyle( m_mapLayers.value(10) )->apply();
+	m_styleManager->createEnemyBplaTrackStyle( m_mapLayers.value(2) )->apply();
+
+	m_styleManager->createFriendBplaStyle( m_mapLayers.value(3) )->apply();
+	m_styleManager->createFriendBplaTrackStyle( m_mapLayers.value(4) )->apply();
+	m_styleManager->createFriendBplaSliceStyle( m_mapLayers.value(5) )->apply();
+
+	m_styleManager->createPelengatorStyle( m_mapLayers.value(6) )->apply();
+	m_styleManager->createPelengatorPointStyle( m_mapLayers.value(7) )->apply();
+	m_styleManager->createGridStyle( m_mapLayers.value(8) )->apply();
+	m_styleManager->createCheckPointStyle( m_mapLayers.value(9) )->apply();
+	m_styleManager->createInterceptionStyle( m_mapLayers.value(10) )->apply();
+	m_styleManager->createAisStyle( m_mapLayers.value(11) )->apply();
+	m_styleManager->createNiippPointStyle( m_mapLayers.value(12) )->apply();
+	m_styleManager->createNiippStyle( m_mapLayers.value(13) )->apply();
 
 	//addNiippLayer
-	m_pwWidget->mapProvider()->layerManager()->addVectorLayer( "layer_11_NIIPP", tr("NIIPP") );
+	m_pwWidget->mapProvider()->layerManager()->addVectorLayer( "NIIPP", tr("NIIPP") );
 
 	connect( this, SIGNAL( aisAdded( QMap<int, QVector<QString> >) ),
 			 this, SLOT( setAisData( QMap<int, QVector<QString> > ) ) );
@@ -184,6 +196,7 @@ void MapClient1::removeNiippPoint()
 	if(m_niippPoint != 0) {
 		delete m_niippPoint;
 	}
+
 	m_niippPoint = 0;
 }
 
@@ -295,7 +308,7 @@ void MapClient1::addFriendBplaInternal(const UavInfo& uav)
 		// if we get data about UAV from slices source...
 		case UavSlicesSource:
 			// and UAV exists, update slice track
-			if( bpla != NULL ) {
+	if( bpla != NULL ) {
 				bpla->setSlice( QPointF( uav.lon, uav.lat ) );
 			}
 
@@ -303,16 +316,16 @@ void MapClient1::addFriendBplaInternal(const UavInfo& uav)
 
 		case UavAutopilotSource:
 			if( bpla != NULL ) {
-				// update, if BPLA already added and position changed
-				bpla->update( uav );
-			} else {
-				// else create new one
-				bpla = m_factory->createFriendBpla( uav );
-				m_friendBplaList.insert( uav.uavId, bpla );
-			}
+		// update, if BPLA already added and position changed
+		bpla->update( uav );
+	} else {
+		// else create new one
+		bpla = m_factory->createFriendBpla( uav );
+		m_friendBplaList.insert( uav.uavId, bpla );
+	}
 
 			return;
-	}
+}
 }
 
 void MapClient1::addEnemyBplaInternal(const UavInfo& uav)

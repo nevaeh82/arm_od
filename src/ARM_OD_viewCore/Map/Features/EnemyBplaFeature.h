@@ -21,7 +21,8 @@ protected:
 
 	inline void updateName() { setName( m_originName ); }
 	virtual inline QString getStyleName() const { return MAP_STYLE_NAME_ENEMY_BPLA; }
-	virtual inline QString getSlicesStyleName() const { return MAP_STYLE_NAME_ENEMY_BPLA; }
+	virtual inline QString getTrackStyleName() const { return MAP_STYLE_NAME_ENEMY_BPLA_TRACK; }
+	virtual inline QString getSliceStyleName() const { return MAP_STYLE_NAME_ENEMY_BPLA_TRACK; }
 
 	EnemyBpla(IObjectsFactory* factory, const QString& id, const UavInfo& uav);
 
