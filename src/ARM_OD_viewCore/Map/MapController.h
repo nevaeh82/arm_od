@@ -86,6 +86,7 @@ public slots:
 
 signals:
 	void mapOpened();
+	void atlasOpened();
 	void cancelMapOpen();
 };
 

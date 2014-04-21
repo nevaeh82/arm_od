@@ -80,10 +80,9 @@ void MainWindowController::init()
 
 	connect(m_view, SIGNAL(openAtlasSignal()), m_tabManager, SIGNAL(openAtlasSignal()));
 	connect(m_view, SIGNAL(openMapSignal()), m_tabManager, SIGNAL(openMapSignal()));
-	connect( m_tabManager, SIGNAL( mapOpened() ),
-		m_view, SLOT( mapOpened() ) );
-	connect( m_tabManager, SIGNAL( cancelMapOpen() ),
-		m_view, SLOT( cancelMapOpen() ) );
+	connect(m_tabManager, SIGNAL( mapOpened() ), m_view, SLOT( mapOpened() ));
+	connect(m_tabManager, SIGNAL( atlasOpened() ), m_view, SLOT( mapOpened() ));
+	connect(m_tabManager, SIGNAL( cancelMapOpen() ), m_view, SLOT( cancelMapOpen() ));
 	connect(m_view, SIGNAL(setupKoordinatometriyaSignal()), this, SLOT(solverDialogSlot()));
 
 	m_rpcConfigClient = new RpcConfigClient(this);

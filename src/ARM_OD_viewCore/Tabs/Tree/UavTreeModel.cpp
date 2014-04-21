@@ -176,7 +176,7 @@ void UavTreeModel::onUavInfoChanged(const UavInfo &uavInfo, const QString& uavRo
 		onPropertyChanged(uavInfo, LON_KTR_PROPERTY_ID, tr("lon (ktr)"), number.sprintf( "%.4f", uavInfo.lon ));
 	}
 
-	if(m_isNeedRedraw){
+	if(m_isNeedRedraw) {
 		return;
 	}
 

@@ -5,6 +5,8 @@
 
 #include <Logger.h>
 
+#include <MapManagerEvents.h>
+
 #include "Icons/IconsGenerator.h"
 #include "UAV/ZInterception.h"
 #include "Tabs/DbBla/Defines.h"
@@ -112,7 +114,19 @@ void MapController::removeNiippPoint()
 
 void MapController::appendView(MapWidget *view)
 {
+	Pw::Gis::MapManagerEvents* events;
+
+	if( m_view != NULL ) {
+		events = &m_view->getPwGis()->mapProvider()->mapManager()->events();
+		disconnect( events, SIGNAL(atlasReady()), this, SIGNAL(atlasOpened()) );
+	}
+
 	m_view = view;
+
+	if( m_view != NULL ) {
+		events = &m_view->getPwGis()->mapProvider()->mapManager()->events();
+		connect( events, SIGNAL(atlasReady()), SIGNAL(atlasOpened()) );
+	}
 }
 
 void MapController::closeMap()

@@ -72,6 +72,7 @@ signals:
 	void openAtlasSignal();
 	void openMapSignal();
 	void mapOpened();
+	void atlasOpened();
 	void cancelMapOpen();
 	void readyToStart();
 	void finished();

@@ -92,6 +92,7 @@ signals:
 	void signalStopRPC();
 	void signalFinishRPC();
 	void mapOpened();
+	void atlasOpened();
 	void cancelMapOpen();
 
 private slots:

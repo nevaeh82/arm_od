@@ -18,10 +18,9 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 
 	/// create map controller
 	m_mapController = new MapController( this );
-	connect( m_mapController, SIGNAL( mapOpened() ),
-		this, SIGNAL( mapOpened() ) );
-	connect( m_mapController, SIGNAL( cancelMapOpen() ),
-		this, SIGNAL( cancelMapOpen() ) );
+	connect( m_mapController, SIGNAL( mapOpened() ), SIGNAL( mapOpened() ) );
+	connect( m_mapController, SIGNAL( atlasOpened() ), SIGNAL( atlasOpened() ) );
+	connect( m_mapController, SIGNAL( cancelMapOpen() ), SIGNAL( cancelMapOpen() ) );
 	m_uavDbManager->registerReceiver( m_mapController );
 
 	QStringList headers;
