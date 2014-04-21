@@ -91,6 +91,8 @@ signals:
 	void signalStartRPC();
 	void signalStopRPC();
 	void signalFinishRPC();
+	void mapOpened();
+	void cancelMapOpen();
 
 private slots:
 	void onBlaTreeItemDoubleClicked(QModelIndex index);

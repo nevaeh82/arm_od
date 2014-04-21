@@ -46,8 +46,6 @@ public:
 
 	void setUavLifeTime(int msecs);
 
-signals:
-
 private slots:
 	void serverFailedToStartSlot();
 	void serverStartedSlot();

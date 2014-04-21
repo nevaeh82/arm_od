@@ -86,7 +86,7 @@ public slots:
 
 signals:
 	void mapOpened();
-
+	void cancelMapOpen();
 };
 
 #endif // MAPCONTROLLER_H

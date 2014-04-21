@@ -34,13 +34,23 @@ public:
 	QTabWidget* getMainTabWidget() const;
 	QStackedWidget* getStackedWidget() const;
 
+public slots:
+	void mapOpened();
+	void cancelMapOpen();
+
 private:
 	void init();
+	void setStateMapAction( bool value );
 
 signals:
 	void openAtlasSignal();
 	void openMapSignal();
 	void setupKoordinatometriyaSignal();
+
+private slots:
+	void openAtlasAction();
+	void openMapAction();
+
 
 };
 Q_DECLARE_METATYPE(rpc_send_points_vector)

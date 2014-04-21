@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow)
@@ -44,10 +45,38 @@ void MainWindow::init()
 {
 	connect(ui->actionNew, SIGNAL(triggered()), this, SLOT(newFile()));
 	connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(close()));
+	connect( ui->actionOpen_Atlas, SIGNAL( triggered() ),
+		this, SLOT( openAtlasAction() ) );
+	connect( ui->actionOpen_from_file, SIGNAL( triggered() ),
+		this, SLOT( openMapAction() ) );
 
-	connect(ui->actionOpen_Atlas, SIGNAL(triggered()), this, SIGNAL(openAtlasSignal()));
-	connect(ui->actionOpen_from_file, SIGNAL(triggered()), this, SIGNAL(openMapSignal()));
 	connect(ui->actionKoordinatometriyaParameters, SIGNAL(triggered()), this, SIGNAL(setupKoordinatometriyaSignal()));
 }
 
+void MainWindow::setStateMapAction( bool value )
+{
+	ui->actionOpen_Atlas->setEnabled( value );
+	ui->actionOpen_from_file->setEnabled( value );
+}
 
+void MainWindow::openAtlasAction()
+{
+	this->setStateMapAction( false );
+	emit openAtlasSignal();
+}
+
+void MainWindow::openMapAction()
+{
+	this->setStateMapAction( false );
+	emit openMapSignal();
+}
+
+void MainWindow::mapOpened()
+{
+	this->setStateMapAction( true );
+}
+
+void MainWindow::cancelMapOpen()
+{
+	this->setStateMapAction( true );
+}
