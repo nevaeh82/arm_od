@@ -16,6 +16,8 @@ class TcpKTRCoder : public BaseTcpDeviceCoder
 {
 	Q_OBJECT
 
+	friend class ktrCoderTest;
+
 private:
 	double m_altitude;
 	QFile m_logFile;

@@ -11,12 +11,15 @@ CONFIG += qtestlib
 
 INCLUDEPATH += ../../tools/cxxtest
 
-HEADERS += test.h
+HEADERS += test.h \
+    ktrCoderTest.h
 
 include(../../specs/project.pri)
 include(../ARM_OD_ServerCore/reference.pri)
+include(../ARM_OD_Common/reference.pri)
 include(../../specs/qxt.pri)
 include(../../specs/protobuf.pri)
+include($$SolutionDir/specs/CISCommonLib.pri )
 include(../TestShared/mksuite.pri)
 
 applyReferences()

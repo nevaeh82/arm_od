@@ -238,9 +238,14 @@ MessageSP TcpKTRCoder::parseLocationFromKTR(const QByteArray& data)
 		QStringList tmp21 = tmp11.at(1).split("'");
 		double min1 = tmp21.at(0).toDouble();
 		QStringList tmp31 = tmp21.at(1).split("'");
-		QString ss1 = tmp31.at(0);
-		ss.remove("\"");
-		double sec1 = ss1.toDouble();
+
+//		QString ss1 = tmp31.at(0);
+//		ss.remove("\"");
+//		double sec1 = ss1.toDouble();
+
+		QString ss1=tmp31.at(0);
+		ss1.remove(ss1.size()-1, 1);
+		double sec1=ss1.toDouble();
 
 		double lon_f = sec1/60;
 		lon_f += min1;
