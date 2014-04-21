@@ -200,6 +200,7 @@ QByteArray RPCClient_R::encodeToEnemyUav(const QByteArray& data)
 	inputDataStream >> uav.speed;
 	inputDataStream >> uav.altitude;
 	inputDataStream >> uav.course;
+	inputDataStream >> uav.frequency;
 
 	QByteArray dataToSend;
 	QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);

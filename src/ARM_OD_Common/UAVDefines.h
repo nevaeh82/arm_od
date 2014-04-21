@@ -87,6 +87,7 @@ typedef struct UAVPositionDataEnemy
 		speed		= 0.0;
 		course		= 0.0;
 		state		= 0;
+		frequency	= -1;
 		time	= QTime::currentTime();
 		pointStdDev	= QPointF(0.0, 0.0);
 	}
@@ -97,7 +98,8 @@ typedef struct UAVPositionDataEnemy
 		speed		= object.speed;
 		course		= object.course;
 		state		= object.state;
-		time	= object.time;
+		time		= object.time;
+		frequency	= object.frequency;
 		pointStdDev	= object.pointStdDev;
 		track		= object.track;
 	}
@@ -106,6 +108,7 @@ typedef struct UAVPositionDataEnemy
 	double		speed;
 	double		course;
 	int			state;
+	double		frequency;
 	QTime		time;
 	QPointF		pointStdDev;
 	QVector<QPointF>	track;
