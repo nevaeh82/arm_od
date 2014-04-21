@@ -2,6 +2,7 @@
 
 #include <QDebug>
 
+
 MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Station *> map_settings, ITabManager* tabManager, DbUavManager* db_bla, QObject* parent) :
 	QObject(parent)
 {
@@ -17,6 +18,10 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 
 	/// create map controller
 	m_mapController = new MapController( this );
+	connect( m_mapController, SIGNAL( mapOpened() ),
+		this, SIGNAL( mapOpened() ) );
+	connect( m_mapController, SIGNAL( cancelMapOpen() ),
+		this, SIGNAL( cancelMapOpen() ) );
 	m_uavDbManager->registerReceiver( m_mapController );
 
 	QStringList headers;

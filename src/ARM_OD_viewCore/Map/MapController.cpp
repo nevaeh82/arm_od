@@ -49,6 +49,9 @@ void MapController::openMapFromLocalFile()
 	if ( !filename.isNull() ) {
 		m_mapModel->openMap(filename);
 	}
+	else {
+		emit cancelMapOpen();
+	}
 }
 
 void MapController::onMapReady()

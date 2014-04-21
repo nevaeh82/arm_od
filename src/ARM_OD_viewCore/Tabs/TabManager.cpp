@@ -2,6 +2,7 @@
 
 #include <QDebug>
 
+
 TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
 	QObject(parent)
 {
@@ -94,6 +95,10 @@ void TabManager::addStationTabs()
 	foreach (Station* station, m_stationsMap) {
 
 		MapTabWidgetController* tabWidgetController = new MapTabWidgetController(station, m_stationsMap, this, m_dbUavManager);
+		QObject::connect( tabWidgetController, SIGNAL( mapOpened() ),
+			this, SIGNAL( mapOpened() ) );
+		QObject::connect( tabWidgetController, SIGNAL( cancelMapOpen() ),
+			this, SIGNAL( cancelMapOpen() ) );
 		tabWidgetController->setRpcConfig(m_rpcPort, m_rpcHost);
 
 		MapTabWidget* tabWidget = new MapTabWidget(m_tabWidget);
@@ -119,6 +124,10 @@ void TabManager::clearAllInformation()
 	foreach (Station* station, m_stationsMap) {
 		MapTabWidgetController* tabWidgetController = m_tabWidgetsMap.take(station->name);
 		if (tabWidgetController != NULL){
+			QObject::disconnect( tabWidgetController, SIGNAL( mapOpened() ),
+				this, SIGNAL( mapOpened() ) );
+			QObject::disconnect( tabWidgetController, SIGNAL( cancelMapOpen() ),
+				this, SIGNAL( cancelMapOpen() ) );
 			delete tabWidgetController;
 			tabWidgetController = NULL;
 		}
