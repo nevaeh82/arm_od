@@ -53,7 +53,8 @@ protected:
 	void registerStyle();
 
 	virtual inline QString getStyleName() const = 0;
-	virtual inline QString getSlicesStyleName() const = 0;
+	virtual inline QString getTrackStyleName() const = 0;
+	virtual inline QString getSliceStyleName() const = 0;
 	virtual void updateName() {}
 };
 

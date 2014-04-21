@@ -132,8 +132,8 @@ void BplaAbstract::removeFromMap()
 void BplaAbstract::registerStyle()
 {
 	m_marker->addStyleByName( getStyleName() );
-	m_tail->addStyleByName( getStyleName() );
-	m_slices->addStyleByName( getSlicesStyleName() );
+	m_tail->addStyleByName( getTrackStyleName() );
+	m_slices->addStyleByName( getSliceStyleName() );
 }
 
 } // namespace MapFeature
