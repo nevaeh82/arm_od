@@ -38,6 +38,7 @@ class IDbUavController
 		virtual int addUavMission(const UavMission&) = 0;
 		virtual bool getUavMissionsByUavId(const uint uavId, QList<UavMission>& missionsRecords) = 0;
 		virtual bool deleteUavMissionsByUavId(const uint uavId) = 0;
+		virtual bool deleteUavMissionsByTargetId(const uint target) = 0;
 
 		virtual int addTarget(const Target&) = 0;
 		virtual bool getTargetsByType(const uint targetTypeId, QList<Target>& targetsRecords) = 0;

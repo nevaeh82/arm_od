@@ -26,6 +26,7 @@ typedef struct UAVPositionData {
 		altitude	= 0.0;
 		speed		= 0.0;
 		course		= 0.0;
+		frequency	= -1;
 		state		= 0;
 		dateTime	= QDateTime::currentDateTime();
 		sourceType	= UavAutopilotSource;
@@ -40,6 +41,7 @@ typedef struct UAVPositionData {
 		altitude	= data.altitude;
 		speed		= data.speed;
 		course		= data.course;
+		frequency	= data.frequency;
 		state		= data.state;
 		dateTime	= data.dateTime;
 		sourceType  = data.sourceType;
@@ -52,6 +54,7 @@ typedef struct UAVPositionData {
 	double		altitude;
 	double		speed;
 	double		course;
+	double		frequency;
 	quint32		state;
 	QDateTime	dateTime;
 	UavSourceType sourceType;
@@ -61,7 +64,7 @@ inline QDataStream& operator<<(QDataStream& out, const UAVPositionData& object)
 {
 	return out << object.boardID << object.device << object.latitude
 			   << object.longitude << object.altitude
-			   << object.speed << object.course
+			   << object.speed << object.course << object.frequency
 			   << object.state << object.dateTime << (quint32)object.sourceType;
 }
 
@@ -71,7 +74,7 @@ inline QDataStream& operator>>(QDataStream& in, UAVPositionData& object)
 
 	in >> object.boardID >> object.device >> object.latitude
 	   >> object.longitude >> object.altitude
-	   >> object.speed >> object.course
+	   >> object.speed >> object.course >> object.frequency
 	   >> object.state >> object.dateTime >> inSourceId;
 
 	object.sourceType = (UavSourceType)inSourceId;
@@ -98,8 +101,8 @@ typedef struct UAVPositionDataEnemy
 		speed		= object.speed;
 		course		= object.course;
 		state		= object.state;
-		time		= object.time;
 		frequency	= object.frequency;
+		time		= object.time;
 		pointStdDev	= object.pointStdDev;
 		track		= object.track;
 	}
@@ -118,7 +121,7 @@ typedef struct UAVPositionDataEnemy
 inline QDataStream& operator<<(QDataStream& out, const UAVPositionDataEnemy& object)
 {
 	return out << object.altitude << object.speed
-			   << object.course << object.state
+			   << object.course << object.state << object.frequency
 			   << object.time << object.pointStdDev
 			   << object.track;
 }
@@ -126,7 +129,7 @@ inline QDataStream& operator<<(QDataStream& out, const UAVPositionDataEnemy& obj
 inline QDataStream& operator>>(QDataStream& in, UAVPositionDataEnemy& object)
 {
 	in >> object.altitude >> object.speed
-	   >> object.course >> object.state
+	   >> object.course >> object.state >> object.frequency
 	   >> object.time >> object.pointStdDev
 	   >> object.track;
 	return in;

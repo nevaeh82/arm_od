@@ -23,6 +23,9 @@ PrmSimulator::PrmSimulator(const uint& port, QObject *parent )
 	bearing = 1;
 	angle = 0;
 
+	qsrand(QTime::currentTime().msec());
+	frequency = (double) (-1 + qrand() % 100);
+
 	connect( &m_updateTimer, SIGNAL(timeout()), SLOT(update()) );
 	m_updateTimer.start( 100 );
 }
@@ -62,13 +65,14 @@ void PrmSimulator::update()
 	QByteArray data;
 	QDataStream stream( &data, QIODevice::WriteOnly );
 
-	stream << QTime();
+	stream << QTime(1, 1, 1);
 	stream << mode;
 	stream << path.last();
 	stream << path;
 	stream << (double) (500 + qrand() % 1000);
 	stream << (double) alt;
 	stream << (double) bearing;
+	stream << frequency;
 
 	m_serverPeer->call( RPC_SLOT_SERVER_SEND_BPLA_DEF, QVariant( data ) );
 }

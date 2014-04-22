@@ -57,6 +57,7 @@ public:
 	int addUavMission(const UavMission&);
 	bool getUavMissionsByUavId(const uint uavId, QList<UavMission>& missionsRecords);
 	bool deleteUavMissionsByUavId(const uint uavId);
+	bool deleteUavMissionsByTargetId(const uint targetId);
 
 	int addTarget(const Target&);
 	bool getTargetsByType(const uint targetTypeId, QList<Target>& targetsRecords);

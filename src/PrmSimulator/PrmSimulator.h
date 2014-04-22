@@ -29,6 +29,7 @@ private:
 	int zone;
 	int bearing;
 	int angle;
+	double frequency;
 
 	QVector<QPointF> path;
 

@@ -146,6 +146,11 @@ bool DbUavManager::deleteUavMissionsByUavId(const uint uavId)
 	return m_dbController->deleteUavMissionsByUavId(uavId);
 }
 
+bool DbUavManager::deleteUavMissionsByTargetId(const uint targetId)
+{
+	return m_dbController->deleteUavMissionsByTargetId(targetId);
+}
+
 int DbUavManager::addTarget(const Target& target)
 {
 	return m_dbController->addTarget(target);
@@ -269,7 +274,7 @@ void DbUavManager::onMethodCalled(const QString& method, const QVariant& argumen
 		if (positionDataVector.size() < 1) {
 			log_debug("Size uavpositiondata vector < 1");
 			return;
-        }
+		}
 
         QString dataToFile = QTime::currentTime().toString() + " " + QString::number(positionDataVector.at(0).latitude) + " " + QString::number(positionDataVector.at(0).longitude) + " " + QString::number(positionDataVector.at(0).altitude) + "\n";
 
@@ -313,6 +318,7 @@ void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QSt
 			uavRole.id = addUavRole(uavRole);
 		}
 		uav.roleId = uavRole.id;
+		uav.freqId = positionData.frequency;
 
 		uavId = addUav(uav);
 	}
@@ -384,8 +390,15 @@ void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy,
     positionData.latitude = positionDataEnemy.track.last().x();
     positionData.longitude = positionDataEnemy.track.last().y();
 
+	if(positionDataEnemy.frequency < 0) {
 
-	positionData.boardID = ENEMY_UAV_ID_OFFSET;
+		positionData.boardID = ENEMY_UAV_ID_OFFSET;
+	}
+	else {
+		positionData.boardID = positionDataEnemy.frequency;
+	}
+
+	positionData.frequency = positionDataEnemy.frequency;
 
 	addUavInfoToDb(positionData, role, uavType, status, deviceType);
 }

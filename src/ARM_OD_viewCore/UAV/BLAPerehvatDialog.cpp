@@ -71,7 +71,15 @@ void BLAPerehvatDialog::init(int id, IDbUavManager* dbUav)
 		m_dbUav->getTargetsByUavIdAndTargetType(uavFriend.id, "InterceptType", targets);
 
 		if (targets.count() > 0){
-			it->setCheckState(0, Qt::Checked);
+			foreach (Target target, targets) {
+				if(target.uavId != enemyUav.id) {
+					it->setCheckState(0, Qt::Unchecked);
+				}
+				else {
+					it->setCheckState(0, Qt::Checked);
+					break;
+				}
+			}
 		} else {
 			it->setCheckState(0, Qt::Unchecked);
 		}
@@ -123,13 +131,17 @@ void BLAPerehvatDialog::treeItemChangedSlot(QTreeWidgetItem *item, int id)
 	else {
 		Uav uavF = m_dbUav->getUavByUavId(m_id);
 		QList<UavMission> missionsList;
+		QList<Target> targets;
+		m_dbUav->getTargetsByUavId(enemyUavId, targets);
 		m_dbUav->getUavMissionsByUavId(uavF.id, missionsList);
-		if ( m_dbUav->deleteUavMissionsByUavId(uavF.id) ) {
-			//remove target from just deleted mission
-			foreach ( UavMission mission, missionsList ) {
-				m_dbUav->deleteTargetsById(mission.targetId);
+
+		foreach (UavMission mission, missionsList) {
+			foreach(Target target, targets) {
+				if(mission.targetId == target.id) {
+					m_dbUav->deleteUavMissionsByTargetId(target.id);
+					m_dbUav->deleteTargetsById(target.id);
+				}
 			}
-			m_mapClient->removeInterception(m_id, enemyUavId);
 		}
 	}
 }
