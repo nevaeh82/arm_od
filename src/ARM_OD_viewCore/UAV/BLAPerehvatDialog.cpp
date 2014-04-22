@@ -140,6 +140,7 @@ void BLAPerehvatDialog::treeItemChangedSlot(QTreeWidgetItem *item, int id)
 				if(mission.targetId == target.id) {
 					m_dbUav->deleteUavMissionsByTargetId(target.id);
 					m_dbUav->deleteTargetsById(target.id);
+					m_mapClient->removeInterception(m_id, enemyUavId);
 				}
 			}
 		}
