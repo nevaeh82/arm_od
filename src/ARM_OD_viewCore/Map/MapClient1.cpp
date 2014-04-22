@@ -5,6 +5,14 @@
 #include "Map/MapStyleManager.h"
 #include "Map/MapClient1.h"
 
+
+//====================
+//alax
+#include <QMessageBox>
+//====================
+
+
+
 #define clearObjectsList(type, map) foreach( type* item, map ) { delete item; } map.clear();
 
 MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
@@ -128,6 +136,31 @@ void MapClient1::init()
 	connect( this, SIGNAL( pelengUpdated( int, int, double, double, double ) ),
 			 this, SLOT( addPeleng( int, int, double, double, double ) ) );
 }
+
+
+//===============
+//alax
+
+void MapClient1::addHyperbole( int id, PwGisPointList* polyline,
+	const QTime timeMeasure, const QColor& color )
+{
+//	m_pwWidget->addClassicPolygon( "c1",  30.531368, 60.074592,
+//		m_circleRadius*1000, 40, 0, "ОП1 Гроза", "", "yellow selectAndDrag" );
+
+QMessageBox msgBox;
+msgBox.setText("addHyperbole---2");
+msgBox.exec();
+
+	m_pwWidget->addPath(
+				QString::number( id ),
+				polyline,
+				"caption1",
+				"tooltip1",
+				"yellow selectAndDrag" );
+
+}
+//===============
+
 
 void MapClient1::showLayer( int index, bool state )
 {

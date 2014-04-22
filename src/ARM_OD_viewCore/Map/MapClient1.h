@@ -101,6 +101,10 @@ public slots:
 	virtual void updatePeleng( int id, int idPost, double lat, double lon, double direction );
 
 	virtual void removeNiippPoint();
+
+	void addHyperbole( int id, PwGisPointList* polyline,
+		const QTime timeMeasure, const QColor& color );
+
 	virtual void removeAll();
 
 private slots:

@@ -14,6 +14,10 @@
 #include "NIIPP/Niipp.h"
 #include "Tabs/DbBla/Defines.h"
 
+#include <PwGis/PwGisPointList.h>
+#include <QTime>
+#include <QColor>
+
 struct DataFly {
 	QString height;
 	QString latitute;
@@ -22,6 +26,7 @@ struct DataFly {
 	QString namePlane;
 	QString course;
 };
+
 
 class IMapClient
 {
@@ -51,6 +56,10 @@ public:
 	virtual void addPerehvatPoint( int blaId, int bplaId, QPointF coord, float hgt, float radius, int time, float intcCourse, float intcSpeed ) = 0;
 
 	virtual void removeNiippPoint() = 0;
+
+	virtual void addHyperbole( int id, PwGisPointList* polyline,
+		const QTime timeMeasure, const QColor& color ) = 0;
+
 	virtual void removeAll() = 0;
 };
 
