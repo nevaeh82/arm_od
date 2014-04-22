@@ -3,7 +3,8 @@
 
 namespace MapFeature {
 
-HyperboleFeature::HyperboleFeature(IObjectsFactory* factory, const QString& id, const ::HyperboleFeature& HyperboleFeature)
+HyperboleFeature::HyperboleFeature( IObjectsFactory* factory, const QString& id,
+	const QString& name )
 	: FeatureAbstract( factory, id, HyperboleFeature.getName(), HyperboleFeature.getPoint() )
 	, m_HyperboleFeatureId( HyperboleFeature.getId() )
 	, m_mode( (Mode) HyperboleFeature.getAntenaType() )
@@ -29,83 +30,7 @@ HyperboleFeature::~HyperboleFeature()
 	delete m_sector;
 }
 
-void HyperboleFeature::setPosition(const QPointF& position)
-{
-	FeatureAbstract::setPosition( position );
 
-	m_circle->setOriginPoint( &m_position );
-	m_sector->setOriginPoint( &m_position );
-}
-
-void HyperboleFeature::setMode(HyperboleFeature::Mode mode)
-{
-	m_mode = mode;
-
-	switch( m_mode ) {
-		case Directed:
-			m_circle->removeFromMap();
-			break;
-
-		case NotDirected:
-			m_sector->removeFromMap();
-			break;
-	}
-}
-
-void HyperboleFeature::setRadius(double value)
-{
-	m_radius = value;
-	m_circle->setRadius( m_radius );
-	m_sector->setRadius( m_radius );
-}
-
-void HyperboleFeature::setAngle(double value)
-{
-	m_angle = value;
-
-	double startAngle = value + 12.5;
-
-	if ( startAngle < 0 ) {
-		startAngle = 360 + startAngle;
-	}
-
-	startAngle *= -1;
-	startAngle += 90;
-
-	double endAngle = startAngle + 25;
-
-	m_sector->setStartAngle( startAngle );
-	m_sector->setEndAngle( endAngle );
-}
-
-void HyperboleFeature::update(const ::HyperboleFeature& HyperboleFeature)
-{
-	bool changed = false;
-
-	if( HyperboleFeature.getPoint() != this->position() ) {
-		setPosition( HyperboleFeature.getPoint() );
-		changed = true;
-	}
-
-	if( HyperboleFeature.getAntenaType() != m_mode ) {
-		setMode( (Mode) HyperboleFeature.getAntenaType() );
-		changed = true;
-	}
-
-	if( HyperboleFeature.getRadius() != m_radius) {
-		setRadius( HyperboleFeature.getRadius() );
-		changed = true;
-	}
-
-	if( HyperboleFeature.getAngle() != m_angle ) {
-		setAngle( HyperboleFeature.getAngle() );
-		changed = m_mode == Directed;
-	}
-
-	if( changed ) {
-		updateMap();
-	}
-}
 
 void HyperboleFeature::updateMap()
 {

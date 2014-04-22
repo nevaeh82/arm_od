@@ -12,7 +12,7 @@ namespace MapFeature {
 
 class FeaturesFactory;
 
-class HyperboleFeature : public FeatureAbstract
+class HyperboleFeature : public PolylineAbstract
 {
 	friend class FeaturesFactory;
 
@@ -28,12 +28,12 @@ protected:
 	double m_radius;
 	double m_angle;
 
-	HyperboleFeature(IObjectsFactory* factory, const QString& id, const ::HyperboleFeature& HyperboleFeature);
+
+	HyperboleFeature( IObjectsFactory* factory, const QString& id,
+		const QString& name );
 
 public:
 	virtual ~HyperboleFeature();
-
-	virtual void setPosition(const QPointF &position);
 
 	void setMode(Mode mode);
 	/// \param radius In projection EPSG:900913 is pseudo meters. \

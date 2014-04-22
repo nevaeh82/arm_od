@@ -20,16 +20,16 @@ class PolylineAbstract : public MapObjectAbstract
 
 protected:
 	IObjectsFactory* m_factory;
-	PwGisLonLat m_position;
+	//PwGisLonLat m_position;
 
-	PolylineAbstract(IObjectsFactory* factory, const QString& id, const QString& name,
-					const QPointF& position = QPointF(), QObject* parent = 0);
+	PolylineAbstract( IObjectsFactory* factory, const QString& id,
+		const QString& name, QObject* parent = 0 );
 
 public:
 	virtual ~PolylineAbstract() {}
 
-	virtual void setPosition(const QPointF& position);
-	virtual QPointF position();
+	//virtual void setPosition(const QPointF& position);
+	//virtual QPointF position();
 
 public slots:
 	virtual void updateMap() = 0;
