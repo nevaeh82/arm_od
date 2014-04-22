@@ -305,6 +305,40 @@ public:
 		bool result = dbUavController->deleteTargetsById(targetId);
 		TS_ASSERT_EQUALS( true, result );
 	}
+
+	void testDeleteUavMissionByTargetId()
+	{
+		TS_ASSERT_EQUALS( true, isConnected );
+
+		//add data to database for test
+		//append Mission and Target for test
+		const uint uavId = 1;
+
+		//append Target
+		Target target;
+		target.ip = "127.1.1.1";
+		target.port = 1000;
+		target.type = 1;
+		target.uavId = 1;
+		int targetId = dbUavController->addTarget(target);
+
+		UavMission mission;
+		mission.regionCenterAltitude = 0.0;
+		mission.regionCenterLat = 0.0;
+		mission.regionCenterLon = 0.0;
+		mission.regionRadius = 0.0;
+		mission.targetId = targetId;
+		mission.timeToTarget = QTime(0,0,0);
+		mission.uavId = uavId;
+		int missionId = dbUavController->addUavMission(mission);
+		TS_ASSERT_DIFFERS( INVALID_INDEX, missionId );
+
+		bool result = dbUavController->deleteUavMissionsByTargetId(targetId);
+		TS_ASSERT_EQUALS( true, result );
+
+		//removing extra target
+		dbUavController->deleteTargetsById(targetId);
+	}
 };
 
 #endif // TESTDB_H

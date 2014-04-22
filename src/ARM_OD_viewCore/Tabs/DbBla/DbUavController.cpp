@@ -457,12 +457,6 @@ bool DbUavController::deleteUavMissionsByUavId(const uint uavId)
 		return false;
 	}
 
-	foreach (UavMission mission, missionList) {
-
-		if (INVALID_INDEX == mission.id){
-			return false;
-		}
-
 		QSqlQuery query(m_db);
 		bool succeeded = query.prepare(QString("DELETE FROM uavmission WHERE uavID = :uavId;"));
 
@@ -484,7 +478,6 @@ bool DbUavController::deleteUavMissionsByUavId(const uint uavId)
 		}
 
 		m_db.commit();
-	}
 
 	return true;
 }
