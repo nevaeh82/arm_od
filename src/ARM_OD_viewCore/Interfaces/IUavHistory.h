@@ -5,14 +5,12 @@
 
 #include <BaseSubject.h>
 
-#include "Interfaces/IDbChangedListener.h"
+#include "Interfaces/IUavDbChangedListener.h"
 
-class IUavHistory : public BaseSubject<IDbChangedListener>
+class IUavHistory : public BaseSubject<IUavDbChangedListener>
 {
 public:
 	virtual ~IUavHistory() {}
-
-	virtual bool dateExists(const QDateTime& date) = 0;
 
 	virtual bool start(const QDateTime& start, const QDateTime& end) = 0;
 	virtual void stop() = 0;

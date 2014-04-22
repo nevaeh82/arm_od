@@ -1,6 +1,7 @@
 #ifndef UAVHISTORY_H
 #define UAVHISTORY_H
 
+#include <QMap>
 #include <QTimer>
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -16,17 +17,18 @@ private:
 	QSqlDatabase m_database;
 	QSqlQuery m_query;
 
+	QMap<int, QDateTime> m_uavLastDate;
+	QMap<int, QString> m_uavRoles;
+
 public:
 	explicit UavHistory(QSqlDatabase database, QObject *parent = 0);
 	virtual ~UavHistory();
-
-	bool dateExists(const QDateTime& date);
 
 	bool start(const QDateTime& start, const QDateTime& end);
 	void stop();
 
 protected slots:
-	void sendNextSecond();
+	void updateHistoryState();
 
 };
 
