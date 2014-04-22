@@ -1,5 +1,6 @@
 #include <QSqlError>
 #include <QSqlRecord>
+#include <QEventLoop>
 
 #include <Logger.h>
 
@@ -12,8 +13,6 @@ UavHistory::UavHistory(QSqlDatabase database, QObject *parent)
 {
 	m_timer.setInterval( 1000 );
 
-	connect( &m_timer, SIGNAL(timeout()), SLOT(updateHistoryState()) );
-
 	m_query = QSqlQuery( m_database );
 	m_query.prepare( "SELECT info.*, uav.uavId as uavIdReal, sources.sourceId as sourceReal, uavRoles.code"
 					 " FROM info"
@@ -23,6 +22,9 @@ UavHistory::UavHistory(QSqlDatabase database, QObject *parent)
 					 " WHERE `datetime` >= :start AND `datetime` <= :end"
 					 " GROUP BY uav.uavID, `datetime`, device, altitude"
 					 " ORDER BY `datetime`" );
+
+	connect( &m_timer, SIGNAL(timeout()), SLOT(updateHistoryState()) );
+	connect( this, SIGNAL(started(QDateTime,QDateTime)), SLOT(startInternal(QDateTime,QDateTime)) );
 }
 
 UavHistory::~UavHistory()
@@ -30,29 +32,15 @@ UavHistory::~UavHistory()
 	stop();
 }
 
-bool UavHistory::start(const QDateTime& start, const QDateTime& end)
+bool UavHistory::start(const QDateTime& startTime, const QDateTime& endTime)
 {
-	if( m_timer.isActive() ) {
-		stop();
-	}
+	emit started(startTime, endTime);
 
-	m_query.bindValue( ":start", start );
-	m_query.bindValue( ":end", end );
-	m_query.exec();
+	QEventLoop loop;
+	connect( this, SIGNAL(startFinished()), &loop, SLOT(quit()));
+	loop.exec();
 
-	if( m_query.lastError().type() != QSqlError::NoError ) {
-		log_error( m_query.lastError().databaseText() );
-		return false;
-	}
-
-	if( !m_query.next() ) {
-		return false;
-	}
-
-	updateHistoryState();
-
-	m_timer.start();
-	return true;
+	return m_startResult;
 }
 
 void UavHistory::stop()
@@ -76,6 +64,34 @@ void UavHistory::stop()
 	m_query.finish();
 	m_uavRoles.clear();
 	m_uavLastDate.clear();
+}
+
+void UavHistory::startInternal(const QDateTime& start, const QDateTime& end)
+{
+	if( m_timer.isActive() ) {
+		stop();
+	}
+
+	m_query.bindValue( ":start", start );
+	m_query.bindValue( ":end", end );
+	m_query.exec();
+
+	if( m_query.lastError().type() != QSqlError::NoError ) {
+		log_error( m_query.lastError().databaseText() );
+		m_startResult = false;
+		return;
+	}
+
+	if( !m_query.next() ) {
+		m_startResult = false;
+		return;
+	}
+
+	updateHistoryState();
+
+	m_timer.start();
+	m_startResult = true;
+	return;
 }
 
 void UavHistory::updateHistoryState()

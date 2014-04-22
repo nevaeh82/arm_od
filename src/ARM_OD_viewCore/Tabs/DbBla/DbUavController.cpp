@@ -294,6 +294,7 @@ IUavHistory* DbUavController::getUavHistory()
 {
 	if( m_uavHistory == NULL ) {
 		m_uavHistory = new UavHistory( m_db, this );
+		m_uavHistory->moveToThread( this->thread() );
 	}
 
 	return m_uavHistory;

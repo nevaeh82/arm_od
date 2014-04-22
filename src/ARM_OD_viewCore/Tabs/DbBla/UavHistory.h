@@ -20,14 +20,21 @@ private:
 	QMap<int, QDateTime> m_uavLastDate;
 	QMap<int, QString> m_uavRoles;
 
+	bool m_startResult;
+
 public:
 	explicit UavHistory(QSqlDatabase database, QObject *parent = 0);
 	virtual ~UavHistory();
 
-	bool start(const QDateTime& start, const QDateTime& end);
+	bool start(const QDateTime& startTime, const QDateTime& endTime);
 	void stop();
 
+signals:
+	void started(const QDateTime& start, const QDateTime& end);
+	void startFinished();
+
 protected slots:
+	void startInternal(const QDateTime& start, const QDateTime& end);
 	void updateHistoryState();
 
 };
