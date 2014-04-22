@@ -39,6 +39,8 @@ public:
 	explicit DbUavManager(int lifeTime = MAX_LIFE_TIME, QObject *parent = 0);
 	virtual ~DbUavManager();
 
+	QMap<uint, Uav> getKnownUavList();
+
 	void setDbController(IDbUavController*);
 	void setLifeTime(int msecs);
 

@@ -2,6 +2,7 @@
 #define IDBUAVMANAGER_H
 
 #include <QList>
+#include <QMap>
 
 class IDbUavController;
 
@@ -23,6 +24,7 @@ class IDbUavManager
 public:
 	virtual ~IDbUavManager(){}
 
+	virtual QMap<uint, Uav> getKnownUavList() = 0;
 	virtual void setDbController(IDbUavController*) = 0;
 
 	virtual int addUav(const Uav&) = 0;
