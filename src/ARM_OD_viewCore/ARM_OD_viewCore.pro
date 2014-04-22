@@ -97,7 +97,8 @@ HEADERS += \
 	Map/Features/PelengatorPointFeature.h \
 	Tabs/Solver/SolverSettingsDialog.h \
     Map/Features/CheckPointFeature.h \
-    Map/Features/BplaAbstractFeature.h
+    Map/Features/BplaAbstractFeature.h \
+    Interfaces/IUavHistory.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
