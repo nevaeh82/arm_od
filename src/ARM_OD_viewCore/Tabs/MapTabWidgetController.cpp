@@ -22,6 +22,7 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 	connect( m_mapController, SIGNAL( atlasOpened() ), SIGNAL( atlasOpened() ) );
 	connect( m_mapController, SIGNAL( cancelMapOpen() ), SIGNAL( cancelMapOpen() ) );
 	m_uavDbManager->registerReceiver( m_mapController );
+	m_uavDbManager->getUavHistory()->registerReceiver( m_mapController );
 
 	QStringList headers;
 	headers << tr("Property") << tr("Value");
@@ -58,6 +59,8 @@ MapTabWidgetController::~MapTabWidgetController()
 	m_uavDbManager->deregisterReceiver(m_allyUavTreeModel);
 	m_uavDbManager->deregisterReceiver(m_enemyUavTreeModel);
 	m_uavDbManager->deregisterReceiver(m_mapController);
+
+	m_uavDbManager->getUavHistory()->deregisterReceiver(m_mapController);
 }
 
 int MapTabWidgetController::init()

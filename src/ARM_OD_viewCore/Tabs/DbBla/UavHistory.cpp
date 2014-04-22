@@ -10,12 +10,12 @@ UavHistory::UavHistory(QSqlDatabase database, QObject *parent)
 	: QObject(parent)
 	, m_database(database)
 {
-	m_timer.setParent( this );
 	m_timer.setInterval( 1000 );
 
 	connect( &m_timer, SIGNAL(timeout()), SLOT(updateHistoryState()) );
 
-	m_query.prepare( "SELECT info.*, uav.uavId, uavRoles.code"
+	m_query = QSqlQuery( m_database );
+	m_query.prepare( "SELECT info.*, uav.uavId as uavIdReal, uavRoles.code"
 					 " FROM info"
 					 " RIGHT JOIN uav on uav.id = info.uavID"
 					 " LEFT JOIN uavRoles on uavRoles.id = uav.roleId"
@@ -44,7 +44,7 @@ bool UavHistory::start(const QDateTime& start, const QDateTime& end)
 		return false;
 	}
 
-	if( m_query.next() == 0 ) {
+	if( !m_query.next() ) {
 		return false;
 	}
 
@@ -59,7 +59,7 @@ void UavHistory::stop()
 	/// \todo Call receivers method about history playback is stopped
 
 	// send remove message for all UAVs
-	foreach( int id, m_uavLastDate ) {
+	foreach( int id, m_uavLastDate.keys() ) {
 		Uav uav;
 		uav.uavId = id;
 
@@ -72,7 +72,7 @@ void UavHistory::stop()
 	}
 
 	m_timer.stop();
-	m_query.clear();
+	m_query.finish();
 	m_uavRoles.clear();
 	m_uavLastDate.clear();
 }
@@ -83,7 +83,7 @@ void UavHistory::updateHistoryState()
 
 	// get actual datetime and zero it msecs because we don't care about msecs
 	QDateTime time = m_query.record().value( "datetime" ).toDateTime();
-	time.setTime( time.time().addMSecs( - time.time().msec() );
+	time.setTime( time.time().addMSecs( - time.time().msec() ) );
 
 	// collect UAV info for actual datetime
 	QDateTime nextTime;
@@ -91,7 +91,7 @@ void UavHistory::updateHistoryState()
 		UavInfo info;
 
 		info.id = m_query.record().value( "id" ).toInt();
-		info.uavId = m_query.record().value( "uav.uavId" ).toInt();
+		info.uavId = m_query.record().value( "uavIdReal" ).toInt();
 		info.lat = m_query.record().value( "latitude" ).toDouble();
 		info.lon = m_query.record().value( "longitude" ).toDouble();
 		info.alt = m_query.record().value( "altitude" ).toDouble();
@@ -119,20 +119,20 @@ void UavHistory::updateHistoryState()
 
 		// get time zero msecs
 		nextTime = m_query.record().value( "datetime" ).toDateTime();
-		nextTime.setTime( nextTime.time().addMSecs( - nextTime.time().msec() );
+		nextTime.setTime( nextTime.time().addMSecs( - nextTime.time().msec() ) );
 	} while( nextTime == time );
 
 	// send actual UAV info for all receivers
-	foreach( IUavDbChangedListener* listener, m_receiversList ) {
-		QString role = m_uavRoles.value( id );
+	foreach( UavInfo info, infoCollection ) {
+		QString role = m_uavRoles.value( info.uavId );
 
-		foreach( UavInfo info, infoCollection ) {
+		foreach( IUavDbChangedListener* listener, m_receiversList ) {
 			listener->onUavInfoChanged( info, role );
 		}
 	}
 
 	// send remove message about outdated UAVs
-	foreach( int id, m_uavLastDate ) {
+	foreach( int id, m_uavLastDate.keys() ) {
 		if( m_uavLastDate.value( id ).msecsTo( time ) < 600000 ) continue;
 
 		Uav uav;
