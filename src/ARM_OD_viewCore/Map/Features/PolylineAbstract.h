@@ -2,12 +2,14 @@
 #define POLYLINEABSTRACT_H
 
 #include <QString>
-#include <QPointF>
+#include <QVector>
 
 #include <PwGis/PwGisLonLat.h>
 #include <PwGis/objects/IObjectsFactory.h>
 #include <PwGis/objects/PwGisStyle.h>
 #include <PwGis/objects/MapObjectAbstract.h>
+
+typedef QVector<PwGisLonLat> GeoPolyline;
 
 namespace MapFeature {
 
@@ -20,20 +22,22 @@ class PolylineAbstract : public MapObjectAbstract
 
 protected:
 	IObjectsFactory* m_factory;
-	//PwGisLonLat m_position;
+	GeoPolyline m_polyline;
 
 	PolylineAbstract( IObjectsFactory* factory, const QString& id,
-		const QString& name, QObject* parent = 0 );
+		const QString& name, const GeoPolyline& polyline,
+		QObject* parent = 0 );
 
 public:
 	virtual ~PolylineAbstract() {}
 
-	//virtual void setPosition(const QPointF& position);
-	//virtual QPointF position();
+	virtual void setPolyline( const GeoPolyline& polyline );
+	virtual GeoPolyline polyline();
 
 public slots:
 	virtual void updateMap() = 0;
 	virtual void removeFromMap() = 0;
+
 };
 
 } // namespace MapFeature

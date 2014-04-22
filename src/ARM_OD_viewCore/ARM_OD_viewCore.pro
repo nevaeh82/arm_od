@@ -99,8 +99,7 @@ HEADERS += \
     Map/Features/CheckPointFeature.h \
     Map/Features/BplaAbstractFeature.h \
     Map/Features/PolylineAbstract.h \
-    Map/Features/HyperboleFeature.h \
-    Common/GeoCommonStructs.h
+    Map/Features/HyperboleFeature.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -145,8 +144,7 @@ SOURCES += \
     Map/Features/CheckPointFeature.cpp \
     Map/Features/BplaAbstractFeature.cpp \
     Map/Features/PolylineAbstract.cpp \
-    Map/Features/HyperboleFeature.cpp \
-    Common/GeoCommonStructs.cpp
+    Map/Features/HyperboleFeature.cpp
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \

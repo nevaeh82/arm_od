@@ -20,7 +20,7 @@ struct XYPoint
 	XYPoint( double x = 0, double y = 0 );
 };
 
-typedef QVector<Geo2DPoint> Geo2DVector;
-typedef QVector<XYPoint> XYVector;
+//typedef QVector<Geo2DPoint> Geo2DVector;
+//typedef QVector<XYPoint> XYVector;
 
 #endif // GEOCOMMONSTRUCTS_H
