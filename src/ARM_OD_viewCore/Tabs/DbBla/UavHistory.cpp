@@ -101,6 +101,7 @@ void UavHistory::updateHistoryState()
 		info.statusId = m_query.record().value( "statusTypeId" ).toInt();
 		info.dateTime = m_query.record().value( "datetime" ).toDateTime();
 		info.sourceType = UavAutopilotSource;
+		info.historical = true;
 
 		if( info.alt == 0 ) {
 			info.sourceType = UavSlicesSource;

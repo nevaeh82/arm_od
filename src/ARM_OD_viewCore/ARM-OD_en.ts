@@ -72,12 +72,12 @@
 <context>
     <name>ControlPanelController</name>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="37"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="36"/>
         <source>Unable to play history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="37"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="36"/>
         <source>Data for selected period do not exist.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -161,7 +161,7 @@
 <context>
     <name>MapClient1</name>
     <message>
-        <location filename="Map/MapClient1.cpp" line="123"/>
+        <location filename="Map/MapClient1.cpp" line="125"/>
         <source>NIIPP</source>
         <translation></translation>
     </message>
@@ -242,7 +242,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="436"/>
+        <location filename="Map/MapClient1.cpp" line="100"/>
+        <source>History</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/MapClient1.cpp" line="438"/>
         <source>Ingur</source>
         <translation></translation>
     </message>
@@ -452,17 +457,32 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="Map/Features/FriendBplaFeature.cpp" line="21"/>
+        <location filename="Map/Features/FriendBplaFeature.cpp" line="24"/>
+        <source>UAV-C-H</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/Features/FriendBplaFeature.cpp" line="24"/>
+        <source>UAV-H (#%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/Features/FriendBplaFeature.cpp" line="26"/>
         <source>UAV (#%1)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/Features/FriendBplaFeature.cpp" line="21"/>
+        <location filename="Map/Features/FriendBplaFeature.cpp" line="26"/>
         <source>UAV-C</source>
         <translation></translation>
     </message>
     <message>
         <location filename="Map/Features/EnemyBplaFeature.cpp" line="15"/>
+        <source>UAV_enemy-H (#%1)\n%2\n%3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="16"/>
         <source>UAV_enemy (#%1)\n%2\n%3</source>
         <oldsource>UAV_enemy (â%1)\n%2\n%3</oldsource>
         <translation>Enemy UAV (#%1)\n%2\n%3</translation>

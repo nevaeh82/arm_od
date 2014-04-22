@@ -1,4 +1,3 @@
-#include "Tabs/DbBla/UavHistory.h"
 #include "Tabs/DbBla/DbUavController.h"
 
 DbUavController::DbUavController(QObject *parent)
@@ -290,7 +289,7 @@ int DbUavController::getUavInfoByUavId(const uint)
 	return INVALID_INDEX;
 }
 
-IUavHistory*DbUavController::getUavHistory()
+IUavHistory* DbUavController::getUavHistory()
 {
 	if( m_uavHistory == NULL ) {
 		m_uavHistory = new UavHistory( m_db, this );

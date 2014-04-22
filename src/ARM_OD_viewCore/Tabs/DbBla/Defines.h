@@ -52,6 +52,7 @@ typedef struct UavInfo
 	uint statusId; // FK
 	QDateTime dateTime;
 	UavSourceType sourceType;
+	bool historical;
 } UavInfo;
 
 typedef struct Devices

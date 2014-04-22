@@ -11,6 +11,7 @@
 #include <QtSql/QSqlRecord>
 
 #include "Tabs/DbBla/IDbUavController.h"
+#include "Tabs/DbBla/UavHistory.h"
 
 #include "Db/DbControllerBase.h"
 #include "Defines.h"
@@ -35,7 +36,7 @@ private:
 
 	QMutex m_addGetDictionaryMutex;
 
-	IUavHistory* m_uavHistory;
+	UavHistory* m_uavHistory;
 
 public:
 	explicit DbUavController(QObject *parent = 0);

@@ -97,6 +97,7 @@ void MapClient1::init()
 	this->addMarkerLayer( 12, "Diversion_points", tr( "Diversion points" ) );
 	this->addMarkerLayer( 13, "SPIP_DD", tr( "SPIP DD" ) );
 	this->addMarkerLayer( 14, "Hyperbole", tr( "Hyperbole" ) );
+	this->addMarkerLayer( 15, "History", tr( "History" ) );
 
 	showLayer( 8, false );
 
@@ -118,6 +119,7 @@ void MapClient1::init()
 	m_styleManager->createAisStyle( m_mapLayers.value(11) )->apply();
 	m_styleManager->createNiippPointStyle( m_mapLayers.value(12) )->apply();
 	m_styleManager->createNiippStyle( m_mapLayers.value(13) )->apply();
+	m_styleManager->createHistoryStyle( m_mapLayers.value(15) )->apply();
 
 	//addNiippLayer
 	m_pwWidget->mapProvider()->layerManager()->addVectorLayer( "NIIPP", tr("NIIPP") );
