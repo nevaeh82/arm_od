@@ -21,7 +21,7 @@ typedef struct Uav
 	uint uavTypeId; // FK
 	uint roleId; // FK
 	QString name;
-	uint freqId;
+	int freqId;
 
 	Uav(){
 		freqId = 0;
