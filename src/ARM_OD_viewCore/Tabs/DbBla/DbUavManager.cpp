@@ -15,6 +15,11 @@ DbUavManager::~DbUavManager()
 {
 }
 
+QMap<uint, Uav> DbUavManager::getKnownUavList()
+{
+	return m_knownUavsList;
+}
+
 void DbUavManager::setDbController(IDbUavController* dbController)
 {
 	m_dbController = dbController;
@@ -70,7 +75,6 @@ int DbUavManager::addUavInfo(const UavInfo &uavInfo)
 	QString key = QString::number(uav.uavId);
 
 	if (!m_knownUavsList.contains(uav.uavId) && !m_lifeTimerMap.contains(key)) {
-
 		m_knownUavsList.insert(uav.uavId, uav);
 
 		QTimer* lifeTimer = new QTimer();
