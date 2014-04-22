@@ -59,6 +59,10 @@ public:
 	int addDevice(const Devices&);
 	bool getDevicesByType(const uint deviceTypeId, QList<Devices>& devicesRecords);
 
+	int addSource(const Sources&);
+	bool getSourcesByType(const uint sourceId, QList<Sources>& sourcesRecords);
+	Sources getSource(const uint sourceId);
+
 	int addUavMission(const UavMission&);
 	bool getUavMissionsByUavId(const uint uavId, QList<UavMission>& missionsRecords);
 	bool deleteUavMissionsByUavId(const uint uavId);
@@ -79,6 +83,9 @@ public:
 	int addDeviceType(const DeviceType&);
 	int getDeviceTypeByName(const QString&);
 
+	int addSourceType(const SourceType&);
+	int getSourceTypeByName(const QString&);
+
 	int addStatus(const Status&);
 	int getStatusByName(const QString&);
 
@@ -94,9 +101,11 @@ public:
 	virtual void onMethodCalled(const QString& method, const QVariant& argument);
 
 private:
-	void addUavInfoToDb(const UAVPositionData& positionData, const QString& role, const QString& uavType, const QString& status, const QString& deviceType);
+	void addUavInfoToDb(const UAVPositionData& positionData, const QString& role,
+						const QString& uavType, const QString& status, const QString& deviceType, const QString &sourceType);
 	void sendEnemyUavPoints(const QByteArray& data);
-	void addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy, const QString &role, const QString &uavType, const QString &status, const QString &deviceType);
+	void addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy, const QString &role,
+						const QString &uavType, const QString &status, const QString &deviceType, const QString &sourceType);
 
 private slots:
 	void timeoutSlot(const QString& key);

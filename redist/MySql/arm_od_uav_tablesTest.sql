@@ -81,6 +81,32 @@ CREATE TABLE IF NOT EXISTS `UAVTEST`.`Devices` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- Table `UAV`.`SourceTypes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `UAVTEST`.`SourceTypes` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `UAV`.`Sources`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `UAVTEST`.`Sources` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `sourceTypeId` INT NULL,
+  `sourceId` INT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `sourceTypeId` (`sourceTypeId` ASC),
+  CONSTRAINT `source`
+    FOREIGN KEY (`sourceTypeId`)
+    REFERENCES `UAVTEST`.`SourceTypes` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 
 -- -----------------------------------------------------
 -- Table `UAVTEST`.`Status`
@@ -99,6 +125,7 @@ CREATE TABLE IF NOT EXISTS `UAVTEST`.`Info` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `uavID` INT NULL,
   `device` INT NULL,
+  `source` INT NULL,
   `latitude` DOUBLE NOT NULL,
   `longitude` DOUBLE NOT NULL,
   `altitude` DOUBLE NULL,
@@ -114,6 +141,11 @@ CREATE TABLE IF NOT EXISTS `UAVTEST`.`Info` (
   CONSTRAINT `deviceID`
     FOREIGN KEY (`device`)
     REFERENCES `UAVTEST`.`Devices` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `sourceID`
+    FOREIGN KEY (`source`)
+    REFERENCES `UAVTEST`.`Sources` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `IUAVID`

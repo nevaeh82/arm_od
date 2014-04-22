@@ -187,10 +187,10 @@ void MapClient1::removeInterception(int blaId, int bplaId )
 }
 
 void MapClient1::addPerehvatPoint(int blaId, int bplaId, QPointF coord,
-	float hgt, float radius, int time, float intcCourse, float intcSpeed)
+								  float hgt, float radius, int time, float intcCourse, float intcSpeed)
 {
 	emit interceptionPointAdded( blaId, bplaId, coord, hgt, radius,
-		time, intcCourse, intcSpeed );
+								 time, intcCourse, intcSpeed );
 }
 
 void MapClient1::removeNiippPoint()
@@ -244,7 +244,7 @@ void MapClient1::setPoint()
 }
 
 void MapClient1::addMarkerLayer( int id, const QString& layerId,
-	const QString& name )
+								 const QString& name )
 {
 	m_pwWidget->mapProvider()->layerManager()->addMarkerLayer( layerId, name );
 	m_mapLayers.insert( id, layerId );
@@ -277,7 +277,7 @@ void MapClient1::updateCircle()
 	m_circleChanged = false;
 
 	m_pwWidget->addClassicPolygon( "c1",  30.531368, 60.074592,
-		m_circleRadius*1000, 40, 0, "ОП1 Гроза", "", "yellow selectAndDrag" );
+								   m_circleRadius*1000, 40, 0, "ОП1 Гроза", "", "yellow selectAndDrag" );
 }
 
 void MapClient1::addNiippPoint( const QPointF& point )
@@ -306,28 +306,28 @@ void MapClient1::addFriendBplaInternal(const UavInfo& uav)
 {
 	MapFeature::FriendBpla* bpla = m_friendBplaList.value( uav.uavId, NULL );
 
-	switch( uav.sourceType ) {
+	switch( uav.source) {
 		// if we get data about UAV from slices source...
-		case UavSlicesSource:
+		case UAV_SLICES_SOURCE:
 			// and UAV exists, update slice track
-	if( bpla != NULL ) {
+			if( bpla != NULL ) {
 				bpla->setSlice( QPointF( uav.lon, uav.lat ) );
 			}
 
 			return;
 
-		case UavAutopilotSource:
+		case UAV_AUTOPILOT_SOURCE:
 			if( bpla != NULL ) {
-		// update, if BPLA already added and position changed
-		bpla->update( uav );
-	} else {
-		// else create new one
-		bpla = m_factory->createFriendBpla( uav );
-		m_friendBplaList.insert( uav.uavId, bpla );
-	}
+				// update, if BPLA already added and position changed
+				bpla->update( uav );
+			} else {
+				// else create new one
+				bpla = m_factory->createFriendBpla( uav );
+				m_friendBplaList.insert( uav.uavId, bpla );
+			}
 
 			return;
-}
+	}
 }
 
 void MapClient1::addEnemyBplaInternal(const UavInfo& uav)
@@ -484,7 +484,7 @@ void MapClient1::addNiipInternal( const Niipp& niipp )
 }
 
 void MapClient1::addInterceptionPointData( int friendBplaId, int enemyBplaId, QPointF position,
-	float height, float radius, int time, float course, float speed )
+										   float height, float radius, int time, float course, float speed )
 {
 	Q_UNUSED( time );
 

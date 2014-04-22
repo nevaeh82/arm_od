@@ -43,6 +43,7 @@ typedef struct UavInfo
 	int id; // PK
 	uint uavId; // FK
 	uint device; // FK
+	uint source; // FK
 	double lat;
 	double lon;
 	double alt;
@@ -51,7 +52,6 @@ typedef struct UavInfo
 	QTime restTime;
 	uint statusId; // FK
 	QDateTime dateTime;
-	UavSourceType sourceType;
 	bool historical;
 } UavInfo;
 
@@ -62,6 +62,13 @@ typedef struct Devices
 	uint port;
 	uint uavId;
 } Devices;
+
+typedef struct Sources
+{
+	int id; // PK
+	uint sourceTypeId; // FK
+	uint sourceId;
+} Sources;
 
 typedef struct UavMission
 {
@@ -109,4 +116,9 @@ typedef struct DeviceType
 	QString name;
 } DeviceType;
 
+typedef struct SourceType
+{
+	int id; // PK
+	QString name;
+} SourceType;
 #endif // DBBLADEFINES_H

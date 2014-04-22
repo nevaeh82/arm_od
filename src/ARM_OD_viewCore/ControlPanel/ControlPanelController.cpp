@@ -18,6 +18,7 @@ void ControlPanelController::appendView(ControlPanel *view)
 	m_view = view;
 
 	connect(m_view, SIGNAL(startPlayingHistorySignal()), this, SLOT(onStartPlayingHistorySlot()));
+	connect(m_view, SIGNAL(stopPlayingHistorySignal()), this, SLOT(onStopPlayingHistorySlot()));
 }
 
 void ControlPanelController::setUavHistory(IUavHistory *history)

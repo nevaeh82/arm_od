@@ -167,7 +167,7 @@ void UavTreeModel::onUavInfoChanged(const UavInfo &uavInfo, const QString& uavRo
 
 	QString number;
 
-	if (UavAutopilotSource ==  uavInfo.sourceType) {
+	if (UAV_AUTOPILOT_SOURCE ==  uavInfo.source) {
 		onPropertyChanged(uavInfo, LAT_PROPERTY_ID, tr("lat"), number.sprintf( "%.4f", uavInfo.lat ));
 		onPropertyChanged(uavInfo, LON_PROPERTY_ID, tr("lon"), number.sprintf( "%.4f", uavInfo.lon ));
 		onPropertyChanged(uavInfo, ALT_PROPERTY_ID, tr("alt"), number.sprintf( "%.4f", uavInfo.alt ));
@@ -195,7 +195,7 @@ void UavTreeModel::onPropertyChanged(const UavInfo &uavInfo, const uint propId, 
 	/// TODO: need to uncomment after imlementing of speed receiving from KTR
 	bool isInFlight = true;
 
-	if (uavInfo.sourceType == UavAutopilotSource) {
+	if (uavInfo.source == UAV_AUTOPILOT_SOURCE) {
 		isInFlight = /*(uavInfo.speed > 0) && */(uavInfo.alt > 0);
 	}
 

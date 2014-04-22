@@ -15,10 +15,11 @@ UavHistory::UavHistory(QSqlDatabase database, QObject *parent)
 	connect( &m_timer, SIGNAL(timeout()), SLOT(updateHistoryState()) );
 
 	m_query = QSqlQuery( m_database );
-	m_query.prepare( "SELECT info.*, uav.uavId as uavIdReal, uavRoles.code"
+	m_query.prepare( "SELECT info.*, uav.uavId as uavIdReal, sources.sourceId as sourceReal, uavRoles.code"
 					 " FROM info"
 					 " RIGHT JOIN uav on uav.id = info.uavID"
 					 " LEFT JOIN uavRoles on uavRoles.id = uav.roleId"
+					 " LEFT JOIN sources on sources.id = info.source"
 					 " WHERE `datetime` >= :start AND `datetime` <= :end"
 					 " GROUP BY uav.uavID, `datetime`, device, altitude"
 					 " ORDER BY `datetime`" );
@@ -100,12 +101,8 @@ void UavHistory::updateHistoryState()
 		info.restTime = m_query.record().value( "restTime" ).toTime();
 		info.statusId = m_query.record().value( "statusTypeId" ).toInt();
 		info.dateTime = m_query.record().value( "datetime" ).toDateTime();
-		info.sourceType = UavAutopilotSource;
+		info.source = m_query.record().value( "sourceReal" ).toInt();
 		info.historical = true;
-
-		if( info.alt == 0 ) {
-			info.sourceType = UavSlicesSource;
-		}
 
 		m_uavRoles.insert( info.uavId, m_query.record().value( "code" ).toString() );
 		infoCollection.insert( info.uavId, info );
