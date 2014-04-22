@@ -2,12 +2,13 @@
 #define POLYLINEABSTRACT_H
 
 #include <QString>
-#include <QVector>
-
 #include <PwGis/PwGisLonLat.h>
+#include <PwGis/PwGisPointList.h>
 #include <PwGis/objects/IObjectsFactory.h>
 #include <PwGis/objects/PwGisStyle.h>
 #include <PwGis/objects/MapObjectAbstract.h>
+#include <PwGis/objects/Path.h>
+
 
 typedef QVector<PwGisLonLat> GeoPolyline;
 
@@ -22,17 +23,17 @@ class PolylineAbstract : public MapObjectAbstract
 
 protected:
 	IObjectsFactory* m_factory;
-	GeoPolyline m_polyline;
+	Path* m_polyline;
 
 	PolylineAbstract( IObjectsFactory* factory, const QString& id,
-		const QString& name, const GeoPolyline& polyline,
+		const QString& name, const Path* polyline,
 		QObject* parent = 0 );
 
 public:
 	virtual ~PolylineAbstract() {}
 
-	virtual void setPolyline( const GeoPolyline& polyline );
-	virtual GeoPolyline polyline();
+	virtual void setPolyline( const Path* polyline );
+	virtual Path* polyline();
 
 public slots:
 	virtual void updateMap() = 0;

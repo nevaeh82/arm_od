@@ -2,40 +2,41 @@
 
 namespace MapFeature {
 
-//=========================
-//FeatureAbstract::FeatureAbstract(IObjectsFactory* factory,
-//   const QString& id,
-//	const QString& name,
-//    const QPointF& position,
-//    QObject* parent)
-//	: MapObjectAbstract( id, name, parent )
-//	, m_factory( factory )
-//	, m_position( PwGisLonLat( position.x(), position.y() ) )
-//{
-//}
-
-//========================
-
-
-
-PolylineAbstract::PolylineAbstract( IObjectsFactory* factory,
+PolylineAbstract::PolylineAbstract(IObjectsFactory* factory,
 	const QString& id, const QString& name,
-	const GeoPolyline& polyline, QObject* parent )
+	const Path* polyline, QObject* parent )
 	: MapObjectAbstract( id, name, parent )
 	, m_factory( factory )
 {
+	m_polyline = factory->createPath();
 	this->setPolyline( polyline );
 }
 
-void PolylineAbstract::setPolyline( const GeoPolyline& polyline )
+//PolylineAbstract::~PolylineAbstract()
+//{
+//	m_polyline->removeFromMap();
+//	delete m_polyline;
+//}
+
+void PolylineAbstract::setPolyline( const Path* polyline )
 {
+	PwGisPointList* points = m_polyline->points();
+	points->clear();
+
+	/*
+	points->append( new PwGisLonLat( m_position ) );
+
+
+
+	polyline->points().
 	m_polyline.clear();
-	for( int i = 0; i < polyline.count(); ++i ) {
+	for( int i = 0; i < polyline->.count(); ++i ) {
 		m_polyline.append( PwGisLonLat( polyline.at(i).lon, polyline.at(i).lat ) );
 	}
+	*/
 }
 
-GeoPolyline PolylineAbstract::polyline()
+Path* PolylineAbstract::polyline()
 {
 	return m_polyline;
 }
