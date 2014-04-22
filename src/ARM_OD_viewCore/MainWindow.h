@@ -34,6 +34,8 @@ public:
 	QTabWidget* getMainTabWidget() const;
 	QStackedWidget* getStackedWidget() const;
 
+	QMenu* getViewMenu() const;
+
 public slots:
 	void mapOpened();
 	void cancelMapOpen();

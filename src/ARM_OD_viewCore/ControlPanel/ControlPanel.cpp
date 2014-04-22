@@ -7,12 +7,26 @@ ControlPanel::ControlPanel(QWidget *parent) :
 {
 	ui->setupUi(this);
 
-	connect(ui->blaPB, SIGNAL(clicked()), this, SIGNAL(showBlaClicked()));
-	connect(ui->bplaPB, SIGNAL(clicked()), this, SIGNAL(showBplaClicked()));
-	connect(ui->spipDDPB, SIGNAL(clicked()), this, SIGNAL(showNiippClicked()));
+	connect(ui->startPB, SIGNAL(clicked()), this, SIGNAL(startPlayingHistorySignal()));
+	connect(ui->stopPB, SIGNAL(clicked()), this, SIGNAL(stopPlayingHistorySignal()));
 }
 
 ControlPanel::~ControlPanel()
 {
 	delete ui;
+}
+
+QDateTime ControlPanel::getStartDateTime() const
+{
+	return ui->startTE->dateTime();
+}
+
+QDateTime ControlPanel::getEndDateTime() const
+{
+	return ui->stopTE->dateTime();
+}
+
+void ControlPanel::setCurrentDateTime(const QDateTime& value)
+{
+	ui->currentTE->setDateTime(value);
 }

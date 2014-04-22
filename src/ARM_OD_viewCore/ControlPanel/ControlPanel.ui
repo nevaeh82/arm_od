@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>808</width>
+    <width>879</width>
     <height>41</height>
    </rect>
   </property>
@@ -14,36 +14,59 @@
    <string>Form</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>6</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
    <item>
-    <widget class="QPushButton" name="blaPB">
+    <widget class="QLabel" name="label">
      <property name="text">
-      <string>UAV List</string>
+      <string>From:</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="bplaPB">
-     <property name="text">
-      <string>Enemy UAV List</string>
+    <widget class="QDateTimeEdit" name="startTE">
+     <property name="dateTime">
+      <datetime>
+       <hour>0</hour>
+       <minute>0</minute>
+       <second>0</second>
+       <year>2014</year>
+       <month>1</month>
+       <day>1</day>
+      </datetime>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="spipDDPB">
+    <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>SPIP DD</string>
+      <string>To:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDateTimeEdit" name="stopTE">
+     <property name="dateTime">
+      <datetime>
+       <hour>0</hour>
+       <minute>0</minute>
+       <second>0</second>
+       <year>2014</year>
+       <month>1</month>
+       <day>1</day>
+      </datetime>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="startPB">
+     <property name="text">
+      <string>Start</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="stopPB">
+     <property name="text">
+      <string>Stop</string>
      </property>
     </widget>
    </item>
@@ -59,6 +82,30 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Current time:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDateTimeEdit" name="currentTE">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="dateTime">
+      <datetime>
+       <hour>0</hour>
+       <minute>0</minute>
+       <second>0</second>
+       <year>2014</year>
+       <month>1</month>
+       <day>1</day>
+      </datetime>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

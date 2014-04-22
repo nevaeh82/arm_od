@@ -38,6 +38,8 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 
 	m_treeDelegate = new TreeWidgetDelegate(this);
 
+	m_controlPanelController =  new ControlPanelController(this);
+
 	start();
 }
 
@@ -147,10 +149,6 @@ int MapTabWidgetController::createTree()
 	m_view->getBplaTreeView()->setItemDelegate(m_treeDelegate);
 	connect(m_enemyUavTreeModel, SIGNAL(onItemAddedSignal()), m_view->getBplaTreeView(), SLOT(expandAll()));
 
-	connect(m_view->getControlPanelWidget(), SIGNAL(showBlaClicked()), this, SLOT(onShowBlaTree()));
-	connect(m_view->getControlPanelWidget(), SIGNAL(showBplaClicked()), this, SLOT(onShowBplaTree()));
-	connect(m_view->getControlPanelWidget(), SIGNAL(showNiippClicked()), this, SLOT(onShowNiipp()));
-
 	return 0;
 }
 
@@ -162,6 +160,9 @@ void MapTabWidgetController::set_command(IMessageOld *msg)
 void MapTabWidgetController::appendView(MapTabWidget *view)
 {
 	m_view = view;
+
+	m_controlPanelController->appendView(m_view->getControlPanelWidget());
+	m_controlPanelController->setUavHistory(m_uavDbManager->getUavHistory());
 
 	m_mapController->appendView(m_view->getMapWidget());
 	m_mapController->init(m_mapSettings);
@@ -222,20 +223,6 @@ void MapTabWidgetController::onBlaTreeItemDoubleClicked(QModelIndex index)
 	qDebug() << "Got double click!";
 }
 
-void MapTabWidgetController::onShowBlaTree()
-{
-	m_view->changeBlaTreeVisibility();
-}
-
-void MapTabWidgetController::onShowBplaTree()
-{
-	m_view->changeBplaTreeVisibility();
-}
-
-void MapTabWidgetController::onShowNiipp()
-{
-	m_view->changeNiippVisibility();
-}
 
 void MapTabWidgetController::onSendDataToNiippControl(int id, QByteArray data)
 {

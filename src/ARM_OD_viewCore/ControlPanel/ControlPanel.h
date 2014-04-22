@@ -2,6 +2,7 @@
 #define CONTROLPANEL_H
 
 #include <QWidget>
+#include <QDateTime>
 
 namespace Ui {
 class ControlPanel;
@@ -18,10 +19,14 @@ public:
 	explicit ControlPanel(QWidget *parent = 0);
 	~ControlPanel();
 
+	QDateTime getStartDateTime()const;
+	QDateTime getEndDateTime()const;
+
+	void setCurrentDateTime(const QDateTime &value);
+
 signals:
-	void showBlaClicked();
-	void showBplaClicked();
-	void showNiippClicked();
+	void startPlayingHistorySignal();
+	void stopPlayingHistorySignal();
 };
 
 #endif // CONTROLPANEL_H

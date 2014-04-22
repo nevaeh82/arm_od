@@ -28,9 +28,6 @@
 class TabManager: public QObject, public ITabManager
 {
 	Q_OBJECT
-public:
-	TabManager(QTabWidget *tabWidget, QObject *parent = 0);
-	virtual ~TabManager();
 
 private:
 	QTabWidget* m_tabWidget;
@@ -47,8 +44,15 @@ private:
 	QString m_rpcHost;
 	quint16 m_rpcPort;
 
+	QMenu* m_viewMenu;
+
 public:
+	TabManager(QTabWidget *tabWidget, QObject *parent = 0);
+	virtual ~TabManager();
+
 	void start();
+
+	void setViewMenu(QMenu* menu);
 
 
 	virtual void send_data(int pid, IMessageOld* msg);
@@ -76,6 +80,8 @@ signals:
 	void cancelMapOpen();
 	void readyToStart();
 	void finished();
+
+
 };
 
 #endif // TABMANAGER_H

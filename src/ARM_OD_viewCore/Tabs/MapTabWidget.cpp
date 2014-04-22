@@ -48,36 +48,22 @@ ControlPanel *MapTabWidget::getControlPanelWidget() const
 	return ui->controlPanelWidget;
 }
 
-void MapTabWidget::changeBlaTreeVisibility()
+QDockWidget *MapTabWidget::getBlaDockWidget() const
 {
-	if (!ui->blaDockWidget->isVisible()){
-		ui->blaDockWidget->show();
-	} else{
-		ui->blaDockWidget->hide();
-	}
-
+	return ui->blaDockWidget;
 }
 
-void MapTabWidget::changeBplaTreeVisibility()
+QDockWidget *MapTabWidget::getBplaDockWidget() const
 {
-	if (!ui->bplaDockWidget->isVisible()){
-		ui->bplaDockWidget->show();
-	} else{
-		ui->bplaDockWidget->hide();
-	}
+	return ui->bplaDockWidget;
 }
 
-void MapTabWidget::changeNiippVisibility()
+QDockWidget *MapTabWidget::getNiipp1DockWidget() const
 {
-	if (!ui->spipDD1DockWidget->isVisible()){
-		ui->spipDD1DockWidget->show();
-	} else{
-		ui->spipDD1DockWidget->hide();
-	}
+	return ui->spipDD1DockWidget;
+}
 
-	if (!ui->spipDD2DockWidget->isVisible()){
-		ui->spipDD2DockWidget->show();
-	} else{
-		ui->spipDD2DockWidget->hide();
-	}
+QDockWidget *MapTabWidget::getNiipp2DockWidget() const
+{
+	return ui->spipDD2DockWidget;
 }

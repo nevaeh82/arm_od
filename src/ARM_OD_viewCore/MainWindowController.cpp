@@ -73,6 +73,7 @@ void MainWindowController::init()
 	m_view->getStackedWidget()->setCurrentIndex(1);
 
 	m_tabManager = new TabManager(m_view->getMainTabWidget(), this);
+	m_tabManager->setViewMenu(m_view->getViewMenu());
 
 	if( m_uavLifeTime > 0 ) m_tabManager->setUavLifeTime( m_uavLifeTime );
 
