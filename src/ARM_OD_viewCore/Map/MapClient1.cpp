@@ -126,6 +126,8 @@ void MapClient1::init()
 	m_styleManager->createAisStyle( m_mapLayers.value(11) )->apply();
 	m_styleManager->createNiippPointStyle( m_mapLayers.value(12) )->apply();
 	m_styleManager->createNiippStyle( m_mapLayers.value(13) )->apply();
+	m_styleManager->createHyperboleStyle( m_mapLayers.value(14) )->apply();
+
 
 	//addNiippLayer
 	m_pwWidget->mapProvider()->layerManager()->addVectorLayer( "NIIPP", tr("NIIPP") );
@@ -205,6 +207,7 @@ void MapClient1::removeAll()
 	clearObjectsList( MapFeature::Interception, m_interceptionList );
 	clearObjectsList( MapFeature::Station, m_stationList );
 	clearObjectsList( MapFeature::CheckPoint, m_checkPointsList );
+	clearObjectsList( MapFeature::Hyperbole, m_HyperboleList );
 }
 
 void MapClient1::addInterception(int blaId, int bplaId )

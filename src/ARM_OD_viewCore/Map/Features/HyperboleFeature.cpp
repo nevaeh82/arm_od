@@ -3,9 +3,7 @@
 
 namespace MapFeature {
 
-#include "Map/Features/HyperboleFeature.h"
-
-HyperboleFeature::HyperboleFeature( IObjectsFactory* factory,
+Hyperbole::Hyperbole( IObjectsFactory* factory,
 	const QString& id, const QString& name,
 	const Path* polyline, QTime timeMeasure )
 	: PolylineAbstract( factory, id, name, polyline )
@@ -13,15 +11,15 @@ HyperboleFeature::HyperboleFeature( IObjectsFactory* factory,
 {
 }
 
-HyperboleFeature::~HyperboleFeature()
+Hyperbole::~Hyperbole()
 {
 }
 
-void HyperboleFeature::updateMap()
+void Hyperbole::updateMap()
 {
 }
 
-void HyperboleFeature::removeFromMap()
+void Hyperbole::removeFromMap()
 {
 }
 

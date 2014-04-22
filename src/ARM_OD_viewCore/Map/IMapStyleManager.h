@@ -19,6 +19,8 @@
 #define MAP_STYLE_NAME_STATION				"Station"
 #define MAP_STYLE_NAME_GRID					"Grid"
 #define MAP_STYLE_NAME_CHECK_POINTS			"Control_points"
+#define MAP_STYLE_NAME_HYPERBOLE			"Hyperbole"
+
 
 class IMapStyleManager
 {
@@ -39,6 +41,7 @@ public:
 	virtual PwGisStyle* createStationStyle(const QString& layerId) = 0;
 	virtual PwGisStyle* createGridStyle(const QString& layerId) = 0;
 	virtual PwGisStyle* createCheckPointStyle(const QString& layerId) = 0;
+	virtual PwGisStyle* createHyperboleStyle(const QString& layerId) = 0;
 
 	virtual PwGisStyle* getAisStyle() = 0;
 	virtual PwGisStyle* getFriendBplaStyle() = 0;
@@ -54,6 +57,7 @@ public:
 	virtual PwGisStyle* getStationStyle() = 0;
 	virtual PwGisStyle* getGridStyle() = 0;
 	virtual PwGisStyle* getCheckpointsStyle() = 0;
+	virtual PwGisStyle* getHyperboleStyle() = 0;
 
 };
 

@@ -10,8 +10,6 @@
 #include <PwGis/objects/Path.h>
 
 
-typedef QVector<PwGisLonLat> GeoPolyline;
-
 namespace MapFeature {
 
 class FeaturesFactory;

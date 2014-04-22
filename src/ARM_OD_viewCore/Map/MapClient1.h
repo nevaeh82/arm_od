@@ -28,6 +28,13 @@
 #include "Map/IMapStyleManager.h"
 #include "Map/Features/FeaturesFactory.h"
 
+//=======================
+//alax
+//#include "Map/Features/PolylineAbstract.h"
+#include "Map/Features/HyperboleFeature.h"
+//=======================
+
+
 class MapClient1 : public QObject, public IMapClient
 {
 	Q_OBJECT
@@ -56,6 +63,7 @@ private:
 	QMap<QString, MapFeature::Ais*> m_aisList;
 	QMap<QString, MapFeature::Station*> m_stationList;
 	QList<MapFeature::CheckPoint*> m_checkPointsList;
+	QMap<int, MapFeature::Hyperbole*> m_HyperboleList;
 
 	QTimer m_bplaRedrawTimer;
 

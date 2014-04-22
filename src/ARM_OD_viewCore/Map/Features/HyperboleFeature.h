@@ -9,19 +9,19 @@ namespace MapFeature {
 
 class FeaturesFactory;
 
-class HyperboleFeature : public PolylineAbstract
+class Hyperbole : public PolylineAbstract
 {
 	friend class FeaturesFactory;
 
 protected:
 	QTime m_timeMeasure;
 
-	HyperboleFeature( IObjectsFactory* factory, const QString& id,
+	Hyperbole( IObjectsFactory* factory, const QString& id,
 		const QString& name, const Path* polyline,
 		QTime timeMeasure );
 
 public:
-	virtual ~HyperboleFeature();
+	virtual ~Hyperbole();
 
 	virtual void updateMap();
 	virtual void removeFromMap();
