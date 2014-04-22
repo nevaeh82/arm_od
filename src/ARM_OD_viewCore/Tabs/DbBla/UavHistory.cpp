@@ -136,9 +136,23 @@ void UavHistory::updateHistoryState()
 		nextTime.setTime( nextTime.time().addMSecs( - nextTime.time().msec() ) );
 	} while( nextTime == time );
 
+
+
 	// send actual UAV info for all receivers
 	foreach( UavInfo info, infoCollection ) {
 		QString role = m_uavRoles.value( info.uavId );
+
+		Uav uav;
+		uav.uavId = info.uavId + 100000;
+		uav.name = QString::number(uav.uavId) + tr("(H)");
+
+		if (!m_knownUavsList.contains(uav.uavId)) {
+			m_knownUavsList.insert(uav.uavId, uav);
+
+			foreach (IUavDbChangedListener* receiver, m_receiversList){
+				receiver->onUavAdded(uav, role);
+			}
+		}
 
 		foreach( IUavDbChangedListener* listener, m_receiversList ) {
 			listener->onUavInfoChanged( info, role );
@@ -157,6 +171,8 @@ void UavHistory::updateHistoryState()
 		foreach( IUavDbChangedListener* listener, m_receiversList ) {
 			listener->onUavRemoved( uav, role );
 		}
+
+		m_knownUavsList.remove(id);
 
 		m_uavRoles.remove( id );
 		m_uavLastDate.remove( id );

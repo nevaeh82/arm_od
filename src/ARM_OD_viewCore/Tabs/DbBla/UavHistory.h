@@ -22,6 +22,8 @@ private:
 
 	bool m_startResult;
 
+	QMap<uint, Uav> m_knownUavsList;
+
 public:
 	explicit UavHistory(QSqlDatabase database, QObject *parent = 0);
 	virtual ~UavHistory();
