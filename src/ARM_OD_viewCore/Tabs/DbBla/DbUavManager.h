@@ -7,6 +7,7 @@
 #include <QMutexLocker>
 #include <QTimer>
 #include <Interfaces/IRpcListener.h>
+#include <QFile>
 
 #include "DbUavController.h"
 #include "Interfaces/IDbUavManager.h"
@@ -34,6 +35,8 @@ private:
 	QMutex m_mutex;
 
 	int m_lifeTime;
+
+    QFile* fi;
 
 public:
 	explicit DbUavManager(int lifeTime = MAX_LIFE_TIME, QObject *parent = 0);

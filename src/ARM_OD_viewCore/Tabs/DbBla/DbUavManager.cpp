@@ -3,6 +3,13 @@
 DbUavManager::DbUavManager(int lifeTime, QObject *parent) :
 	QObject(parent)
 {
+
+    fi = new QFile("logUAVs.log");
+    if(!fi->open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        log_debug("error");
+    }
+
 	m_dbController = NULL;
 
 	setLifeTime( lifeTime );
@@ -13,6 +20,7 @@ DbUavManager::DbUavManager(int lifeTime, QObject *parent) :
 
 DbUavManager::~DbUavManager()
 {
+    fi->close();
 }
 
 QMap<uint, Uav> DbUavManager::getKnownUavList()
@@ -261,7 +269,13 @@ void DbUavManager::onMethodCalled(const QString& method, const QVariant& argumen
 		if (positionDataVector.size() < 1) {
 			log_debug("Size uavpositiondata vector < 1");
 			return;
-		}
+        }
+
+        QString dataToFile = QTime::currentTime().toString() + " " + QString::number(positionDataVector.at(0).latitude) + " " + QString::number(positionDataVector.at(0).longitude) + " " + QString::number(positionDataVector.at(0).altitude) + "\n";
+
+        QTextStream outstream(fi);
+        outstream << dataToFile;
+        fi->flush();
 
 		/// Now we take first point, but we need to take more than 1 point
 		UAVPositionData positionData = positionDataVector.at(0);
@@ -366,8 +380,10 @@ void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy,
 	positionData.speed = positionDataEnemy.speed;
 	positionData.state = positionDataEnemy.state;
 
-	positionData.latitude=positionDataEnemy.track.at(0).x();
-	positionData.longitude=positionDataEnemy.track.at(0).y();
+    // готово
+    positionData.latitude = positionDataEnemy.track.last().x();
+    positionData.longitude = positionDataEnemy.track.last().y();
+
 
 	positionData.boardID = ENEMY_UAV_ID_OFFSET;
 
