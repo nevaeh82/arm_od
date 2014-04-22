@@ -470,7 +470,8 @@ Sources DbUavController::getSource(const uint sourceId)
 
 	while (query.next()){
 		source.id = query.value(0).toUInt();
-		source.sourceId = query.value(1).toUInt();
+		source.sourceTypeId = query.value(1).toUInt();
+		source.sourceId = query.value(2).toUInt();
 	}
 
 	return source;

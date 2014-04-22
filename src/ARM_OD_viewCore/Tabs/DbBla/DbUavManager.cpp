@@ -371,7 +371,7 @@ void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QSt
 
 	if (sourceTypeId < 0){
 		SourceType sourceTypeStruct;
-		sourceTypeStruct.name = QString::number(positionData.sourceType);
+		sourceTypeStruct.name = sourceType;
 		sourceTypeId = addSourceType(sourceTypeStruct);
 	}
 
@@ -380,7 +380,8 @@ void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QSt
 	int sourceId = -1;
 	if (0 == sources.count()){
 		Sources source;
-		source.sourceId = sourceTypeId;
+		source.sourceTypeId = sourceTypeId;
+		source.sourceId = positionData.sourceType;
 
 		sourceId = addSource(source);
 	} else {

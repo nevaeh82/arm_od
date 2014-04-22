@@ -30,10 +30,12 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 	m_allyUavTreeModel =  new UavTreeModel(headers, this);
 	m_allyUavTreeModel->setTargetRole(OUR_UAV_ROLE);
 	m_uavDbManager->registerReceiver(m_allyUavTreeModel);
+	m_uavDbManager->getUavHistory()->registerReceiver( m_allyUavTreeModel );
 
 	m_enemyUavTreeModel = new UavTreeModel(headers, this);
 	m_enemyUavTreeModel->setTargetRole(ENEMY_UAV_ROLE);
 	m_uavDbManager->registerReceiver(m_enemyUavTreeModel);
+	m_uavDbManager->getUavHistory()->registerReceiver( m_enemyUavTreeModel );
 
 	m_mapSettings = map_settings;
 
