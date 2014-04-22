@@ -1,13 +1,16 @@
-#include "DbUavController.h"
+#include "Tabs/DbBla/UavHistory.h"
+#include "Tabs/DbBla/DbUavController.h"
 
-DbUavController::DbUavController(QObject *parent) :
-	DbControllerBase("DBBLACONNECTION", "QMYSQL", parent)
+DbUavController::DbUavController(QObject *parent)
+	: DbControllerBase("DBBLACONNECTION", "QMYSQL", parent)
+	, m_uavHistory( NULL )
 {
 
 }
 
-DbUavController::DbUavController(QString connectionName, QString dbType, QObject *parent) :
-	DbControllerBase(connectionName, dbType, parent)
+DbUavController::DbUavController(QString connectionName, QString dbType, QObject *parent)
+	: DbControllerBase(connectionName, dbType, parent)
+	, m_uavHistory( NULL )
 {
 
 }
@@ -285,6 +288,15 @@ int DbUavController::getUavInfoByUavId(const uint)
 	QMutexLocker locker(&m_addGetUavInfoMutex);
 
 	return INVALID_INDEX;
+}
+
+IUavHistory*DbUavController::getUavHistory()
+{
+	if( m_uavHistory == NULL ) {
+		m_uavHistory = new UavHistory( m_db, this );
+	}
+
+	return m_uavHistory;
 }
 
 int DbUavController::addDevice(const Devices& device)

@@ -16,6 +16,8 @@ struct Status;
 
 struct DBConnectionStruct;
 
+class IUavHistory;
+
 #define INVALID_INDEX -1
 
 class IDbUavController
@@ -31,6 +33,8 @@ class IDbUavController
 
 		virtual int addUavInfo(const UavInfo&) = 0;
 		virtual int getUavInfoByUavId(const uint uavId) = 0;
+
+		virtual IUavHistory* getUavHistory() = 0;
 
 		virtual int addDevice(const Devices&) = 0;
 		virtual bool getDevicesByType(const uint deviceTypeId, QList<Devices>& devicesRecords) = 0;

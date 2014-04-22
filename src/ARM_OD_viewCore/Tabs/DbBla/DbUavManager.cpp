@@ -113,6 +113,11 @@ int DbUavManager::getUavInfoByUavId(const uint uavId)
 	return m_dbController->getUavInfoByUavId(uavId);
 }
 
+IUavHistory* DbUavManager::getUavHistory()
+{
+	return m_dbController->getUavHistory();
+}
+
 int DbUavManager::addDevice(const Devices& device)
 {
 	return m_dbController->addDevice(device);

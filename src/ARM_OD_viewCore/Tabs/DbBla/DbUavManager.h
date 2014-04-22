@@ -8,7 +8,8 @@
 #include <QTimer>
 #include <Interfaces/IRpcListener.h>
 
-#include "DbUavController.h"
+#include "Tabs/DbBla/DbUavController.h"
+
 #include "Interfaces/IDbUavManager.h"
 #include "Interfaces/IUavDbChangedListener.h"
 #include "BaseSubject.h"
@@ -23,6 +24,7 @@
 class DbUavManager : public QObject, public IDbUavManager, public BaseSubject<IUavDbChangedListener>, public IRpcListener
 {
 	Q_OBJECT
+
 private:
 	IDbUavController* m_dbController;
 
@@ -51,6 +53,8 @@ public:
 
 	int addUavInfo(const UavInfo&);
 	int getUavInfoByUavId(const uint uavId);
+
+	IUavHistory* getUavHistory();
 
 	int addDevice(const Devices&);
 	bool getDevicesByType(const uint deviceTypeId, QList<Devices>& devicesRecords);

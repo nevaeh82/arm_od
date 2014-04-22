@@ -10,7 +10,7 @@
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlRecord>
 
-#include "IDbUavController.h"
+#include "Tabs/DbBla/IDbUavController.h"
 
 #include "Db/DbControllerBase.h"
 #include "Defines.h"
@@ -35,6 +35,8 @@ private:
 
 	QMutex m_addGetDictionaryMutex;
 
+	IUavHistory* m_uavHistory;
+
 public:
 	explicit DbUavController(QObject *parent = 0);
 	explicit DbUavController(QString connectionName, QString dbType, QObject *parent = 0);
@@ -50,6 +52,8 @@ public:
 
 	int addUavInfo(const UavInfo&);
 	int getUavInfoByUavId(const uint UavId);
+
+	IUavHistory* getUavHistory();
 
 	int addDevice(const Devices&);
 	bool getDevicesByType(const uint deviceTypeId, QList<Devices>& devicesRecords);
@@ -85,7 +89,7 @@ public:
 private:
 	int addDictionaryRecord(const QString& dictionary, const QString& name);
 	int getDictionaryRecord(const QString& dictionary, const QString& name);
-	
+
 };
 
 #endif // DbUavController_H
