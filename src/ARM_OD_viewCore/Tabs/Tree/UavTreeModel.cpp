@@ -170,7 +170,7 @@ void UavTreeModel::onUavInfoChanged(const UavInfo &uavInfo, const QString& uavRo
 	if (UavAutopilotSource ==  uavInfo.sourceType) {
 		onPropertyChanged(uavInfo, LAT_PROPERTY_ID, tr("lat"), number.sprintf( "%.4f", uavInfo.lat ));
 		onPropertyChanged(uavInfo, LON_PROPERTY_ID, tr("lon"), number.sprintf( "%.4f", uavInfo.lon ));
-		onPropertyChanged(uavInfo, ALT_PROPERTY_ID, tr("alt"), number.sprintf( "%.4f", uavInfo.alt ));
+		onPropertyChanged(uavInfo, ALT_PROPERTY_ID, tr("alt"), QString::number( (int) uavInfo.alt ));
 	} else {
 		onPropertyChanged(uavInfo, LAT_KTR_PROPERTY_ID, tr("lat (ktr)"), number.sprintf( "%.4f", uavInfo.lat ));
 		onPropertyChanged(uavInfo, LON_KTR_PROPERTY_ID, tr("lon (ktr)"), number.sprintf( "%.4f", uavInfo.lon ));
