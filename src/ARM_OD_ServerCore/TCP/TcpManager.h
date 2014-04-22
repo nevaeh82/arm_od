@@ -76,9 +76,11 @@ private:
 signals:
 	void threadTerminateSignal();
 	void onMethodCalledInternalSignal(const QString& method, const QVariant& argument);
+	void onMessageReceivedInternalSignal(const quint32 deviceType, const QString& deviceName, const MessageSP argument);
 
 private slots:
 	void onMethodCalledInternalSlot(const QString &method, const QVariant &argument);
+	void onMessageReceivedInternalSlot(const quint32 deviceType, const QString& deviceName, const MessageSP argument);
 
 
 	// ITcpManager interface

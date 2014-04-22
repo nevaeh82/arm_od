@@ -277,10 +277,11 @@ MessageSP TcpKTRCoder::parseBoardList(const QByteArray& data)
 	int count_bla = inputData.at(0);
 	QList<quint16> identificators;
 
+	log_debug(QString("uav count = %1").arg(count_bla));
 	for (int i = 0; i < count_bla; i++) {
 		quint16 id = ((quint8)inputData.at(3 + i*24) << 8) + (quint8)inputData.at(2 + i*24);
 		identificators.append(id);
-		//log_debug(QString("ID = %1").arg(QString::number(id)));
+		log_debug(QString("ID = %1").arg(QString::number(id)));
 	}
 
 	QByteArray dataToSend;

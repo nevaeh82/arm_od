@@ -6,6 +6,7 @@ TcpManager::TcpManager(QObject* parent) :
 	m_rpcServer = NULL;
 
 	connect(this, SIGNAL(onMethodCalledInternalSignal(QString,QVariant)), this, SLOT(onMethodCalledInternalSlot(QString,QVariant)));
+	connect(this, SIGNAL(onMessageReceivedInternalSignal(quint32,QString,MessageSP)), this, SLOT(onMessageReceivedInternalSlot(quint32,QString,MessageSP)));
 
 	m_ktrManager = new TcpKTRManager(this, this);
 }
@@ -118,8 +119,48 @@ QObject* TcpManager::asQObject()
 
 void TcpManager::onMessageReceived(const quint32 deviceType, const QString& deviceName, const MessageSP argument)
 {
-	/// TODO : refactor it. It's bad.
+	emit onMessageReceivedInternalSignal(deviceType, deviceName, argument);
+}
 
+void TcpManager::onMethodCalled(const QString& method, const QVariant& argument)
+{
+	emit onMethodCalledInternalSignal(method,argument);
+}
+
+QString TcpManager::getTcpClientName()
+{
+	return ARMR_TCP_CLIENT_NAME;
+}
+
+void TcpManager::onMethodCalledInternalSlot(const QString& method, const QVariant& argument)
+{
+	if (method == RPC_SLOT_SET_SOLVER_CLEAR) {
+		//TODO: REMOVE RPCCLIENT USAGE WHEN TCP CLIENT PROTOBUF WILL BE TESTED
+
+		/*BaseTcpDeviceController* controller = m_controllersMap.value(getTcpClientName(), NULL);
+		if (controller == NULL) {
+			return;
+		}
+		controller->sendData(MessageSP(new Message<QByteArray>(TCP_ARMR_SEND_SOLVER_CLEAR, argument.toByteArray())));*/
+
+		m_rpcClient->sendDataByRpc(TCP_ARMR_SEND_SOLVER_CLEAR, argument.toByteArray());
+
+	} else if (method == RPC_SLOT_SET_SOLVER_DATA) {
+		//TODO: REMOVE RPCCLIENT USAGE WHEN TCP CLIENT PROTOBUF WILL BE TESTED
+
+		/*BaseTcpDeviceController* controller = m_controllersMap.value(getTcpClientName(), NULL);
+		if (controller == NULL) {
+			return;
+		}
+		controller->sendData(MessageSP(new Message<QByteArray>(TCP_ARMR_SEND_SOLVER_DATA, argument.toByteArray())));*/
+
+		m_rpcClient->sendDataByRpc(TCP_ARMR_SEND_SOLVER_DATA, argument.toByteArray());
+	}
+}
+
+void TcpManager::onMessageReceivedInternalSlot(const quint32 deviceType, const QString& deviceName, const MessageSP argument)
+{
+		/// TODO : refactor it. It's bad.
 	QString messageType = argument->type();
 	QByteArray messageData = argument->data();
 
@@ -229,41 +270,5 @@ void TcpManager::onMessageReceived(const quint32 deviceType, const QString& devi
 			break;
 		default:
 			break;
-	}
-}
-
-void TcpManager::onMethodCalled(const QString& method, const QVariant& argument)
-{
-	emit onMethodCalledInternalSignal(method,argument);
-}
-
-QString TcpManager::getTcpClientName()
-{
-	return ARMR_TCP_CLIENT_NAME;
-}
-
-void TcpManager::onMethodCalledInternalSlot(const QString& method, const QVariant& argument)
-{
-	if (method == RPC_SLOT_SET_SOLVER_CLEAR) {
-		//TODO: REMOVE RPCCLIENT USAGE WHEN TCP CLIENT PROTOBUF WILL BE TESTED
-
-		/*BaseTcpDeviceController* controller = m_controllersMap.value(getTcpClientName(), NULL);
-		if (controller == NULL) {
-			return;
-		}
-		controller->sendData(MessageSP(new Message<QByteArray>(TCP_ARMR_SEND_SOLVER_CLEAR, argument.toByteArray())));*/
-
-		m_rpcClient->sendDataByRpc(TCP_ARMR_SEND_SOLVER_CLEAR, argument.toByteArray());
-
-	} else if (method == RPC_SLOT_SET_SOLVER_DATA) {
-		//TODO: REMOVE RPCCLIENT USAGE WHEN TCP CLIENT PROTOBUF WILL BE TESTED
-
-		/*BaseTcpDeviceController* controller = m_controllersMap.value(getTcpClientName(), NULL);
-		if (controller == NULL) {
-			return;
-		}
-		controller->sendData(MessageSP(new Message<QByteArray>(TCP_ARMR_SEND_SOLVER_DATA, argument.toByteArray())));*/
-
-		m_rpcClient->sendDataByRpc(TCP_ARMR_SEND_SOLVER_DATA, argument.toByteArray());
 	}
 }
