@@ -99,35 +99,30 @@ void Map::onMapReady()
 		it.value()->addHyperbole( 1, hyperbole1,
 			QTime::currentTime(), QColor::fromRgb( 255, 0, 0 ) );
 
-		/*
 		//2
-		PwGisPointList* hyperbole2 = new PwGisPointList();
-		hyperbole2->append( new PwGisLonLat( 30.29749, 59.90849 ) );
-		hyperbole2->append( new PwGisLonLat( 30.31912, 59.90832 ) );
-		hyperbole2->append( new PwGisLonLat( 30.34349, 59.91676 ) );
-		hyperbole2->append( new PwGisLonLat( 30.39499, 59.91899 ) );
-		it.value()->addHyperbole( 2, hyperbole2,
-			QTime::currentTime(), QColor::fromRgb( 0, 255, 0 ) );
+		//PwGisPointList* hyperbole2 = new PwGisPointList();
+		//hyperbole2->append( new PwGisLonLat( 30.29749, 59.90849 ) );
+		//hyperbole2->append( new PwGisLonLat( 30.31912, 59.90832 ) );
+		//hyperbole2->append( new PwGisLonLat( 30.34349, 59.91676 ) );
+		//hyperbole2->append( new PwGisLonLat( 30.39499, 59.91899 ) );
+		//it.value()->addHyperbole( 1, hyperbole2,
+		//	QTime::currentTime(), QColor::fromRgb( 0, 255, 0 ) );
 
 		//3
-		PwGisPointList* hyperbole3 = new PwGisPointList();
-		hyperbole3->append( new PwGisLonLat( 30.49215, 59.89661 ) );
-		hyperbole3->append( new PwGisLonLat( 30.46984, 59.92020 ) );
-		hyperbole3->append( new PwGisLonLat( 30.47842, 59.94497 ) );
-		hyperbole3->append( new PwGisLonLat( 30.45645, 59.96542 ) );
-		hyperbole3->append( new PwGisLonLat( 30.45782, 59.98810 ) );
-		it.value()->addHyperbole( 3, hyperbole3,
-			QTime::currentTime(), QColor::fromRgb( 0, 0, 255 ) );
+		//PwGisPointList* hyperbole3 = new PwGisPointList();
+		//hyperbole3->append( new PwGisLonLat( 30.49215, 59.89661 ) );
+		//hyperbole3->append( new PwGisLonLat( 30.46984, 59.92020 ) );
+		//hyperbole3->append( new PwGisLonLat( 30.47842, 59.94497 ) );
+		//hyperbole3->append( new PwGisLonLat( 30.45645, 59.96542 ) );
+		//hyperbole3->append( new PwGisLonLat( 30.45782, 59.98810 ) );
+		//it.value()->addHyperbole( 3, hyperbole3,
+		//	QTime::currentTime(), QColor::fromRgb( 0, 0, 255 ) );
 
-		delete hyperbole3;
-		delete hyperbole2;
-		*/
 		delete hyperbole1;
-
+		//delete hyperbole2;
+		//delete hyperbole3;
 
 		//=================
-
-
 
 	}
 }

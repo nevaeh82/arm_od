@@ -1,5 +1,10 @@
 #include "Map/Features/PolylineAbstract.h"
 
+//====================
+//alax
+#include <QMessageBox>
+//====================
+
 namespace MapFeature {
 
 PolylineAbstract::PolylineAbstract( IObjectsFactory* factory,
@@ -18,22 +23,24 @@ PolylineAbstract::PolylineAbstract( IObjectsFactory* factory,
 //	delete m_polyline;
 //}
 
-void PolylineAbstract::setPolyline( PwGisPointList *polyline )
+void PolylineAbstract::setPolyline( PwGisPointList* polyline )
 {
 	PwGisPointList* points = m_polyline->points();
 	points->clear();
 
-	/*
-	points->append( new PwGisLonLat( m_position ) );
-
-
-
-	polyline->points().
-	m_polyline.clear();
-	for( int i = 0; i < polyline->.count(); ++i ) {
-		m_polyline.append( PwGisLonLat( polyline.at(i).lon, polyline.at(i).lat ) );
+	for( int i = 0; i < polyline->count(); ++i ) {
+		points->append( new PwGisLonLat( polyline->at(i)->lon,
+			polyline->at(i)->lat ) );
 	}
-	*/
+
+
+	m_polyline->updateMap();
+
+	QMessageBox msgBox42;
+	msgBox42.setText("setPolyline2->" + QString::number( points->count() ) );
+	msgBox42.exec();
+
+
 }
 
 Path* PolylineAbstract::polyline()

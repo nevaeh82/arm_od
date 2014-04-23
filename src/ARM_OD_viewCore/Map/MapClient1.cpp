@@ -143,9 +143,6 @@ void MapClient1::init()
 //===============
 //alax
 
-//===============
-//alax
-
 void MapClient1::addHyperbole( int id, PwGisPointList* polyline,
 	const QTime timeMeasure, const QColor& color )
 {
@@ -153,8 +150,20 @@ void MapClient1::addHyperbole( int id, PwGisPointList* polyline,
 
 	if( hyperbole != NULL ) {
 		//hyperbole->update( uav );
+
+
+		//QMessageBox msgBox41;
+		//msgBox41.setText("update new1");
+		//msgBox41.exec();
+
 	}
 	else {
+
+		//QMessageBox msgBox41;
+		//msgBox41.setText("add new1");
+		//msgBox41.exec();
+
+
 		QString nameHyperbole = timeMeasure.toString( "HH:MM:SS" );
 		hyperbole = m_factory->createHyperbole(
 			id,
@@ -163,35 +172,10 @@ void MapClient1::addHyperbole( int id, PwGisPointList* polyline,
 			timeMeasure );
 		m_HyperboleList.insert( id, hyperbole );
 	}
-
-
-	QMessageBox msgBox4;
-	msgBox4.setText("addHyperbole---4");
-	msgBox4.exec();
 }
-//===============
 
-/*
-void MapClient1::addHyperbole( int id, PwGisPointList* polyline,
-	const QTime timeMeasure, const QColor& color )
-{
-//	m_pwWidget->addClassicPolygon( "c1",  30.531368, 60.074592,
-//		m_circleRadius*1000, 40, 0, "ОП1 Гроза", "", "yellow selectAndDrag" );
 
-QMessageBox msgBox;
-msgBox.setText("addHyperbole---2");
-msgBox.exec();
-
-	m_pwWidget->addPath(
-				QString::number( id ),
-				polyline,
-				"caption1",
-				"tooltip1",
-				"yellow selectAndDrag" );
-
-}
-*/
-//===============
+//==============================
 
 
 void MapClient1::showLayer( int index, bool state )
