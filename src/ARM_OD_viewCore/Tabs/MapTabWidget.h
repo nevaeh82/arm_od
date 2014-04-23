@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QTreeView>
+#include <QDockWidget>
 
 #include "Map/MapWidget.h"
 #include "NIIPP/NiippWidget.h"
@@ -26,9 +27,10 @@ public:
 	QTreeView* getBplaTreeView() const;
 	ControlPanel* getControlPanelWidget() const;
 
-	void changeBlaTreeVisibility();
-	void changeBplaTreeVisibility();
-	void changeNiippVisibility();
+	QDockWidget* getBlaDockWidget() const;
+	QDockWidget* getBplaDockWidget() const;
+	QDockWidget* getNiipp1DockWidget() const;
+	QDockWidget* getNiipp2DockWidget() const;
 
 private:
 	Ui::MapTabWidget* ui;

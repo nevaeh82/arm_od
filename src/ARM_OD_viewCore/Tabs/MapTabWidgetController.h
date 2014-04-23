@@ -27,6 +27,8 @@
 
 #include "DbBla/DbUavManager.h"
 
+#include "ControlPanel/ControlPanelController.h"
+
 #define DEFAULT_RPC_PORT		24500
 
 namespace Ui {
@@ -62,6 +64,8 @@ private:
 
 	///Map
 	MapController*          m_mapController;
+
+	ControlPanelController* m_controlPanelController;
 
 	ITabManager* m_tabManager;
 
@@ -99,9 +103,6 @@ private slots:
 	void onBlaTreeItemDoubleClicked(QModelIndex index);
 
 public slots:
-	void onShowBlaTree();
-	void onShowBplaTree();
-	void onShowNiipp();
 
 	void onSendDataToNiippControl(int id, QByteArray data);
 	void openAtlasSlot();

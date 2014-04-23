@@ -9,7 +9,8 @@
 #include <Interfaces/IRpcListener.h>
 #include <QFile>
 
-#include "DbUavController.h"
+#include "Tabs/DbBla/DbUavController.h"
+
 #include "Interfaces/IDbUavManager.h"
 #include "Interfaces/IUavDbChangedListener.h"
 #include "BaseSubject.h"
@@ -24,6 +25,7 @@
 class DbUavManager : public QObject, public IDbUavManager, public BaseSubject<IUavDbChangedListener>, public IRpcListener
 {
 	Q_OBJECT
+
 private:
 	IDbUavController* m_dbController;
 
@@ -36,7 +38,9 @@ private:
 
 	int m_lifeTime;
 
-    QFile* fi;
+	IUavHistory* m_uavHistory;
+
+	QFile* fi;
 
 public:
 	explicit DbUavManager(int lifeTime = MAX_LIFE_TIME, QObject *parent = 0);
@@ -55,8 +59,15 @@ public:
 	int addUavInfo(const UavInfo&);
 	bool getUavInfoByUavId(const uint uavId, QList<UavInfo>& uavInfoList);
 
+	IUavHistory* getUavHistory();
+
 	int addDevice(const Devices&);
 	bool getDevicesByType(const uint deviceTypeId, QList<Devices>& devicesRecords);
+
+	int addSource(const Source&);
+	int getSourceId(const uint sourceId, const uint sourceTypeId);
+	bool getSourcesByType(const uint sourceId, QList<Source>& sourcesRecords);
+	Source getSource(const uint sourceId);
 
 	int addUavMission(const UavMission&);
 	bool getUavMissionsByUavId(const uint uavId, QList<UavMission>& missionsRecords);
@@ -79,6 +90,9 @@ public:
 	int addDeviceType(const DeviceType&);
 	int getDeviceTypeByName(const QString&);
 
+	int addSourceType(const SourceType&);
+	int getSourceTypeByName(const QString&);
+
 	int addStatus(const Status&);
 	int getStatusByName(const QString&);
 
@@ -94,9 +108,11 @@ public:
 	virtual void onMethodCalled(const QString& method, const QVariant& argument);
 
 private:
-	void addUavInfoToDb(const UAVPositionData& positionData, const QString& role, const QString& uavType, const QString& status, const QString& deviceType);
+	void addUavInfoToDb(const UAVPositionData& positionData, const QString& role,
+						const QString& uavType, const QString& status, const QString& deviceType, const QString &sourceType);
 	void sendEnemyUavPoints(const QByteArray& data);
-	void addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy, const QString &role, const QString &uavType, const QString &status, const QString &deviceType);
+	void addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy, const QString &role,
+						const QString &uavType, const QString &status, const QString &deviceType, const QString &sourceType);
 
 private slots:
 	void timeoutSlot(const QString& key);

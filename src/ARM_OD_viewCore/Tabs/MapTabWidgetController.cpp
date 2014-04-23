@@ -1,7 +1,8 @@
-#include "MapTabWidgetController.h"
-
 #include <QDebug>
 
+#include <TreeModel/TreeItem.h>
+
+#include "MapTabWidgetController.h"
 
 MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Station *> map_settings, ITabManager* tabManager, DbUavManager* db_bla, QObject* parent) :
 	QObject(parent)
@@ -22,6 +23,7 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 	connect( m_mapController, SIGNAL( atlasOpened() ), SIGNAL( atlasOpened() ) );
 	connect( m_mapController, SIGNAL( cancelMapOpen() ), SIGNAL( cancelMapOpen() ) );
 	m_uavDbManager->registerReceiver( m_mapController );
+	m_uavDbManager->getUavHistory()->registerReceiver( m_mapController );
 
 	QStringList headers;
 	headers << tr("Property") << tr("Value");
@@ -29,14 +31,19 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 	m_allyUavTreeModel =  new UavTreeModel(headers, this);
 	m_allyUavTreeModel->setTargetRole(OUR_UAV_ROLE);
 	m_uavDbManager->registerReceiver(m_allyUavTreeModel);
+	m_uavDbManager->getUavHistory()->registerReceiver( m_allyUavTreeModel );
 
 	m_enemyUavTreeModel = new UavTreeModel(headers, this);
 	m_enemyUavTreeModel->setTargetRole(ENEMY_UAV_ROLE);
 	m_uavDbManager->registerReceiver(m_enemyUavTreeModel);
+	m_uavDbManager->getUavHistory()->registerReceiver( m_enemyUavTreeModel );
 
 	m_mapSettings = map_settings;
 
 	m_treeDelegate = new TreeWidgetDelegate(this);
+
+	m_controlPanelController =  new ControlPanelController(this);
+	m_uavDbManager->getUavHistory()->registerReceiver( m_controlPanelController );
 
 	start();
 }
@@ -56,6 +63,11 @@ MapTabWidgetController::~MapTabWidgetController()
 	m_uavDbManager->deregisterReceiver(m_allyUavTreeModel);
 	m_uavDbManager->deregisterReceiver(m_enemyUavTreeModel);
 	m_uavDbManager->deregisterReceiver(m_mapController);
+
+	m_uavDbManager->getUavHistory()->deregisterReceiver(m_mapController);
+	m_uavDbManager->getUavHistory()->deregisterReceiver(m_allyUavTreeModel);
+	m_uavDbManager->getUavHistory()->deregisterReceiver(m_enemyUavTreeModel);
+	m_uavDbManager->getUavHistory()->deregisterReceiver( m_controlPanelController );
 }
 
 int MapTabWidgetController::init()
@@ -147,10 +159,6 @@ int MapTabWidgetController::createTree()
 	m_view->getBplaTreeView()->setItemDelegate(m_treeDelegate);
 	connect(m_enemyUavTreeModel, SIGNAL(onItemAddedSignal()), m_view->getBplaTreeView(), SLOT(expandAll()));
 
-	connect(m_view->getControlPanelWidget(), SIGNAL(showBlaClicked()), this, SLOT(onShowBlaTree()));
-	connect(m_view->getControlPanelWidget(), SIGNAL(showBplaClicked()), this, SLOT(onShowBplaTree()));
-	connect(m_view->getControlPanelWidget(), SIGNAL(showNiippClicked()), this, SLOT(onShowNiipp()));
-
 	return 0;
 }
 
@@ -162,6 +170,9 @@ void MapTabWidgetController::set_command(IMessageOld *msg)
 void MapTabWidgetController::appendView(MapTabWidget *view)
 {
 	m_view = view;
+
+	m_controlPanelController->appendView(m_view->getControlPanelWidget());
+	m_controlPanelController->setUavHistory(m_uavDbManager->getUavHistory());
 
 	m_mapController->appendView(m_view->getMapWidget());
 	m_mapController->init(m_mapSettings);
@@ -203,16 +214,22 @@ void MapTabWidgetController::openMapSlot()
 void MapTabWidgetController::onBlaTreeItemDoubleClicked(QModelIndex index)
 {
 	QModelIndex parent = index.parent();
-	int data = index.data().toInt();
 
 	if (parent.isValid()){
 		parent = parent.sibling(parent.row(), 0);
-		data = parent.data().toInt();
-	}
-	else {
+	} else {
 		parent = index.sibling(index.row(), 0);
-		data = parent.data().toInt();
 	}
+
+	// check if it is historical item
+	// we do this by checking is name contains only digits
+	// because real UAVs should contains only numbers
+	bool isNumber;
+	TreeItem* item = static_cast<TreeItem *>(parent.internalPointer());
+	item->data().name.toInt( &isNumber );
+	if( !isNumber ) return;
+
+	int data = parent.data().toInt();
 
 	BLAPerehvatDialog *b = new BLAPerehvatDialog(m_mapController->getMapClient(1), m_view);
 	b->init(data, m_uavDbManager);
@@ -222,20 +239,6 @@ void MapTabWidgetController::onBlaTreeItemDoubleClicked(QModelIndex index)
 	qDebug() << "Got double click!";
 }
 
-void MapTabWidgetController::onShowBlaTree()
-{
-	m_view->changeBlaTreeVisibility();
-}
-
-void MapTabWidgetController::onShowBplaTree()
-{
-	m_view->changeBplaTreeVisibility();
-}
-
-void MapTabWidgetController::onShowNiipp()
-{
-	m_view->changeNiippVisibility();
-}
 
 void MapTabWidgetController::onSendDataToNiippControl(int id, QByteArray data)
 {

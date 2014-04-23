@@ -97,7 +97,11 @@ HEADERS += \
 	Map/Features/PelengatorPointFeature.h \
 	Tabs/Solver/SolverSettingsDialog.h \
     Map/Features/CheckPointFeature.h \
-    Map/Features/BplaAbstractFeature.h
+    Map/Features/BplaAbstractFeature.h \
+    Interfaces/IUavHistory.h \
+    ControlPanel/ControlPanelController.h \
+    Tabs/DbBla/UavHistory.h \
+    Interfaces/IUavHistoryListener.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -140,7 +144,9 @@ SOURCES += \
 	Map/Features/PelengatorPointFeature.cpp \
 	Tabs/Solver/SolverSettingsDialog.cpp \
     Map/Features/CheckPointFeature.cpp \
-    Map/Features/BplaAbstractFeature.cpp
+    Map/Features/BplaAbstractFeature.cpp \
+    ControlPanel/ControlPanelController.cpp \
+    Tabs/DbBla/UavHistory.cpp
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \

@@ -17,6 +17,7 @@ BplaAbstract::BplaAbstract(IObjectsFactory* factory, const QString& id, const Ua
 	setSpeed( uav.speed );
 	setAngle( uav.yaw );
 
+	m_isHistorical = uav.historical;
 	m_initialized = true;
 }
 
@@ -131,6 +132,12 @@ void BplaAbstract::removeFromMap()
 
 void BplaAbstract::registerStyle()
 {
+	if( m_isHistorical ) {
+		m_marker->addStyleByName( MAP_STYLE_NAME_HISTORY );
+		m_tail->addStyleByName( MAP_STYLE_NAME_HISTORY );
+		m_slices->addStyleByName( MAP_STYLE_NAME_HISTORY );
+	}
+
 	m_marker->addStyleByName( getStyleName() );
 	m_tail->addStyleByName( getTrackStyleName() );
 	m_slices->addStyleByName( getSliceStyleName() );

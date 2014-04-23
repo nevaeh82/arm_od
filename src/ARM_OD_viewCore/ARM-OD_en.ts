@@ -25,13 +25,13 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="61"/>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="67"/>
         <source>UAV_enemy: #%1</source>
         <oldsource>UAV_: #%1</oldsource>
         <translation>Enemy UAV #%1</translation>
     </message>
     <message>
-        <location filename="UAV/BLAPerehvatDialog.cpp" line="83"/>
+        <location filename="UAV/BLAPerehvatDialog.cpp" line="89"/>
         <source>#</source>
         <translation></translation>
     </message>
@@ -39,31 +39,64 @@
 <context>
     <name>ControlPanel</name>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="14"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="17"/>
         <source>Form</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="32"/>
-        <source>UAV List</source>
-        <oldsource>BLA List</oldsource>
+        <location filename="ControlPanel/ControlPanel.ui" line="23"/>
+        <source>From:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="39"/>
-        <source>Enemy UAV List</source>
+        <location filename="ControlPanel/ControlPanel.ui" line="44"/>
+        <source>To:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="46"/>
-        <source>SPIP DD</source>
+        <location filename="ControlPanel/ControlPanel.ui" line="65"/>
+        <source>Start</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="ControlPanel/ControlPanel.ui" line="72"/>
+        <source>Stop</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="ControlPanel/ControlPanel.ui" line="92"/>
+        <source>Current time:</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="ControlPanel/ControlPanel.cpp" line="44"/>
+        <source>Current time: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ControlPanelController</name>
+    <message>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="78"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="83"/>
+        <source>Unable to play history</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="78"/>
+        <source>End date should be greater than start date.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="83"/>
+        <source>Data for selected period do not exist.</source>
         <translation></translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.cpp" line="19"/>
+        <location filename="MainWindow.cpp" line="20"/>
         <source>Zaviruha</source>
         <translation></translation>
     </message>
@@ -93,27 +126,32 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="140"/>
+        <location filename="MainWindow.ui" line="132"/>
+        <source>View</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="146"/>
         <source>New</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="145"/>
+        <location filename="MainWindow.ui" line="151"/>
         <source>Exit</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="150"/>
+        <location filename="MainWindow.ui" line="156"/>
         <source>Open Atlas</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="155"/>
+        <location filename="MainWindow.ui" line="161"/>
         <source>Open from file</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="160"/>
+        <location filename="MainWindow.ui" line="166"/>
         <source>Solver settings</source>
         <translation></translation>
     </message>
@@ -121,12 +159,12 @@
 <context>
     <name>MainWindowController</name>
     <message>
-        <location filename="MainWindowController.cpp" line="95"/>
+        <location filename="MainWindowController.cpp" line="98"/>
         <source>Unable to connect to server</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindowController.cpp" line="95"/>
+        <location filename="MainWindowController.cpp" line="98"/>
         <source>Please try to restart application</source>
         <translation></translation>
     </message>
@@ -134,7 +172,7 @@
 <context>
     <name>MapClient1</name>
     <message>
-        <location filename="Map/MapClient1.cpp" line="123"/>
+        <location filename="Map/MapClient1.cpp" line="125"/>
         <source>NIIPP</source>
         <translation></translation>
     </message>
@@ -215,7 +253,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="435"/>
+        <location filename="Map/MapClient1.cpp" line="100"/>
+        <source>History</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="Map/MapClient1.cpp" line="462"/>
         <source>Ingur</source>
         <translation></translation>
     </message>
@@ -223,12 +266,12 @@
 <context>
     <name>MapController</name>
     <message>
-        <location filename="Map/MapController.cpp" line="46"/>
+        <location filename="Map/MapController.cpp" line="48"/>
         <source>Open map</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapController.cpp" line="48"/>
+        <location filename="Map/MapController.cpp" line="50"/>
         <source>Map files (*.chart *.sxf *.sit *.map *.gc *.gst)</source>
         <translation></translation>
     </message>
@@ -267,22 +310,22 @@
 <context>
     <name>MapTabWidgetController</name>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="23"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="29"/>
         <source>Property</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="23"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="29"/>
         <source>Value</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="169"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="184"/>
         <source>SPIP DD-1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="174"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="189"/>
         <source>SPIP DD-2</source>
         <translation></translation>
     </message>
@@ -425,20 +468,32 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="Map/Features/FriendBplaFeature.cpp" line="21"/>
+        <location filename="Map/Features/FriendBplaFeature.cpp" line="24"/>
+        <source>UAV-C-H</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="Map/Features/FriendBplaFeature.cpp" line="26"/>
         <source>UAV (#%1)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/Features/FriendBplaFeature.cpp" line="21"/>
+        <location filename="Map/Features/FriendBplaFeature.cpp" line="24"/>
         <source>UAV-C</source>
         <translation></translation>
     </message>
     <message>
         <location filename="Map/Features/EnemyBplaFeature.cpp" line="15"/>
         <source>UAV_enemy (#%1)\n%2\n%3</source>
-        <oldsource>UAV_enemy (â%1)\n%2\n%3</oldsource>
+        <oldsource>UAV_enemy-H (#%1)\n%2\n%3</oldsource>
         <translation>Enemy UAV (#%1)\n%2\n%3</translation>
+    </message>
+    <message>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="17"/>
+        <location filename="Map/Features/FriendBplaFeature.cpp" line="27"/>
+        <location filename="Tabs/DbBla/UavHistory.cpp" line="204"/>
+        <source>%1-H</source>
+        <translation></translation>
     </message>
     <message>
         <location filename="Map/Features/InterceptionFeature.cpp" line="25"/>
@@ -528,31 +583,31 @@
     <name>UavTreeModel</name>
     <message>
         <location filename="Tabs/Tree/UavTreeModel.cpp" line="99"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="169"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="179"/>
         <source>lat</source>
         <translation></translation>
     </message>
     <message>
         <location filename="Tabs/Tree/UavTreeModel.cpp" line="105"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="170"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="180"/>
         <source>lon</source>
         <translation></translation>
     </message>
     <message>
         <location filename="Tabs/Tree/UavTreeModel.cpp" line="110"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="171"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="181"/>
         <source>alt</source>
         <translation></translation>
     </message>
     <message>
         <location filename="Tabs/Tree/UavTreeModel.cpp" line="115"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="173"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="183"/>
         <source>lat (ktr)</source>
         <translation>lat (KTR)</translation>
     </message>
     <message>
         <location filename="Tabs/Tree/UavTreeModel.cpp" line="120"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="174"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="184"/>
         <source>lon (ktr)</source>
         <translation>lon (KTR)</translation>
     </message>

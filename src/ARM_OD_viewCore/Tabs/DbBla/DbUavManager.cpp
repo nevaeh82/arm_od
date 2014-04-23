@@ -11,6 +11,7 @@ DbUavManager::DbUavManager(int lifeTime, QObject *parent) :
     }
 
 	m_dbController = NULL;
+	m_uavHistory = NULL;
 
 	setLifeTime( lifeTime );
 
@@ -36,6 +37,10 @@ void DbUavManager::setDbController(IDbUavController* dbController)
 void DbUavManager::setLifeTime(int msecs)
 {
 	m_lifeTime = msecs < 1 ? MAX_LIFE_TIME : msecs;
+
+	if( m_uavHistory != NULL ) {
+		m_uavHistory->setLifeTime( m_lifeTime );
+}
 }
 
 int DbUavManager::addUav(const Uav &uav)
@@ -107,6 +112,8 @@ int DbUavManager::addUavInfo(const UavInfo &uavInfo)
 	UavInfo uavInfoForListeners = uavInfo;
 	uavInfoForListeners.uavId = uav.uavId;
 
+	uavInfoForListeners.source = getSource(uavInfo.source).sourceId;
+
 	if (newUavInfo != INVALID_INDEX){
 		foreach (IUavDbChangedListener* receiver, m_receiversList){
 			receiver->onUavInfoChanged(uavInfoForListeners, uavRole);
@@ -121,6 +128,16 @@ bool DbUavManager::getUavInfoByUavId(const uint uavId, QList<UavInfo>& uavInfoLi
 	return m_dbController->getUavInfoByUavId(uavId, uavInfoList);
 }
 
+IUavHistory* DbUavManager::getUavHistory()
+{
+	if( m_uavHistory == NULL ) {
+		m_uavHistory = m_dbController->getUavHistory();
+		m_uavHistory->setLifeTime( m_lifeTime );
+	}
+
+	return m_uavHistory;
+}
+
 int DbUavManager::addDevice(const Devices& device)
 {
 	return m_dbController->addDevice(device);
@@ -129,6 +146,26 @@ int DbUavManager::addDevice(const Devices& device)
 bool DbUavManager::getDevicesByType(const uint deviceTypeId, QList<Devices> &devicesRecords)
 {
 	return m_dbController->getDevicesByType(deviceTypeId, devicesRecords);
+}
+
+int DbUavManager::addSource(const Source & source)
+{
+	return m_dbController->addSource(source);
+}
+
+int DbUavManager::getSourceId(const uint sourceId, const uint sourceTypeId)
+{
+	return m_dbController->getSourceId(sourceId, sourceTypeId);
+}
+
+bool DbUavManager::getSourcesByType(const uint sourceId, QList<Source> &sourcesRecords)
+{
+	return m_dbController->getSourceByType(sourceId, sourcesRecords);
+}
+
+Source DbUavManager::getSource(const uint sourceId)
+{
+	return m_dbController->getSource(sourceId);
 }
 
 int DbUavManager::addUavMission(const UavMission &mission)
@@ -226,6 +263,16 @@ int DbUavManager::getDeviceTypeByName(const QString& name)
 	return m_dbController->getDeviceTypeByName(name);
 }
 
+int DbUavManager::addSourceType(const SourceType & sourceType)
+{
+	return m_dbController->addSourceType(sourceType);
+}
+
+int DbUavManager::getSourceTypeByName(const QString & name)
+{
+	return m_dbController->getSourceTypeByName(name);
+}
+
 int DbUavManager::addStatus(const Status& status)
 {
 	return m_dbController->addStatus(status);
@@ -284,7 +331,7 @@ void DbUavManager::onMethodCalled(const QString& method, const QVariant& argumen
 
 		/// Now we take first point, but we need to take more than 1 point
 		UAVPositionData positionData = positionDataVector.at(0);
-		addUavInfoToDb(positionData, OUR_UAV_ROLE, "UnknownUavType", "UnknownStatus", "UnknownDeviceType");
+		addUavInfoToDb(positionData, OUR_UAV_ROLE, "UnknownUavType", "UnknownStatus", "UnknownDeviceType", "UnknownSourceType");
 	} else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS) {
 		sendEnemyUavPoints(data);
 	} else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO) {
@@ -292,7 +339,8 @@ void DbUavManager::onMethodCalled(const QString& method, const QVariant& argumen
 	}
 }
 
-void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QString& role, const QString& uavType, const QString& status, const QString& deviceType)
+void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QString& role, const QString& uavType,
+								  const QString& status, const QString& deviceType, const QString& sourceType)
 {
 	QMutexLocker locker(&m_mutex);
 
@@ -352,6 +400,25 @@ void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QSt
 		deviceUnknownId = devices.at(0).id;
 	}
 
+	//SOURCE
+	int sourceTypeId = getSourceTypeByName(sourceType);
+
+	if (sourceTypeId < 0){
+		SourceType sourceTypeStruct;
+		sourceTypeStruct.name = sourceType;
+		sourceTypeId = addSourceType(sourceTypeStruct);
+	}
+
+	int sourceId = getSourceId(positionData.sourceType, sourceTypeId);
+
+	if (sourceId < 0){
+		Source source;
+		source.sourceTypeId = sourceTypeId;
+		source.sourceId = positionData.sourceType;
+
+		addSource(source);
+	}
+
 	UavInfo uavInfo;
 	uavInfo.uavId = uavId; // FK
 	uavInfo.device = deviceUnknownId; // FK
@@ -363,7 +430,7 @@ void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QSt
 	uavInfo.restTime = QTime(1, 0);
 	uavInfo.statusId = statusUnknownId; // FK
 	uavInfo.dateTime = positionData.dateTime;
-	uavInfo.sourceType = positionData.sourceType;
+	uavInfo.source = sourceId;
 
 	addUavInfo(uavInfo);
 }
@@ -375,10 +442,12 @@ void DbUavManager::sendEnemyUavPoints(const QByteArray& data)
 	UAVPositionDataEnemy uavEnemy;
 	inputDataStream >> uavEnemy;
 
-	addUavInfoToDb(uavEnemy, ENEMY_UAV_ROLE, "UnknownUavType", "UnknownStatus", "UnknownDeviceType");
+	addUavInfoToDb(uavEnemy, ENEMY_UAV_ROLE, "UnknownUavType", "UnknownStatus", "UnknownDeviceType", "UnknownSourceType");
 }
 
-void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy, const QString &role, const QString &uavType, const QString &status, const QString &deviceType)
+void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy, const QString &role,
+								  const QString &uavType, const QString &status, const QString &deviceType,
+								  const QString &sourceType)
 {
 	UAVPositionData positionData;
 	positionData.altitude = positionDataEnemy.altitude;
@@ -386,7 +455,7 @@ void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy,
 	positionData.speed = positionDataEnemy.speed;
 	positionData.state = positionDataEnemy.state;
 
-    // РіРѕС‚РѕРІРѕ
+    // готово
     positionData.latitude = positionDataEnemy.track.last().x();
     positionData.longitude = positionDataEnemy.track.last().y();
 
@@ -400,7 +469,7 @@ void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy,
 
 	positionData.frequency = positionDataEnemy.frequency;
 
-	addUavInfoToDb(positionData, role, uavType, status, deviceType);
+	addUavInfoToDb(positionData, role, uavType, status, deviceType, sourceType);
 }
 
 void DbUavManager::timeoutSlot(const QString& key)

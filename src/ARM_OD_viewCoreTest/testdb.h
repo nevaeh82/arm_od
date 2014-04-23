@@ -185,6 +185,31 @@ public:
 		TS_ASSERT_DIFFERS(INVALID_INDEX, deviceId);
 	}
 
+	void testAddSourceType()
+	{
+		TS_ASSERT_EQUALS(true, isConnected);
+
+		// ADDING TARGET TYPE
+		SourceType sourceType;
+		sourceType.name = "testSourceType";
+
+		int sourceTypeId = dbUavController->addSourceType(sourceType);
+		TS_ASSERT_DIFFERS(INVALID_INDEX, sourceTypeId);
+	}
+
+	void testAddSource()
+	{
+		TS_ASSERT_EQUALS(true, isConnected);
+
+		// ADDING TARGET TYPE
+		Source source;
+		source.sourceId = 555;
+		source.sourceTypeId = 1;
+
+		int sourceId = dbUavController->addSource(source);
+		TS_ASSERT_DIFFERS(INVALID_INDEX, sourceId);
+	}
+
 	void testAddStatusType()
 	{
 		TS_ASSERT_EQUALS(true, isConnected);
@@ -204,6 +229,12 @@ public:
 		QList<Devices> devices;
 		bool isDevicesGetOk = dbUavController->getDevicesByType(dbUavController->getDeviceTypeByName("testDeviceType"), devices);
 		TS_ASSERT_EQUALS(true, isDevicesGetOk);
+		TS_ASSERT_DIFFERS(true, devices.isEmpty());
+
+		QList<Source> sources;
+		bool isSourcesGetOk = dbUavController->getSourceByType(dbUavController->getSourceTypeByName("testSourceType"), sources);
+		TS_ASSERT_EQUALS(true, isSourcesGetOk);
+		TS_ASSERT_DIFFERS(true, sources.isEmpty());
 
 		UavInfo uavInfo;
 		uavInfo.uavId = 1; // FK
@@ -215,6 +246,7 @@ public:
 		uavInfo.yaw = 200.0f;
 		uavInfo.restTime = QTime(1, 0);
 		uavInfo.statusId = 1; // FK
+		uavInfo.source = sources.at(0).id; // FK
 		uavInfo.dateTime = QDateTime::currentDateTime();
 
 		int newUavInfoId = dbUavController->addUavInfo(uavInfo);

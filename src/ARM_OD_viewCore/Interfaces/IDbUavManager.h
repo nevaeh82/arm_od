@@ -4,17 +4,20 @@
 #include <QList>
 #include <QMap>
 
+class IUavHistory;
 class IDbUavController;
 
 struct Uav;
 struct UavInfo;
 struct UavRole;
 struct Devices;
+struct Source;
 struct UavMission;
 struct Target;
 struct TargetType;
 struct UavType;
 struct DeviceType;
+struct SourceType;
 struct Status;
 
 struct DBConnectionStruct;
@@ -35,8 +38,15 @@ public:
 	virtual int addUavInfo(const UavInfo&) = 0;
 	virtual bool getUavInfoByUavId(const uint uavId, QList<UavInfo>& uavInfoList) = 0;
 
+	virtual IUavHistory* getUavHistory() = 0;
+
 	virtual int addDevice(const Devices&) = 0;
 	virtual bool getDevicesByType(const uint deviceTypeId, QList<Devices>& devicesRecords) = 0;
+
+	virtual int addSource(const Source&) = 0;
+	virtual int getSourceId(const uint sourceId, const uint sourceTypeId) = 0;
+	virtual bool getSourcesByType(const uint sourceId, QList<Source>& sourcesRecords) = 0;
+	virtual Source getSource(const uint sourceId) = 0;
 
 	virtual int addUavMission(const UavMission&) = 0;
 	virtual bool getUavMissionsByUavId(const uint uavId, QList<UavMission>& missionsRecords) = 0;
@@ -58,6 +68,9 @@ public:
 
 	virtual int addDeviceType(const DeviceType&) = 0;
 	virtual int getDeviceTypeByName(const QString&) = 0;
+
+	virtual int addSourceType(const SourceType&) = 0;
+	virtual int getSourceTypeByName(const QString&) = 0;
 
 	virtual int addStatus(const Status&) = 0;
 	virtual int getStatusByName(const QString&) = 0;

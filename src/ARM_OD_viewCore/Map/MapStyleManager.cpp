@@ -254,6 +254,18 @@ PwGisStyle* MapStyleManager::createCheckPointStyle(const QString& layerId)
 	return style;
 }
 
+PwGisStyle* MapStyleManager::createHistoryStyle(const QString& layerId)
+{
+	bool exists;
+	PwGisStyle* style = createStyle( MAP_STYLE_NAME_HISTORY, &exists );
+
+	if( !exists ) {
+		style->setProperty( PwGisStyle::layer, layerId );
+	}
+
+	return style;
+}
+
 PwGisStyle* MapStyleManager::createStyle(const QString& name, bool* exists)
 {
 	PwGisStyle* style = getStyle( name, false );

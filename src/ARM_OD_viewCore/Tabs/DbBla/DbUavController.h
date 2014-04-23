@@ -10,7 +10,8 @@
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlRecord>
 
-#include "IDbUavController.h"
+#include "Tabs/DbBla/IDbUavController.h"
+#include "Tabs/DbBla/UavHistory.h"
 
 #include "Db/DbControllerBase.h"
 #include "Defines.h"
@@ -35,11 +36,14 @@ private:
 
 	QMutex m_addGetDictionaryMutex;
 
+	UavHistory* m_uavHistory;
+
 public:
 	explicit DbUavController(QObject *parent = 0);
 	explicit DbUavController(QString connectionName, QString dbType, QObject *parent = 0);
 	virtual ~DbUavController();
 
+	bool connectToDB(const DBConnectionStruct& parameters);
 	void disconnectFromDb();
 
 	int addUav(const Uav&);
@@ -51,8 +55,15 @@ public:
 	int addUavInfo(const UavInfo&);
 	bool getUavInfoByUavId(const uint uavId, QList<UavInfo> &uavInfoList);
 
+	IUavHistory* getUavHistory();
+
 	int addDevice(const Devices&);
 	bool getDevicesByType(const uint deviceTypeId, QList<Devices>& devicesRecords);
+
+	int addSource(const Source&);
+	int getSourceId(const uint sourceId, const uint sourceTypeId);
+	bool getSourceByType(const uint sourceTypeId, QList<Source>& sourcesRecords);
+	Source getSource(const uint sourceId);
 
 	int addUavMission(const UavMission&);
 	bool getUavMissionsByUavId(const uint uavId, QList<UavMission>& missionsRecords);
@@ -75,6 +86,9 @@ public:
 	int addDeviceType(const DeviceType&);
 	int getDeviceTypeByName(const QString&);
 
+	int addSourceType(const SourceType&);
+	int getSourceTypeByName(const QString&);
+
 	int addStatus(const Status&);
 	int getStatusByName(const QString&);
 
@@ -83,10 +97,12 @@ public:
 	UavRole getUavRoleByName(const QString&);
 	UavRole getUavRoleByCode(const QString&);
 
+	void moveToThread(QThread *thread);
+
 private:
 	int addDictionaryRecord(const QString& dictionary, const QString& name);
 	int getDictionaryRecord(const QString& dictionary, const QString& name);
-	
+
 };
 
 #endif // DbUavController_H

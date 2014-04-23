@@ -8,6 +8,8 @@ TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
 {
 	m_currentWidget = NULL;
 
+	m_viewMenu = NULL;
+
 	m_tabWidget = tabWidget;
 
 	//Creating db uav manager
@@ -102,6 +104,11 @@ void TabManager::addStationTabs()
 
 		MapTabWidget* tabWidget = new MapTabWidget(m_tabWidget);
 
+		m_viewMenu->addAction(tabWidget->getBlaDockWidget()->toggleViewAction());
+		m_viewMenu->addAction(tabWidget->getBplaDockWidget()->toggleViewAction());
+		m_viewMenu->addAction(tabWidget->getNiipp1DockWidget()->toggleViewAction());
+		m_viewMenu->addAction(tabWidget->getNiipp2DockWidget()->toggleViewAction());
+
 		tabWidgetController->appendView(tabWidget);
 
 		connect(this, SIGNAL(signalSendToNIIPPControl(int,QByteArray)), tabWidgetController, SLOT(_slot_send_data_to_niipp_control(int,QByteArray)));
@@ -121,6 +128,12 @@ void TabManager::clearAllInformation()
 	m_currentWidget = NULL;
 
 	foreach (Station* station, m_stationsMap) {
+
+//		m_viewMenu->removeAction(tabWidget->getBlaDockWidget()->toggleViewAction());
+//		m_viewMenu->removeAction(tabWidget->getBplaDockWidget()->toggleViewAction());
+//		m_viewMenu->removeAction(tabWidget->getNiipp1DockWidget()->toggleViewAction());
+//		m_viewMenu->removeAction(tabWidget->getNiipp2DockWidget()->toggleViewAction());
+
 		MapTabWidgetController* tabWidgetController = m_tabWidgetsMap.take(station->name);
 		if (tabWidgetController != NULL){
 			disconnect( tabWidgetController, SIGNAL( mapOpened() ), this, SIGNAL( mapOpened() ) );
@@ -162,6 +175,11 @@ void TabManager::setUavLifeTime(int msecs)
 void TabManager::start()
 {
 	changeTabSlot(m_tabWidget->currentIndex());
+}
+
+void TabManager::setViewMenu(QMenu *menu)
+{
+	m_viewMenu = menu;
 }
 
 /// BUG

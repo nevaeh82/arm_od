@@ -8,12 +8,8 @@
 #include <QDataStream>
 #include <QSharedPointer>
 
-typedef enum UavSourceType
-{
-	UavAutopilotSource = 0,
-	UavSlicesSource = 1
-} UavSourceType;
-
+#define UAV_AUTOPILOT_SOURCE	1
+#define UAV_SLICES_SOURCE		622
 
 typedef struct UAVPositionData {
 
@@ -29,7 +25,7 @@ typedef struct UAVPositionData {
 		frequency	= -1;
 		state		= 0;
 		dateTime	= QDateTime::currentDateTime();
-		sourceType	= UavAutopilotSource;
+		sourceType	= UAV_AUTOPILOT_SOURCE;
 	}
 
 	UAVPositionData(const UAVPositionData& data)
@@ -57,7 +53,7 @@ typedef struct UAVPositionData {
 	double		frequency;
 	quint32		state;
 	QDateTime	dateTime;
-	UavSourceType sourceType;
+	uint		sourceType;
 } UAVPositionData;
 
 inline QDataStream& operator<<(QDataStream& out, const UAVPositionData& object)
@@ -65,19 +61,15 @@ inline QDataStream& operator<<(QDataStream& out, const UAVPositionData& object)
 	return out << object.boardID << object.device << object.latitude
 			   << object.longitude << object.altitude
 			   << object.speed << object.course << object.frequency
-			   << object.state << object.dateTime << (quint32)object.sourceType;
+			   << object.state << object.dateTime << object.sourceType;
 }
 
 inline QDataStream& operator>>(QDataStream& in, UAVPositionData& object)
 {
-	quint32 inSourceId;
-
 	in >> object.boardID >> object.device >> object.latitude
 	   >> object.longitude >> object.altitude
 	   >> object.speed >> object.course >> object.frequency
-	   >> object.state >> object.dateTime >> inSourceId;
-
-	object.sourceType = (UavSourceType)inSourceId;
+	   >> object.state >> object.dateTime >> object.sourceType;
 
 	return in;
 }

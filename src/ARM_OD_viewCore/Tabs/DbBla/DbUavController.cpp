@@ -1,13 +1,15 @@
-#include "DbUavController.h"
+#include "Tabs/DbBla/DbUavController.h"
 
-DbUavController::DbUavController(QObject *parent) :
-	DbControllerBase("DBBLACONNECTION", "QMYSQL", parent)
+DbUavController::DbUavController(QObject *parent)
+	: DbControllerBase("DBBLACONNECTION", "QMYSQL", parent)
+	, m_uavHistory( NULL )
 {
-
+	m_db.setConnectOptions( "MYSQL_OPT_RECONNECT=1" );
 }
 
-DbUavController::DbUavController(QString connectionName, QString dbType, QObject *parent) :
-	DbControllerBase(connectionName, dbType, parent)
+DbUavController::DbUavController(QString connectionName, QString dbType, QObject *parent)
+	: DbControllerBase(connectionName, dbType, parent)
+	, m_uavHistory( NULL )
 {
 
 }
@@ -15,7 +17,22 @@ DbUavController::DbUavController(QString connectionName, QString dbType, QObject
 
 DbUavController::~DbUavController()
 {
+	if( m_uavHistory != NULL ) {
+		delete m_uavHistory;
+	}
+
 	m_db.close();
+}
+
+bool DbUavController::connectToDB(const DBConnectionStruct& parameters)
+{
+	bool result = DbControllerBase::connectToDB( parameters );
+
+	if( m_uavHistory != NULL ) {
+		m_uavHistory->setDatabase( m_db );
+	}
+
+	return result;
 }
 
 void DbUavController::disconnectFromDb()
@@ -253,8 +270,8 @@ int DbUavController::addUavInfo(const UavInfo& info)
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare(QString("INSERT INTO info (uavId, device, latitude, longitude, altitude, speed, yaw, restTime, statusTypeId, datetime)")
-								   + QString("VALUES(:uavId, :device, :lat, :lon, :alt, :speed, :yaw, :restTime, :statusId, :dateTime);"));
+	bool succeeded = query.prepare(QString("INSERT INTO info (uavId, device, source, latitude, longitude, altitude, speed, yaw, restTime, statusTypeId, datetime)")
+								   + QString("VALUES(:uavId, :device, :source, :lat, :lon, :alt, :speed, :yaw, :restTime, :statusId, :dateTime);"));
 
 	if (!succeeded){
 		QString er = query.lastError().text();
@@ -264,6 +281,7 @@ int DbUavController::addUavInfo(const UavInfo& info)
 
 	query.bindValue(":uavId", info.uavId);
 	query.bindValue(":device", info.device);
+	query.bindValue(":source", info.source);
 	query.bindValue(":lat", info.lat);
 	query.bindValue(":lon", info.lon);
 	query.bindValue(":alt", info.alt);
@@ -290,7 +308,7 @@ bool DbUavController::getUavInfoByUavId(const uint uavId, QList<UavInfo> &uavInf
 	QMutexLocker locker(&m_addGetUavInfoMutex);
 
 	if(!m_db.isOpen()){
-		return INVALID_INDEX;
+		return false;
 	}
 
 	QSqlQuery query(m_db);
@@ -323,13 +341,21 @@ bool DbUavController::getUavInfoByUavId(const uint uavId, QList<UavInfo> &uavInf
 		info.restTime = QTime::fromString(query.value(8).toString());
 		info.statusId = query.value(9).toInt();
 		info.dateTime = QDateTime::fromString(query.value(10).toString());
-		//?
-		info.sourceType = UavAutopilotSource; //Set by default. No column in database
 
 		uavInfoList.append(info);
 	}
 
 	return true;
+}
+
+IUavHistory* DbUavController::getUavHistory()
+{
+	if( m_uavHistory == NULL ) {
+		m_uavHistory = new UavHistory( m_db);
+		m_uavHistory->moveToThread( this->thread() );
+	}
+
+	return m_uavHistory;
 }
 
 int DbUavController::addDevice(const Devices& device)
@@ -401,6 +427,141 @@ bool DbUavController::getDevicesByType(const uint deviceTypeId, QList<Devices>& 
 	}
 
 	return true;
+}
+
+int DbUavController::addSource(const Source& source)
+{
+	QMutexLocker locker(&m_addGetDeviceMutex);
+
+	if(!m_db.isOpen()){
+		return INVALID_INDEX;
+	}
+
+	QSqlQuery query(m_db);
+	bool succeeded = query.prepare(QString("INSERT INTO sources (sourceTypeId, sourceId)")
+								   + QString("VALUES(:sourceTypeId, :sourceId);"));
+
+	if (!succeeded){
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		return INVALID_INDEX;
+	}
+
+	query.bindValue(":sourceTypeId", source.sourceTypeId);
+	query.bindValue(":sourceId", source.sourceId);
+
+	succeeded = query.exec();
+
+	if (succeeded){
+		return query.lastInsertId().toUInt();
+	} else {
+		QString er = query.lastError().databaseText() + "\n" + query.lastError().driverText();
+		log_debug("SQL query is wrong! " + er);
+	}
+
+	return INVALID_INDEX;
+}
+
+int DbUavController::getSourceId(const uint sourceId, const uint sourceTypeId)
+{
+	QMutexLocker locker(&m_addGetDeviceMutex);
+
+	if(!m_db.isOpen()){
+		return INVALID_INDEX;
+	}
+
+	QSqlQuery query(m_db);
+	bool succeeded = query.prepare( "SELECT id FROM sources WHERE sourceTypeId = :sourceTypeId AND sourceId = :sourceId" );
+
+	if (!succeeded) {
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		return INVALID_INDEX;
+	}
+
+	query.bindValue(":sourceId", sourceId);
+	query.bindValue(":sourceTypeId", sourceTypeId);
+
+	succeeded = query.exec();
+
+	if (!succeeded || !query.next()){
+		return INVALID_INDEX;
+	}
+
+	return query.value(0).toInt();
+}
+
+bool DbUavController::getSourceByType(const uint sourceTypeId, QList<Source> &sourcesRecords)
+{
+	QMutexLocker locker(&m_addGetDeviceMutex);
+
+	if(!m_db.isOpen()){
+		return false;
+	}
+
+	QSqlQuery query(m_db);
+	bool succeeded = query.prepare(QString("SELECT * FROM sources WHERE sourceTypeId = :sourceTypeId;"));
+
+	if (!succeeded) {
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		return false;
+	}
+
+	query.bindValue(":sourceTypeId", sourceTypeId);
+
+	succeeded = query.exec();
+
+	if (!succeeded){
+		return false;
+	}
+
+	while (query.next()){
+		Source source;
+		source.id = query.value(0).toUInt();
+		source.sourceTypeId = query.value(1).toUInt();
+		source.sourceId = query.value(2).toUInt();
+		sourcesRecords.append(source);
+	}
+
+	return true;
+}
+
+Source DbUavController::getSource(const uint sourceId)
+{
+	QMutexLocker locker(&m_addGetDeviceMutex);
+
+	Source source;
+	source.id = -1;
+
+	if(!m_db.isOpen()){
+		return source;
+	}
+
+	QSqlQuery query(m_db);
+	bool succeeded = query.prepare(QString("SELECT * FROM sources WHERE id = :sourceId;"));
+
+	if (!succeeded) {
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		return source;
+	}
+
+	query.bindValue(":sourceId", sourceId);
+
+	succeeded = query.exec();
+
+	if (!succeeded){
+		return source;
+	}
+
+	while (query.next()){
+		source.id = query.value(0).toUInt();
+		source.sourceTypeId = query.value(1).toUInt();
+		source.sourceId = query.value(2).toUInt();
+	}
+
+	return source;
 }
 
 int DbUavController::addUavMission(const UavMission& mission)
@@ -856,6 +1017,18 @@ int DbUavController::getDeviceTypeByName(const QString& name)
 	return getDictionaryRecord("devicetypes", name);
 }
 
+int DbUavController::addSourceType(const SourceType& source)
+{
+	QMutexLocker locker(&m_addGetDeviceTypeMutex);
+	return addDictionaryRecord("sourcetypes", source.name);
+}
+
+int DbUavController::getSourceTypeByName(const QString& name)
+{
+	QMutexLocker locker(&m_addGetDeviceTypeMutex);
+	return getDictionaryRecord("sourcetypes", name);
+}
+
 int DbUavController::addStatus(const Status& status)
 {
 	QMutexLocker locker(&m_addGetStatusMutex);
@@ -1013,6 +1186,15 @@ UavRole DbUavController::getUavRoleByCode(const QString& code)
 	return uavRole;
 }
 
+void DbUavController::moveToThread(QThread* thread)
+{
+	if( m_uavHistory != NULL ) {
+		m_uavHistory->moveToThread( thread );
+	}
+
+	DbControllerBase::moveToThread( thread );
+}
+
 int DbUavController::addDictionaryRecord(const QString& dictionary, const QString& name)
 {
 	QMutexLocker locker(&m_addGetDictionaryMutex);
@@ -1061,7 +1243,6 @@ int DbUavController::getDictionaryRecord(const QString& dictionary, const QStrin
 		return INVALID_INDEX;
 	}
 
-	query.bindValue(":dictionaryTable", dictionary);
 	query.bindValue(":name", name);
 
 	succeeded = query.exec();

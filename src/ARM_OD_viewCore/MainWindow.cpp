@@ -41,6 +41,11 @@ QStackedWidget* MainWindow::getStackedWidget() const
 	return ui->stackedWidget;
 }
 
+QMenu* MainWindow::getViewMenu() const
+{
+	return ui->menuView;
+}
+
 void MainWindow::init()
 {
 	connect(ui->actionNew, SIGNAL(triggered()), this, SLOT(newFile()));

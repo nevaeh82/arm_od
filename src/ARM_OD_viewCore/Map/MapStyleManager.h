@@ -32,6 +32,7 @@ public:
 	virtual PwGisStyle* createStationStyle(const QString& layerId);
 	virtual PwGisStyle* createGridStyle(const QString& layerId);
 	virtual PwGisStyle* createCheckPointStyle(const QString& layerId);
+	virtual PwGisStyle* createHistoryStyle(const QString& layerId);
 
 	inline virtual PwGisStyle* getAisStyle() { return getStyle( MAP_STYLE_NAME_AIS ); }
 	inline virtual PwGisStyle* getFriendBplaStyle() { return getStyle( MAP_STYLE_NAME_FRIEND_BPLA ); }
@@ -47,6 +48,7 @@ public:
 	inline virtual PwGisStyle* getStationStyle() { return getStyle( MAP_STYLE_NAME_STATION ); }
 	inline virtual PwGisStyle* getGridStyle() { return getStyle( MAP_STYLE_NAME_GRID ); }
 	inline virtual PwGisStyle* getCheckpointsStyle() { return getStyle( MAP_STYLE_NAME_CHECK_POINTS ); }
+	inline virtual PwGisStyle* getHistoryStyle() { return getStyle( MAP_STYLE_NAME_HISTORY ); }
 
 
 protected:

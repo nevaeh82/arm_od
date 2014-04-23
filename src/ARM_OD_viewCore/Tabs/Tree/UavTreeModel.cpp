@@ -1,9 +1,9 @@
-#include "UavTreeModel.h"
-
+#include <Logger.h>
 #include <TreeModel/TreeItem.h>
 #include <Settings/SettingsNode.h>
 
-#include "../DbBla/Defines.h"
+#include "UavTreeModel.h"
+#include "Tabs/DbBla/Defines.h"
 
 #define LAT_PROPERTY_ID		1
 #define LON_PROPERTY_ID		2
@@ -152,6 +152,14 @@ void UavTreeModel::onUavRemoved(const Uav &uav, const QString& uavRole)
 			continue;
 		}
 
+		// check is UAV record is loaded from history
+		// we do this by checking is name contains only digits
+		// because real UAVs should contains only numbers
+		bool isReal;
+		childItem->data().name.toInt( &isReal );
+
+		if (uav.historical == isReal) continue;
+
 		emit layoutAboutToBeChanged();
 		m_rootItem->removeChild(childItem);
 		emit layoutChanged();
@@ -167,7 +175,7 @@ void UavTreeModel::onUavInfoChanged(const UavInfo &uavInfo, const QString& uavRo
 
 	QString number;
 
-	if (UavAutopilotSource ==  uavInfo.sourceType) {
+	if (UAV_AUTOPILOT_SOURCE == uavInfo.source) {
 		onPropertyChanged(uavInfo, LAT_PROPERTY_ID, tr("lat"), number.sprintf( "%.4f", uavInfo.lat ));
 		onPropertyChanged(uavInfo, LON_PROPERTY_ID, tr("lon"), number.sprintf( "%.4f", uavInfo.lon ));
 		onPropertyChanged(uavInfo, ALT_PROPERTY_ID, tr("alt"), QString::number( (int) uavInfo.alt ));
@@ -195,7 +203,7 @@ void UavTreeModel::onPropertyChanged(const UavInfo &uavInfo, const uint propId, 
 	/// TODO: need to uncomment after imlementing of speed receiving from KTR
 	bool isInFlight = true;
 
-	if (uavInfo.sourceType == UavAutopilotSource) {
+	if (uavInfo.source == UAV_AUTOPILOT_SOURCE) {
 		isInFlight = /*(uavInfo.speed > 0) && */(uavInfo.alt > 0);
 	}
 
@@ -214,6 +222,14 @@ void UavTreeModel::onPropertyChanged(const UavInfo &uavInfo, const uint propId, 
 		if (stationItem->data().id != inProperty.pid) {
 			continue;
 		}
+
+		// check is UAV record is loaded from history
+		// we do this by checking is name contains only digits
+		// because real UAVs should contains only numbers
+		bool isReal;
+		stationItem->data().name.toInt( &isReal );
+
+		if (uavInfo.historical == isReal) continue;
 
 		BaseItem item = stationItem->data();
 		item.state = (isInFlight ? 1 : 0);
