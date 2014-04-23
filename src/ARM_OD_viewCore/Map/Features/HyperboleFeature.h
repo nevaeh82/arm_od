@@ -4,12 +4,11 @@
 #include <QTime>
 #include <QColor>
 #include "Map/IMapStyleManager.h"
-#include "Map/MapStyleManager.h"
 #include "Map/Features/PolylineAbstract.h"
 #include <PwGis/objects/Path.h>
 #include <PwGis/objects/PwGisStyle.h>
 #include <PwGis/objects/IStyleFactory.h>
-#include <PwGis/objects/LineStyle.h>
+
 
 namespace MapFeature {
 
@@ -21,14 +20,11 @@ class Hyperbole : public PolylineAbstract
 
 protected:
 	IStyleFactory* m_styleFactory;
-	IMapStyleManager* m_styleManager;
 	QString m_name;
 	QTime m_timeMeasure;
-
 	Hyperbole(
 		IStyleFactory* styleFactory,
 		IObjectsFactory* factory,
-		IMapStyleManager* styleManager,
 		const QString& id,
 		const QString& name,
 		PwGisPointList* polyline,

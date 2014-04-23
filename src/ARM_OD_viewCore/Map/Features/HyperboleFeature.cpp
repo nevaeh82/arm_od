@@ -6,7 +6,6 @@ namespace MapFeature {
 Hyperbole::Hyperbole(
 	IStyleFactory* styleFactory,
 	IObjectsFactory* factory,
-	IMapStyleManager* styleManager,
 	const QString& id,
 	const QString& name,
 	PwGisPointList* polyline,
@@ -14,7 +13,6 @@ Hyperbole::Hyperbole(
 	const QColor color )
 	: PolylineAbstract( factory, id, name, polyline )
 	, m_styleFactory( styleFactory )
-	, m_styleManager( styleManager )
 	, m_name( name )
 	, m_timeMeasure( timeMeasure )
 {
@@ -24,22 +22,16 @@ Hyperbole::Hyperbole(
 
 	//color
 	if ( color.isValid() ) {
-		MapObjectStyle* hyperboleStyle = m_styleFactory->createObjectStyle();
-		hyperboleStyle->line()->setColor( color );
-		m_path->setStyle( hyperboleStyle );
+		PwGisStyle* style = m_styleFactory->createStyle();
+		style->setProperty( PwGisStyle::mapFontColor, "black" );
+		style->setProperty( PwGisStyle::mapFontSize, "10pt" );
+		style->setProperty( PwGisStyle::strokeColor, color.name() );
+		style->setProperty( PwGisStyle::layer, "Hyperbole" );
+		style->apply();
+		m_path->addStyle( style );
 	}
 	else {
 		m_path->addStyleByName( MAP_STYLE_NAME_HYPERBOLE );
-
-		//PwGisStyle* hyperboleStyle = styleManager->getHyperboleStyle();
-		//PwGisStyle* style = new PwGisStyle( hyperboleStyle );
-		//style->setProperty( PwGisStyle::mapFontColor, "black" );
-		//style->setProperty( PwGisStyle::mapFontSize, "10pt" );
-		//style->setProperty( PwGisStyle::graphicWidth, "40" );
-		//style->setProperty( PwGisStyle::graphicHeight, "40" );
-		//style->setProperty( PwGisStyle::strokeColor, color );
-		//style->setProperty( PwGisStyle::layer, "Hyperbole" );
-		//m_path->addStyle( style );
 	}
 
 	this->updatePolyline( polyline );

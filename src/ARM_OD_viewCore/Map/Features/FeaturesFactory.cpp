@@ -77,7 +77,6 @@ Hyperbole* FeaturesFactory::createHyperbole(
 	return new Hyperbole(
 		m_provider->styleFactory(),
 		m_provider->objectsFactory(),
-		m_styleManager,
 		QString::number( id ),
 		name,
 		polyline,

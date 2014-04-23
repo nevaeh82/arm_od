@@ -262,8 +262,6 @@ PwGisStyle* MapStyleManager::createHyperboleStyle( const QString& layerId )
 	if( !exists ) {
 		style->setProperty( PwGisStyle::mapFontColor, "black" );
 		style->setProperty( PwGisStyle::mapFontSize, "10pt" );
-		style->setProperty( PwGisStyle::graphicWidth, "40" );
-		style->setProperty( PwGisStyle::graphicHeight, "40" );
 		style->setProperty( PwGisStyle::strokeColor, "green" );
 		style->setProperty( PwGisStyle::layer, layerId );
 	}
