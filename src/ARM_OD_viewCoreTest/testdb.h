@@ -221,6 +221,17 @@ public:
 		TS_ASSERT_DIFFERS(INVALID_INDEX, newUavInfoId);
 	}
 
+	void testGetUavInfoByUavId()
+	{
+		TS_ASSERT_EQUALS(true, isConnected);
+
+		QList<UavInfo> uavInfoList;
+		bool result = dbUavController->getUavInfoByUavId(1, uavInfoList);
+
+		TS_ASSERT_EQUALS(true, result);
+		TS_ASSERT_DIFFERS(0, uavInfoList.size());
+	}
+
 	void testGetTargetsByMission()
 	{
 		TS_ASSERT_EQUALS( true, isConnected );

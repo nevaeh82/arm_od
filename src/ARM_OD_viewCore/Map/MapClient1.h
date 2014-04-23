@@ -71,7 +71,7 @@ public:
 
 	virtual void showLayer( int index, bool state );
 
-	virtual void addInterception( int blaId, int bplaId );
+	virtual void addInterception(int blaId, int bplaId , QList<UavInfo>& blaInfoList, QList<UavInfo>& bplaInfoList);
 	virtual void removeInterception( int blaId, int bplaId );
 
 	virtual void addPerehvatPoint( int blaId, int bplaId, QPointF coord, float hgt, float radius, int time, float intcCourse, float intcSpeed );
@@ -114,7 +114,7 @@ private slots:
 
 	void addNiipInternal( const Niipp& niipp );
 
-	void addPerehvatData( int bla_id, int bpla_id );
+	void addPerehvatData(int bla_id, int bpla_id , QList<UavInfo>& blaInfoList, QList<UavInfo>& bplaInfoList);
 	void removeInterceptionData(int friendBplaId, int enemyBplaId );
 	void addInterceptionPointData(int friendBplaId, int enemyBplaId, QPointF position,
 								  float height, float radius, int time,
@@ -134,7 +134,7 @@ signals:
 
 	void pelengUpdated( int id, int post_id, double lat, double lon, double direction );
 
-	void interceptionAdded( int blaId, int bplaId );
+	void interceptionAdded( int blaId, int bplaId, QList<UavInfo>& blaInfoList, QList<UavInfo>& bplaInfoList );
 	void interceptionRemoved( int bla_id, int bpla_id );
 
 	void interceptionPointAdded( int bla_id, int bpla_id, QPointF aCoord,

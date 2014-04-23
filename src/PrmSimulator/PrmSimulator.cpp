@@ -65,11 +65,12 @@ void PrmSimulator::update()
 	QByteArray data;
 	QDataStream stream( &data, QIODevice::WriteOnly );
 
+	double sp = (double) (1 + qrand() % 10);
 	stream << QTime(1, 1, 1);
 	stream << mode;
 	stream << path.last();
 	stream << path;
-	stream << (double) (500 + qrand() % 1000);
+	stream << sp;
 	stream << (double) alt;
 	stream << (double) bearing;
 	stream << frequency;

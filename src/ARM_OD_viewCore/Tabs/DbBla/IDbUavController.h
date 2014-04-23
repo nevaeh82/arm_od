@@ -30,7 +30,7 @@ class IDbUavController
 		virtual int getUavsCountByRole(const QString& role) = 0;
 
 		virtual int addUavInfo(const UavInfo&) = 0;
-		virtual int getUavInfoByUavId(const uint uavId) = 0;
+		virtual bool getUavInfoByUavId(const uint uavId, QList<UavInfo>& uavInfoList) = 0;
 
 		virtual int addDevice(const Devices&) = 0;
 		virtual bool getDevicesByType(const uint deviceTypeId, QList<Devices>& devicesRecords) = 0;

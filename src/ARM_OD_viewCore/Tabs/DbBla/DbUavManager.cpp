@@ -116,9 +116,9 @@ int DbUavManager::addUavInfo(const UavInfo &uavInfo)
 	return newUavInfo;
 }
 
-int DbUavManager::getUavInfoByUavId(const uint uavId)
+bool DbUavManager::getUavInfoByUavId(const uint uavId, QList<UavInfo>& uavInfoList)
 {
-	return m_dbController->getUavInfoByUavId(uavId);
+	return m_dbController->getUavInfoByUavId(uavId, uavInfoList);
 }
 
 int DbUavManager::addDevice(const Devices& device)

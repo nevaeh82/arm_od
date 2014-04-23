@@ -285,11 +285,51 @@ int DbUavController::addUavInfo(const UavInfo& info)
 	return INVALID_INDEX;
 }
 
-int DbUavController::getUavInfoByUavId(const uint)
+bool DbUavController::getUavInfoByUavId(const uint uavId, QList<UavInfo> &uavInfoList)
 {
 	QMutexLocker locker(&m_addGetUavInfoMutex);
 
-	return INVALID_INDEX;
+	if(!m_db.isOpen()){
+		return INVALID_INDEX;
+	}
+
+	QSqlQuery query(m_db);
+	bool succeeded = query.prepare(QString("SELECT * FROM info WHERE uavId = :uavId;"));
+
+	if (!succeeded) {
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		return false;
+	}
+
+	query.bindValue(":uavId", uavId);
+	succeeded = query.exec();
+
+	if (!succeeded){
+		return false;
+	}
+
+	while (query.next()){
+		UavInfo info;
+
+		info.id = query.value(0).toInt();
+		info.uavId = query.value(1).toInt();
+		info.device = query.value(2).toInt();
+		info.lat = query.value(3).toDouble();
+		info.lon = query.value(4).toDouble();
+		info.alt = query.value(5).toDouble();
+		info.speed = query.value(6).toDouble();
+		info.yaw = query.value(7).toDouble();
+		info.restTime = QTime::fromString(query.value(8).toString());
+		info.statusId = query.value(9).toInt();
+		info.dateTime = QDateTime::fromString(query.value(10).toString());
+		//?
+		info.sourceType = UavAutopilotSource; //Set by default. No column in database
+
+		uavInfoList.append(info);
+	}
+
+	return true;
 }
 
 int DbUavController::addDevice(const Devices& device)
