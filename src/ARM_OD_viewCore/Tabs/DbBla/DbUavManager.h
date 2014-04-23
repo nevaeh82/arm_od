@@ -53,7 +53,7 @@ public:
 	bool getUavsByRole(const QString& role, QList<Uav>& uavs);
 
 	int addUavInfo(const UavInfo&);
-	int getUavInfoByUavId(const uint uavId);
+	bool getUavInfoByUavId(const uint uavId, QList<UavInfo>& uavInfoList);
 
 	int addDevice(const Devices&);
 	bool getDevicesByType(const uint deviceTypeId, QList<Devices>& devicesRecords);

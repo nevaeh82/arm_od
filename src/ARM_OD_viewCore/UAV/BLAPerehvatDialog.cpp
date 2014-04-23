@@ -126,7 +126,12 @@ void BLAPerehvatDialog::treeItemChangedSlot(QTreeWidgetItem *item, int id)
 		mission.uavId = uavFriend.id;;
 		m_dbUav->addUavMission(mission);
 
-		m_mapClient->addInterception(m_id, enemyUavId);
+		QList<UavInfo> uavFriendInfoList;
+		QList<UavInfo> uavEnemyInfoList;
+		m_dbUav->getUavInfoByUavId(uavFriend.id, uavFriendInfoList);
+		m_dbUav->getUavInfoByUavId(uavEnemy.id, uavEnemyInfoList);
+
+		m_mapClient->addInterception(m_id, enemyUavId, uavFriendInfoList, uavEnemyInfoList);
 	}
 	else {
 		Uav uavF = m_dbUav->getUavByUavId(m_id);

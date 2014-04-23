@@ -45,7 +45,7 @@ public:
 
 	virtual void updatePeleng( int id, int idPost, double lat, double lon, double direction ) = 0;
 
-	virtual void addInterception( int blaId, int bplaId ) = 0;
+	virtual void addInterception( int blaId, int bplaId, QList<UavInfo>& blaInfoList, QList<UavInfo>& bplaInfoList ) = 0;
 	virtual void removeInterception( int blaId, int bplaId ) = 0;
 
 	virtual void addPerehvatPoint( int blaId, int bplaId, QPointF coord, float hgt, float radius, int time, float intcCourse, float intcSpeed ) = 0;

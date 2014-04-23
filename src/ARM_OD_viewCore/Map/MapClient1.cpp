@@ -54,8 +54,8 @@ MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 	connect( this, SIGNAL(niippPowerZoneUpdated(Niipp)),
 			 this, SLOT(addNiipInternal(Niipp)) );
 
-	connect( this, SIGNAL(interceptionAdded(int, int)),
-			 this, SLOT(addPerehvatData(int, int)) );
+	connect( this, SIGNAL(interceptionAdded(int, int, QList<UavInfo>&, QList<UavInfo>&)),
+			 this, SLOT(addPerehvatData(int, int, QList<UavInfo>&, QList<UavInfo>&)) );
 
 	connect( this, SIGNAL(interceptionRemoved(int, int)),
 			 this, SLOT(removeInterceptionData(int, int)) );
@@ -174,9 +174,9 @@ void MapClient1::removeAll()
 	clearObjectsList( MapFeature::CheckPoint, m_checkPointsList );
 }
 
-void MapClient1::addInterception(int blaId, int bplaId )
+void MapClient1::addInterception(int blaId, int bplaId, QList<UavInfo>& blaInfoList, QList<UavInfo>& bplaInfoList )
 {
-	emit interceptionAdded( blaId, bplaId );
+	emit interceptionAdded( blaId, bplaId, blaInfoList, bplaInfoList );
 }
 
 void MapClient1::removeInterception(int blaId, int bplaId )
@@ -261,9 +261,82 @@ void MapClient1::justifyMap()
 	m_bounds->zoomMapTo( 0, 0, w, h );
 }
 
-void MapClient1::addPerehvatData( int bla_id, int bpla_id )
+void MapClient1::addPerehvatData( int bla_id, int bpla_id, QList<UavInfo>& blaInfoList, QList<UavInfo>& bplaInfoList )
 {
 	m_mapBattle.insert( bla_id, bpla_id );
+	QByteArray target;
+	QByteArray per;
+	QDataStream ds1(&per, QIODevice::WriteOnly);
+	QDataStream ds(&target, QIODevice::WriteOnly);
+	UavInfo tempInfo;
+
+	tempInfo = blaInfoList.last();
+	QPointF point1;
+	point1.setY(tempInfo.lat);
+	point1.setX(tempInfo.lon);
+	ds1 << point1;
+	double alt1 = tempInfo.alt;
+	ds1 << alt1;
+	double speed1 = tempInfo.speed;
+	ds1 << speed1;
+	double course1 = tempInfo.yaw;
+	ds1 << course1;
+	//?
+	int state1 = 1; //set by default. Don't need in interception counting
+	ds1 << state1;
+
+	tempInfo = bplaInfoList.last();
+	int time = 1; //set by default
+	ds << time;
+	int state = 1; //set by default
+	ds << state;
+	QPointF sko;
+	sko.setY(tempInfo.lat);
+	sko.setX(tempInfo.lon);
+	ds << sko;
+	QVector<QPointF> track;
+	track.append(sko);
+	ds << track;
+	double speed = tempInfo.speed;
+	ds << speed;
+	double alt = tempInfo.alt;
+	ds << alt;
+	double bearing = tempInfo.yaw;
+	ds << bearing;
+
+//	QPointF point1;
+//	point1.setY(60.01456666666667);
+//	point1.setX(30.0482);
+//	ds1 << point1;
+//	double alt1 = 1805;
+//	ds1 << alt1;
+//	double speed1 = 0;
+//	ds1 << speed1;
+//	double course1 = 1;
+//	ds1 << course1;
+//	int state1 = 1;
+//	ds1 << state1;
+
+//	int time = 1;
+//	ds << time;
+//	int state = 2;
+//	ds << state;
+//	QPointF sko;
+//	sko.setY(60.17523333333333);
+//	sko.setX(30.9181);
+//	ds << sko;
+//	QVector<QPointF> track;
+//	//track.append(point1);
+//	track.append(sko);
+//	ds << track;
+//	double speed = 1;
+//	ds << speed;
+//	double alt = 1700;
+//	ds << alt;
+//	double bearing = 1;
+//	ds << bearing;
+
+	m_interception->set(bla_id, bpla_id, per, target);
 }
 
 //for timer
@@ -295,9 +368,13 @@ void MapClient1::updateNiippPowerZone(const Niipp& niipp)
 
 void MapClient1::removeInterceptionData( int friendBplaId, int enemyBplaId )
 {
-	Q_UNUSED( enemyBplaId );
-
 	m_mapBattle.remove( friendBplaId );
+
+	//removing interception map feature area from map
+	QString interceptionKey = QString( "%1-%2" ).arg( friendBplaId ).arg( enemyBplaId );
+	if(m_interceptionList.contains(interceptionKey)) {
+		delete m_interceptionList.take( interceptionKey );
+	}
 }
 
 void MapClient1::addFriendBplaInternal(const UavInfo& uav)
