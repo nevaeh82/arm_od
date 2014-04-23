@@ -1,7 +1,8 @@
-#include "MapTabWidgetController.h"
-
 #include <QDebug>
 
+#include <TreeModel/TreeItem.h>
+
+#include "MapTabWidgetController.h"
 
 MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Station *> map_settings, ITabManager* tabManager, DbUavManager* db_bla, QObject* parent) :
 	QObject(parent)
@@ -211,16 +212,22 @@ void MapTabWidgetController::openMapSlot()
 void MapTabWidgetController::onBlaTreeItemDoubleClicked(QModelIndex index)
 {
 	QModelIndex parent = index.parent();
-	int data = index.data().toInt();
 
 	if (parent.isValid()){
 		parent = parent.sibling(parent.row(), 0);
-		data = parent.data().toInt();
-	}
-	else {
+	} else {
 		parent = index.sibling(index.row(), 0);
-		data = parent.data().toInt();
 	}
+
+	// check if it is historical item
+	// we do this by checking is name contains only digits
+	// because real UAVs should contains only numbers
+	bool isNumber;
+	TreeItem* item = static_cast<TreeItem *>(parent.internalPointer());
+	item->data().name.toInt( &isNumber );
+	if( !isNumber ) return;
+
+	int data = parent.data().toInt();
 
 	BLAPerehvatDialog *b = new BLAPerehvatDialog(m_mapController->getMapClient(1), m_view);
 	b->init(data, m_uavDbManager);
