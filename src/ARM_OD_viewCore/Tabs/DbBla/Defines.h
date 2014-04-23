@@ -63,12 +63,12 @@ typedef struct Devices
 	uint uavId;
 } Devices;
 
-typedef struct Sources
+typedef struct Source
 {
 	int id; // PK
 	uint sourceTypeId; // FK
 	uint sourceId;
-} Sources;
+} Source;
 
 typedef struct UavMission
 {

@@ -7,7 +7,7 @@ struct Uav;
 struct UavInfo;
 struct UavRole;
 struct Devices;
-struct Sources;
+struct Source;
 struct UavMission;
 struct Target;
 struct TargetType;
@@ -41,9 +41,10 @@ class IDbUavController
 		virtual int addDevice(const Devices&) = 0;
 		virtual bool getDevicesByType(const uint deviceTypeId, QList<Devices>& devicesRecords) = 0;
 
-		virtual int addSource(const Sources&) = 0;
-		virtual bool getSourceByType(const uint sourceTypeId, QList<Sources>& sourcesRecords) = 0;
-		virtual Sources getSource(const uint sourceId) = 0;
+		virtual int addSource(const Source&) = 0;
+		virtual int getSourceId(const uint sourceId, const uint sourceTypeId) = 0;
+		virtual bool getSourceByType(const uint sourceTypeId, QList<Source>& sourcesRecords) = 0;
+		virtual Source getSource(const uint sourceId) = 0;
 
 		virtual int addUavMission(const UavMission&) = 0;
 		virtual bool getUavMissionsByUavId(const uint uavId, QList<UavMission>& missionsRecords) = 0;

@@ -48,7 +48,7 @@ void UavHistory::stop()
 	/// \todo Call receivers method about history playback is stopped
 
 	// send remove message for all UAVs
-	foreach( int id, m_uavLastDate.keys() ) {
+	foreach( int id, m_knownUavsList.keys() ) {
 		Uav uav;
 		uav.uavId = id;
 
@@ -57,11 +57,11 @@ void UavHistory::stop()
 		foreach( IUavDbChangedListener* listener, m_receiversList ) {
 			listener->onUavRemoved( uav, role );
 		}
-
 	}
 
 	m_timer.stop();
 	m_query.finish();
+	m_knownUavsList.clear();
 	m_uavRoles.clear();
 	m_uavLastDate.clear();
 }
@@ -173,7 +173,6 @@ void UavHistory::updateHistoryState()
 		}
 
 		m_knownUavsList.remove(id);
-
 		m_uavRoles.remove( id );
 		m_uavLastDate.remove( id );
 	}

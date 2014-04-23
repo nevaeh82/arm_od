@@ -59,9 +59,10 @@ public:
 	int addDevice(const Devices&);
 	bool getDevicesByType(const uint deviceTypeId, QList<Devices>& devicesRecords);
 
-	int addSource(const Sources&);
-	bool getSourceByType(const uint sourceTypeId, QList<Sources>& sourcesRecords);
-	Sources getSource(const uint sourceId);
+	int addSource(const Source&);
+	int getSourceId(const uint sourceId, const uint sourceTypeId);
+	bool getSourceByType(const uint sourceTypeId, QList<Source>& sourcesRecords);
+	Source getSource(const uint sourceId);
 
 	int addUavMission(const UavMission&);
 	bool getUavMissionsByUavId(const uint uavId, QList<UavMission>& missionsRecords);

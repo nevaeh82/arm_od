@@ -130,17 +130,22 @@ bool DbUavManager::getDevicesByType(const uint deviceTypeId, QList<Devices> &dev
 	return m_dbController->getDevicesByType(deviceTypeId, devicesRecords);
 }
 
-int DbUavManager::addSource(const Sources & source)
+int DbUavManager::addSource(const Source & source)
 {
 	return m_dbController->addSource(source);
 }
 
-bool DbUavManager::getSourcesByType(const uint sourceId, QList<Sources> &sourcesRecords)
+int DbUavManager::getSourceId(const uint sourceId, const uint sourceTypeId)
+{
+	return m_dbController->getSourceId(sourceId, sourceTypeId);
+}
+
+bool DbUavManager::getSourcesByType(const uint sourceId, QList<Source> &sourcesRecords)
 {
 	return m_dbController->getSourceByType(sourceId, sourcesRecords);
 }
 
-Sources DbUavManager::getSource(const uint sourceId)
+Source DbUavManager::getSource(const uint sourceId)
 {
 	return m_dbController->getSource(sourceId);
 }
@@ -366,7 +371,6 @@ void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QSt
 	}
 
 	//SOURCE
-	QList<Sources> sources;
 	int sourceTypeId = getSourceTypeByName(sourceType);
 
 	if (sourceTypeId < 0){
@@ -375,17 +379,14 @@ void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QSt
 		sourceTypeId = addSourceType(sourceTypeStruct);
 	}
 
-	getSourcesByType(sourceTypeId, sources);
+	int sourceId = getSourceId(positionData.sourceType, sourceTypeId);
 
-	int sourceId = -1;
-	if (0 == sources.count()){
-		Sources source;
+	if (sourceId < 0){
+		Source source;
 		source.sourceTypeId = sourceTypeId;
 		source.sourceId = positionData.sourceType;
 
 		sourceId = addSource(source);
-	} else {
-		sourceId = sources.at(0).id;
 	}
 
 	UavInfo uavInfo;

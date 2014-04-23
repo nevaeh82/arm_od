@@ -4,7 +4,7 @@ DbUavController::DbUavController(QObject *parent)
 	: DbControllerBase("DBBLACONNECTION", "QMYSQL", parent)
 	, m_uavHistory( NULL )
 {
-
+	m_db.setConnectOptions( "MYSQL_OPT_RECONNECT=1" );
 }
 
 DbUavController::DbUavController(QString connectionName, QString dbType, QObject *parent)
@@ -371,7 +371,7 @@ bool DbUavController::getDevicesByType(const uint deviceTypeId, QList<Devices>& 
 	return true;
 }
 
-int DbUavController::addSource(const Sources& source)
+int DbUavController::addSource(const Source& source)
 {
 	QMutexLocker locker(&m_addGetDeviceMutex);
 
@@ -404,7 +404,36 @@ int DbUavController::addSource(const Sources& source)
 	return INVALID_INDEX;
 }
 
-bool DbUavController::getSourceByType(const uint sourceTypeId, QList<Sources> &sourcesRecords)
+int DbUavController::getSourceId(const uint sourceId, const uint sourceTypeId)
+{
+	QMutexLocker locker(&m_addGetDeviceMutex);
+
+	if(!m_db.isOpen()){
+		return INVALID_INDEX;
+	}
+
+	QSqlQuery query(m_db);
+	bool succeeded = query.prepare( "SELECT id FROM sources WHERE sourceTypeId = :sourceTypeId AND sourceId = :sourceId" );
+
+	if (!succeeded) {
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		return INVALID_INDEX;
+	}
+
+	query.bindValue(":sourceId", sourceId);
+	query.bindValue(":sourceTypeId", sourceTypeId);
+
+	succeeded = query.exec();
+
+	if (!succeeded || !query.next()){
+		return INVALID_INDEX;
+	}
+
+	return query.value(0).toInt();
+}
+
+bool DbUavController::getSourceByType(const uint sourceTypeId, QList<Source> &sourcesRecords)
 {
 	QMutexLocker locker(&m_addGetDeviceMutex);
 
@@ -430,7 +459,7 @@ bool DbUavController::getSourceByType(const uint sourceTypeId, QList<Sources> &s
 	}
 
 	while (query.next()){
-		Sources source;
+		Source source;
 		source.id = query.value(0).toUInt();
 		source.sourceTypeId = query.value(1).toUInt();
 		source.sourceId = query.value(2).toUInt();
@@ -440,11 +469,11 @@ bool DbUavController::getSourceByType(const uint sourceTypeId, QList<Sources> &s
 	return true;
 }
 
-Sources DbUavController::getSource(const uint sourceId)
+Source DbUavController::getSource(const uint sourceId)
 {
 	QMutexLocker locker(&m_addGetDeviceMutex);
 
-	Sources source;
+	Source source;
 	source.id = -1;
 
 	if(!m_db.isOpen()){
@@ -1121,7 +1150,6 @@ int DbUavController::getDictionaryRecord(const QString& dictionary, const QStrin
 		return INVALID_INDEX;
 	}
 
-	query.bindValue(":dictionaryTable", dictionary);
 	query.bindValue(":name", name);
 
 	succeeded = query.exec();
