@@ -68,6 +68,8 @@ void TcpKTRManager::connectToBoard(const QString& hostPort, const quint16& board
 
 		controller->connectToHost(strList.at(0), strList.at(1).toUInt());
 
+		bool res = controller->isConnected();
+
 
 		lifeTimer = new QTimer();
 		connect(lifeTimer, SIGNAL(timeout()), m_timeoutSignalMapper, SLOT(map()));
@@ -83,6 +85,11 @@ void TcpKTRManager::connectToBoard(const QString& hostPort, const quint16& board
 	lifeTimer->start(MAX_LIFE_TIME);
 
 	if (m_needToUpdateAfterDisconnect) {
+
+		if (!m_hostPortForUpdate.contains(hostPort)) {
+			return;
+		}
+
 		// Need to register again
 		QByteArray dataToSend;
 		QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
@@ -91,9 +98,16 @@ void TcpKTRManager::connectToBoard(const QString& hostPort, const quint16& board
 	}
 }
 
-void TcpKTRManager::needToUpdateAfterDisconnect(const bool& value)
+void TcpKTRManager::needToUpdateAfterDisconnect(const bool value, const QString& hostPost)
 {
 	QMutexLocker mutexLocker(&m_deleteMutex);
+
+	if (value) {
+		m_hostPortForUpdate.insert(hostPost);
+	} else {
+		m_hostPortForUpdate.remove(hostPost);
+	}
+
 	m_needToUpdateAfterDisconnect = value;
 }
 
