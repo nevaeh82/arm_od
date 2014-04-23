@@ -12,10 +12,9 @@ EnemyBpla::EnemyBpla(IObjectsFactory* factory, const QString& id, const UavInfo&
 void EnemyBpla::setName(const QString& name)
 {
 	m_originName = name;
-	QString newName = m_isHistorical ? QObject::tr("UAV_enemy-H (#%1)\\n%2\\n%3")
-									 : QObject::tr("UAV_enemy (#%1)\\n%2\\n%3");
+	QString newName = QObject::tr("UAV_enemy (#%1)\\n%2\\n%3");
 
-	BplaAbstract::setName( newName.arg( name,
+	BplaAbstract::setName( newName.arg( m_isHistorical ? QObject::tr( "%1-H" ).arg( name ) : name,
 										QString::number( m_altitude, 'f', 1 ),
 										QString::number( m_speed, 'f', 1 ) )
 	);

@@ -5,9 +5,9 @@
 #include <QTimer>
 #include <TreeModel/TreeModelBase.h>
 
-#include "Interfaces/IUavDbChangedListener.h"
+#include "Interfaces/IUavHistoryListener.h"
 
-class UavTreeModel : public TreeModelBase, public IUavDbChangedListener
+class UavTreeModel : public TreeModelBase, public IUavHistoryListener
 {
 	Q_OBJECT
 
@@ -16,7 +16,7 @@ private:
 	bool m_isNeedRedraw;
 
 	QString m_targetRole;
-	
+
 public:
 	explicit UavTreeModel(const QStringList& headers, QObject *parent = 0);
 	virtual ~UavTreeModel();
@@ -31,6 +31,7 @@ public:
 	virtual void onUavAdded(const Uav &uav, const QString& uavRole);
 	virtual void onUavRemoved(const Uav &uav, const QString& uavRole);
 	virtual void onUavInfoChanged(const UavInfo &uavInfo, const QString& uavRole);
+	virtual void onStatusChanged(Status) {}
 
 	void setTargetRole(const QString& role);
 

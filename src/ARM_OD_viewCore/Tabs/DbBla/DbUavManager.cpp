@@ -386,7 +386,7 @@ void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QSt
 		source.sourceTypeId = sourceTypeId;
 		source.sourceId = positionData.sourceType;
 
-		sourceId = addSource(source);
+		addSource(source);
 	}
 
 	UavInfo uavInfo;
@@ -401,7 +401,6 @@ void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QSt
 	uavInfo.statusId = statusUnknownId; // FK
 	uavInfo.dateTime = positionData.dateTime;
 	uavInfo.source = sourceId;
-	uavInfo.historical = false;
 
 	addUavInfo(uavInfo);
 }

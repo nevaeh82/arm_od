@@ -100,7 +100,8 @@ HEADERS += \
     Map/Features/BplaAbstractFeature.h \
     Interfaces/IUavHistory.h \
     ControlPanel/ControlPanelController.h \
-    Tabs/DbBla/UavHistory.h
+    Tabs/DbBla/UavHistory.h \
+    Interfaces/IUavHistoryListener.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \

@@ -85,12 +85,12 @@
 <context>
     <name>ControlPanelController</name>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="36"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="37"/>
         <source>Unable to play history</source>
         <translation>Невозможно воспроизвести запись</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="36"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="37"/>
         <source>Data for selected period do not exist.</source>
         <translation>Данные для выбранного периода отсутствуют.</translation>
     </message>
@@ -264,7 +264,7 @@
         <translation>История</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="438"/>
+        <location filename="Map/MapClient1.cpp" line="462"/>
         <source>Ingur</source>
         <translation>Ингур</translation>
     </message>
@@ -326,12 +326,12 @@
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="177"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="181"/>
         <source>SPIP DD-1</source>
         <translation>СПИП ДД-1</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="182"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="186"/>
         <source>SPIP DD-2</source>
         <translation>СПИП ДД-2</translation>
     </message>
@@ -479,30 +479,27 @@
         <translation>БЛА-С-И</translation>
     </message>
     <message>
-        <location filename="Map/Features/FriendBplaFeature.cpp" line="24"/>
-        <source>UAV-H (#%1)</source>
-        <translation>БЛА-И (№%1)</translation>
-    </message>
-    <message>
         <location filename="Map/Features/FriendBplaFeature.cpp" line="26"/>
         <source>UAV (#%1)</source>
         <translation>БЛА (№%1)</translation>
     </message>
     <message>
-        <location filename="Map/Features/FriendBplaFeature.cpp" line="26"/>
+        <location filename="Map/Features/FriendBplaFeature.cpp" line="24"/>
         <source>UAV-C</source>
         <translation>БЛА-С</translation>
     </message>
     <message>
         <location filename="Map/Features/EnemyBplaFeature.cpp" line="15"/>
-        <source>UAV_enemy-H (#%1)\n%2\n%3</source>
-        <translation>БПЛА-И (№%1)\n%2\n%3</translation>
+        <source>UAV_enemy (#%1)\n%2\n%3</source>
+        <oldsource>UAV_enemy-H (#%1)\n%2\n%3</oldsource>
+        <translation>БПЛА (№%1)\n%2\n%3</translation>
     </message>
     <message>
-        <location filename="Map/Features/EnemyBplaFeature.cpp" line="16"/>
-        <source>UAV_enemy (#%1)\n%2\n%3</source>
-        <oldsource>UAV_enemy (â%1)\n%2\n%3</oldsource>
-        <translation>БПЛА (№%1)\n%2\n%3</translation>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="17"/>
+        <location filename="Map/Features/FriendBplaFeature.cpp" line="27"/>
+        <location filename="Tabs/DbBla/UavHistory.cpp" line="197"/>
+        <source>%1-H</source>
+        <translation>%1-И</translation>
     </message>
     <message>
         <location filename="Map/Features/InterceptionFeature.cpp" line="25"/>

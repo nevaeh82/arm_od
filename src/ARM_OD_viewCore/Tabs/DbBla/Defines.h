@@ -22,9 +22,11 @@ typedef struct Uav
 	uint roleId; // FK
 	QString name;
 	uint freqId;
+	bool historical;
 
 	Uav(){
 		freqId = 0;
+		historical = false;
 	}
 
 } Uav;
@@ -53,6 +55,10 @@ typedef struct UavInfo
 	uint statusId; // FK
 	QDateTime dateTime;
 	bool historical;
+
+	UavInfo(){
+		historical = false;
+	}
 } UavInfo;
 
 typedef struct Devices

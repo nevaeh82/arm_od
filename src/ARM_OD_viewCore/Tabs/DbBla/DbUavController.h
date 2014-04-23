@@ -43,6 +43,7 @@ public:
 	explicit DbUavController(QString connectionName, QString dbType, QObject *parent = 0);
 	virtual ~DbUavController();
 
+	bool connectToDB(const DBConnectionStruct& parameters);
 	void disconnectFromDb();
 
 	int addUav(const Uav&);

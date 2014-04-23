@@ -20,11 +20,13 @@ void FriendBpla::setName(const QString& name)
 
 	QString newName;
 
-	if( m_isHistorical ) {
-		newName = id == 1044 ? QObject::tr( "UAV-C-H" ) : QObject::tr( "UAV-H (#%1)" ).arg( id );
+	if( id == 1044 ) {
+		newName = m_isHistorical ? QObject::tr( "UAV-C-H" ) : QObject::tr( "UAV-C" );
 	} else {
-		newName = id == 1044 ? QObject::tr( "UAV-C" ) : QObject::tr( "UAV (#%1)" ).arg( id );
+		newName = QObject::tr( "UAV (#%1)" )
+				.arg( m_isHistorical ? QObject::tr( "%1-H" ).arg( name ) : name );
 	}
+
 	Marker::setName( newName );
 }
 

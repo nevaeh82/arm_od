@@ -9,19 +9,10 @@
 
 UavHistory::UavHistory(QSqlDatabase database, QObject *parent)
 	: QObject(parent)
-	, m_database(database)
 {
 	m_timer.setInterval( 1000 );
 
-	m_query = QSqlQuery( m_database );
-	m_query.prepare( "SELECT info.*, uav.uavId as uavIdReal, sources.sourceId as sourceReal, uavRoles.code"
-					 " FROM info"
-					 " RIGHT JOIN uav on uav.id = info.uavID"
-					 " LEFT JOIN uavRoles on uavRoles.id = uav.roleId"
-					 " LEFT JOIN sources on sources.id = info.source"
-					 " WHERE `datetime` >= :start AND `datetime` <= :end"
-					 " GROUP BY uav.uavID, `datetime`, device, altitude"
-					 " ORDER BY `datetime`" );
+	setDatabase( database );
 
 	connect( &m_timer, SIGNAL(timeout()), SLOT(updateHistoryState()) );
 	connect( this, SIGNAL(started(QDateTime,QDateTime)), SLOT(startInternal(QDateTime,QDateTime)) );
@@ -30,15 +21,22 @@ UavHistory::UavHistory(QSqlDatabase database, QObject *parent)
 UavHistory::~UavHistory()
 {
 	stop();
+	m_database.close();
 }
 
 bool UavHistory::start(const QDateTime& startTime, const QDateTime& endTime)
 {
+	if( !m_database.isValid() ) {
+		return false;
+	}
+
 	emit started(startTime, endTime);
 
 	QEventLoop loop;
 	connect( this, SIGNAL(startFinished()), &loop, SLOT(quit()));
 	loop.exec();
+
+	sendStatus();
 
 	return m_startResult;
 }
@@ -51,6 +49,7 @@ void UavHistory::stop()
 	foreach( int id, m_knownUavsList.keys() ) {
 		Uav uav;
 		uav.uavId = id;
+		uav.historical = true;
 
 		QString role = m_uavRoles.value( id );
 
@@ -64,13 +63,62 @@ void UavHistory::stop()
 	m_knownUavsList.clear();
 	m_uavRoles.clear();
 	m_uavLastDate.clear();
+
+	sendStatus();
+}
+
+void UavHistory::setDatabase(const QSqlDatabase& database)
+{
+	stop();
+
+	m_query.clear();
+
+	if( m_database.isOpen() ) {
+		m_database.close();
+	}
+
+	m_database = QSqlDatabase::cloneDatabase( database, "UAV history" );
+
+	if( !m_database.open() ) {
+		sendStatus();
+		return;
+	}
+
+	m_query = QSqlQuery( m_database );
+	m_query.prepare( "SELECT info.*, uav.uavId as uavIdReal, sources.sourceId as sourceReal, uavRoles.code"
+					 " FROM info"
+					 " RIGHT JOIN uav on uav.id = info.uavID"
+					 " LEFT JOIN uavRoles on uavRoles.id = uav.roleId"
+					 " LEFT JOIN sources on sources.id = info.source"
+					 " WHERE `datetime` >= :start AND `datetime` <= :end"
+					 " GROUP BY uav.uavID, `datetime`, device, altitude"
+					 " ORDER BY `datetime`" );
+
+	sendStatus();
+}
+
+IUavHistoryListener::Status UavHistory::getStatus()
+{
+	if( !m_database.isOpen() ) {
+		return IUavHistoryListener::NotReady;
+	}
+
+	if( m_timer.isActive() ) {
+		return IUavHistoryListener::Playing;
+	}
+
+	return IUavHistoryListener::Ready;
+}
+
+void UavHistory::moveToThread(QThread* thread)
+{
+	m_timer.moveToThread(thread);
+	QObject::moveToThread(thread);
 }
 
 void UavHistory::startInternal(const QDateTime& start, const QDateTime& end)
 {
-	if( m_timer.isActive() ) {
-		stop();
-	}
+	stop();
 
 	m_query.bindValue( ":start", start );
 	m_query.bindValue( ":end", end );
@@ -79,11 +127,13 @@ void UavHistory::startInternal(const QDateTime& start, const QDateTime& end)
 	if( m_query.lastError().type() != QSqlError::NoError ) {
 		log_error( m_query.lastError().databaseText() );
 		m_startResult = false;
+		emit startFinished();
 		return;
 	}
 
 	if( !m_query.next() ) {
 		m_startResult = false;
+		emit startFinished();
 		return;
 	}
 
@@ -91,6 +141,8 @@ void UavHistory::startInternal(const QDateTime& start, const QDateTime& end)
 
 	m_timer.start();
 	m_startResult = true;
+
+	emit startFinished();
 	return;
 }
 
@@ -136,15 +188,14 @@ void UavHistory::updateHistoryState()
 		nextTime.setTime( nextTime.time().addMSecs( - nextTime.time().msec() ) );
 	} while( nextTime == time );
 
-
-
 	// send actual UAV info for all receivers
 	foreach( UavInfo info, infoCollection ) {
 		QString role = m_uavRoles.value( info.uavId );
 
 		Uav uav;
-		uav.uavId = info.uavId + 100000;
-		uav.name = QString::number(uav.uavId) + tr("(H)");
+		uav.uavId = info.uavId;
+		uav.name = QObject::tr( "%1-H" ).arg( info.uavId );
+		uav.historical = true;
 
 		if (!m_knownUavsList.contains(uav.uavId)) {
 			m_knownUavsList.insert(uav.uavId, uav);
@@ -154,6 +205,7 @@ void UavHistory::updateHistoryState()
 			}
 		}
 
+		info.uavId = uav.uavId;
 		foreach( IUavDbChangedListener* listener, m_receiversList ) {
 			listener->onUavInfoChanged( info, role );
 		}
@@ -165,6 +217,7 @@ void UavHistory::updateHistoryState()
 
 		Uav uav;
 		uav.uavId = id;
+		uav.historical = true;
 
 		QString role = m_uavRoles.value( id );
 
@@ -175,5 +228,12 @@ void UavHistory::updateHistoryState()
 		m_knownUavsList.remove(id);
 		m_uavRoles.remove( id );
 		m_uavLastDate.remove( id );
+	}
+}
+
+void UavHistory::sendStatus()
+{
+	foreach (IUavHistoryListener* receiver, m_receiversList){
+		receiver->onStatusChanged( getStatus() );
 	}
 }

@@ -31,6 +31,12 @@ public:
 	bool start(const QDateTime& startTime, const QDateTime& endTime);
 	void stop();
 
+	void setDatabase(const QSqlDatabase& database);
+
+	IUavHistoryListener::Status getStatus();
+
+	void moveToThread(QThread *thread);
+
 signals:
 	void started(const QDateTime& start, const QDateTime& end);
 	void startFinished();
@@ -38,6 +44,8 @@ signals:
 protected slots:
 	void startInternal(const QDateTime& start, const QDateTime& end);
 	void updateHistoryState();
+
+	void sendStatus();
 
 };
 

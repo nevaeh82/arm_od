@@ -46,40 +46,40 @@
     <message>
         <location filename="ControlPanel/ControlPanel.ui" line="20"/>
         <source>From:</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ControlPanel/ControlPanel.ui" line="41"/>
         <source>To:</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ControlPanel/ControlPanel.ui" line="62"/>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ControlPanel/ControlPanel.ui" line="69"/>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ControlPanel/ControlPanel.ui" line="89"/>
         <source>Current time:</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
     <name>ControlPanelController</name>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="36"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="37"/>
         <source>Unable to play history</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="36"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="37"/>
         <source>Data for selected period do not exist.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -117,7 +117,7 @@
     <message>
         <location filename="MainWindow.ui" line="132"/>
         <source>View</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="MainWindow.ui" line="146"/>
@@ -244,10 +244,10 @@
     <message>
         <location filename="Map/MapClient1.cpp" line="100"/>
         <source>History</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="438"/>
+        <location filename="Map/MapClient1.cpp" line="462"/>
         <source>Ingur</source>
         <translation></translation>
     </message>
@@ -309,12 +309,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="177"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="181"/>
         <source>SPIP DD-1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="182"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="186"/>
         <source>SPIP DD-2</source>
         <translation></translation>
     </message>
@@ -459,12 +459,7 @@
     <message>
         <location filename="Map/Features/FriendBplaFeature.cpp" line="24"/>
         <source>UAV-C-H</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Map/Features/FriendBplaFeature.cpp" line="24"/>
-        <source>UAV-H (#%1)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="Map/Features/FriendBplaFeature.cpp" line="26"/>
@@ -472,20 +467,22 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/Features/FriendBplaFeature.cpp" line="26"/>
+        <location filename="Map/Features/FriendBplaFeature.cpp" line="24"/>
         <source>UAV-C</source>
         <translation></translation>
     </message>
     <message>
         <location filename="Map/Features/EnemyBplaFeature.cpp" line="15"/>
-        <source>UAV_enemy-H (#%1)\n%2\n%3</source>
-        <translation type="unfinished"></translation>
+        <source>UAV_enemy (#%1)\n%2\n%3</source>
+        <oldsource>UAV_enemy-H (#%1)\n%2\n%3</oldsource>
+        <translation>Enemy UAV (#%1)\n%2\n%3</translation>
     </message>
     <message>
-        <location filename="Map/Features/EnemyBplaFeature.cpp" line="16"/>
-        <source>UAV_enemy (#%1)\n%2\n%3</source>
-        <oldsource>UAV_enemy (â%1)\n%2\n%3</oldsource>
-        <translation>Enemy UAV (#%1)\n%2\n%3</translation>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="17"/>
+        <location filename="Map/Features/FriendBplaFeature.cpp" line="27"/>
+        <location filename="Tabs/DbBla/UavHistory.cpp" line="197"/>
+        <source>%1-H</source>
+        <translation></translation>
     </message>
     <message>
         <location filename="Map/Features/InterceptionFeature.cpp" line="25"/>

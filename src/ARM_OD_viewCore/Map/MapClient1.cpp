@@ -229,6 +229,26 @@ void MapClient1::readCheckPointsFromFile(QString fileName)
 	}
 }
 
+int MapClient1::getUavInternalId(const UavInfo& uav)
+{
+	int id = uav.uavId;
+
+	if( uav.historical ) {
+		id += 100000;
+	}
+
+	return id;
+}
+
+int MapClient1::getUavInternalId(const Uav& uav)
+{
+	UavInfo info;
+	info.uavId = uav.uavId;
+	info.historical = uav.historical;
+
+	return getUavInternalId( info );
+}
+
 void MapClient1::setPoint()
 {
 	QString mapObjectsSettingFile = QCoreApplication::applicationDirPath();
@@ -304,9 +324,10 @@ void MapClient1::removeInterceptionData( int friendBplaId, int enemyBplaId )
 
 void MapClient1::addFriendBplaInternal(const UavInfo& uav)
 {
-	MapFeature::FriendBpla* bpla = m_friendBplaList.value( uav.uavId, NULL );
+	int id = getUavInternalId( uav );
+	MapFeature::FriendBpla* bpla = m_friendBplaList.value( id, NULL );
 
-	switch( uav.source) {
+	switch( uav.source ) {
 		// if we get data about UAV from slices source...
 		case UAV_SLICES_SOURCE:
 			// and UAV exists, update slice track
@@ -323,7 +344,7 @@ void MapClient1::addFriendBplaInternal(const UavInfo& uav)
 			} else {
 				// else create new one
 				bpla = m_factory->createFriendBpla( uav );
-				m_friendBplaList.insert( uav.uavId, bpla );
+				m_friendBplaList.insert( id, bpla );
 			}
 
 			return;
@@ -332,24 +353,27 @@ void MapClient1::addFriendBplaInternal(const UavInfo& uav)
 
 void MapClient1::addEnemyBplaInternal(const UavInfo& uav)
 {
-	MapFeature::EnemyBpla* bpla = m_enemyBplaList.value( uav.uavId, NULL );
+	int id = getUavInternalId( uav );
+	MapFeature::EnemyBpla* bpla = m_enemyBplaList.value( id, NULL );
 
 	if( bpla != NULL ) {
 		bpla->update( uav );
 	} else {
 		bpla = m_factory->createEnemyBpla( uav );
-		m_enemyBplaList.insert( uav.uavId, bpla );
+		m_enemyBplaList.insert( id, bpla );
 	}
 }
 
 void MapClient1::removeBplaInternal(const Uav& uav)
 {
-	if( m_friendBplaList.contains( uav.uavId ) ) {
-		delete m_friendBplaList.take( uav.uavId );
+	int id = getUavInternalId( uav );
+
+	if( m_friendBplaList.contains( id ) ) {
+		delete m_friendBplaList.take( id );
 	}
 
-	if( m_enemyBplaList.contains( uav.uavId ) ) {
-		delete m_enemyBplaList.take( uav.uavId );
+	if( m_enemyBplaList.contains( id ) ) {
+		delete m_enemyBplaList.take( id );
 	}
 }
 

@@ -22,7 +22,7 @@
 #include "Station.h"
 #include "UAVDefines.h"
 
-#include "Interfaces/IUavDbChangedListener.h"
+#include "Interfaces/IUavHistoryListener.h"
 
 #include "Map/Map.h"
 #include "Map/MapWidget.h"
@@ -34,7 +34,7 @@
 #include "RPC/RpcDefines.h"
 
 class MapController : public QObject, public IMapController, public IController<MapWidget>,
-		public IRpcListener, public IUavDbChangedListener
+		public IRpcListener, public IUavHistoryListener
 {
 	Q_OBJECT
 
@@ -68,10 +68,11 @@ public:
 	// interface IRpcListener
 	virtual void onMethodCalled(const QString& method, const QVariant& argument);
 
-	// interface IUavDbChangedListener
+	// interface IUavHistoryListener
 	virtual void onUavAdded(const Uav&, const QString&) {}
 	virtual void onUavRemoved(const Uav& uav, const QString&);
 	virtual void onUavInfoChanged(const UavInfo& uavInfo, const QString& uavRole);
+	virtual void onStatusChanged(Status status) {}
 
 private:
 	IMapClient* getMapClient();

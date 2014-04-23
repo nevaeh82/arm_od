@@ -1,9 +1,9 @@
-#include "UavTreeModel.h"
-
+#include <Logger.h>
 #include <TreeModel/TreeItem.h>
 #include <Settings/SettingsNode.h>
 
-#include "../DbBla/Defines.h"
+#include "UavTreeModel.h"
+#include "Tabs/DbBla/Defines.h"
 
 #define LAT_PROPERTY_ID		1
 #define LON_PROPERTY_ID		2

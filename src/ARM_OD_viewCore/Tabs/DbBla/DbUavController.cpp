@@ -17,7 +17,22 @@ DbUavController::DbUavController(QString connectionName, QString dbType, QObject
 
 DbUavController::~DbUavController()
 {
+	if( m_uavHistory != NULL ) {
+		delete m_uavHistory;
+	}
+
 	m_db.close();
+}
+
+bool DbUavController::connectToDB(const DBConnectionStruct& parameters)
+{
+	bool result = DbControllerBase::connectToDB( parameters );
+
+	if( m_uavHistory != NULL ) {
+		m_uavHistory->setDatabase( m_db );
+	}
+
+	return result;
 }
 
 void DbUavController::disconnectFromDb()
