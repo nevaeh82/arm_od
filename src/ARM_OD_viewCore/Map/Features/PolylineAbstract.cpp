@@ -9,28 +9,29 @@ PolylineAbstract::PolylineAbstract( IObjectsFactory* factory,
 	: MapObjectAbstract( id, name, parent )
 	, m_factory( factory )
 {
-	m_polyline = new PwGisPointList();
+	m_path = factory->createPath();
 	this->setPolyline( polyline );
 }
 
 PolylineAbstract::~PolylineAbstract()
 {
-	m_polyline->clear();
-	delete m_polyline;
+	m_path->removeFromMap();
+	delete m_path;
 }
 
 void PolylineAbstract::setPolyline( PwGisPointList* polyline )
 {
-	m_polyline->clear();
+	PwGisPointList* points = m_path->points();
+	points->clear();
 	for( int i = 0; i < polyline->count(); ++i ) {
-		m_polyline->append( new PwGisLonLat( polyline->at(i)->lon,
+		points->append( new PwGisLonLat( polyline->at(i)->lon,
 			polyline->at(i)->lat ) );
 	}
 }
 
-PwGisPointList *PolylineAbstract::polyline()
+PwGisPointList* PolylineAbstract::polyline()
 {
-	return m_polyline;
+	return m_path->points();
 }
 
 } // namespace MapFeature

@@ -132,8 +132,9 @@ void MapClient1::init()
 			 this, SLOT( addPeleng( int, int, double, double, double ) ) );
 }
 
-void MapClient1::addHyperbole( int id, PwGisPointList* polyline,
-	const QTime timeMeasure, const QColor& color )
+void MapClient1::addHyperbole( int id, const QString& name,
+	PwGisPointList* polyline, const QTime timeMeasure,
+	const QColor& color )
 {
 	MapFeature::Hyperbole* hyperbole = m_HyperboleList.value( id, NULL );
 
@@ -141,10 +142,9 @@ void MapClient1::addHyperbole( int id, PwGisPointList* polyline,
 		hyperbole->updatePolyline( polyline );
 	}
 	else {
-		QString nameHyperbole = timeMeasure.toString( "HH:MM:SS" );
 		hyperbole = m_factory->createHyperbole(
 			id,
-			nameHyperbole,
+			name,
 			polyline,
 			timeMeasure );
 		m_HyperboleList.insert( id, hyperbole );

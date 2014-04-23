@@ -11,19 +11,23 @@ Hyperbole::Hyperbole(IObjectsFactory* factory,
 	, m_name( name )
 	, m_timeMeasure( timeMeasure )
 {
-	m_path = factory->createPath();
-	//m_path
+	m_path->setName( name );
+	QString hyperboleToolTip = timeMeasure.toString( "hh:mm:ss" );
+	m_path->setToolTip( hyperboleToolTip );
+
+	m_path->addStyleByName( MAP_STYLE_NAME_HYPERBOLE );
+
+	this->updatePolyline( polyline );
 }
 
 Hyperbole::~Hyperbole()
 {
-	m_path->removeFromMap();
-	delete m_path;
 }
 
 void Hyperbole::updatePolyline( PwGisPointList* polyline )
 {
-	this->setPolyline( polyline );
+	PolylineAbstract::setPolyline( polyline );
+
 	this->updateMap();
 }
 

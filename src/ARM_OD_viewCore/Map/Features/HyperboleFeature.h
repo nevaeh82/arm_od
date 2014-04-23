@@ -17,7 +17,6 @@ class Hyperbole : public PolylineAbstract
 protected:
 	QString m_name;
 	QTime m_timeMeasure;
-	Path* m_path;
 
 	Hyperbole( IObjectsFactory* factory, const QString& id,
 		const QString& name, PwGisPointList* polyline,
