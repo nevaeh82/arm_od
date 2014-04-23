@@ -1,12 +1,12 @@
 #include "Map/Features/HyperboleFeature.h"
-#include "Map/MapStyleManager.h"
-#include <QColor>
+
 
 namespace MapFeature {
 
 Hyperbole::Hyperbole(
 	IStyleFactory* styleFactory,
 	IObjectsFactory* factory,
+	IMapStyleManager* styleManager,
 	const QString& id,
 	const QString& name,
 	PwGisPointList* polyline,
@@ -14,6 +14,7 @@ Hyperbole::Hyperbole(
 	const QColor color )
 	: PolylineAbstract( factory, id, name, polyline )
 	, m_styleFactory( styleFactory )
+	, m_styleManager( styleManager )
 	, m_name( name )
 	, m_timeMeasure( timeMeasure )
 {

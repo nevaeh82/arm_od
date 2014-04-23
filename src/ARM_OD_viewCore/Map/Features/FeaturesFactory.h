@@ -33,7 +33,7 @@ public:
 	virtual Pelengator*   createPelengator(int id, const QPointF& position, double angle );
 	virtual PelengatorPoint* createPelengatorPoint( const QString& name, const QPointF& position );
 	virtual CheckPoint*   createCheckPoint( const QString& name, const QPointF& position );
-	virtual Hyperbole*    createHyperbole( IStyleFactory* styleFactory, int id, const QString& name, PwGisPointList* polyline, const QTime timeMeasure, const QColor color );
+	virtual Hyperbole*    createHyperbole( int id, const QString& name, PwGisPointList* polyline, const QTime timeMeasure, const QColor color );
 };
 
 } // namespace MapFeature

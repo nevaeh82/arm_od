@@ -23,10 +23,6 @@
 
 #include "NIIPP/Niipp.h"
 
-#include <QColor>
-#include <PwGis/objects/PwGisStyle.h>
-#include <PwGis/objects/IStyleFactory.h>
-
 
 namespace MapFeature {
 
@@ -45,7 +41,7 @@ public:
 	virtual Pelengator*   createPelengator( int id, const QPointF& position, double angle ) = 0;
 	virtual PelengatorPoint* createPelengatorPoint( const QString& name, const QPointF& position ) = 0;
 	virtual CheckPoint*   createCheckPoint( const QString& name, const QPointF& position ) = 0;
-	virtual Hyperbole*    createHyperbole( IStyleFactory* styleFactory, int id, const QString& name, PwGisPointList* polyline, const QTime timeMeasure, const QColor color ) = 0;
+	virtual Hyperbole*    createHyperbole( int id, const QString& name, PwGisPointList* polyline, const QTime timeMeasure, const QColor color ) = 0;
 };
 
 } // namespace MapFeature
