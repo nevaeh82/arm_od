@@ -29,6 +29,7 @@ public:
 	void setPoint(const QPointF& coord);
 
 	void stopCommad();
+    void startCommand();
 	void changeValuePower(int value);
 	void enableComplex(bool state);
 	void clear();
@@ -68,6 +69,8 @@ private:
 	QPointF         m_pointUvodeNiipp;
 
 	ITabManager*    m_parentTab;
+
+    bool            m_enable;
 };
 
 #endif // NIIPPCONTROLMODEL_H

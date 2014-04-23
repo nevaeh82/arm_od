@@ -267,5 +267,13 @@ void TcpManager::onMethodCalledInternalSlot(const QString& method, const QVarian
 		controller->sendData(MessageSP(new Message<QByteArray>(TCP_ARMR_SEND_SOLVER_DATA, argument.toByteArray())));*/
 
 		m_rpcClient->sendDataByRpc(TCP_ARMR_SEND_SOLVER_DATA, argument.toByteArray());
-	}
+    } else if (method == RPC_SLOT_SET_NIIPP_BPLA) {
+            //TODO: REMOVE RPCCLIENT USAGE WHEN TCP CLIENT PROTOBUF WILL BE TESTED
+
+            BaseTcpDeviceController* controller = m_controllersMap.value("NIIPP_1", NULL);
+            if (controller == NULL) {
+                return;
+            }
+            controller->sendData(MessageSP(new Message<QByteArray>(TCP_NIIPP_REQUEST_PBLA, argument.toByteArray())));
+    }
 }

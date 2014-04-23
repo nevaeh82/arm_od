@@ -183,13 +183,18 @@ void MapTabWidgetController::appendView(MapTabWidget *view)
 	latlon1.setY(41.6905);
 	m_niipp1 = new NiippController(100, tr("SPIP DD-1"), latlon1, m_mapController, m_tabManager);
 
+
 	QPointF latlon2;
 	latlon2.setX(42.634183);
 	latlon2.setY(41.912167);
 	m_niipp2 = new NiippController(101, tr("SPIP DD-2"), latlon2, m_mapController, m_tabManager);
 
+
 	m_niipp1->appendView(m_view->getNiippWidget(1));
 	m_niipp2->appendView(m_view->getNiippWidget(2));
+
+    m_uavDbManager->registerReceiver( m_niipp1 );
+    m_uavDbManager->registerReceiver( m_niipp2 );
 
 	init();
 }

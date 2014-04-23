@@ -323,7 +323,7 @@ void DbUavManager::onMethodCalled(const QString& method, const QVariant& argumen
 			return;
 		}
 
-        QString dataToFile = QTime::currentTime().toString() + " " + QString::number(positionDataVector.at(0).latitude) + " " + QString::number(positionDataVector.at(0).longitude) + " " + QString::number(positionDataVector.at(0).altitude) + "\n";
+        QString dataToFile = QTime::currentTime().toString("hh:mm:ss:zzz") + " " + QString::number(positionDataVector.at(0).latitude) + " " + QString::number(positionDataVector.at(0).longitude) + " " + QString::number(positionDataVector.at(0).altitude) + "\n";
 
         QTextStream outstream(fi);
         outstream << dataToFile;

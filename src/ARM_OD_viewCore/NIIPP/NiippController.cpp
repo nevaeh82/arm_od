@@ -35,9 +35,14 @@ void NiippController::setData(QByteArray data)
 
 }
 
-void NiippController::stopClicked()
+void NiippController::slotStopClicked()
 {
-	m_model->stopCommad();
+    m_model->stopCommad();
+}
+
+void NiippController::slotStartClicked()
+{
+    m_model->startCommand();
 }
 
 void NiippController::enableComplex(bool state)
@@ -167,7 +172,8 @@ void NiippController::appendView(NiippWidget *view)
 
 	connect(m_view, SIGNAL(complexEnabled(bool)), this, SLOT(enableComplex(bool)));
 	connect(m_view, SIGNAL(valuePowerChanged(int)), this, SLOT(changeValuePower(int)));
-	connect(m_view, SIGNAL(stopClicked()), this, SLOT(stopClicked()));
+    connect(m_view, SIGNAL(stopClicked()), this, SLOT(slotStopClicked()));
+    connect(m_view, SIGNAL(startClicked()), this, SLOT(slotStartClicked()));
 	connect(m_view, SIGNAL(antennaTypeChanged(int)), this, SLOT(setAntennaType(int)));
 	connect(m_view, SIGNAL(modeChanged(int)), this, SLOT(changeMode(int)));
 	connect(m_view, SIGNAL(cleared()), this, SLOT(clear()));

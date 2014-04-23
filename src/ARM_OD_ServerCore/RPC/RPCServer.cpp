@@ -160,11 +160,16 @@ void RPCServer::rpc_slot_set_niipp_data(quint64 client, QByteArray data)
 	QDataStream ds(&data, QIODevice::ReadOnly);
 	int id = -1;
 	ds >> id;
-	QByteArray* ba = new QByteArray();
-	ba->append(data);
+    QByteArray ba;
+    ba.append(data);
 
-	QSharedPointer<IMessageOld> msg(new MessageOld(id, NIIPP_BPLA, ba));
-	_subscriber->data_ready(NIIPP_BPLA, msg);
+    foreach (IRpcListener* listener, m_receiversList) {
+        listener->onMethodCalled(RPC_SLOT_SET_NIIPP_BPLA, QVariant(ba));
+    }
+
+
+//	QSharedPointer<IMessageOld> msg(new MessageOld(id, NIIPP_BPLA, ba));
+//	_subscriber->data_ready(NIIPP_BPLA, msg);
 }
 
 void RPCServer::rpc_slot_set_solver_data(quint64 client, QByteArray data)
@@ -242,7 +247,7 @@ void RPCServer::rpc_slot_send_bpla_points(quint64 client, QByteArray* data)
 
 void RPCServer::rpc_slot_send_bpla_points_auto(quint64 client, QByteArray *data)
 {
-	m_serverPeer->call(client, RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO, QVariant::fromValue(*data));
+    m_serverPeer->call( RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO, QVariant::fromValue(*data));
 }
 
 void RPCServer::rpc_slot_send_atlant_direction(quint64 client, QByteArray *data)

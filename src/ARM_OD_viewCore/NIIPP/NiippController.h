@@ -56,7 +56,8 @@ private slots:
 	void changeMode(int value);
 	void enableComplex(bool state);
 	void clear();
-	void stopClicked();
+    void slotStopClicked();
+    void slotStartClicked();
 
 public slots:
 	virtual void setPower(double value);

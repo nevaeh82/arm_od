@@ -62,7 +62,7 @@
 
 /// to NIIPP
 #define RPC_SLOT_SET_NIIPP_BPLA                         "rpc_slot_set_niipp_data"
-
+#define RPC_SLOT_NIIPP_BPLA                             "rpc_slot_niipp_bpla"
 /// to SOLVER
 #define RPC_SLOT_SET_SOLVER_DATA    "rpc_slot_set_solver_data"
 #define RPC_SLOT_SET_SOLVER_CLEAR   "rpc_slot_set_solver_clear"

@@ -111,8 +111,8 @@ void NiippWidget::start(bool state)
 							 "max-height:50px;" \
 							 "min-width:50px;"\
 							 "min-height:50px");
+        emit startClicked();
 
-		emit startClicked();
 	}
 	else {
 		ui->_pb_start->setStyleSheet("background-color: red;" \

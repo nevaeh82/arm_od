@@ -27,6 +27,7 @@ Niipp::Niipp(int id, QString name, QPointF latlon, ITabManager* parentTab)
 	m_radiusSector = 0;
 	m_radiusCircle = 0;
 	m_angel = 0;
+    m_enable = false;
 }
 
 void Niipp::setAngel(double value)
@@ -77,7 +78,14 @@ void Niipp::stopCommad()
 	ds << s1;
 
 	CommandMessage* msg = new CommandMessage(COMMAND_SET_NIIPP_BPLA, ba);
-	m_parentTab->send_data(0, msg);
+    m_parentTab->send_data(0, msg);
+
+    m_enable = false;
+}
+
+void Niipp::startCommand()
+{
+    m_enable = true;
 }
 
 void Niipp::enableComplex(bool state)
@@ -165,6 +173,8 @@ void Niipp::sendEvil(const QPointF& point, const QPointF& point_uvoda, double al
 	Q_UNUSED(point_uvoda);
 
 	if( m_parentTab == NULL ) return;
+
+    if(m_enable == false) return;
 
 	QByteArray ba;
 	QDataStream ds(&ba, QIODevice::ReadWrite);

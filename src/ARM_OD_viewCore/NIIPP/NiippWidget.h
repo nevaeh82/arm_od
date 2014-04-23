@@ -42,8 +42,8 @@ private slots:
 signals:
 	void complexEnabled(bool);
 	void valuePowerChanged(int);
-	void startClicked();
-	void stopClicked();
+    void stopClicked();
+    void startClicked();
 	void antennaTypeChanged(int);
 	void modeChanged(int);
 	void cleared();

@@ -70,7 +70,7 @@ MessageSP TcpNIIPPCoder::encode(const QByteArray& data)
 	QDataStream ds(&dataToSend, QIODevice::ReadWrite);
 
 	/// TODO : recheck _id
-	ds << 0;//	ds << _id;
+    ds << 100;//	ds << _id;
 
 	ds << dt;
 	ds << time;
