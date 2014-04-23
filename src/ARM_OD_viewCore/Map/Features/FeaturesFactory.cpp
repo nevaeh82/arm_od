@@ -70,4 +70,14 @@ CheckPoint* FeaturesFactory::createCheckPoint(const QString& name, const QPointF
 								name, position );
 }
 
+Hyperbole* FeaturesFactory::createHyperbole( int id, const QString& name,
+	PwGisPointList* polyline, const QTime timeMeasure )
+{
+	return new Hyperbole( m_provider->objectsFactory(),
+		QString::number( id ),
+		name,
+		polyline,
+		timeMeasure );
+}
+
 } // namespace MapFeature

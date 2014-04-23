@@ -17,8 +17,8 @@ protected:
 	QTime m_timeMeasure;
 
 	Hyperbole( IObjectsFactory* factory, const QString& id,
-		const QString& name, const Path* polyline,
-		QTime timeMeasure );
+		const QString& name, PwGisPointList* polyline,
+		const QTime timeMeasure );
 
 public:
 	virtual ~Hyperbole();

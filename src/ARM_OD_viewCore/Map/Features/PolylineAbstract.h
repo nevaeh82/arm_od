@@ -24,13 +24,13 @@ protected:
 	Path* m_polyline;
 
 	PolylineAbstract( IObjectsFactory* factory, const QString& id,
-		const QString& name, const Path* polyline,
+		const QString& name, PwGisPointList* polyline,
 		QObject* parent = 0 );
 
 public:
 	virtual ~PolylineAbstract() {}
 
-	virtual void setPolyline( const Path* polyline );
+	virtual void setPolyline( PwGisPointList* polyline );
 	virtual Path* polyline();
 
 public slots:

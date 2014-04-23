@@ -110,7 +110,7 @@ public slots:
 
 	virtual void removeNiippPoint();
 
-	void addHyperbole( int id, PwGisPointList* polyline,
+	virtual void addHyperbole( int id, PwGisPointList* polyline,
 		const QTime timeMeasure, const QColor& color );
 
 	virtual void removeAll();

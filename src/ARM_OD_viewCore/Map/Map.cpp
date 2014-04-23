@@ -99,6 +99,7 @@ void Map::onMapReady()
 		it.value()->addHyperbole( 1, hyperbole1,
 			QTime::currentTime(), QColor::fromRgb( 255, 0, 0 ) );
 
+		/*
 		//2
 		PwGisPointList* hyperbole2 = new PwGisPointList();
 		hyperbole2->append( new PwGisLonLat( 30.29749, 59.90849 ) );
@@ -118,9 +119,12 @@ void Map::onMapReady()
 		it.value()->addHyperbole( 3, hyperbole3,
 			QTime::currentTime(), QColor::fromRgb( 0, 0, 255 ) );
 
-		delete hyperbole1;
-		delete hyperbole2;
 		delete hyperbole3;
+		delete hyperbole2;
+		*/
+		delete hyperbole1;
+
+
 		//=================
 
 

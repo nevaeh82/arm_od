@@ -143,6 +143,35 @@ void MapClient1::init()
 //===============
 //alax
 
+//===============
+//alax
+
+void MapClient1::addHyperbole( int id, PwGisPointList* polyline,
+	const QTime timeMeasure, const QColor& color )
+{
+	MapFeature::Hyperbole* hyperbole = m_HyperboleList.value( id, NULL );
+
+	if( hyperbole != NULL ) {
+		//hyperbole->update( uav );
+	}
+	else {
+		QString nameHyperbole = timeMeasure.toString( "HH:MM:SS" );
+		hyperbole = m_factory->createHyperbole(
+			id,
+			nameHyperbole,
+			polyline,
+			timeMeasure );
+		m_HyperboleList.insert( id, hyperbole );
+	}
+
+
+	QMessageBox msgBox4;
+	msgBox4.setText("addHyperbole---4");
+	msgBox4.exec();
+}
+//===============
+
+/*
 void MapClient1::addHyperbole( int id, PwGisPointList* polyline,
 	const QTime timeMeasure, const QColor& color )
 {
@@ -161,6 +190,7 @@ msgBox.exec();
 				"yellow selectAndDrag" );
 
 }
+*/
 //===============
 
 

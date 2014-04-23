@@ -19,6 +19,7 @@
 #include "Map/Features/PelengatorPointFeature.h"
 #include "Map/Features/StationFeature.h"
 #include "Map/Features/CheckPointFeature.h"
+#include "Map/Features/HyperboleFeature.h"
 
 #include "NIIPP/Niipp.h"
 
@@ -39,6 +40,7 @@ public:
 	virtual Pelengator*   createPelengator( int id, const QPointF& position, double angle ) = 0;
 	virtual PelengatorPoint* createPelengatorPoint( const QString& name, const QPointF& position ) = 0;
 	virtual CheckPoint*   createCheckPoint( const QString& name, const QPointF& position ) = 0;
+	virtual Hyperbole*    createHyperbole( int id, const QString& name, PwGisPointList* polyline, const QTime timeMeasure ) = 0;
 };
 
 } // namespace MapFeature

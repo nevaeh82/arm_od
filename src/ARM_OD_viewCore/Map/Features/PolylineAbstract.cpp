@@ -2,9 +2,9 @@
 
 namespace MapFeature {
 
-PolylineAbstract::PolylineAbstract(IObjectsFactory* factory,
+PolylineAbstract::PolylineAbstract( IObjectsFactory* factory,
 	const QString& id, const QString& name,
-	const Path* polyline, QObject* parent )
+	PwGisPointList *polyline, QObject* parent )
 	: MapObjectAbstract( id, name, parent )
 	, m_factory( factory )
 {
@@ -18,7 +18,7 @@ PolylineAbstract::PolylineAbstract(IObjectsFactory* factory,
 //	delete m_polyline;
 //}
 
-void PolylineAbstract::setPolyline( const Path* polyline )
+void PolylineAbstract::setPolyline( PwGisPointList *polyline )
 {
 	PwGisPointList* points = m_polyline->points();
 	points->clear();
