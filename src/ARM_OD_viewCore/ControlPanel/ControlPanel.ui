@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>ControlPanel</class>
  <widget class="QWidget" name="ControlPanel">
+  <property name="enabled">
+   <bool>false</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -84,26 +87,9 @@
     </spacer>
    </item>
    <item>
-    <widget class="QLabel" name="label_3">
+    <widget class="QLabel" name="currentTimeLabel">
      <property name="text">
       <string>Current time:</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QDateTimeEdit" name="currentTE">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="dateTime">
-      <datetime>
-       <hour>0</hour>
-       <minute>0</minute>
-       <second>0</second>
-       <year>2014</year>
-       <month>1</month>
-       <day>1</day>
-      </datetime>
      </property>
     </widget>
    </item>

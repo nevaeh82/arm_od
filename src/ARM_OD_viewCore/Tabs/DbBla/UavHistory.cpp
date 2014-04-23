@@ -32,6 +32,8 @@ bool UavHistory::start(const QDateTime& startTime, const QDateTime& endTime)
 		return false;
 	}
 
+	sendStatus( IUavHistoryListener::Loading );
+
 	emit started(startTime, endTime);
 
 	QEventLoop loop;
@@ -238,7 +240,12 @@ void UavHistory::updateHistoryState()
 
 void UavHistory::sendStatus()
 {
+	sendStatus(getStatus());
+}
+
+void UavHistory::sendStatus(IUavHistoryListener::Status status)
+{
 	foreach (IUavHistoryListener* receiver, m_receiversList){
-		receiver->onStatusChanged( getStatus() );
+		receiver->onStatusChanged( status );
 	}
 }

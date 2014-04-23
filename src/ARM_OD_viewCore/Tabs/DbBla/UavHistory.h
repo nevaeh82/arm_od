@@ -48,6 +48,7 @@ protected slots:
 	void updateHistoryState();
 
 	void sendStatus();
+	void sendStatus(IUavHistoryListener::Status status);
 
 };
 

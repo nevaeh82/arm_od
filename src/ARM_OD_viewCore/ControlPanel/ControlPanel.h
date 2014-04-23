@@ -22,7 +22,10 @@ public:
 	QDateTime getStartDateTime()const;
 	QDateTime getEndDateTime()const;
 
+	void setStartDateTime(const QDateTime& date);
+	void setEndDateTime(const QDateTime& date);
 	void setCurrentDateTime(const QDateTime &value);
+	void setPlayingEnabled(bool enabled);
 
 signals:
 	void startPlayingHistorySignal();

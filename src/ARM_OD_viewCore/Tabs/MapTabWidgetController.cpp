@@ -43,6 +43,7 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 	m_treeDelegate = new TreeWidgetDelegate(this);
 
 	m_controlPanelController =  new ControlPanelController(this);
+	m_uavDbManager->getUavHistory()->registerReceiver( m_controlPanelController );
 
 	start();
 }
@@ -66,6 +67,7 @@ MapTabWidgetController::~MapTabWidgetController()
 	m_uavDbManager->getUavHistory()->deregisterReceiver(m_mapController);
 	m_uavDbManager->getUavHistory()->deregisterReceiver(m_allyUavTreeModel);
 	m_uavDbManager->getUavHistory()->deregisterReceiver(m_enemyUavTreeModel);
+	m_uavDbManager->getUavHistory()->deregisterReceiver( m_controlPanelController );
 }
 
 int MapTabWidgetController::init()

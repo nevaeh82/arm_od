@@ -9,7 +9,8 @@ class IUavHistoryListener : public IUavDbChangedListener
 		enum Status {
 			NotReady,
 			Ready,
-			Playing
+			Playing,
+			Loading
 		};
 
 		virtual ~IUavHistoryListener() {}

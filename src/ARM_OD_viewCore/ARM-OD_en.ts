@@ -39,45 +39,56 @@
 <context>
     <name>ControlPanel</name>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="14"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="17"/>
         <source>Form</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="20"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="23"/>
         <source>From:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="41"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="44"/>
         <source>To:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="62"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="65"/>
         <source>Start</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="69"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="72"/>
         <source>Stop</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="89"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="92"/>
         <source>Current time:</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="ControlPanel/ControlPanel.cpp" line="44"/>
+        <source>Current time: %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ControlPanelController</name>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="37"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="78"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="83"/>
         <source>Unable to play history</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="37"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="78"/>
+        <source>End date should be greater than start date.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="83"/>
         <source>Data for selected period do not exist.</source>
         <translation></translation>
     </message>
@@ -299,22 +310,22 @@
 <context>
     <name>MapTabWidgetController</name>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="28"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="29"/>
         <source>Property</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="28"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="29"/>
         <source>Value</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="181"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="184"/>
         <source>SPIP DD-1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="186"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="189"/>
         <source>SPIP DD-2</source>
         <translation></translation>
     </message>
@@ -480,7 +491,7 @@
     <message>
         <location filename="Map/Features/EnemyBplaFeature.cpp" line="17"/>
         <location filename="Map/Features/FriendBplaFeature.cpp" line="27"/>
-        <location filename="Tabs/DbBla/UavHistory.cpp" line="197"/>
+        <location filename="Tabs/DbBla/UavHistory.cpp" line="204"/>
         <source>%1-H</source>
         <translation></translation>
     </message>
@@ -572,31 +583,31 @@
     <name>UavTreeModel</name>
     <message>
         <location filename="Tabs/Tree/UavTreeModel.cpp" line="99"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="171"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="179"/>
         <source>lat</source>
         <translation></translation>
     </message>
     <message>
         <location filename="Tabs/Tree/UavTreeModel.cpp" line="105"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="172"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="180"/>
         <source>lon</source>
         <translation></translation>
     </message>
     <message>
         <location filename="Tabs/Tree/UavTreeModel.cpp" line="110"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="173"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="181"/>
         <source>alt</source>
         <translation></translation>
     </message>
     <message>
         <location filename="Tabs/Tree/UavTreeModel.cpp" line="115"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="175"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="183"/>
         <source>lat (ktr)</source>
         <translation>lat (KTR)</translation>
     </message>
     <message>
         <location filename="Tabs/Tree/UavTreeModel.cpp" line="120"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="176"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="184"/>
         <source>lon (ktr)</source>
         <translation>lon (KTR)</translation>
     </message>

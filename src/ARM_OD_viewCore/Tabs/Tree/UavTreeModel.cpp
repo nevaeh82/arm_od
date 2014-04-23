@@ -152,6 +152,14 @@ void UavTreeModel::onUavRemoved(const Uav &uav, const QString& uavRole)
 			continue;
 		}
 
+		// check is UAV record is loaded from history
+		// we do this by checking is name contains only digits
+		// because real UAVs should contains only numbers
+		bool isReal;
+		childItem->data().name.toInt( &isReal );
+
+		if (uav.historical == isReal) continue;
+
 		emit layoutAboutToBeChanged();
 		m_rootItem->removeChild(childItem);
 		emit layoutChanged();
@@ -170,7 +178,7 @@ void UavTreeModel::onUavInfoChanged(const UavInfo &uavInfo, const QString& uavRo
 	if (UAV_AUTOPILOT_SOURCE == uavInfo.source) {
 		onPropertyChanged(uavInfo, LAT_PROPERTY_ID, tr("lat"), number.sprintf( "%.4f", uavInfo.lat ));
 		onPropertyChanged(uavInfo, LON_PROPERTY_ID, tr("lon"), number.sprintf( "%.4f", uavInfo.lon ));
-		onPropertyChanged(uavInfo, ALT_PROPERTY_ID, tr("alt"), number.sprintf( "%.4f", uavInfo.alt ));
+		onPropertyChanged(uavInfo, ALT_PROPERTY_ID, tr("alt"), number.sprintf( "%d", uavInfo.alt ));
 	} else {
 		onPropertyChanged(uavInfo, LAT_KTR_PROPERTY_ID, tr("lat (ktr)"), number.sprintf( "%.4f", uavInfo.lat ));
 		onPropertyChanged(uavInfo, LON_KTR_PROPERTY_ID, tr("lon (ktr)"), number.sprintf( "%.4f", uavInfo.lon ));
@@ -214,6 +222,14 @@ void UavTreeModel::onPropertyChanged(const UavInfo &uavInfo, const uint propId, 
 		if (stationItem->data().id != inProperty.pid) {
 			continue;
 		}
+
+		// check is UAV record is loaded from history
+		// we do this by checking is name contains only digits
+		// because real UAVs should contains only numbers
+		bool isReal;
+		stationItem->data().name.toInt( &isReal );
+
+		if (uavInfo.historical == isReal) continue;
 
 		BaseItem item = stationItem->data();
 		item.state = (isInFlight ? 1 : 0);
