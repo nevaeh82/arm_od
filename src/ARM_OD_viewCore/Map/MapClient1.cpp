@@ -134,7 +134,7 @@ void MapClient1::init()
 
 void MapClient1::addHyperbole( int id, const QString& name,
 	PwGisPointList* polyline, const QTime timeMeasure,
-	const QString& color )
+	const QColor color )
 {
 	MapFeature::Hyperbole* hyperbole = m_HyperboleList.value( id, NULL );
 
@@ -143,6 +143,7 @@ void MapClient1::addHyperbole( int id, const QString& name,
 	}
 	else {
 		hyperbole = m_factory->createHyperbole(
+			m_pwWidget->mapProvider()->styleFactory(),
 			id,
 			name,
 			polyline,

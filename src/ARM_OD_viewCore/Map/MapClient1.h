@@ -106,7 +106,7 @@ public slots:
 
 	virtual void addHyperbole( int id, const QString& name,
 		PwGisPointList* polyline, const QTime timeMeasure,
-		const QString& color );
+		const QColor color );
 
 	virtual void removeAll();
 

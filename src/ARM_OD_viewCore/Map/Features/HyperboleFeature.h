@@ -2,10 +2,13 @@
 #define HYPERBOLEFEATURE_H
 
 #include <QTime>
+#include <QColor>
 #include "Map/IMapStyleManager.h"
 #include "Map/Features/PolylineAbstract.h"
 #include <PwGis/objects/Path.h>
-
+#include <PwGis/objects/PwGisStyle.h>
+#include <PwGis/objects/IStyleFactory.h>
+#include <PwGis/objects/LineStyle.h>
 
 namespace MapFeature {
 
@@ -16,14 +19,17 @@ class Hyperbole : public PolylineAbstract
 	friend class FeaturesFactory;
 
 protected:
+	IStyleFactory* m_styleFactory;
 	QString m_name;
 	QTime m_timeMeasure;
-	IMapStyleManager* m_styleManager;
 
-	Hyperbole(IObjectsFactory* factory,
-		IMapStyleManager* styleManager, const QString& id,
-		const QString& name, PwGisPointList* polyline,
-		const QTime timeMeasure, const QString& color );
+	Hyperbole(IStyleFactory* styleFactory,
+		IObjectsFactory* factory,
+		const QString& id,
+		const QString& name,
+		PwGisPointList* polyline,
+		const QTime timeMeasure,
+		const QColor color );
 
 public:
 	virtual ~Hyperbole();

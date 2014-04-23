@@ -16,6 +16,7 @@
 
 #include <PwGis/PwGisPointList.h>
 #include <QTime>
+#include <QColor>
 
 
 struct DataFly {
@@ -59,7 +60,7 @@ public:
 
 	virtual void addHyperbole( int id, const QString& name,
 		PwGisPointList* polyline, const QTime timeMeasure,
-		const QString& color ) = 0;
+		const QColor color = QColor::Invalid ) = 0;
 
 	virtual void removeAll() = 0;
 };
