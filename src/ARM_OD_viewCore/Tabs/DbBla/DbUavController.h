@@ -96,6 +96,8 @@ public:
 	UavRole getUavRoleByName(const QString&);
 	UavRole getUavRoleByCode(const QString&);
 
+	void moveToThread(QThread *thread);
+
 private:
 	int addDictionaryRecord(const QString& dictionary, const QString& name);
 	int getDictionaryRecord(const QString& dictionary, const QString& name);

@@ -4,6 +4,7 @@ DbUavManager::DbUavManager(int lifeTime, QObject *parent) :
 	QObject(parent)
 {
 	m_dbController = NULL;
+	m_uavHistory = NULL;
 
 	setLifeTime( lifeTime );
 
@@ -28,6 +29,10 @@ void DbUavManager::setDbController(IDbUavController* dbController)
 void DbUavManager::setLifeTime(int msecs)
 {
 	m_lifeTime = msecs < 1 ? MAX_LIFE_TIME : msecs;
+
+	if( m_uavHistory != NULL ) {
+		m_uavHistory->setLifeTime( m_lifeTime );
+	}
 }
 
 int DbUavManager::addUav(const Uav &uav)
@@ -117,7 +122,12 @@ int DbUavManager::getUavInfoByUavId(const uint uavId)
 
 IUavHistory* DbUavManager::getUavHistory()
 {
-	return m_dbController->getUavHistory();
+	if( m_uavHistory == NULL ) {
+		m_uavHistory = m_dbController->getUavHistory();
+		m_uavHistory->setLifeTime( m_lifeTime );
+	}
+
+	return m_uavHistory;
 }
 
 int DbUavManager::addDevice(const Devices& device)

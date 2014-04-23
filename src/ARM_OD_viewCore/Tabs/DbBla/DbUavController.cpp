@@ -1117,6 +1117,15 @@ UavRole DbUavController::getUavRoleByCode(const QString& code)
 	return uavRole;
 }
 
+void DbUavController::moveToThread(QThread* thread)
+{
+	if( m_uavHistory != NULL ) {
+		m_uavHistory->moveToThread( thread );
+	}
+
+	DbControllerBase::moveToThread( thread );
+}
+
 int DbUavController::addDictionaryRecord(const QString& dictionary, const QString& name)
 {
 	QMutexLocker locker(&m_addGetDictionaryMutex);

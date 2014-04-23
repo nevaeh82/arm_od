@@ -17,6 +17,7 @@ public:
 	virtual void stop() = 0;
 
 	virtual void setDatabase(const QSqlDatabase& database) = 0;
+	virtual void setLifeTime(int msecs) = 0;
 
 	virtual IUavHistoryListener::Status getStatus() = 0;
 };

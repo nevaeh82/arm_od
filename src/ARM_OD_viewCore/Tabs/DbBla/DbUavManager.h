@@ -37,6 +37,8 @@ private:
 
 	int m_lifeTime;
 
+	IUavHistory* m_uavHistory;
+
 public:
 	explicit DbUavManager(int lifeTime = MAX_LIFE_TIME, QObject *parent = 0);
 	virtual ~DbUavManager();

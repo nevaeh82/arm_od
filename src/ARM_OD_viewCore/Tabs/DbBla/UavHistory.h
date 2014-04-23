@@ -14,15 +14,16 @@ class UavHistory : public QObject, public IUavHistory
 
 private:
 	QTimer m_timer;
+
 	QSqlDatabase m_database;
 	QSqlQuery m_query;
 
-	QMap<int, QDateTime> m_uavLastDate;
-	QMap<int, QString> m_uavRoles;
+	QMap<uint, QDateTime> m_uavLastDate;
+	QMap<uint, QString> m_uavRoles;
+	QMap<uint, Uav> m_knownUavsList;
 
 	bool m_startResult;
-
-	QMap<uint, Uav> m_knownUavsList;
+	int m_lifeTime;
 
 public:
 	explicit UavHistory(QSqlDatabase database, QObject *parent = 0);
@@ -32,6 +33,7 @@ public:
 	void stop();
 
 	void setDatabase(const QSqlDatabase& database);
+	void setLifeTime(int msecs);
 
 	IUavHistoryListener::Status getStatus();
 

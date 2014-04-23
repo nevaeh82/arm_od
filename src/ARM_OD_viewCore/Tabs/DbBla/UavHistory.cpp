@@ -6,11 +6,13 @@
 
 #include "UavHistory.h"
 #include "Tabs/DbBla/Defines.h"
+#include "Tabs/DbBla/DbUavManager.h"
 
 UavHistory::UavHistory(QSqlDatabase database, QObject *parent)
 	: QObject(parent)
 {
 	m_timer.setInterval( 1000 );
+	m_lifeTime = MAX_LIFE_TIME;
 
 	setDatabase( database );
 
@@ -43,8 +45,6 @@ bool UavHistory::start(const QDateTime& startTime, const QDateTime& endTime)
 
 void UavHistory::stop()
 {
-	/// \todo Call receivers method about history playback is stopped
-
 	// send remove message for all UAVs
 	foreach( int id, m_knownUavsList.keys() ) {
 		Uav uav;
@@ -59,7 +59,7 @@ void UavHistory::stop()
 	}
 
 	m_timer.stop();
-	m_query.finish();
+	//m_query.finish();
 	m_knownUavsList.clear();
 	m_uavRoles.clear();
 	m_uavLastDate.clear();
@@ -95,6 +95,11 @@ void UavHistory::setDatabase(const QSqlDatabase& database)
 					 " ORDER BY `datetime`" );
 
 	sendStatus();
+}
+
+void UavHistory::setLifeTime(int msecs)
+{
+	m_lifeTime = msecs;
 }
 
 IUavHistoryListener::Status UavHistory::getStatus()
@@ -213,7 +218,7 @@ void UavHistory::updateHistoryState()
 
 	// send remove message about outdated UAVs
 	foreach( int id, m_uavLastDate.keys() ) {
-		if( m_uavLastDate.value( id ).msecsTo( time ) < 600000 ) continue;
+		if( m_uavLastDate.value( id ).msecsTo( time ) < m_lifeTime ) continue;
 
 		Uav uav;
 		uav.uavId = id;
