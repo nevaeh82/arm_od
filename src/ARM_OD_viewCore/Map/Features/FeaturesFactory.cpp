@@ -71,13 +71,17 @@ CheckPoint* FeaturesFactory::createCheckPoint(const QString& name, const QPointF
 }
 
 Hyperbole* FeaturesFactory::createHyperbole( int id, const QString& name,
-	PwGisPointList* polyline, const QTime timeMeasure )
+	PwGisPointList* polyline, const QTime timeMeasure,
+	const QString& color )
 {
-	return new Hyperbole( m_provider->objectsFactory(),
+	return new Hyperbole(
+		m_provider->objectsFactory(),
+		m_styleManager,
 		QString::number( id ),
 		name,
 		polyline,
-		timeMeasure );
+		timeMeasure,
+		color );
 }
 
 } // namespace MapFeature

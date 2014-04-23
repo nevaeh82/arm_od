@@ -134,7 +134,7 @@ void MapClient1::init()
 
 void MapClient1::addHyperbole( int id, const QString& name,
 	PwGisPointList* polyline, const QTime timeMeasure,
-	const QColor& color )
+	const QString& color )
 {
 	MapFeature::Hyperbole* hyperbole = m_HyperboleList.value( id, NULL );
 
@@ -146,7 +146,8 @@ void MapClient1::addHyperbole( int id, const QString& name,
 			id,
 			name,
 			polyline,
-			timeMeasure );
+			timeMeasure,
+			color );
 		m_HyperboleList.insert( id, hyperbole );
 	}
 }

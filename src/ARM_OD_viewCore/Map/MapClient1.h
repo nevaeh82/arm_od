@@ -28,12 +28,6 @@
 #include "Map/IMapStyleManager.h"
 #include "Map/Features/FeaturesFactory.h"
 
-//=======================
-//alax
-//#include "Map/Features/PolylineAbstract.h"
-#include "Map/Features/HyperboleFeature.h"
-//=======================
-
 
 class MapClient1 : public QObject, public IMapClient
 {
@@ -112,7 +106,7 @@ public slots:
 
 	virtual void addHyperbole( int id, const QString& name,
 		PwGisPointList* polyline, const QTime timeMeasure,
-		const QColor& color );
+		const QString& color );
 
 	virtual void removeAll();
 
