@@ -324,7 +324,7 @@ bool DbUavController::getUavInfoByUavId(const uint uavId, QList<UavInfo> &uavInf
 		info.statusId = query.value(9).toInt();
 		info.dateTime = QDateTime::fromString(query.value(10).toString());
 		//?
-		info.sourceType = UavSlicesSource; //Set by default. No column in database
+		info.sourceType = UavAutopilotSource; //Set by default. No column in database
 
 		uavInfoList.append(info);
 	}

@@ -304,38 +304,6 @@ void MapClient1::addPerehvatData( int bla_id, int bpla_id, QList<UavInfo>& blaIn
 	double bearing = tempInfo.yaw;
 	ds << bearing;
 
-//	QPointF point1;
-//	point1.setY(60.01456666666667);
-//	point1.setX(30.0482);
-//	ds1 << point1;
-//	double alt1 = 1805;
-//	ds1 << alt1;
-//	double speed1 = 0;
-//	ds1 << speed1;
-//	double course1 = 1;
-//	ds1 << course1;
-//	int state1 = 1;
-//	ds1 << state1;
-
-//	int time = 1;
-//	ds << time;
-//	int state = 2;
-//	ds << state;
-//	QPointF sko;
-//	sko.setY(60.17523333333333);
-//	sko.setX(30.9181);
-//	ds << sko;
-//	QVector<QPointF> track;
-//	//track.append(point1);
-//	track.append(sko);
-//	ds << track;
-//	double speed = 1;
-//	ds << speed;
-//	double alt = 1700;
-//	ds << alt;
-//	double bearing = 1;
-//	ds << bearing;
-
 	m_interception->set(bla_id, bpla_id, per, target);
 }
 
