@@ -100,13 +100,13 @@ void Map::onMapReady()
 			QTime::currentTime(), QColor::fromRgb( 255, 0, 0 ) );
 
 		//2
-		//PwGisPointList* hyperbole2 = new PwGisPointList();
-		//hyperbole2->append( new PwGisLonLat( 30.29749, 59.90849 ) );
-		//hyperbole2->append( new PwGisLonLat( 30.31912, 59.90832 ) );
-		//hyperbole2->append( new PwGisLonLat( 30.34349, 59.91676 ) );
+		PwGisPointList* hyperbole2 = new PwGisPointList();
+		hyperbole2->append( new PwGisLonLat( 30.29749, 59.90849 ) );
+		hyperbole2->append( new PwGisLonLat( 30.31912, 59.90832 ) );
+		hyperbole2->append( new PwGisLonLat( 30.34349, 59.91676 ) );
 		//hyperbole2->append( new PwGisLonLat( 30.39499, 59.91899 ) );
-		//it.value()->addHyperbole( 1, hyperbole2,
-		//	QTime::currentTime(), QColor::fromRgb( 0, 255, 0 ) );
+		it.value()->addHyperbole( 1, hyperbole2,
+			QTime::currentTime(), QColor::fromRgb( 0, 255, 0 ) );
 
 		//3
 		//PwGisPointList* hyperbole3 = new PwGisPointList();
@@ -119,7 +119,7 @@ void Map::onMapReady()
 		//	QTime::currentTime(), QColor::fromRgb( 0, 0, 255 ) );
 
 		delete hyperbole1;
-		//delete hyperbole2;
+		delete hyperbole2;
 		//delete hyperbole3;
 
 		//=================

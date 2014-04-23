@@ -7,7 +7,6 @@
 #include <PwGis/objects/IObjectsFactory.h>
 #include <PwGis/objects/PwGisStyle.h>
 #include <PwGis/objects/MapObjectAbstract.h>
-#include <PwGis/objects/Path.h>
 
 
 namespace MapFeature {
@@ -21,22 +20,21 @@ class PolylineAbstract : public MapObjectAbstract
 
 protected:
 	IObjectsFactory* m_factory;
-	Path* m_polyline;
+	PwGisPointList* m_polyline;
 
 	PolylineAbstract( IObjectsFactory* factory, const QString& id,
 		const QString& name, PwGisPointList* polyline,
 		QObject* parent = 0 );
 
 public:
-	virtual ~PolylineAbstract() {}
+	virtual ~PolylineAbstract();
 
 	virtual void setPolyline( PwGisPointList* polyline );
-	virtual Path* polyline();
+	virtual PwGisPointList* polyline();
 
 public slots:
 	virtual void updateMap() = 0;
 	virtual void removeFromMap() = 0;
-
 };
 
 } // namespace MapFeature

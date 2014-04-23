@@ -5,15 +5,8 @@
 #include "Map/MapStyleManager.h"
 #include "Map/MapClient1.h"
 
-
-//====================
-//alax
-#include <QMessageBox>
-//====================
-
-
-
 #define clearObjectsList(type, map) foreach( type* item, map ) { delete item; } map.clear();
+
 
 MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 	: QObject( parent )
@@ -139,31 +132,15 @@ void MapClient1::init()
 			 this, SLOT( addPeleng( int, int, double, double, double ) ) );
 }
 
-
-//===============
-//alax
-
 void MapClient1::addHyperbole( int id, PwGisPointList* polyline,
 	const QTime timeMeasure, const QColor& color )
 {
 	MapFeature::Hyperbole* hyperbole = m_HyperboleList.value( id, NULL );
 
 	if( hyperbole != NULL ) {
-		//hyperbole->update( uav );
-
-
-		//QMessageBox msgBox41;
-		//msgBox41.setText("update new1");
-		//msgBox41.exec();
-
+		hyperbole->updatePolyline( polyline );
 	}
 	else {
-
-		//QMessageBox msgBox41;
-		//msgBox41.setText("add new1");
-		//msgBox41.exec();
-
-
 		QString nameHyperbole = timeMeasure.toString( "HH:MM:SS" );
 		hyperbole = m_factory->createHyperbole(
 			id,
@@ -173,10 +150,6 @@ void MapClient1::addHyperbole( int id, PwGisPointList* polyline,
 		m_HyperboleList.insert( id, hyperbole );
 	}
 }
-
-
-//==============================
-
 
 void MapClient1::showLayer( int index, bool state )
 {
