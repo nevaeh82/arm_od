@@ -14,6 +14,11 @@
 #include "NIIPP/Niipp.h"
 #include "Tabs/DbBla/Defines.h"
 
+#include <PwGis/PwGisPointList.h>
+#include <QTime>
+#include <QColor>
+
+
 struct DataFly {
 	QString height;
 	QString latitute;
@@ -22,6 +27,7 @@ struct DataFly {
 	QString namePlane;
 	QString course;
 };
+
 
 class IMapClient
 {
@@ -40,6 +46,7 @@ public:
 	virtual void addAis( QMap<int, QVector<QString> > vec ) = 0;
 
 	virtual void addNiippPoint( const QPointF& point ) = 0;
+	virtual void removeNiippPoint() = 0;
 
 	virtual void updateNiippPowerZone( const Niipp& niipp ) = 0;
 
@@ -50,7 +57,8 @@ public:
 
 	virtual void addPerehvatPoint( int blaId, int bplaId, QPointF coord, float hgt, float radius, int time, float intcCourse, float intcSpeed ) = 0;
 
-	virtual void removeNiippPoint() = 0;
+	virtual void addHyperbole( int id, const QVector<QPointF>& polyline, const QTime time, const QColor color = QColor::Invalid ) = 0;
+
 	virtual void removeAll() = 0;
 };
 

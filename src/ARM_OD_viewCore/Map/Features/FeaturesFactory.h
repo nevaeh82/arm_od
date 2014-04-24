@@ -8,6 +8,7 @@
 #include "Map/Features/IFeaturesFactory.h"
 #include "Map/IMapStyleManager.h"
 
+
 namespace MapFeature {
 
 class FeaturesFactory : public QObject, public IFeaturesFactory
@@ -32,6 +33,7 @@ public:
 	virtual Pelengator*   createPelengator(int id, const QPointF& position, double angle );
 	virtual PelengatorPoint* createPelengatorPoint( const QString& name, const QPointF& position );
 	virtual CheckPoint*   createCheckPoint( const QString& name, const QPointF& position );
+	virtual Hyperbole*    createHyperbole( const QVector<QPointF>& polyline, const QTime time, const QColor color = QColor::Invalid );
 };
 
 } // namespace MapFeature

@@ -28,6 +28,7 @@
 #include "Map/IMapStyleManager.h"
 #include "Map/Features/FeaturesFactory.h"
 
+
 class MapClient1 : public QObject, public IMapClient
 {
 	Q_OBJECT
@@ -56,6 +57,7 @@ private:
 	QMap<QString, MapFeature::Ais*> m_aisList;
 	QMap<QString, MapFeature::Station*> m_stationList;
 	QList<MapFeature::CheckPoint*> m_checkPointsList;
+	QMap<int, MapFeature::Hyperbole*> m_hyperboleList;
 
 	QTimer m_bplaRedrawTimer;
 
@@ -104,6 +106,9 @@ public slots:
 	virtual void updatePeleng( int id, int idPost, double lat, double lon, double direction );
 
 	virtual void removeNiippPoint();
+
+	virtual void addHyperbole( int id, const QVector<QPointF>& polyline, const QTime time, const QColor color  = QColor::Invalid );
+
 	virtual void removeAll();
 
 private slots:

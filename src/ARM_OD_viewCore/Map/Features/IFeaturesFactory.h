@@ -4,9 +4,11 @@
 #include <QString>
 #include <QPointF>
 #include <QVector>
+#include <QColor>
 
 #include <PwGis/objects/MapObjectsFactory.h>
 
+#include "NIIPP/Niipp.h"
 #include "Tabs/DbBla/Defines.h"
 
 #include "Map/Features/AisFeature.h"
@@ -19,8 +21,8 @@
 #include "Map/Features/PelengatorPointFeature.h"
 #include "Map/Features/StationFeature.h"
 #include "Map/Features/CheckPointFeature.h"
+#include "Map/Features/HyperboleFeature.h"
 
-#include "NIIPP/Niipp.h"
 
 namespace MapFeature {
 
@@ -39,6 +41,7 @@ public:
 	virtual Pelengator*   createPelengator( int id, const QPointF& position, double angle ) = 0;
 	virtual PelengatorPoint* createPelengatorPoint( const QString& name, const QPointF& position ) = 0;
 	virtual CheckPoint*   createCheckPoint( const QString& name, const QPointF& position ) = 0;
+	virtual Hyperbole*    createHyperbole( const QVector<QPointF>& polyline, const QTime time, const QColor color = QColor::Invalid ) = 0;
 };
 
 } // namespace MapFeature

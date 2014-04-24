@@ -70,4 +70,15 @@ CheckPoint* FeaturesFactory::createCheckPoint(const QString& name, const QPointF
 								name, position );
 }
 
+Hyperbole* FeaturesFactory::createHyperbole(const QVector<QPointF>& polyline, const QTime time, const QColor color)
+{
+	return new Hyperbole(
+		m_provider->styleFactory(),
+		m_provider->objectsFactory(),
+		m_provider->idGenerator()->GetNewID(),
+		polyline,
+		time,
+		color );
+}
+
 } // namespace MapFeature

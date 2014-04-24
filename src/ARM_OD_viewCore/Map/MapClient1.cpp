@@ -7,6 +7,7 @@
 
 #define clearObjectsList(type, map) foreach( type* item, map ) { delete item; } map.clear();
 
+
 MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 	: QObject( parent )
 	, m_mux( QMutex::Recursive )
@@ -119,6 +120,7 @@ void MapClient1::init()
 	m_styleManager->createAisStyle( m_mapLayers.value(11) )->apply();
 	m_styleManager->createNiippPointStyle( m_mapLayers.value(12) )->apply();
 	m_styleManager->createNiippStyle( m_mapLayers.value(13) )->apply();
+	m_styleManager->createHyperboleStyle( m_mapLayers.value(14) )->apply();
 	m_styleManager->createHistoryStyle( m_mapLayers.value(15) )->apply();
 
 	//addNiippLayer
@@ -129,6 +131,20 @@ void MapClient1::init()
 
 	connect( this, SIGNAL( pelengUpdated( int, int, double, double, double ) ),
 			 this, SLOT( addPeleng( int, int, double, double, double ) ) );
+}
+
+void MapClient1::addHyperbole(int id, const QVector<QPointF>& polyline, const QTime time, const QColor color )
+{
+	MapFeature::Hyperbole* hyperbole = m_hyperboleList.value( id, NULL );
+
+	if( hyperbole != NULL ) {
+		hyperbole->updatePath( polyline, time );
+	}
+	else {
+		hyperbole = m_factory->createHyperbole( polyline, time, color );
+
+		m_hyperboleList.insert( id, hyperbole );
+	}
 }
 
 void MapClient1::showLayer( int index, bool state )
@@ -174,6 +190,7 @@ void MapClient1::removeAll()
 	clearObjectsList( MapFeature::Interception, m_interceptionList );
 	clearObjectsList( MapFeature::Station, m_stationList );
 	clearObjectsList( MapFeature::CheckPoint, m_checkPointsList );
+	clearObjectsList( MapFeature::Hyperbole, m_hyperboleList );
 }
 
 void MapClient1::addInterception(int blaId, int bplaId, QList<UavInfo>& blaInfoList, QList<UavInfo>& bplaInfoList )

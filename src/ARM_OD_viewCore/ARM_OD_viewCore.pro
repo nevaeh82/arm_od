@@ -101,7 +101,9 @@ HEADERS += \
     Interfaces/IUavHistory.h \
     ControlPanel/ControlPanelController.h \
     Tabs/DbBla/UavHistory.h \
-    Interfaces/IUavHistoryListener.h
+    Interfaces/IUavHistoryListener.h \
+    Map/Features/PolylineAbstract.h \
+    Map/Features/HyperboleFeature.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -146,7 +148,9 @@ SOURCES += \
     Map/Features/CheckPointFeature.cpp \
     Map/Features/BplaAbstractFeature.cpp \
     ControlPanel/ControlPanelController.cpp \
-    Tabs/DbBla/UavHistory.cpp
+    Tabs/DbBla/UavHistory.cpp \
+    Map/Features/PolylineAbstract.cpp \
+    Map/Features/HyperboleFeature.cpp
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \

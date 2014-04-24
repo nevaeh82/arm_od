@@ -266,6 +266,21 @@ PwGisStyle* MapStyleManager::createHistoryStyle(const QString& layerId)
 	return style;
 }
 
+PwGisStyle* MapStyleManager::createHyperboleStyle( const QString& layerId )
+{
+	bool exists;
+	PwGisStyle* style = createStyle( MAP_STYLE_NAME_HYPERBOLE, &exists );
+
+	if( !exists ) {
+		style->setProperty( PwGisStyle::mapFontColor, "black" );
+		style->setProperty( PwGisStyle::mapFontSize, "10pt" );
+		style->setProperty( PwGisStyle::strokeColor, "green" );
+		style->setProperty( PwGisStyle::layer, layerId );
+	}
+
+	return style;
+}
+
 PwGisStyle* MapStyleManager::createStyle(const QString& name, bool* exists)
 {
 	PwGisStyle* style = getStyle( name, false );
