@@ -19,7 +19,6 @@ class Hyperbole : public PolylineAbstract
 	friend class FeaturesFactory;
 
 protected:
-	IStyleFactory* m_styleFactory;
 	QTime m_timeMeasure;
 
 	Hyperbole(

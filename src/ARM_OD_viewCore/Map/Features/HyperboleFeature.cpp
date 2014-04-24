@@ -12,14 +12,13 @@ Hyperbole::Hyperbole(
 	const QTime timeMeasure,
 	const QColor color )
 	: PolylineAbstract( factory, id, name, polyline )
-	, m_styleFactory( styleFactory )
 	, m_timeMeasure( timeMeasure )
 {
 
 	m_path->addStyleByName( MAP_STYLE_NAME_HYPERBOLE );
 
 	if ( color.isValid() ) {
-		PwGisStyle* style = m_styleFactory->createStyle();
+		PwGisStyle* style = styleFactory->createStyle();
 		style->setProperty( PwGisStyle::strokeColor, color.name() );
 		style->apply();
 		m_path->addStyle( style );
