@@ -70,17 +70,14 @@ CheckPoint* FeaturesFactory::createCheckPoint(const QString& name, const QPointF
 								name, position );
 }
 
-Hyperbole* FeaturesFactory::createHyperbole( int id,
-	PwGisPointList* polyline, const QTime timeMeasure,
-	const QColor color )
+Hyperbole* FeaturesFactory::createHyperbole(const QVector<QPointF>& polyline, const QTime time, const QColor color)
 {
 	return new Hyperbole(
 		m_provider->styleFactory(),
 		m_provider->objectsFactory(),
-		QString::number( id ),
-		"hyperbole"+QString::number( id ),
+		m_provider->idGenerator()->GetNewID(),
 		polyline,
-		timeMeasure,
+		time,
 		color );
 }
 

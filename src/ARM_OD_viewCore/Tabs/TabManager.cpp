@@ -53,6 +53,8 @@ TabManager::~TabManager()
 	emit finished();
 
 	clearAllInformation();
+
+	delete m_dbUavManager;
 }
 
 void TabManager::send_data_niipp_control(int id, QByteArray ba)

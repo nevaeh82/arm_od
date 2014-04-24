@@ -2,10 +2,13 @@
 #define POLYLINEABSTRACT_H
 
 #include <QString>
+#include <QVector>
+#include <QPointF>
+
 #include <PwGis/PwGisLonLat.h>
 #include <PwGis/PwGisPointList.h>
+
 #include <PwGis/objects/IObjectsFactory.h>
-#include <PwGis/objects/PwGisStyle.h>
 #include <PwGis/objects/MapObjectAbstract.h>
 #include <PwGis/objects/Path.h>
 
@@ -23,22 +26,18 @@ protected:
 	IObjectsFactory* m_factory;
 	Path* m_path;
 
-	PolylineAbstract(
-		IObjectsFactory* factory,
-		const QString& id,
-		const QString& name,
-		PwGisPointList* polyline,
-		QObject* parent = 0 );
+	PolylineAbstract(IObjectsFactory* factory, const QString& id, const QString& name,
+					 const QVector<QPointF>& polyline, QObject* parent = 0);
 
 public:
 	virtual ~PolylineAbstract();
 
-	virtual void setPolyline( PwGisPointList* polyline );
-	virtual PwGisPointList* polyline();
+	virtual void setPolyline(const QVector<QPointF>& polyline);
+	virtual QVector<QPointF> polyline();
 
 public slots:
-	virtual void updateMap() = 0;
-	virtual void removeFromMap() = 0;
+	virtual void updateMap();
+	virtual void removeFromMap();
 };
 
 } // namespace MapFeature

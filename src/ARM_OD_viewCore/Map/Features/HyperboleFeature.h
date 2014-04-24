@@ -19,26 +19,22 @@ class Hyperbole : public PolylineAbstract
 	friend class FeaturesFactory;
 
 protected:
+	PwGisStyle* m_customStyle;
 	QTime m_timeMeasure;
 
-	Hyperbole(
-		IStyleFactory* styleFactory,
+	Hyperbole(IStyleFactory* styleFactory,
 		IObjectsFactory* factory,
 		const QString& id,
-		const QString& name,
-		PwGisPointList* polyline,
+		const QVector<QPointF>& polyline,
 		const QTime timeMeasure,
 		const QColor color );
 
 public:
 	virtual ~Hyperbole();
 
-	virtual void updateMap();
-	virtual void removeFromMap();
-
 	QTime timeMeasure() const { return m_timeMeasure; }
 
-	void updatePath( PwGisPointList* polyline, const QTime timeMeasure );
+	void updatePath( const QVector<QPointF>& polyline, const QTime timeMeasure );
 
 };
 

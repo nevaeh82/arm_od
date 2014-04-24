@@ -121,6 +121,30 @@ void MapClient1::init()
 	m_styleManager->createNiippStyle( m_mapLayers.value(13) )->apply();
 	m_styleManager->createHyperboleStyle( m_mapLayers.value(14) )->apply();
 
+	//1
+	QVector<QPointF> hyperbole1;
+	hyperbole1 << QPointF( 30.25364, 59.98209 );
+	hyperbole1 << QPointF( 30.32118, 59.97882 );
+	hyperbole1 << QPointF( 30.34521, 59.95236 );
+	hyperbole1 << QPointF( 30.39877, 59.95528 );
+	addHyperbole( 1, hyperbole1, QTime::currentTime() );
+
+	//2
+	QVector<QPointF> hyperbole2;
+	hyperbole2 << QPointF( 30.29749, 59.90849 );
+	hyperbole2 << QPointF( 30.31912, 59.90832 );
+	hyperbole2 << QPointF( 30.34349, 59.91676 );
+	hyperbole2 << QPointF( 30.39499, 59.91899 );
+	addHyperbole( 2, hyperbole2, QTime::currentTime(), QColor::fromRgb( 255,0,0 ) );
+
+	//3
+	QVector<QPointF> hyperbole3;
+	hyperbole3 << QPointF( 30.49215, 59.89661 );
+	hyperbole3 << QPointF( 30.46984, 59.92020 );
+	hyperbole3 << QPointF( 30.47842, 59.94497 );
+	hyperbole3 << QPointF( 30.45645, 59.96542 );
+	hyperbole3 << QPointF( 30.45782, 59.98810 );
+	addHyperbole( 3, hyperbole3, QTime::currentTime(), QColor::fromRgb( 255, 0, 255 ) );
 
 	//addNiippLayer
 	m_pwWidget->mapProvider()->layerManager()->addVectorLayer( "NIIPP", tr("NIIPP") );
@@ -132,21 +156,17 @@ void MapClient1::init()
 			 this, SLOT( addPeleng( int, int, double, double, double ) ) );
 }
 
-void MapClient1::addHyperbole( int id, PwGisPointList* polyline,
-	const QTime timeMeasure, const QColor color )
+void MapClient1::addHyperbole(int id, const QVector<QPointF>& polyline, const QTime time, const QColor color )
 {
-	MapFeature::Hyperbole* hyperbole = m_HyperboleList.value( id, NULL );
+	MapFeature::Hyperbole* hyperbole = m_hyperboleList.value( id, NULL );
 
 	if( hyperbole != NULL ) {
-		hyperbole->updatePath( polyline, timeMeasure );
+		hyperbole->updatePath( polyline, time );
 	}
 	else {
-		hyperbole = m_factory->createHyperbole(
-			id,
-			polyline,
-			timeMeasure,
-			color );
-		m_HyperboleList.insert( id, hyperbole );
+		hyperbole = m_factory->createHyperbole( polyline, time, color );
+
+		m_hyperboleList.insert( id, hyperbole );
 	}
 }
 
@@ -193,7 +213,7 @@ void MapClient1::removeAll()
 	clearObjectsList( MapFeature::Interception, m_interceptionList );
 	clearObjectsList( MapFeature::Station, m_stationList );
 	clearObjectsList( MapFeature::CheckPoint, m_checkPointsList );
-	clearObjectsList( MapFeature::Hyperbole, m_HyperboleList );
+	clearObjectsList( MapFeature::Hyperbole, m_hyperboleList );
 }
 
 void MapClient1::addInterception(int blaId, int bplaId )

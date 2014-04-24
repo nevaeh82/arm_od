@@ -7,48 +7,41 @@ Hyperbole::Hyperbole(
 	IStyleFactory* styleFactory,
 	IObjectsFactory* factory,
 	const QString& id,
-	const QString& name,
-	PwGisPointList* polyline,
+	const QVector<QPointF>& polyline,
 	const QTime timeMeasure,
 	const QColor color )
-	: PolylineAbstract( factory, id, name, polyline )
+	: PolylineAbstract( factory, id, "", polyline )
+	, m_customStyle( NULL )
 	, m_timeMeasure( timeMeasure )
 {
-
 	m_path->addStyleByName( MAP_STYLE_NAME_HYPERBOLE );
 
+	// adds custom color
 	if ( color.isValid() ) {
-		PwGisStyle* style = styleFactory->createStyle();
-		style->setProperty( PwGisStyle::strokeColor, color.name() );
-		style->apply();
-		m_path->addStyle( style );
+		m_customStyle = styleFactory->createStyle();
+		m_customStyle->setProperty( PwGisStyle::strokeColor, color.name() );
+		m_customStyle->apply();
+
+		m_path->addStyle( m_customStyle );
 	}
 
-	this->updatePath( polyline, timeMeasure );
+	updatePath( polyline, timeMeasure );
 }
 
 Hyperbole::~Hyperbole()
 {
+	if( m_customStyle != NULL ) {
+		delete m_customStyle;
+	}
 }
 
-void Hyperbole::updatePath( PwGisPointList* polyline, const QTime timeMeasure )
+void Hyperbole::updatePath(const QVector<QPointF>& polyline, const QTime timeMeasure )
 {
 	PolylineAbstract::setPolyline( polyline );
 
-	QString hyperboleToolTip = timeMeasure.toString( "hh:mm:ss" );
-	m_path->setToolTip( hyperboleToolTip );
+	m_path->setToolTip( timeMeasure.toString( Qt::SystemLocaleShortDate ) );
 
-	this->updateMap();
-}
-
-void Hyperbole::updateMap()
-{
-	m_path->updateMap();
-}
-
-void Hyperbole::removeFromMap()
-{
-	m_path->removeFromMap();
+	updateMap();
 }
 
 } // namespace MapFeature

@@ -3,17 +3,13 @@
 
 namespace MapFeature {
 
-PolylineAbstract::PolylineAbstract(
-	IObjectsFactory* factory,
-	const QString& id,
-	const QString& name,
-	PwGisPointList *polyline,
-	QObject* parent )
+PolylineAbstract::PolylineAbstract(IObjectsFactory* factory, const QString& id, const QString& name,
+	const QVector<QPointF>& polyline, QObject* parent)
 	: MapObjectAbstract( id, name, parent )
 	, m_factory( factory )
 {
-	m_path = factory->createPath();
-	this->setPolyline( polyline );
+	m_path = m_factory->createPath();
+	setPolyline( polyline );
 }
 
 PolylineAbstract::~PolylineAbstract()
@@ -22,19 +18,35 @@ PolylineAbstract::~PolylineAbstract()
 	delete m_path;
 }
 
-void PolylineAbstract::setPolyline( PwGisPointList* polyline )
+void PolylineAbstract::setPolyline(const QVector<QPointF>& polyline)
 {
 	PwGisPointList* points = m_path->points();
 	points->clear();
-	for( int i = 0; i < polyline->count(); ++i ) {
-		points->append( new PwGisLonLat( polyline->at(i)->lon,
-			polyline->at(i)->lat ) );
+
+	foreach( QPointF point, polyline ) {
+		points->append( new PwGisLonLat( point.x(), point.y() ) );
 	}
 }
 
-PwGisPointList* PolylineAbstract::polyline()
+QVector<QPointF> PolylineAbstract::polyline()
 {
-	return m_path->points();
+	QVector<QPointF> vector;
+
+	for( int i=0; i < m_path->points()->getCount(); i++ ) {
+		vector << QPointF( m_path->points()->at(i)->lon, m_path->points()->at(i)->lat );
+	}
+
+	return vector;
+}
+
+void PolylineAbstract::updateMap()
+{
+	m_path->updateMap();
+}
+
+void PolylineAbstract::removeFromMap()
+{
+	m_path->removeFromMap();
 }
 
 } // namespace MapFeature
