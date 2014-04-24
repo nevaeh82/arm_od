@@ -15,17 +15,14 @@ Hyperbole::Hyperbole(
 	, m_styleFactory( styleFactory )
 	, m_timeMeasure( timeMeasure )
 {
+
+	m_path->addStyleByName( MAP_STYLE_NAME_HYPERBOLE );
+
 	if ( color.isValid() ) {
 		PwGisStyle* style = m_styleFactory->createStyle();
-		style->setProperty( PwGisStyle::mapFontColor, "black" );
-		style->setProperty( PwGisStyle::mapFontSize, "10pt" );
 		style->setProperty( PwGisStyle::strokeColor, color.name() );
-		style->setProperty( PwGisStyle::layer, "Hyperbole" );
 		style->apply();
 		m_path->addStyle( style );
-	}
-	else {
-		m_path->addStyleByName( MAP_STYLE_NAME_HYPERBOLE );
 	}
 
 	this->updatePath( polyline, timeMeasure );
