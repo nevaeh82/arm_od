@@ -61,7 +61,7 @@ void UavHistory::stop()
 	}
 
 	m_timer.stop();
-	//m_query.finish();
+	m_query.finish();
 	m_knownUavsList.clear();
 	m_uavRoles.clear();
 	m_uavLastDate.clear();
@@ -80,6 +80,7 @@ void UavHistory::setDatabase(const QSqlDatabase& database)
 	}
 
 	m_database = QSqlDatabase::cloneDatabase( database, "UAV history" );
+	m_database.setConnectOptions( "MYSQL_OPT_RECONNECT=1" );
 
 	if( !m_database.open() ) {
 		sendStatus();
