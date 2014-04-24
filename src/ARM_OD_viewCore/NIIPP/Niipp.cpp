@@ -154,11 +154,11 @@ void Niipp::changeValuePower(int value)
 {
 	switch( m_antenaType ) {
 		case 0:
-			m_radiusSector = m_zoneDir[value];
+            m_radiusSector = m_zoneDir[value] * 1000;
 			break;
 
 		case 1:
-			m_radiusCircle = m_zone[value];
+            m_radiusCircle = m_zone[value] * 1000;
 			break;
 	}
 }

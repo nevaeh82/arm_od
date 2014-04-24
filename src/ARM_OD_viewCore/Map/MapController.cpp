@@ -183,58 +183,7 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 		ds >> map;
 
 		client->addAis(map);
-	} else if( method == RPC_SLOT_SERVER_SEND_NIIPP_DATA ) {
-		QDataStream ds(&data, QIODevice::ReadOnly);
-
-		int id;
-		QDateTime dt;
-		QTime time;
-		int mode;
-		QPointF point;
-		QString NS;
-		QString EW;
-		int alt;
-		int zone;
-		int course;
-		int angle;
-
-		ds >> id;
-		ds >> dt;
-		ds >> time;
-		ds >> mode;
-		ds >> point;
-		ds >> NS;
-		ds >> EW;
-		ds >> alt;
-		ds >> zone;
-		ds >> course;
-		ds >> angle;
-
-		QPointF latlon;
-		switch( id ) {
-			case 100:
-				latlon.setX(42.511183);
-				latlon.setY(41.6905);
-				break;
-
-			case 101:
-				latlon.setX(42.634183);
-				latlon.setY(41.912167);
-				break;
-		}
-
-		Niipp niipp( id, QString::number( id ), latlon, NULL );
-		niipp.setAntennaType( mode == 1 ? 1 : 0 );
-		niipp.changeValuePower( zone );
-
-		client->updateNiippPowerZone( niipp );
-
-		/// TODO: recheck following. WTF?!
-//		QByteArray ba1;
-//		QDataStream ds2(&ba1, QIODevice::WriteOnly);
-//		ds2 << mode;
-//		m_tabManager->send_data_niipp_control(id, ba1);
-	} else if( method == RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION ) {
+    } else if( method == RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION ) {
 
 		QDataStream ds(&data, QIODevice::ReadWrite);
 		A_Dir_Ans_msg msg;

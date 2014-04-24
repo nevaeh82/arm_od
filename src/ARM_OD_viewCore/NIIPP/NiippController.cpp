@@ -163,7 +163,66 @@ void NiippController::onUavInfoChanged(const UavInfo& uavInfo, const QString& ua
 	if( getId() == 100 || getId() == 101 ) {
 		QPointF point( uavInfo.lon, uavInfo.lat );
 		sendEnemyBpla( point, m_model->getPoint(), uavInfo.alt, uavInfo.yaw );
-	}
+    }
+}
+
+void NiippController::onMethodCalled(const QString &method, const QVariant &argument)
+{
+    QByteArray data = argument.toByteArray();
+
+    if( method == RPC_SLOT_SERVER_SEND_NIIPP_DATA ) {
+        QDataStream ds(&data, QIODevice::ReadOnly);
+
+        int id;
+        QDateTime dt;
+        QTime time;
+        int mode;
+        QPointF point;
+        QString NS;
+        QString EW;
+        int alt;
+        int zone;
+        int course;
+        int angle;
+
+        ds >> id;
+        ds >> dt;
+        ds >> time;
+        ds >> mode;
+        ds >> point;
+        ds >> NS;
+        ds >> EW;
+        ds >> alt;
+        ds >> zone;
+        ds >> course;
+        ds >> angle;
+
+        QPointF latlon;
+        switch( id ) {
+            case 100:
+                latlon.setX(42.511183);
+                latlon.setY(41.6905);
+                break;
+
+            case 101:
+                latlon.setX(42.634183);
+                latlon.setY(41.912167);
+                break;
+        }
+
+//        Niipp niipp( id, QString::number( id ), latlon, NULL );
+        m_model->setAntennaType( mode == 1 ? 1 : 0 );
+        m_model->changeValuePower( zone );
+
+        m_mapController->updateNiippPowerZone( *m_model );
+
+        /// TODO: recheck following. WTF?!
+        //		QByteArray ba1;
+        //		QDataStream ds2(&ba1, QIODevice::WriteOnly);
+        //		ds2 << mode;
+        //		m_tabManager->send_data_niipp_control(id, ba1);
+        }
+
 }
 
 void NiippController::appendView(NiippWidget *view)

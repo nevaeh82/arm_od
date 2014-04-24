@@ -6,15 +6,18 @@
 #include <Interfaces/IController.h>
 
 #include "Interfaces/IUavDbChangedListener.h"
+#include "Interfaces/IRpcListener.h"
 
 #include "Map/IMapController.h"
+
+#include "RPC/RpcDefines.h"
 
 #include "INiippController.h"
 #include "NiippWidget.h"
 #include "Niipp.h"
 
 class NiippController : public QObject, public IController<NiippWidget>, public INiippController,
-		public IUavDbChangedListener
+        public IUavDbChangedListener, public IRpcListener
 {
 	Q_OBJECT
 
@@ -45,6 +48,9 @@ public:
 	virtual void onUavAdded(const Uav&, const QString&) {}
 	virtual void onUavRemoved(const Uav&, const QString&) {}
 	virtual void onUavInfoChanged(const UavInfo& uavInfo, const QString& uavRole);
+
+    virtual void onMethodCalled(const QString& method, const QVariant& argument);
+
 
 private:
 	void stopCommad();

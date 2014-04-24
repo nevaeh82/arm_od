@@ -15,7 +15,7 @@ class TcpNIIPPCoder : public BaseTcpDeviceCoder
 	Q_OBJECT
 
 public:
-	explicit TcpNIIPPCoder(QObject* parent = NULL);
+    explicit TcpNIIPPCoder(int id, QObject* parent = NULL);
 	virtual ~TcpNIIPPCoder();
 
 	// ITcpDeviceCoder interface
@@ -26,6 +26,9 @@ public:
 private:
 	QByteArray prepareDataToSend(const QStringList& list);
 	quint8 crc(const QByteArray& data);
+
+private:
+    int m_id;
 };
 
 #endif // TCPNIIPPCODER_H

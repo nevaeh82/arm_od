@@ -1,8 +1,9 @@
 #include "TcpNIIPPCoder.h"
 
-TcpNIIPPCoder::TcpNIIPPCoder(QObject* parent) :
+TcpNIIPPCoder::TcpNIIPPCoder(int id, QObject* parent) :
 	BaseTcpDeviceCoder(parent)
 {
+    m_id = id;
 }
 
 TcpNIIPPCoder::~TcpNIIPPCoder()
@@ -70,7 +71,7 @@ MessageSP TcpNIIPPCoder::encode(const QByteArray& data)
 	QDataStream ds(&dataToSend, QIODevice::ReadWrite);
 
 	/// TODO : recheck _id
-    ds << 100;//	ds << _id;
+    ds << m_id;//	ds << _id;
 
 	ds << dt;
 	ds << time;
