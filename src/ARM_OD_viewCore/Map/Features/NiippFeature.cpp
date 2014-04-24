@@ -1,21 +1,22 @@
+#include <Logger.h>
+
 #include "Map/IMapStyleManager.h"
 #include "Map/Features/NiippFeature.h"
 
 namespace MapFeature {
 
 Niipp::Niipp(IObjectsFactory* factory, const QString& id, const ::Niipp& niipp)
-	: FeatureAbstract( factory, id, niipp.getName(), niipp.getPoint() )
+	: FeatureAbstract( factory, id, niipp.getName() )
 	, m_niippId( niipp.getId() )
 	, m_mode( (Mode) niipp.getAntenaType() )
 {
 	m_circle = factory->createCircle();
-	m_circle->setOriginPoint( &m_position );
 	m_circle->addStyleByName( MAP_STYLE_NAME_NIIPP );
 
 	m_sector = factory->createSector();
-	m_sector->setOriginPoint( &m_position );
 	m_sector->addStyleByName( MAP_STYLE_NAME_NIIPP );
 
+	setPosition( niipp.getPosition() );
 	setRadius( niipp.getRadius() );
 	setAngle( niipp.getAngle() );
 }
@@ -31,7 +32,7 @@ Niipp::~Niipp()
 
 void Niipp::setPosition(const QPointF& position)
 {
-	FeatureAbstract::setPosition( position );
+	FeatureAbstract::setPosition( QPointF( position.y(), position.x() ) );
 
 	m_circle->setOriginPoint( &m_position );
 	m_sector->setOriginPoint( &m_position );
@@ -82,8 +83,9 @@ void Niipp::update(const ::Niipp& niipp)
 {
 	bool changed = false;
 
-	if( niipp.getPoint() != this->position() ) {
-		setPosition( niipp.getPoint() );
+	QPointF position( niipp.getPosition().y(), niipp.getPosition().x() );
+	if( position != this->position() ) {
+		setPosition( niipp.getPosition() );
 		changed = true;
 	}
 

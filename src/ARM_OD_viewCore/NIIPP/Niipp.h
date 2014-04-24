@@ -29,7 +29,7 @@ public:
 	void setPoint(const QPointF& coord);
 
 	void stopCommad();
-    void startCommand();
+	void startCommand();
 	void changeValuePower(int value);
 	void enableComplex(bool state);
 	void clear();
@@ -44,6 +44,7 @@ public:
 	inline double getRadiusCircle() const { return m_radiusCircle; }
 	inline double getRadiusSector() const { return m_radiusSector; }
 	inline Niipp::WorkMode getModeCurrentIndex() const { return m_modeCurrentIndex; }
+	inline QPointF getPosition() const { return m_latlon; }
 	inline QPointF getPoint() const { return m_pointUvodeNiipp; }
 	inline QString getName() const { return m_name; }
 	inline double  getAngle() const { return m_angel; }
@@ -70,7 +71,7 @@ private:
 
 	ITabManager*    m_parentTab;
 
-    bool            m_enable;
+	bool            m_enable;
 };
 
 #endif // NIIPPCONTROLMODEL_H
