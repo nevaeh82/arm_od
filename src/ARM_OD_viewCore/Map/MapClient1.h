@@ -104,9 +104,8 @@ public slots:
 
 	virtual void removeNiippPoint();
 
-	virtual void addHyperbole( int id, const QString& name,
-		PwGisPointList* polyline, const QTime timeMeasure,
-		const QColor color );
+	virtual void addHyperbole( int id, PwGisPointList* polyline,
+		const QTime timeMeasure, const QColor color = QColor::Invalid );
 
 	virtual void removeAll();
 

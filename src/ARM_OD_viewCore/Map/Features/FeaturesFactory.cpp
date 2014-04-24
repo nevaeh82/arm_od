@@ -70,15 +70,15 @@ CheckPoint* FeaturesFactory::createCheckPoint(const QString& name, const QPointF
 								name, position );
 }
 
-Hyperbole* FeaturesFactory::createHyperbole(
-	int id, const QString& name, PwGisPointList* polyline,
-	const QTime timeMeasure, const QColor color )
+Hyperbole* FeaturesFactory::createHyperbole( int id,
+	PwGisPointList* polyline, const QTime timeMeasure,
+	const QColor color )
 {
 	return new Hyperbole(
 		m_provider->styleFactory(),
 		m_provider->objectsFactory(),
 		QString::number( id ),
-		name,
+		"hyperbole"+QString::number( id ),
 		polyline,
 		timeMeasure,
 		color );

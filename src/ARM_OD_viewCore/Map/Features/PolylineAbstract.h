@@ -23,8 +23,11 @@ protected:
 	IObjectsFactory* m_factory;
 	Path* m_path;
 
-	PolylineAbstract( IObjectsFactory* factory, const QString& id,
-		const QString& name, PwGisPointList* polyline,
+	PolylineAbstract(
+		IObjectsFactory* factory,
+		const QString& id,
+		const QString& name,
+		PwGisPointList* polyline,
 		QObject* parent = 0 );
 
 public:

@@ -3,9 +3,12 @@
 
 namespace MapFeature {
 
-PolylineAbstract::PolylineAbstract( IObjectsFactory* factory,
-	const QString& id, const QString& name,
-	PwGisPointList *polyline, QObject* parent )
+PolylineAbstract::PolylineAbstract(
+	IObjectsFactory* factory,
+	const QString& id,
+	const QString& name,
+	PwGisPointList *polyline,
+	QObject* parent )
 	: MapObjectAbstract( id, name, parent )
 	, m_factory( factory )
 {

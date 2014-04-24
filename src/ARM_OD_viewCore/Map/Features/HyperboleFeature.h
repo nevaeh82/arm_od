@@ -20,8 +20,8 @@ class Hyperbole : public PolylineAbstract
 
 protected:
 	IStyleFactory* m_styleFactory;
-	QString m_name;
 	QTime m_timeMeasure;
+
 	Hyperbole(
 		IStyleFactory* styleFactory,
 		IObjectsFactory* factory,
@@ -37,7 +37,6 @@ public:
 	virtual void updateMap();
 	virtual void removeFromMap();
 
-	QString name() const { return m_name; }
 	QTime timeMeasure() const { return m_timeMeasure; }
 
 	void updatePath( PwGisPointList* polyline, const QTime timeMeasure );

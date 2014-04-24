@@ -58,9 +58,8 @@ public:
 
 	virtual void removeNiippPoint() = 0;
 
-	virtual void addHyperbole( int id, const QString& name,
-		PwGisPointList* polyline, const QTime timeMeasure,
-		const QColor color = QColor::Invalid ) = 0;
+	virtual void addHyperbole( int id, PwGisPointList* polyline,
+		const QTime timeMeasure, const QColor color = QColor::Invalid ) = 0;
 
 	virtual void removeAll() = 0;
 };

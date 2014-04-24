@@ -13,12 +13,8 @@ Hyperbole::Hyperbole(
 	const QColor color )
 	: PolylineAbstract( factory, id, name, polyline )
 	, m_styleFactory( styleFactory )
-	, m_name( name )
 	, m_timeMeasure( timeMeasure )
 {
-	m_path->setName( name );
-
-	//color
 	if ( color.isValid() ) {
 		PwGisStyle* style = m_styleFactory->createStyle();
 		style->setProperty( PwGisStyle::mapFontColor, "black" );
