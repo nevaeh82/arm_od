@@ -75,5 +75,5 @@ void PrmSimulator::update()
 	stream << (double) bearing;
 	stream << frequency;
 
-    m_serverPeer->call( RPC_SLOT_SERVER_SEND_BPLA_DEF_AUTO, QVariant( data ) );
+    m_serverPeer->call( RPC_SLOT_SERVER_SEND_BPLA_DEF, QVariant( data ) );
 }
