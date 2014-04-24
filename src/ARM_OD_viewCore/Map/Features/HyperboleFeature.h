@@ -40,7 +40,7 @@ public:
 	QString name() const { return m_name; }
 	QTime timeMeasure() const { return m_timeMeasure; }
 
-	void updatePolyline( PwGisPointList* polyline );
+	void updatePath( PwGisPointList* polyline, const QTime timeMeasure );
 
 };
 

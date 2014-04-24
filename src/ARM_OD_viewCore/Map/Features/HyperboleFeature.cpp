@@ -17,8 +17,6 @@ Hyperbole::Hyperbole(
 	, m_timeMeasure( timeMeasure )
 {
 	m_path->setName( name );
-	QString hyperboleToolTip = timeMeasure.toString( "hh:mm:ss" );
-	m_path->setToolTip( hyperboleToolTip );
 
 	//color
 	if ( color.isValid() ) {
@@ -34,16 +32,19 @@ Hyperbole::Hyperbole(
 		m_path->addStyleByName( MAP_STYLE_NAME_HYPERBOLE );
 	}
 
-	this->updatePolyline( polyline );
+	this->updatePath( polyline, timeMeasure );
 }
 
 Hyperbole::~Hyperbole()
 {
 }
 
-void Hyperbole::updatePolyline( PwGisPointList* polyline )
+void Hyperbole::updatePath( PwGisPointList* polyline, const QTime timeMeasure )
 {
 	PolylineAbstract::setPolyline( polyline );
+
+	QString hyperboleToolTip = timeMeasure.toString( "hh:mm:ss" );
+	m_path->setToolTip( hyperboleToolTip );
 
 	this->updateMap();
 }

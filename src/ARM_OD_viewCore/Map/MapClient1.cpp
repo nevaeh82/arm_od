@@ -139,7 +139,7 @@ void MapClient1::addHyperbole( int id, const QString& name,
 	MapFeature::Hyperbole* hyperbole = m_HyperboleList.value( id, NULL );
 
 	if( hyperbole != NULL ) {
-		hyperbole->updatePolyline( polyline );
+		hyperbole->updatePath( polyline, timeMeasure );
 	}
 	else {
 		hyperbole = m_factory->createHyperbole(
