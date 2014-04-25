@@ -28,6 +28,7 @@ public:
 	void setSBpowerValue(int value);
 	void setAngel(double value);
 	void setPoint(const QPointF& coord);
+    void setPointBpla(const QPointF& coord);
 
 	void stopCommad();
 	void startCommand();
@@ -69,6 +70,7 @@ private:
 	QString         m_command;
 	QPointF         m_latlon;
 	QPointF         m_pointUvodeNiipp;
+    QPointF         m_pointBPLA;
 
 	ITabManager*    m_parentTab;
 

@@ -208,6 +208,8 @@ void NiippController::onMethodCalled(const QString &method, const QVariant &argu
     if( method == RPC_SLOT_SERVER_SEND_NIIPP_DATA ) {
         QDataStream ds(&data, QIODevice::ReadOnly);
 
+        log_info("IN NIIPP CONTROLLER!");
+
         int id;
         QDateTime dt;
         QTime time;
@@ -252,6 +254,7 @@ void NiippController::onMethodCalled(const QString &method, const QVariant &argu
 
         m_model->setAntennaType(1, mode == 1 ? 1 : 0 );
         m_model->changeValuePower(1, zone );
+        log_info(QString("IN NIIPP CONTROLLER SET ANGLE = %1!").arg(course));
         m_model->setAngel(course);
         m_view->setStatusText(mode);
 

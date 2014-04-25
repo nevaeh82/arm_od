@@ -34,6 +34,7 @@ Niipp::Niipp(int id, QString name, QPointF latlon, ITabManager* parentTab)
 	m_radiusCircle = 0;
 	m_angel = 0;
     m_enable = false;
+    m_pointBPLA = QPointF(0,0);
 }
 
 void Niipp::setAngel(double value)
@@ -58,10 +59,7 @@ void Niipp::stopCommad()
 	QString status = "0300";
 	ds << status;
 
-	QPointF point1;
-	point1.setX(0);
-	point1.setY(0);
-	ds << point1;
+    ds << m_pointBPLA;
 
 	QString s1 = "N";
 	ds << s1;
@@ -74,10 +72,7 @@ void Niipp::stopCommad()
 	int zone = 0;
 	ds << zone;
 
-	QPointF point2;
-	point2.setX(0);
-	point2.setY(0);
-	ds << point2;
+    ds << m_pointUvodeNiipp;
 	s1 = "N";
 	ds << s1;
 	s1 = "E";
@@ -120,10 +115,7 @@ void Niipp::enableComplex(bool state)
 	ds << time;
 	ds << status;
 
-	QPointF point1;
-	point1.setX(0);
-	point1.setY(0);
-	ds << point1;
+    ds << m_pointBPLA;
 
 	QString s1 = "N";
 	ds << s1;
@@ -137,10 +129,7 @@ void Niipp::enableComplex(bool state)
 	int zone = 0;
 	ds << zone;
 
-	QPointF point2;
-	point2.setX(0);
-	point2.setY(0);
-	ds << point2;
+    ds << m_pointUvodeNiipp;
 	s1 = "N";
 	ds << s1;
 	s1 = "E";
@@ -171,8 +160,7 @@ void Niipp::changeValuePower(int source, int value)
     if(source == 0)
     {
         QPoint point(0,0);
-        QPoint pointUvoda(0,0);
-        sendEvil(point, pointUvoda, 0, 0);
+        sendEvil(m_pointBPLA, m_pointUvodeNiipp , 0, 0);
     }
 }
 
@@ -181,9 +169,7 @@ void Niipp::setAntennaType(int source, int value)
 	m_antenaType = value;
     if(source == 0)
     {
-        QPoint point(0,0);
-        QPoint pointUvoda(0,0);
-        sendEvil(point, pointUvoda, 0, 0);
+        sendEvil(m_pointBPLA, m_pointUvodeNiipp, 0, 0);
     }
 
 }
@@ -231,8 +217,9 @@ void Niipp::sendEvil(const QPointF& point, const QPointF& point_uvoda, double al
 
 	ds << str_temp;
 
-    QPointF p_temp(point.y(), point.x());
-    ds << p_temp;
+    m_pointBPLA.setX(point.y());
+    m_pointBPLA.setY(point.x());
+    ds << m_pointBPLA;
 	QString NS = "N";
 	ds << NS;
 
@@ -291,10 +278,8 @@ QByteArray Niipp::encode(QStringList list)
 void Niipp::changeMode(int value)
 {
 	m_mode = value;
-    QPoint point(0,0);
-    QPoint pointUvoda(0,0);
 
-    sendEvil(point, pointUvoda, 0, 0);
+    sendEvil(m_pointBPLA, m_pointUvodeNiipp, 0, 0);
 }
 
 void Niipp::setMode(int value)
@@ -332,6 +317,11 @@ void Niipp::setPoint(const QPointF& coord)
 {
      m_pointUvodeNiipp.setX(coord.y());
      m_pointUvodeNiipp.setY(coord.x());
+}
+
+void Niipp::setPointBpla(const QPointF &coord)
+{
+    m_pointBPLA = coord;
 }
 
 

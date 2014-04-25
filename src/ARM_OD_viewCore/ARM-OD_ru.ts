@@ -476,13 +476,13 @@
         <location filename="NIIPP/NiippWidget.cpp" line="90"/>
         <location filename="NIIPP/NiippWidget.cpp" line="212"/>
         <source>Work with directional antenna</source>
-        <translation>Работа на напрвленную антенну</translation>
+        <translation>Работа на направленную антенну</translation>
     </message>
     <message>
         <location filename="NIIPP/NiippWidget.cpp" line="96"/>
         <location filename="NIIPP/NiippWidget.cpp" line="209"/>
         <source>Work with undirectional antenna</source>
-        <translation>Работа на ненапрвленную антенну</translation>
+        <translation>Работа на ненаправленную антенну</translation>
     </message>
     <message>
         <location filename="NIIPP/NiippWidget.cpp" line="215"/>
