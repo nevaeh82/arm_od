@@ -61,6 +61,9 @@ MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 	connect( this, SIGNAL(interceptionRemoved(int, int)),
 			 this, SLOT(removeInterceptionData(int, int)) );
 
+	connect( this, SIGNAL(hyperboleAdded(int,QVector<QPointF>,QTime,QColor)),
+			 this, SLOT(addInHyperbole(int,QVector<QPointF>,QTime,QColor)) );
+
 	connect( this, SIGNAL(interceptionPointAdded(int, int, QPointF, float, float, int, float, float)),
 			 this, SLOT(addInterceptionPointData(int, int, QPointF, float, float, int, float, float)) );
 }
@@ -133,7 +136,12 @@ void MapClient1::init()
 			 this, SLOT( addPeleng( int, int, double, double, double ) ) );
 }
 
-void MapClient1::addHyperbole(int id, const QVector<QPointF>& polyline, const QTime time, const QColor color )
+void MapClient1::addHyperbole(int id, const QVector<QPointF> &polyline, const QTime time, const QColor color)
+{
+	emit hyperboleAdded(id, polyline, time, color);
+}
+
+void MapClient1::addInHyperbole(int id, const QVector<QPointF>& polyline, const QTime time, const QColor color )
 {
 	MapFeature::Hyperbole* hyperbole = m_hyperboleList.value( id, NULL );
 
@@ -142,7 +150,6 @@ void MapClient1::addHyperbole(int id, const QVector<QPointF>& polyline, const QT
 	}
 	else {
 		hyperbole = m_factory->createHyperbole( polyline, time, color );
-
 		m_hyperboleList.insert( id, hyperbole );
 	}
 }

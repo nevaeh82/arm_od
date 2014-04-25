@@ -227,6 +227,8 @@ void TcpManager::onMessageReceived(const quint32 deviceType, const QString& devi
 				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_BPLA_POINTS, messageData);
 			} else if (messageType == QString(ARM_R_SERVER_BPLA_COORDS_AUTO)){
 				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO, messageData);
+			} else if (messageType == QString(ARM_R_SERVER_HYPERBOLA)) {
+				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_HYPERBOLA, messageData);
 			}
 			break;
 		default:
