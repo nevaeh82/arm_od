@@ -11,9 +11,9 @@ ControlPanelController::ControlPanelController(QObject *parent) :
 {
 	m_view = NULL;
 	m_uavHistory = NULL;
-	m_isStarted = false;
 
 	connect( this, SIGNAL(historyStatusChanged(Status)), SLOT(changeViewStatus(Status)) );
+	connect( this, SIGNAL(currentDateTimeChanged(QDateTime)), SLOT(changeCurrentDateTime(QDateTime)) );
 }
 
 void ControlPanelController::appendView(ControlPanel *view)
@@ -35,7 +35,7 @@ void ControlPanelController::setUavHistory(IUavHistory *history)
 
 void ControlPanelController::onUavInfoChanged(const UavInfo& uavInfo, const QString&)
 {
-	m_view->setCurrentDateTime( uavInfo.dateTime );
+	emit currentDateTimeChanged( uavInfo.dateTime );
 }
 
 void ControlPanelController::onStatusChanged(IUavHistoryListener::Status status)
@@ -64,13 +64,35 @@ void ControlPanelController::changeViewStatus(IUavHistoryListener::Status status
 			m_view->setEnabled( true );
 			m_view->setPlayingEnabled( true );
 			break;
+
+		case IUavHistoryListener::Paused:
+			m_view->setEnabled( true );
+			m_view->setPause();
+			break;
 	}
+}
+
+void ControlPanelController::changeCurrentDateTime(const QDateTime& date)
+{
+	m_view->setCurrentDateTime( date );
 }
 
 void ControlPanelController::onStartPlayingHistorySlot()
 {
-	if (NULL == m_uavHistory) {
+	if( NULL == m_uavHistory ) {
 		log_debug("m_uavHistory is NULL");
+		return;
+	}
+
+	// executes as is pressed button "Resume" for "Paused" state
+	if( m_uavHistory->getStatus() == Paused ) {
+		m_uavHistory->resume();
+		return;
+	}
+
+	// executes as is pressed button "Pause" for "Playing" state
+	if( m_uavHistory->getStatus() == Playing ) {
+		m_uavHistory->pause();
 		return;
 	}
 
@@ -79,12 +101,10 @@ void ControlPanelController::onStartPlayingHistorySlot()
 		return;
 	}
 
-	if (!m_uavHistory->start(m_view->getStartDateTime(), m_view->getEndDateTime())) {
+	if( !m_uavHistory->start(m_view->getStartDateTime(), m_view->getEndDateTime()) ) {
 		QMessageBox::warning(m_view, tr("Unable to play history"), tr("Data for selected period do not exist."));
 		return;
 	}
-
-	m_isStarted = true;
 }
 
 void ControlPanelController::onStopPlayingHistorySlot()
@@ -95,6 +115,4 @@ void ControlPanelController::onStopPlayingHistorySlot()
 	}
 
 	m_uavHistory->stop();
-
-	m_isStarted = false;
 }

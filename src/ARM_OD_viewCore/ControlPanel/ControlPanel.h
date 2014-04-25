@@ -26,6 +26,7 @@ public:
 	void setEndDateTime(const QDateTime& date);
 	void setCurrentDateTime(const QDateTime &value);
 	void setPlayingEnabled(bool enabled);
+	void setPause();
 
 signals:
 	void startPlayingHistorySignal();

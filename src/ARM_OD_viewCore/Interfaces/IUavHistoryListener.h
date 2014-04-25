@@ -10,7 +10,8 @@ class IUavHistoryListener : public IUavDbChangedListener
 			NotReady,
 			Ready,
 			Playing,
-			Loading
+			Loading,
+			Paused
 		};
 
 		virtual ~IUavHistoryListener() {}

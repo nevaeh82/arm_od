@@ -1,6 +1,7 @@
 #include <QSqlError>
 #include <QSqlRecord>
 #include <QEventLoop>
+#include <QThread>
 
 #include <Logger.h>
 
@@ -13,11 +14,15 @@ UavHistory::UavHistory(QSqlDatabase database, QObject *parent)
 {
 	m_timer.setInterval( 1000 );
 	m_lifeTime = MAX_LIFE_TIME;
+	m_isPaused = false;
 
 	setDatabase( database );
 
 	connect( &m_timer, SIGNAL(timeout()), SLOT(updateHistoryState()) );
 	connect( this, SIGNAL(started(QDateTime,QDateTime)), SLOT(startInternal(QDateTime,QDateTime)) );
+	connect( this, SIGNAL(paused()), SLOT(pauseInternal()) );
+	connect( this, SIGNAL(resumed()), SLOT(resumeInternal()) );
+	connect( this, SIGNAL(stopped()), SLOT(stopInternal()) );
 }
 
 UavHistory::~UavHistory()
@@ -34,39 +39,46 @@ bool UavHistory::start(const QDateTime& startTime, const QDateTime& endTime)
 
 	sendStatus( IUavHistoryListener::Loading );
 
-	emit started(startTime, endTime);
-
-	QEventLoop loop;
-	connect( this, SIGNAL(startFinished()), &loop, SLOT(quit()));
-	loop.exec();
+	// perform cross thread synchronous call for any case
+	if( this->thread() != QThread::currentThread() ) {
+		QEventLoop loop;
+		connect( this, SIGNAL(startFinished()), &loop, SLOT(quit()));
+		emit started(startTime, endTime);
+		loop.exec();
+	} else {
+		emit started(startTime, endTime);
+	}
 
 	sendStatus();
 
 	return m_startResult;
 }
 
+void UavHistory::pause()
+{
+	emit paused();
+}
+
+void UavHistory::resume()
+{
+	emit resumed();
+}
+
 void UavHistory::stop()
 {
-	// send remove message for all UAVs
-	foreach( int id, m_knownUavsList.keys() ) {
-		Uav uav;
-		uav.uavId = id;
-		uav.historical = true;
-
-		QString role = m_uavRoles.value( id );
-
-		foreach( IUavDbChangedListener* listener, m_receiversList ) {
-			listener->onUavRemoved( uav, role );
-		}
+	if( getStatus() == IUavHistoryListener::Ready ) {
+		return;
 	}
 
-	m_timer.stop();
-	m_query.finish();
-	m_knownUavsList.clear();
-	m_uavRoles.clear();
-	m_uavLastDate.clear();
-
-	sendStatus();
+	// perform cross thread synchronous call for any case
+	if( this->thread() != QThread::currentThread() ) {
+		QEventLoop loop;
+		connect( this, SIGNAL(startFinished()), &loop, SLOT(quit()));
+		emit stopped();
+		loop.exec();
+	} else {
+		emit stopped();
+	}
 }
 
 void UavHistory::setDatabase(const QSqlDatabase& database)
@@ -94,7 +106,7 @@ void UavHistory::setDatabase(const QSqlDatabase& database)
 					 " LEFT JOIN uavRoles on uavRoles.id = uav.roleId"
 					 " LEFT JOIN sources on sources.id = info.source"
 					 " WHERE `datetime` >= :start AND `datetime` <= :end"
-					 " GROUP BY uav.uavID, `datetime`, device, altitude"
+					 " GROUP BY uav.uavID, `datetime`, device, source"
 					 " ORDER BY `datetime`" );
 
 	sendStatus();
@@ -113,6 +125,10 @@ IUavHistoryListener::Status UavHistory::getStatus()
 
 	if( m_timer.isActive() ) {
 		return IUavHistoryListener::Playing;
+	}
+
+	if( m_isPaused ) {
+		return IUavHistoryListener::Paused;
 	}
 
 	return IUavHistoryListener::Ready;
@@ -152,6 +168,54 @@ void UavHistory::startInternal(const QDateTime& start, const QDateTime& end)
 
 	emit startFinished();
 	return;
+}
+
+void UavHistory::pauseInternal()
+{
+	if( m_isPaused ) return;
+
+	m_timer.stop();
+	m_isPaused = true;
+
+	sendStatus();
+}
+
+void UavHistory::resumeInternal()
+{
+	if( !m_isPaused ) return;
+
+	m_timer.start();
+	m_isPaused = false;
+
+	sendStatus();
+}
+
+void UavHistory::stopInternal()
+{
+	// send remove message for all UAVs
+	foreach( int id, m_knownUavsList.keys() ) {
+		Uav uav;
+		uav.uavId = id;
+		uav.historical = true;
+
+		QString role = m_uavRoles.value( id );
+
+		foreach( IUavDbChangedListener* listener, m_receiversList ) {
+			listener->onUavRemoved( uav, role );
+		}
+	}
+
+	m_timer.stop();
+	m_query.finish();
+	m_knownUavsList.clear();
+	m_uavRoles.clear();
+	m_uavLastDate.clear();
+
+	m_isPaused = false;
+
+	sendStatus();
+
+	emit stopFinished();
 }
 
 void UavHistory::updateHistoryState()
@@ -241,7 +305,7 @@ void UavHistory::updateHistoryState()
 
 void UavHistory::sendStatus()
 {
-	sendStatus(getStatus());
+	sendStatus( getStatus() );
 }
 
 void UavHistory::sendStatus(IUavHistoryListener::Status status)
