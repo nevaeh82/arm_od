@@ -14,9 +14,6 @@ class ControlPanelController : public QObject, public IController<ControlPanel>,
 
 private:
 	ControlPanel* m_view;
-
-	bool m_isStarted;
-
 	IUavHistory* m_uavHistory;
 
 public:
@@ -33,9 +30,11 @@ public:
 
 signals:
 	void historyStatusChanged(Status status);
+	void currentDateTimeChanged(const QDateTime& date);
 
 private slots:
 	void changeViewStatus(Status status);
+	void changeCurrentDateTime(const QDateTime& date);
 
 	void onStartPlayingHistorySlot();
 	void onStopPlayingHistorySlot();

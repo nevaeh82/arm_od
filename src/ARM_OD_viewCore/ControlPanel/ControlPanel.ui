@@ -87,9 +87,22 @@
     </spacer>
    </item>
    <item>
-    <widget class="QLabel" name="currentTimeLabel">
+    <widget class="QLabel" name="timeLabel">
      <property name="text">
       <string>Current time:</string>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::LinksAccessibleByMouse</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="timeText">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
      </property>
     </widget>
    </item>

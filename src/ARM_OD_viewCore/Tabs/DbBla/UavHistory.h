@@ -23,6 +23,7 @@ private:
 	QMap<uint, Uav> m_knownUavsList;
 
 	bool m_startResult;
+	bool m_isPaused;
 	int m_lifeTime;
 
 public:
@@ -30,6 +31,8 @@ public:
 	virtual ~UavHistory();
 
 	bool start(const QDateTime& startTime, const QDateTime& endTime);
+	void pause();
+	void resume();
 	void stop();
 
 	void setDatabase(const QSqlDatabase& database);
@@ -41,10 +44,19 @@ public:
 
 signals:
 	void started(const QDateTime& start, const QDateTime& end);
+	void stopped();
+	void paused();
+	void resumed();
+
 	void startFinished();
+	void stopFinished();
 
 protected slots:
 	void startInternal(const QDateTime& start, const QDateTime& end);
+	void stopInternal();
+	void pauseInternal();
+	void resumeInternal();
+
 	void updateHistoryState();
 
 	void sendStatus();

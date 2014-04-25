@@ -10,7 +10,8 @@ ControlPanel::ControlPanel(QWidget *parent) :
 	connect(ui->startPB, SIGNAL(clicked()), this, SIGNAL(startPlayingHistorySignal()));
 	connect(ui->stopPB, SIGNAL(clicked()), this, SIGNAL(stopPlayingHistorySignal()));
 
-	ui->currentTimeLabel->hide();
+	ui->timeLabel->hide();
+	ui->timeText->hide();
 }
 
 ControlPanel::~ControlPanel()
@@ -40,15 +41,30 @@ QDateTime ControlPanel::getEndDateTime() const
 
 void ControlPanel::setCurrentDateTime(const QDateTime& value)
 {
-	ui->currentTimeLabel->setText( tr( "Current time: %1" )
-								   .arg( value.toString( Qt::SystemLocaleShortDate ) ));
+	// saving selection before change text
+	int selStart = ui->timeText->selectionStart();
+	int selLength = ui->timeText->selectedText().length();
+
+	ui->timeText->setText( value.toString( Qt::SystemLocaleShortDate ) );
+
+	// restore selection
+	if( selStart > -1 ) {
+		ui->timeText->setSelection( selStart, selLength );
+	}
 }
 
 void ControlPanel::setPlayingEnabled(bool enabled)
 {
 	ui->startTE->setEnabled( !enabled );
 	ui->stopTE->setEnabled( !enabled );
-	ui->startPB->setEnabled( !enabled );
 	ui->stopPB->setEnabled( enabled );
-	ui->currentTimeLabel->setVisible( enabled );
+	ui->timeLabel->setVisible( enabled );
+	ui->timeText->setVisible( enabled );
+
+	ui->startPB->setText( enabled ? tr( "Pause") : tr( "Start") );
+}
+
+void ControlPanel::setPause()
+{
+	ui->startPB->setText( tr( "Resume") );
 }
