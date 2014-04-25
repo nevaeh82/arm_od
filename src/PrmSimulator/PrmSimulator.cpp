@@ -14,8 +14,9 @@ PrmSimulator::PrmSimulator(const uint& port, QObject *parent )
 {
 	qsrand( time(0) );
 
-	centerLat = 60 + (double)qrand() / RAND_MAX * 0.2;
-	centerLon = 30 + (double)qrand() / RAND_MAX;
+
+    centerLat = 42.511183 + (double)qrand() / RAND_MAX * 0.2;
+    centerLon = 41.6905 + (double)qrand() / RAND_MAX;
 	alt = 1500 + qrand() % 1000;
 
 	mode = 1;

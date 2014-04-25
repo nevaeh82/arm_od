@@ -55,7 +55,7 @@
     </message>
     <message>
         <location filename="ControlPanel/ControlPanel.ui" line="65"/>
-        <location filename="ControlPanel/ControlPanel.cpp" line="55"/>
+        <location filename="ControlPanel/ControlPanel.cpp" line="64"/>
         <source>Start</source>
         <translation></translation>
     </message>
@@ -70,17 +70,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.cpp" line="43"/>
-        <source>Current time: %1</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ControlPanel/ControlPanel.cpp" line="55"/>
+        <location filename="ControlPanel/ControlPanel.cpp" line="64"/>
         <source>Pause</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.cpp" line="60"/>
+        <location filename="ControlPanel/ControlPanel.cpp" line="69"/>
         <source>Resume</source>
         <translation></translation>
     </message>
@@ -88,18 +83,18 @@
 <context>
     <name>ControlPanelController</name>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="94"/>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="99"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="100"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="105"/>
         <source>Unable to play history</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="94"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="100"/>
         <source>End date should be greater than start date.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="99"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="105"/>
         <source>Data for selected period do not exist.</source>
         <translation></translation>
     </message>
@@ -170,12 +165,12 @@
 <context>
     <name>MainWindowController</name>
     <message>
-        <location filename="MainWindowController.cpp" line="98"/>
+        <location filename="MainWindowController.cpp" line="100"/>
         <source>Unable to connect to server</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindowController.cpp" line="98"/>
+        <location filename="MainWindowController.cpp" line="100"/>
         <source>Please try to restart application</source>
         <translation></translation>
     </message>
@@ -183,93 +178,93 @@
 <context>
     <name>MapClient1</name>
     <message>
-        <location filename="Map/MapClient1.cpp" line="127"/>
+        <location filename="Map/MapClient1.cpp" line="130"/>
         <source>NIIPP</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="83"/>
+        <location filename="Map/MapClient1.cpp" line="86"/>
         <source>OP</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="85"/>
+        <location filename="Map/MapClient1.cpp" line="88"/>
         <source>UAV_enemy</source>
         <translation>Enemy UAV</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="86"/>
+        <location filename="Map/MapClient1.cpp" line="89"/>
         <source>UAV_enemy_track</source>
         <translation>Enemy UAV track</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="88"/>
+        <location filename="Map/MapClient1.cpp" line="91"/>
         <source>UAV</source>
         <translation>Friend UAV</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="89"/>
+        <location filename="Map/MapClient1.cpp" line="92"/>
         <source>UAV_track_autopilot</source>
         <oldsource>UAV_track</oldsource>
         <translation>Friend UAV track from autopilot</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="90"/>
+        <location filename="Map/MapClient1.cpp" line="93"/>
         <source>UAV_track_KTR</source>
         <translation>Friend UAV track from KTR</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="92"/>
+        <location filename="Map/MapClient1.cpp" line="95"/>
         <source>Atlant</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="93"/>
+        <location filename="Map/MapClient1.cpp" line="96"/>
         <source>Atlant target</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="94"/>
+        <location filename="Map/MapClient1.cpp" line="97"/>
         <source>Grid</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="95"/>
+        <location filename="Map/MapClient1.cpp" line="98"/>
         <source>Checkpoints</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="96"/>
+        <location filename="Map/MapClient1.cpp" line="99"/>
         <source>Interception point</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="97"/>
+        <location filename="Map/MapClient1.cpp" line="100"/>
         <source>Civil ships</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="98"/>
+        <location filename="Map/MapClient1.cpp" line="101"/>
         <source>Diversion points</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="99"/>
+        <location filename="Map/MapClient1.cpp" line="102"/>
         <source>SPIP DD</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="100"/>
+        <location filename="Map/MapClient1.cpp" line="103"/>
         <source>Hyperbole</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="101"/>
+        <location filename="Map/MapClient1.cpp" line="104"/>
         <source>History</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="524"/>
+        <location filename="Map/MapClient1.cpp" line="531"/>
         <source>Ingur</source>
         <translation></translation>
     </message>
@@ -331,12 +326,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="184"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="192"/>
         <source>SPIP DD-1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="190"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="198"/>
         <source>SPIP DD-2</source>
         <translation></translation>
     </message>
@@ -427,51 +422,64 @@
         <translation></translation>
     </message>
     <message>
+        <location filename="NIIPP/NiippWidget.ui" line="200"/>
+        <source>RDP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="NIIPP/NiippWidget.ui" line="143"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="89"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="95"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="143"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="157"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="208"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="211"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="144"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="158"/>
         <source>Radiation</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="29"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="30"/>
         <source>0 km</source>
         <oldsource>0 ÐºÐ¼</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="54"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="205"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="55"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="206"/>
         <source>Simple</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="87"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="93"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="88"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="94"/>
         <source>%1 km</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="214"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="90"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="212"/>
+        <source>Work with directional antenna</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.cpp" line="96"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="209"/>
+        <source>Work with undirectional antenna</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.cpp" line="215"/>
         <source>Accident</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="217"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="218"/>
         <source>No coordinates</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="220"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="221"/>
         <source>Service</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="223"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="224"/>
         <source>No data</source>
         <translation></translation>
     </message>
@@ -502,7 +510,7 @@
     <message>
         <location filename="Map/Features/EnemyBplaFeature.cpp" line="17"/>
         <location filename="Map/Features/FriendBplaFeature.cpp" line="27"/>
-        <location filename="Tabs/DbBla/UavHistory.cpp" line="233"/>
+        <location filename="Tabs/DbBla/UavHistory.cpp" line="269"/>
         <source>%1-H</source>
         <translation></translation>
     </message>

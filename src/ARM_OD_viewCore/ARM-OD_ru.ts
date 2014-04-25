@@ -55,7 +55,7 @@
     </message>
     <message>
         <location filename="ControlPanel/ControlPanel.ui" line="65"/>
-        <location filename="ControlPanel/ControlPanel.cpp" line="55"/>
+        <location filename="ControlPanel/ControlPanel.cpp" line="64"/>
         <source>Start</source>
         <translation>Пуск</translation>
     </message>
@@ -83,17 +83,16 @@
         <translation type="obsolete">СПИП ДД</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.cpp" line="43"/>
         <source>Current time: %1</source>
-        <translation>Текущее время: %1</translation>
+        <translation type="obsolete">Текущее время: %1</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.cpp" line="55"/>
+        <location filename="ControlPanel/ControlPanel.cpp" line="64"/>
         <source>Pause</source>
         <translation>Пауза</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.cpp" line="60"/>
+        <location filename="ControlPanel/ControlPanel.cpp" line="69"/>
         <source>Resume</source>
         <translation>Продолжить</translation>
     </message>
@@ -101,18 +100,18 @@
 <context>
     <name>ControlPanelController</name>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="94"/>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="99"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="100"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="105"/>
         <source>Unable to play history</source>
         <translation>Невозможно воспроизвести запись</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="94"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="100"/>
         <source>End date should be greater than start date.</source>
         <translation>Конечная дата должна быть больше начальной</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="99"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="105"/>
         <source>Data for selected period do not exist.</source>
         <translation>Данные для выбранного периода отсутствуют.</translation>
     </message>
@@ -183,12 +182,12 @@
 <context>
     <name>MainWindowController</name>
     <message>
-        <location filename="MainWindowController.cpp" line="98"/>
+        <location filename="MainWindowController.cpp" line="100"/>
         <source>Unable to connect to server</source>
         <translation>Неудалось подключиться к серверу</translation>
     </message>
     <message>
-        <location filename="MainWindowController.cpp" line="98"/>
+        <location filename="MainWindowController.cpp" line="100"/>
         <source>Please try to restart application</source>
         <translation>Попробуйте перезапустить приложение</translation>
     </message>
@@ -196,68 +195,68 @@
 <context>
     <name>MapClient1</name>
     <message>
-        <location filename="Map/MapClient1.cpp" line="127"/>
+        <location filename="Map/MapClient1.cpp" line="130"/>
         <source>NIIPP</source>
         <translation>НИИПП</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="85"/>
+        <location filename="Map/MapClient1.cpp" line="88"/>
         <source>UAV_enemy</source>
         <translation>БПЛА</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="86"/>
+        <location filename="Map/MapClient1.cpp" line="89"/>
         <source>UAV_enemy_track</source>
         <translation>БПЛА: трек</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="88"/>
+        <location filename="Map/MapClient1.cpp" line="91"/>
         <source>UAV</source>
         <translation>БЛА</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="89"/>
+        <location filename="Map/MapClient1.cpp" line="92"/>
         <source>UAV_track_autopilot</source>
         <oldsource>UAV_track</oldsource>
         <translation>БЛА: трек от автопилота</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="90"/>
+        <location filename="Map/MapClient1.cpp" line="93"/>
         <source>UAV_track_KTR</source>
         <translation>БЛА: трек от КТР</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="92"/>
+        <location filename="Map/MapClient1.cpp" line="95"/>
         <source>Atlant</source>
         <translation>Атлант</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="93"/>
+        <location filename="Map/MapClient1.cpp" line="96"/>
         <source>Atlant target</source>
         <translation>Атлант цель</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="94"/>
+        <location filename="Map/MapClient1.cpp" line="97"/>
         <source>Grid</source>
         <translation>Сетка</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="95"/>
+        <location filename="Map/MapClient1.cpp" line="98"/>
         <source>Checkpoints</source>
         <translation>Контрольные точки</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="96"/>
+        <location filename="Map/MapClient1.cpp" line="99"/>
         <source>Interception point</source>
         <translation>Точка перехвата</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="97"/>
+        <location filename="Map/MapClient1.cpp" line="100"/>
         <source>Civil ships</source>
         <translation>Гражданские суда</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="98"/>
+        <location filename="Map/MapClient1.cpp" line="101"/>
         <source>Diversion points</source>
         <translation>Точки увода</translation>
     </message>
@@ -266,27 +265,27 @@
         <translation type="obsolete">БПЛА Атлант(№</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="99"/>
+        <location filename="Map/MapClient1.cpp" line="102"/>
         <source>SPIP DD</source>
         <translation>СПИП ДД</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="83"/>
+        <location filename="Map/MapClient1.cpp" line="86"/>
         <source>OP</source>
         <translation>ОП</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="100"/>
+        <location filename="Map/MapClient1.cpp" line="103"/>
         <source>Hyperbole</source>
         <translation>Гипербола</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="101"/>
+        <location filename="Map/MapClient1.cpp" line="104"/>
         <source>History</source>
         <translation>История</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="524"/>
+        <location filename="Map/MapClient1.cpp" line="531"/>
         <source>Ingur</source>
         <translation>Ингур</translation>
     </message>
@@ -348,12 +347,12 @@
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="184"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="192"/>
         <source>SPIP DD-1</source>
         <translation>СПИП ДД-1</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="190"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="198"/>
         <source>SPIP DD-2</source>
         <translation>СПИП ДД-2</translation>
     </message>
@@ -405,12 +404,8 @@
     </message>
     <message>
         <location filename="NIIPP/NiippWidget.ui" line="143"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="89"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="95"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="143"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="157"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="208"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="211"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="144"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="158"/>
         <source>Radiation</source>
         <translation>Облучение</translation>
     </message>
@@ -440,6 +435,11 @@
         <translation>Очистить</translation>
     </message>
     <message>
+        <location filename="NIIPP/NiippWidget.ui" line="200"/>
+        <source>RDP</source>
+        <translation>УРС</translation>
+    </message>
+    <message>
         <location filename="NIIPP/NiippWidget.ui" line="50"/>
         <source>Area</source>
         <translation>Зона</translation>
@@ -455,40 +455,52 @@
         <translation>Статус</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="29"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="30"/>
         <source>0 km</source>
         <oldsource>0 ÐºÐ¼</oldsource>
         <translation>0 км</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="54"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="205"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="55"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="206"/>
         <source>Simple</source>
         <translation>Простой</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="87"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="93"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="88"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="94"/>
         <source>%1 km</source>
         <translation>%1 км</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="214"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="90"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="212"/>
+        <source>Work with directional antenna</source>
+        <translation>Работа на напрвленную антенну</translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.cpp" line="96"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="209"/>
+        <source>Work with undirectional antenna</source>
+        <translation>Работа на ненапрвленную антенну</translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.cpp" line="215"/>
         <source>Accident</source>
         <translation>Авария</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="217"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="218"/>
         <source>No coordinates</source>
         <translation>Нет координат</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="220"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="221"/>
         <source>Service</source>
         <translation>Обслуживание</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="223"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="224"/>
         <source>No data</source>
         <translation>Нет данных</translation>
     </message>
@@ -519,7 +531,7 @@
     <message>
         <location filename="Map/Features/EnemyBplaFeature.cpp" line="17"/>
         <location filename="Map/Features/FriendBplaFeature.cpp" line="27"/>
-        <location filename="Tabs/DbBla/UavHistory.cpp" line="233"/>
+        <location filename="Tabs/DbBla/UavHistory.cpp" line="269"/>
         <source>%1-H</source>
         <translation>%1-И</translation>
     </message>
