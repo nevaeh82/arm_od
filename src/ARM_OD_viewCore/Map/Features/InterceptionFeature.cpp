@@ -105,6 +105,8 @@ void Interception::update(const QPointF& position, float height, float radius, f
 
 void Interception::updateMap()
 {
+	if( m_circle->radius() <= 0 ) return;
+
 	m_circle->updateMap();
 }
 

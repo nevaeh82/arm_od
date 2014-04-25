@@ -60,6 +60,8 @@ void Pelengator::update(const QPointF& position, double angle)
 
 void Pelengator::updateMap()
 {
+	if( m_sector->radius() <= 0 ) return;
+
 	m_sector->updateMap();
 }
 

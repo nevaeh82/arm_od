@@ -113,10 +113,14 @@ void Niipp::updateMap()
 {
 	switch( m_mode ) {
 		case Directed:
+			if( m_sector->radius() <= 0 ) return;
+
 			m_sector->updateMap();
 			break;
 
 		case NotDirected:
+			if( m_circle->radius() <= 0 ) return;
+
 			m_circle->updateMap();
 			break;
 	}
