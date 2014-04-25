@@ -18,6 +18,8 @@ MainWindowController::MainWindowController(QObject *parent) :
 
 	qRegisterMetaType<Uav>( "Uav" );
 	qRegisterMetaType<UavInfo>( "UavInfo" );
+    qRegisterMetaType<Niipp>( "Niipp" );
+
 }
 
 MainWindowController::~MainWindowController()

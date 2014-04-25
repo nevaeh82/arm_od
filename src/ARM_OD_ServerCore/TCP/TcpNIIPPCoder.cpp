@@ -15,11 +15,16 @@ MessageSP TcpNIIPPCoder::encode(const QByteArray& data)
 	QString str(data);
 	QStringList list = str.split(',');
 
-	QDateTime dt;
-	dt.fromString(list[0], "ddMMyy");
+    QString dse = list[0];
+    QDate date;
+    date = QDate::fromString(list[0], "ddMMyy");
 
 	QTime time;
-	time.fromString(list[1], "HHmmss");
+    time = QTime::fromString(list[1], "HHmmss");
+
+    QDateTime dt;
+    dt.setDate(date);
+    dt.setTime(time);
 
 	int mode = list[2].toInt();
 

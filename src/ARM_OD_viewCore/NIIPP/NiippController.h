@@ -5,6 +5,8 @@
 
 #include <Interfaces/IController.h>
 
+#include <QProcess>
+
 #include "Interfaces/IUavDbChangedListener.h"
 #include "Interfaces/IRpcListener.h"
 
@@ -55,6 +57,7 @@ public:
 private:
 	void stopCommad();
 	QByteArray encode(QStringList list);
+    int openRDP(int id);
 
 private slots:
 	void changeAngel(double value);
@@ -64,6 +67,7 @@ private slots:
 	void clear();
     void slotStopClicked();
     void slotStartClicked();
+    void slotOpenRDP();
 
 public slots:
 	virtual void setPower(double value);

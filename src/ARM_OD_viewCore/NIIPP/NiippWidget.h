@@ -47,6 +47,7 @@ signals:
 	void antennaTypeChanged(int);
 	void modeChanged(int);
 	void cleared();
+    void signalOpenRDP();
 };
 
 #endif // NIIPPCONTROLWIDGET_H

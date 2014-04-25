@@ -37,6 +37,8 @@ copy-bin:
 	$(cp) -rudf $(BinDir)/Tabs $(TmpRel)/bin
 	$(cp) -rudf $(BinDir)/TCP $(TmpRel)/bin
 	$(cp) -rudf $(BinDir)/Enviroment $(TmpRel)/bin
+	$(cp) -rudf $(BinDir)/RDP $(TmpRel)/bin
+
 	$(echo) VERSION = $(if $(PRODUCT_VERSION_REL),$(PRODUCT_VERSION_REL),$(PRODUCT_VERSION).0) > $(TmpRel)/bin/version.ini
 
 

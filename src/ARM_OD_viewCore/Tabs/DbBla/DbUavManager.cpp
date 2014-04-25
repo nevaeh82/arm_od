@@ -455,7 +455,7 @@ void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy,
 	positionData.speed = positionDataEnemy.speed;
 	positionData.state = positionDataEnemy.state;
 
-    // готово
+    // РіРѕС‚РѕРІРѕ
     positionData.latitude = positionDataEnemy.track.last().x();
     positionData.longitude = positionDataEnemy.track.last().y();
 

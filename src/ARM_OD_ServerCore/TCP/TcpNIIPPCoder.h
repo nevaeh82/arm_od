@@ -8,6 +8,9 @@
 #include <QDataStream>
 #include <QStringList>
 
+#include <QDate>
+#include <QTime>
+
 #include "TcpDefines.h"
 
 class TcpNIIPPCoder : public BaseTcpDeviceCoder

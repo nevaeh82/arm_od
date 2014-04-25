@@ -10,6 +10,12 @@ const double m_zoneDir[28] = {2.5, 3, 4, 5,
 					   6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20,
 					   22, 26, 29, 33, 37, 41, 47, 52, 57, 62, 68, 72, 76};
 
+Niipp::Niipp()
+{
+    m_id = 0;
+    m_parentTab = NULL;
+}
+
 Niipp::Niipp(int id, QString name, QPointF latlon, ITabManager* parentTab)
 	: m_numberCommand("0200")
 	, m_antenaType(0)
@@ -150,7 +156,7 @@ void Niipp::clear()
 	m_pointUvodeNiipp.setY(0);
 }
 
-void Niipp::changeValuePower(int value)
+void Niipp::changeValuePower(int source, int value)
 {
 	switch( m_antenaType ) {
 		case 0:
@@ -161,11 +167,25 @@ void Niipp::changeValuePower(int value)
             m_radiusCircle = m_zone[value] * 1000;
 			break;
 	}
+
+    if(source == 0)
+    {
+        QPoint point(0,0);
+        QPoint pointUvoda(0,0);
+        sendEvil(point, pointUvoda, 0, 0);
+    }
 }
 
-void Niipp::setAntennaType(int value)
+void Niipp::setAntennaType(int source, int value)
 {
 	m_antenaType = value;
+    if(source == 0)
+    {
+        QPoint point(0,0);
+        QPoint pointUvoda(0,0);
+        sendEvil(point, pointUvoda, 0, 0);
+    }
+
 }
 
 void Niipp::sendEvil(const QPointF& point, const QPointF& point_uvoda, double alt, double bearing)
@@ -270,6 +290,10 @@ QByteArray Niipp::encode(QStringList list)
 void Niipp::changeMode(int value)
 {
 	m_mode = value;
+    QPoint point(0,0);
+    QPoint pointUvoda(0,0);
+
+    sendEvil(point, pointUvoda, 0, 0);
 }
 
 void Niipp::setMode(int value)

@@ -42,14 +42,20 @@ void TreeWidgetDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 		QCheckBox renderer;
 		renderer.setChecked(checked);
 		renderer.setStyleSheet(_styleSheet);
-		renderer.setText(text);
+        if(!text.isNull())
+        {
+            renderer.setText(text);
+        }
 		renderer.resize(option.rect.size());
 		painter->translate(option.rect.topLeft());
 		renderer.render(painter);
 	} else {
 		QLabel renderer;
 		renderer.setStyleSheet(_styleSheet);
-		renderer.setText(text);
+        if(!text.isNull())
+        {
+            renderer.setText(text);
+        }
 		renderer.resize(option.rect.size());
 		painter->translate(option.rect.topLeft());
 		renderer.render(painter);

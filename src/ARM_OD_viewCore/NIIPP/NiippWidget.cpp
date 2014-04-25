@@ -11,6 +11,7 @@ NiippWidget::NiippWidget(QWidget *parent)
 	ui->_pb_enable_complex->setStyleSheet(QString::fromUtf8("background-color: rgb(255,0,0);"));
 	connect(ui->_pb_enable_complex, SIGNAL(toggled(bool)), this, SLOT(enableComplex(bool)));
 	connect(ui->_pb_enable_complex, SIGNAL(toggled(bool)), this, SIGNAL(complexEnabled(bool)));
+    connect(ui->pbRDPNiipp, SIGNAL(clicked()), this, SIGNAL(signalOpenRDP()));
 
 	QFont* font = new QFont();
 	font->setBold(true);
@@ -84,15 +85,15 @@ void NiippWidget::changeValuePower(int value, double radiusCircle, double radius
 	ui->_sl_power->setValue(value);
 
 	if( antennaType == 0 ) {
-		ui->_le_distance->setText( QString(tr("%1 km")).arg(QString::number(radiusSector)) );
+        ui->_le_distance->setText( QString(tr("%1 km")).arg(QString::number(radiusSector/1000)) );
 		if(ui->_pb_start->isChecked()) {
-			ui->_le_status->setText( tr("Radiation") );
+            ui->_le_status->setText( tr("Work with directional antenna") );
 		}
 	}
 	if( antennaType == 1 ) {
-		ui->_le_distance->setText( QString(tr("%1 km")).arg(QString::number(radiusCircle)) );
+        ui->_le_distance->setText( QString(tr("%1 km")).arg(QString::number(radiusCircle/1000)) );
 		if(ui->_pb_start->isChecked()) {
-			ui->_le_status->setText( tr("Radiation") );
+            ui->_le_status->setText( tr("Work with undirectional antenna") );
 		}
 	}
 }
@@ -205,10 +206,10 @@ void NiippWidget::setStatusText(int mode)
 			ui->_le_status->setText(tr("Simple"));
 			break;
 		case 01:
-			ui->_le_status->setText(tr("Radiation"));
+            ui->_le_status->setText(tr("Work with undirectional antenna"));
 			break;
 		case 10:
-			ui->_le_status->setText(tr("Radiation"));
+            ui->_le_status->setText(tr("Work with directional antenna"));
 			break;
 		case 11:
 			ui->_le_status->setText(tr("Accident"));

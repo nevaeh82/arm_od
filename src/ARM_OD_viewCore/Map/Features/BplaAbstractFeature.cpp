@@ -87,6 +87,7 @@ void BplaAbstract::update(const UavInfo& uav)
 {
 	bool changed = false;
 
+
 	QPointF point( uav.lon, uav.lat );
 
 	if( point != position() ) {

@@ -18,10 +18,11 @@ public:
 	};
 
 public:
+    Niipp();
 	Niipp(int id, QString name, QPointF latlon, ITabManager* parentTab);
 	~Niipp() {}
 
-	void setAntennaType(int value);
+    void setAntennaType(int source, int value);
 	void setMode(int value);
 	void setAntenaIndex(int value);
 	void setSBpowerValue(int value);
@@ -30,7 +31,7 @@ public:
 
 	void stopCommad();
 	void startCommand();
-	void changeValuePower(int value);
+    void changeValuePower(int source, int value);
 	void enableComplex(bool state);
 	void clear();
 	void sendEvil(const QPointF& point, const QPointF& point_uvoda, double alt, double bearing);

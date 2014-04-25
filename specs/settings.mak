@@ -7,6 +7,7 @@ prebuild::
 	$(mkdir) $(DESTDIR)/Tabs
 	$(mkdir) $(DESTDIR)/TCP
 	$(mkdir) $(DESTDIR)/Enviroment
+	$(mkdir) $(DESTDIR)/RDP
 	
 	$(cp) -ud $(SolutionDir)/settings/DB/*.* $(DESTDIR)/DB
 	$(cp) -ud $(SolutionDir)/settings/images/*.* $(DESTDIR)/images
@@ -16,5 +17,6 @@ prebuild::
 	$(cp) -ud $(SolutionDir)/settings/Tabs/*.* $(DESTDIR)/Tabs
 	$(cp) -ud $(SolutionDir)/settings/TCP/*.* $(DESTDIR)/TCP
 	$(cp) -ud $(SolutionDir)/settings/Enviroment/*.* $(DESTDIR)/Enviroment
+	$(cp) -ud $(SolutionDir)/settings/RDP/*.* $(DESTDIR)/RDP
 		
 	$(call begin-build, Prebuild OK )

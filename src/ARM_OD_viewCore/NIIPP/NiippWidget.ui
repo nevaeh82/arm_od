@@ -194,6 +194,13 @@
    <item>
     <widget class="QLineEdit" name="_le_status"/>
    </item>
+   <item>
+    <widget class="QPushButton" name="pbRDPNiipp">
+     <property name="text">
+      <string>RDP</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>

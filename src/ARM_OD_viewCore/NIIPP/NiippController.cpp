@@ -1,6 +1,8 @@
 #include "Tabs/DbBla/Defines.h"
 #include "NIIPPController.h"
 
+#include <Logger.h>
+
 NiippController::NiippController(int id, QString name, QPointF latlon, IMapController* mapController,
 								 ITabManager* parentTab, QObject* parent)
 	: QObject(parent)
@@ -45,6 +47,35 @@ void NiippController::slotStartClicked()
     m_model->startCommand();
 }
 
+void NiippController::slotOpenRDP()
+{
+    int ret = openRDP(m_model->getId());
+    log_debug(QString("Open RDP for NIIPP = %1").arg(QString::number(ret)));
+
+}
+
+int NiippController::openRDP(int id)
+{
+    QProcess process;
+//    process.setReadChannelMode(ForwardedChannels);
+    switch(id)
+    {
+    case 100:
+        process.start("mstsc RDP/spip_dd1.rdp");
+        break;
+    case 101:
+        process.start("mstsc RDP/spip_dd2.rdp");
+        break;
+    default:
+        return -1;
+        break;
+    }
+
+    if (!process.waitForFinished(-1))
+        return -2;
+    return process.exitStatus() == QProcess::NormalExit ? process.exitCode() : -1;
+}
+
 void NiippController::enableComplex(bool state)
 {
 	m_model->enableComplex(state);
@@ -58,9 +89,11 @@ void NiippController::clear()
 
 void NiippController::changeValuePower(int value)
 {
-	m_model->changeValuePower( value );
+    m_model->setSBpowerValue(value);
+    m_model->changeValuePower(0, value );
 	m_view->changeValuePower( value, m_model->getRadiusCircle(),
 							  m_model->getRadiusSector(), m_model->getAntenaType() );
+
 
 	m_mapController->updateNiippPowerZone( *m_model );
 }
@@ -86,7 +119,9 @@ void NiippController::setAntennaType(int value)
 		m_model->setMode( m_view->getModeIndex() );
 	}
 
-	m_model->setAntennaType( value );
+    m_model->setAntenaIndex(value);
+
+    m_model->setAntennaType(0, value );
 	m_view->setAntennaType( m_model->getAntenaType(), getModeCurrentIndex() );
 	m_mapController->updateNiippPowerZone( *m_model );
 }
@@ -197,6 +232,9 @@ void NiippController::onMethodCalled(const QString &method, const QVariant &argu
         ds >> course;
         ds >> angle;
 
+        if(m_model->getId() != id)
+            return;
+
         QPointF latlon;
         switch( id ) {
             case 100:
@@ -211,8 +249,12 @@ void NiippController::onMethodCalled(const QString &method, const QVariant &argu
         }
 
 //        Niipp niipp( id, QString::number( id ), latlon, NULL );
-        m_model->setAntennaType( mode == 1 ? 1 : 0 );
-        m_model->changeValuePower( zone );
+
+        m_model->setAntennaType(1, mode == 1 ? 1 : 0 );
+        m_model->changeValuePower(1, zone );
+        m_model->setAngel(course);
+        m_view->setStatusText(mode);
+
 
         m_mapController->updateNiippPowerZone( *m_model );
 
@@ -236,4 +278,5 @@ void NiippController::appendView(NiippWidget *view)
 	connect(m_view, SIGNAL(antennaTypeChanged(int)), this, SLOT(setAntennaType(int)));
 	connect(m_view, SIGNAL(modeChanged(int)), this, SLOT(changeMode(int)));
 	connect(m_view, SIGNAL(cleared()), this, SLOT(clear()));
+    connect(m_view, SIGNAL(signalOpenRDP()), this, SLOT(slotOpenRDP()));
 }

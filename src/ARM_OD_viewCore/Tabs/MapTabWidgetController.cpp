@@ -52,8 +52,9 @@ MapTabWidgetController::~MapTabWidgetController()
 {
 	m_rpcClient->deregisterReceiver(m_uavDbManager);
 	m_rpcClient->deregisterReceiver(m_mapController);
-
-	m_rpcClient->stop();
+    m_rpcClient->deregisterReceiver(m_niipp1);
+    m_rpcClient->deregisterReceiver(m_niipp2);
+    m_rpcClient->stop();
 
 	m_mapController->closeAtlas();
 	m_mapController->closeMap();
@@ -68,6 +69,10 @@ MapTabWidgetController::~MapTabWidgetController()
 	m_uavDbManager->getUavHistory()->deregisterReceiver(m_allyUavTreeModel);
 	m_uavDbManager->getUavHistory()->deregisterReceiver(m_enemyUavTreeModel);
 	m_uavDbManager->getUavHistory()->deregisterReceiver( m_controlPanelController );
+
+    m_uavDbManager->deregisterReceiver( m_niipp1 );
+    m_uavDbManager->deregisterReceiver( m_niipp2 );
+
 }
 
 int MapTabWidgetController::init()
@@ -137,6 +142,9 @@ int MapTabWidgetController::createRPC()
 	m_rpcClient->registerReceiver(m_mapController);
 	m_rpcClient->registerReceiver(m_uavDbManager);
 
+    m_rpcClient->registerReceiver(m_niipp1);
+    m_rpcClient->registerReceiver(m_niipp2);
+
 	return 0;
 }
 
@@ -195,6 +203,8 @@ void MapTabWidgetController::appendView(MapTabWidget *view)
 
     m_uavDbManager->registerReceiver( m_niipp1 );
     m_uavDbManager->registerReceiver( m_niipp2 );
+
+
 
 	init();
 }
