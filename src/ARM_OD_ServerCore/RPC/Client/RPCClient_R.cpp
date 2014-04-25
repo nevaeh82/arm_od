@@ -58,6 +58,7 @@ bool RPCClient_R::start(quint16 port, QHostAddress address)
 
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_DEF, this, SLOT(rpcSlotServerSendBplaDef(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_DEF_AUTO, this, SLOT(rpcSlotServerSendBplaDefAuto(QByteArray)));
+	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_HYPERBOLA, this, SLOT(rpcSlotServerSendHyperbola(QByteArray)));
 
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_ATLANT_DIRECTION, this, SLOT(rpcSlotServerAtlantDirection(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_ATLANT_POSITION, this, SLOT(rpcSlotServerAtlantPosition(QByteArray)));
@@ -164,6 +165,24 @@ void RPCClient_R::rpcSlotServerSendBplaDefAuto(QByteArray ba)
 	QSharedPointer<IMessageOld> msg(new MessageOld(m_id, ARM_R_SERVER_BPLA_COORDS_AUTO, ba1));
 	m_subscriber->data_ready(ARM_R_SERVER_BPLA_COORDS_AUTO, msg);
 
+}
+
+void RPCClient_R::rpcSlotServerSendHyperbola(QByteArray ba)
+{
+	QByteArray inputData = ba;
+	QDataStream inputDataStream(&inputData, QIODevice::ReadOnly);
+
+	QList<QPointF> hyperbola;
+	double frequency;
+	inputDataStream >> hyperbola;
+	inputDataStream >> frequency;
+
+	QByteArray *dataToSend = new QByteArray();
+	dataToSend->append(ba);
+	//QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
+
+	QSharedPointer<IMessageOld> msg(new MessageOld(m_id, ARM_R_SERVER_HYPERBOLA, dataToSend));
+	m_subscriber->data_ready(ARM_R_SERVER_HYPERBOLA, msg);
 }
 
 void RPCClient_R::rpcSlotServerAtlantDirection(QByteArray ba1)

@@ -183,7 +183,7 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 		ds >> map;
 
 		client->addAis(map);
-    } else if( method == RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION ) {
+	} else if( method == RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION ) {
 
 		QDataStream ds(&data, QIODevice::ReadWrite);
 		A_Dir_Ans_msg msg;
@@ -231,5 +231,13 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 		uav.lat = msg.latitude;
 
 		client->addEnemyBpla( uav );
+	}
+	else if( method == RPC_SLOT_SERVER_SEND_HYPERBOLA ) {
+		QDataStream ds(&data, QIODevice::ReadWrite);
+		QVector<QPointF> list;
+		double frequency;
+		ds >> list;
+		ds >> frequency;
+		client->addHyperbole((int)frequency, list, QTime::currentTime());
 	}
 }

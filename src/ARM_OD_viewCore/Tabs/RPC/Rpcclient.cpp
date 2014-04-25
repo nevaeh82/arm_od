@@ -58,6 +58,7 @@ void RPCClient::startInternalSlot(quint16 port, QString ipAddress)
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_AIS_DATA, this, SLOT(rpcSlotServerSendAisData(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_POINTS, this, SLOT(rpcSendBplaPoints(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO, this, SLOT(rpcSendBplaPointsAuto(QByteArray)));
+	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_HYPERBOLA, this, SLOT(rpcSendHyperbola(QByteArray)));
 
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_NIIPP_DATA, this, SLOT(rpcSendNiippData(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION, this, SLOT(rpcSlotServerSendAtlantDirection(QByteArray)));
@@ -137,6 +138,13 @@ void RPCClient::rpcSendBplaPointsAuto(QByteArray data)
 		foreach (IRpcListener* reciever, m_receiversList) {
 			reciever->onMethodCalled(RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO, QVariant(data));
 		}
+	}
+}
+
+void RPCClient::rpcSendHyperbola(QByteArray data)
+{
+	foreach (IRpcListener* reciever, m_receiversList) {
+		reciever->onMethodCalled(RPC_SLOT_SERVER_SEND_HYPERBOLA, QVariant(data));
 	}
 }
 

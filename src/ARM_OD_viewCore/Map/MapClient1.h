@@ -127,6 +127,7 @@ private slots:
 	void addInterceptionPointData(int friendBplaId, int enemyBplaId, QPointF position,
 								  float height, float radius, int time,
 								  float course, float speed );
+	void addInHyperbole( int id, const QVector<QPointF>& polyline, const QTime time, const QColor color );
 
 	void redrawAllBpla();
 	void updateCircle();
@@ -147,6 +148,8 @@ signals:
 
 	void interceptionPointAdded( int bla_id, int bpla_id, QPointF aCoord,
 		float aHgt, float aRadius, int aTime, float aIntcCourse, float aIntcSpeed );
+
+	void hyperboleAdded( int id, const QVector<QPointF>& polyline, const QTime time, const QColor color);
 };
 
 #endif // MAPCLIENT1_H
