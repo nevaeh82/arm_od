@@ -231,6 +231,7 @@ void Niipp::sendEvil(const QPointF& point, const QPointF& point_uvoda, double al
 
 	ds << str_temp;
 
+    QPointF p_temp(point.y(), point.x());
 	ds << point;
 	QString NS = "N";
 	ds << NS;
@@ -329,7 +330,8 @@ void Niipp::setSBpowerValue(int value)
 
 void Niipp::setPoint(const QPointF& coord)
 {
-	 m_pointUvodeNiipp = coord;
+     m_pointUvodeNiipp.setX(coord.y());
+     m_pointUvodeNiipp.setY(coord.x());
 }
 
 

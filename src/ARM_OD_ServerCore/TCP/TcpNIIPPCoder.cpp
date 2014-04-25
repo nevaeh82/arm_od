@@ -237,7 +237,7 @@ QByteArray TcpNIIPPCoder::decode(const MessageSP message)
 	}
 	else
 	{
-		QString lat_point2 = QString::number(point.x(), 'f', 6);
+        QString lat_point2 = QString::number(point2.x(), 'f', 6);
 		QStringList list_lat1_point2 = lat_point2.split('.');
 
 		QString lat_deg_point2 = list_lat1_point2[0];//lat.left(2);
@@ -276,7 +276,7 @@ QByteArray TcpNIIPPCoder::decode(const MessageSP message)
 	}
 	else
 	{
-		QString lon_point2 = QString::number(point.y(), 'f', 6);
+        QString lon_point2 = QString::number(point2.y(), 'f', 6);
 		QStringList list_lon1_point2 = lon_point2.split('.');
 
 		QString lon_deg_point2 = list_lon1_point2[0];//lat.left(2);
