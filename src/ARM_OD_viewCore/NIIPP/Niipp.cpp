@@ -232,7 +232,7 @@ void Niipp::sendEvil(const QPointF& point, const QPointF& point_uvoda, double al
 	ds << str_temp;
 
     QPointF p_temp(point.y(), point.x());
-	ds << point;
+    ds << p_temp;
 	QString NS = "N";
 	ds << NS;
 
