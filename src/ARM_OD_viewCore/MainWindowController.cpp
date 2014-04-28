@@ -1,6 +1,8 @@
+#include <QMessageBox>
+
 #include "MainWindowController.h"
 
-#include <QMessageBox>
+#include "Interfaces/IUavHistoryListener.h"
 
 #define SERVER_NAME "ARM_OD_Server"
 
@@ -18,8 +20,9 @@ MainWindowController::MainWindowController(QObject *parent) :
 
 	qRegisterMetaType<Uav>( "Uav" );
 	qRegisterMetaType<UavInfo>( "UavInfo" );
-    qRegisterMetaType<Niipp>( "Niipp" );
+	qRegisterMetaType<Niipp>( "Niipp" );
 
+	qRegisterMetaType<IUavHistoryListener::Status>( "Status" );
 }
 
 MainWindowController::~MainWindowController()
