@@ -306,7 +306,11 @@ UavRole DbUavManager::getUavRoleByCode(const QString& code)
 void DbUavManager::deleteAllUav()
 {
 	QMutexLocker locker(&m_mutex);
+	foreach (QString key, m_lifeTimerMap.keys()) {
+		timeoutSlot(key);
+	}
 	m_knownUavsList.clear();
+	m_lifeTimerMap.clear();
 }
 
 void DbUavManager::onMethodCalled(const QString& method, const QVariant& argument)
