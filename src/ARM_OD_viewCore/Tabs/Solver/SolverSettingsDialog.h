@@ -28,6 +28,9 @@ public:
 	void setCountNum(int);
 	void setAutoState(bool);
 
+private slots:
+	void autoStateToggled(bool val);
+
 signals:
 	void signalClear();
 	void signalAccept();

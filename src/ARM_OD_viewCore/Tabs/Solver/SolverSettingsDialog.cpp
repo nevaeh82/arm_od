@@ -25,6 +25,8 @@ SolverSettingsDialog::SolverSettingsDialog(QWidget *parent) :
 	connect(ui->AcceptButton, SIGNAL(clicked()), this, SIGNAL(signalAccept()));
 	connect(ui->CancelButton, SIGNAL(clicked()), this, SIGNAL(signalCancel()));
 	connect(ui->checkBoxAuto, SIGNAL(toggled(bool)), this, SIGNAL(signalAuto(bool)));
+
+	connect(ui->checkBoxAuto, SIGNAL(toggled(bool)), this, SLOT(autoStateToggled(bool)));
 }
 
 SolverSettingsDialog::~SolverSettingsDialog()
@@ -70,4 +72,11 @@ void SolverSettingsDialog::setCountNum(int val)
 void SolverSettingsDialog::setAutoState(bool val)
 {
 	ui->checkBoxAuto->setChecked(val);
+}
+
+void SolverSettingsDialog::autoStateToggled(bool val)
+{
+	ui->TrackLenSpinBox->setDisabled(val);
+	ui->AltitudeSpinBox->setDisabled(val);
+	ui->SamplesCountSpinBox->setDisabled(val);
 }

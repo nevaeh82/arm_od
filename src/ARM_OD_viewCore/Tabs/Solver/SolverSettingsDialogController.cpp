@@ -80,5 +80,14 @@ void SolverSettingsDialogController::autoState(bool)
 
 void SolverSettingsDialogController::clear()
 {
-	m_view->done(SOLVERSETTINGDIALOGCLEAR);
+	m_autoStateValue = false;
+	m_height = 0;
+	m_trackLength = 0;
+	m_countNum = 0;
+
+	m_view->setHeight(m_height);
+	m_view->setTrackLength(m_trackLength);
+	m_view->setCountNum(m_countNum);
+	m_view->setAutoState(m_autoStateValue);
+	//m_view->done(SOLVERSETTINGDIALOGCLEAR);
 }
