@@ -12,6 +12,7 @@ include(../../specs/qxt.pri)
 include(../../specs/protobuf.pri)
 include($$SolutionDir/specs/CISCommonLib.pri )
 include(../../specs/logger.pri)
+include(../../specs/qtsingleapplication.pri)
 
 INCLUDEPATH += $$PWD
 

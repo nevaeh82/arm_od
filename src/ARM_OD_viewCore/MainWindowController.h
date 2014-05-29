@@ -26,8 +26,6 @@ private:
 
 	MainWindow* m_view;
 
-	Pw::Common::ServiceControl::ServiceHandler* m_serverHandler;
-
 	TabManager*  m_tabManager;
 
 	RpcConfigClient* m_rpcConfigClient;
@@ -42,8 +40,6 @@ public:
 
 	void appendView(MainWindow *view);
 
-	void startServer();
-
 	void setUavLifeTime(int msecs);
 
 private slots:
@@ -57,9 +53,6 @@ private slots:
 	void solverDialogSlot();
 
 private:
-
-	void start();
-	void stop();
 
 	void init();
 

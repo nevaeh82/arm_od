@@ -18,3 +18,6 @@ ifeq "$(OS)" "Windows_NT"
 else
 	-$(cp) $(LINUX_QT_DIR)/../plugins/imageformats/qjpeg*.so $(DESTDIR)/plugins/imageformats
 endif
+	$(cp) -ud *.bat $(DESTDIR)
+	$(mkdir) $(SolutionDir)/build/bin/$(MAKE_PLATFORM)/icons
+	$(cp) -ud images/shortcut.ico $(DESTDIR)/icons

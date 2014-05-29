@@ -2,8 +2,8 @@
 
 #include <QDebug>
 
-ARM_OD_Application::ARM_OD_Application(int& argc, char** argv) :
-    QCoreApplication(argc, argv)
+ARM_OD_Application::ARM_OD_Application(int& argc, char** argv)
+	: QtSingleCoreApplication(argc, argv)
 {
 }
 

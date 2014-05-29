@@ -18,6 +18,7 @@ include(../ARM_OD_Common/reference.pri)
 include(../../specs/qxt.pri)
 include(../../specs/protobuf.pri)
 include($$SolutionDir/specs/CISCommonLib.pri )
+include(../../specs/qtsingleapplication.pri)
 include(../../specs/logger.pri)
 
 applyReferences()

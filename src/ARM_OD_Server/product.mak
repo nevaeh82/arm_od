@@ -20,3 +20,6 @@ prebuild::
 #	$(cp) -ud TCP/coders.ini $(DESTDIR)/TCP
 		
 	$(call begin-build, Prebuild OK )
+
+postbuild::
+	$(cp) -ud *.bat $(DESTDIR)

@@ -1,10 +1,10 @@
 #ifndef ARM_OD_APPLICATION_H
 #define ARM_OD_APPLICATION_H
 
-#include <QtCore/QCoreApplication>
+#include <qtsinglecoreapplication.h>
 #include <stdexcept>
 
-class ARM_OD_Application : public QCoreApplication
+class ARM_OD_Application : public QtSingleCoreApplication
 {
 public:
     ARM_OD_Application(int& argc, char** argv);

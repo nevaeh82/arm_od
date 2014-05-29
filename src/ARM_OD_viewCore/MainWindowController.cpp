@@ -11,7 +11,6 @@ MainWindowController::MainWindowController(QObject *parent) :
 {
 	m_view = NULL;
 	m_tabManager = NULL;
-	m_serverHandler = 0;
 	m_rpcConfigClient = NULL;
 	m_uavLifeTime = 0;
 
@@ -27,7 +26,6 @@ MainWindowController::MainWindowController(QObject *parent) :
 
 MainWindowController::~MainWindowController()
 {
-	stop();
 }
 
 void MainWindowController::appendView(MainWindow *view)
@@ -37,11 +35,6 @@ void MainWindowController::appendView(MainWindow *view)
 	init();
 }
 
-void MainWindowController::startServer()
-{
-	start();
-}
-
 void MainWindowController::setUavLifeTime(int msecs)
 {
 	if( m_tabManager != NULL ) {
@@ -49,28 +42,6 @@ void MainWindowController::setUavLifeTime(int msecs)
 	} else {
 		m_uavLifeTime = msecs;
 	}
-}
-
-void MainWindowController::start()
-{
-	QString serverName = "./" + QString(SERVER_NAME);
-
-#ifdef QT_DEBUG
-	serverName += "d";
-#endif
-
-	m_serverHandler = new Pw::Common::ServiceControl::ServiceHandler(serverName, QStringList(), NULL, this);
-	connect(m_serverHandler, SIGNAL(processStartedSignal()), this, SLOT(serverStartedSlot()));
-	connect(m_serverHandler, SIGNAL(processStartFailedSignal()), this, SLOT(serverFailedToStartSlot()));
-
-	m_serverHandler->start();
-}
-
-void MainWindowController::stop()
-{
-	//m_serverHandler->terminate();
-	m_serverHandler->kill();
-	m_tabManager->clearAllInformation();
 }
 
 void MainWindowController::init()
@@ -96,6 +67,8 @@ void MainWindowController::init()
 
 	// create solver settings dialog controller
 	solverSettingsController = new SolverSettingsDialogController(701, m_tabManager, this);
+
+	serverStartedSlot();
 }
 
 void MainWindowController::serverFailedToStartSlot()

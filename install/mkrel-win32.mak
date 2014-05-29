@@ -2,7 +2,7 @@ include makeimage-win32-common.mak
 
 .NOTPARALLEL:
 
-DEPLOY = *.exe *.dll *.conf *.ini
+DEPLOY = *.exe *.dll *.conf *.ini *.bat
 DEPLOY_EXCLUDE = *Test.exe *d.* *d1.* *debug.dll
 
 TmpRel = $(SolutionDir)/build/tmprel
@@ -38,6 +38,7 @@ copy-bin:
 	$(cp) -rudf $(BinDir)/TCP $(TmpRel)/bin
 	$(cp) -rudf $(BinDir)/Enviroment $(TmpRel)/bin
 	$(cp) -rudf $(BinDir)/RDP $(TmpRel)/bin
+	$(cp) -rudf $(BinDir)/icons $(TmpRel)/bin
 
 	$(echo) VERSION = $(if $(PRODUCT_VERSION_REL),$(PRODUCT_VERSION_REL),$(PRODUCT_VERSION).0) > $(TmpRel)/bin/version.ini
 
