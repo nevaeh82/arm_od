@@ -24,7 +24,7 @@ void PolylineAbstract::setPolyline(const QVector<QPointF>& polyline)
 	points->clear();
 
 	foreach( QPointF point, polyline ) {
-		points->append( new PwGisLonLat( point.x(), point.y() ) );
+		points->append( new PwGisLonLat( point.y(), point.x() ) );
 	}
 }
 

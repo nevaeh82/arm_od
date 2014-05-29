@@ -76,5 +76,20 @@ void PrmSimulator::update()
 	stream << (double) bearing;
 	stream << frequency;
 
-    m_serverPeer->call( RPC_SLOT_SERVER_SEND_BPLA_DEF, QVariant( data ) );
+	m_serverPeer->call( RPC_SLOT_SERVER_SEND_BPLA_DEF, QVariant( data ) );
+
+	QByteArray dataToSend;
+	QVector<QPointF> tmpHyperb;
+
+	tmpHyperb.append(QPointF(60, 30));
+	tmpHyperb.append(QPointF(61, 31));
+	tmpHyperb.append(QPointF(62, 32));
+	tmpHyperb.append(QPointF(63, 31));
+	tmpHyperb.append(QPointF(64, 31));
+
+	QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
+	dataStream << tmpHyperb;
+	dataStream << (double)1830;
+
+	m_serverPeer->call( RPC_SLOT_SERVER_SEND_HYPERBOLA, QVariant( dataToSend ) );
 }
