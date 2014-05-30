@@ -13,6 +13,7 @@ MainWindowController::MainWindowController(QObject *parent) :
 	m_tabManager = NULL;
 	m_rpcConfigClient = NULL;
 	m_uavLifeTime = 0;
+	m_serverHandler = 0;
 
 	qRegisterMetaType<QVector<QPointF> >("rpc_send_points_vector");
 	qRegisterMetaType<quint32>("quint32");
@@ -22,6 +23,12 @@ MainWindowController::MainWindowController(QObject *parent) :
 	qRegisterMetaType<Niipp>( "Niipp" );
 
 	qRegisterMetaType<IUavHistoryListener::Status>( "Status" );
+
+	QString serverName = "./" + QString(SERVER_NAME);
+	#ifdef QT_DEBUG
+		serverName += "d";
+	#endif
+	m_serverHandler = new Pw::Common::ServiceControl::ServiceHandler(serverName, QStringList(), NULL, this);
 }
 
 MainWindowController::~MainWindowController()
@@ -61,6 +68,7 @@ void MainWindowController::init()
 	connect(m_tabManager, SIGNAL( atlasOpened() ), m_view, SLOT( mapOpened() ));
 	connect(m_tabManager, SIGNAL( cancelMapOpen() ), m_view, SLOT( cancelMapOpen() ));
 	connect(m_view, SIGNAL(setupKoordinatometriyaSignal()), this, SLOT(solverDialogSlot()));
+	connect(m_view, SIGNAL(signalResetServer()), this, SLOT(resetServer()));
 
 	m_rpcConfigClient = new RpcConfigClient(this);
 	m_rpcConfigClient->registerReceiver(this);
@@ -99,6 +107,17 @@ void MainWindowController::serverStartedSlot()
 
 		m_rpcConfigClient->start(port, QHostAddress(host));
 		connect(m_rpcConfigClient, SIGNAL(connectionEstablishedSignal()), this, SLOT(rpcConnectionEstablished()));
+	}
+}
+
+void MainWindowController::resetServer()
+{
+	QStringList serverPIDList;
+	bool searchResult;
+	searchResult = m_serverHandler->isProcessExist( m_serverHandler->getServicePath(), serverPIDList );
+
+	if( searchResult ) {
+		m_serverHandler->killProcessExist( serverPIDList );
 	}
 }
 

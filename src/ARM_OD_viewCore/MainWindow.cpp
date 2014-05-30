@@ -56,6 +56,8 @@ void MainWindow::init()
 		this, SLOT( openMapAction() ) );
 
 	connect(ui->actionKoordinatometriyaParameters, SIGNAL(triggered()), this, SIGNAL(setupKoordinatometriyaSignal()));
+
+	connect(ui->actionRestartServer, SIGNAL(triggered()), this, SIGNAL(signalResetServer()));
 }
 
 void MainWindow::setStateMapAction( bool value )

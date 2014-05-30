@@ -15,16 +15,7 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <property name="leftMargin">
-     <number>0</number>
-    </property>
-    <property name="topMargin">
-     <number>0</number>
-    </property>
-    <property name="rightMargin">
-     <number>0</number>
-    </property>
-    <property name="bottomMargin">
+    <property name="margin">
      <number>0</number>
     </property>
     <item row="0" column="0">
@@ -40,16 +31,7 @@
         </sizepolicy>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
+        <property name="margin">
          <number>0</number>
         </property>
         <item>
@@ -59,16 +41,7 @@
       </widget>
       <widget class="QWidget" name="initializationPage">
        <layout class="QVBoxLayout" name="verticalLayout_2">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
+        <property name="margin">
          <number>0</number>
         </property>
         <item>
@@ -132,10 +105,17 @@
      <string>View</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuServer">
+    <property name="title">
+     <string>Server</string>
+    </property>
+    <addaction name="actionRestartServer"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
    <addaction name="menuMap"/>
    <addaction name="menuSettings"/>
+   <addaction name="menuServer"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionNew">
@@ -164,6 +144,11 @@
   <action name="actionKoordinatometriyaParameters">
    <property name="text">
     <string>Solver settings</string>
+   </property>
+  </action>
+  <action name="actionRestartServer">
+   <property name="text">
+    <string>Restart Server</string>
    </property>
   </action>
  </widget>

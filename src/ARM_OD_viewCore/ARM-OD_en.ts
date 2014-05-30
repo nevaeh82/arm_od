@@ -112,65 +112,75 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="88"/>
+        <location filename="MainWindow.ui" line="61"/>
         <source>Initialization...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="112"/>
+        <location filename="MainWindow.ui" line="85"/>
         <source>File</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="119"/>
+        <location filename="MainWindow.ui" line="92"/>
         <source>Map</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="126"/>
+        <location filename="MainWindow.ui" line="99"/>
         <source>Settings</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="132"/>
+        <location filename="MainWindow.ui" line="105"/>
         <source>View</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="146"/>
+        <location filename="MainWindow.ui" line="110"/>
+        <source>Server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="126"/>
         <source>New</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="151"/>
+        <location filename="MainWindow.ui" line="131"/>
         <source>Exit</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="156"/>
+        <location filename="MainWindow.ui" line="136"/>
         <source>Open Atlas</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="161"/>
+        <location filename="MainWindow.ui" line="141"/>
         <source>Open from file</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="166"/>
+        <location filename="MainWindow.ui" line="146"/>
         <source>Solver settings</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="151"/>
+        <source>Restart Server</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MainWindowController</name>
     <message>
-        <location filename="MainWindowController.cpp" line="100"/>
+        <location filename="MainWindowController.cpp" line="84"/>
         <source>Unable to connect to server</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindowController.cpp" line="100"/>
+        <location filename="MainWindowController.cpp" line="84"/>
         <source>Please try to restart application</source>
         <translation></translation>
     </message>

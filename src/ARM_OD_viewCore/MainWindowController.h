@@ -31,6 +31,7 @@ private:
 	RpcConfigClient* m_rpcConfigClient;
 
 	SolverSettingsDialogController* solverSettingsController;
+	Pw::Common::ServiceControl::ServiceHandler* m_serverHandler;
 
 	int m_uavLifeTime;
 
@@ -45,6 +46,7 @@ public:
 private slots:
 	void serverFailedToStartSlot();
 	void serverStartedSlot();
+	void resetServer();
 
 	void startTabManger();
 

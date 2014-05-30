@@ -48,6 +48,7 @@ signals:
 	void openAtlasSignal();
 	void openMapSignal();
 	void setupKoordinatometriyaSignal();
+	void signalResetServer();
 
 private slots:
 	void openAtlasAction();

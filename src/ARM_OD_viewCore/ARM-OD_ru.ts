@@ -124,54 +124,64 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="88"/>
+        <location filename="MainWindow.ui" line="61"/>
         <source>Initialization...</source>
         <translation>Инициализация...</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="112"/>
+        <location filename="MainWindow.ui" line="85"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="119"/>
+        <location filename="MainWindow.ui" line="92"/>
         <source>Map</source>
         <translation>Карта</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="126"/>
+        <location filename="MainWindow.ui" line="99"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="132"/>
+        <location filename="MainWindow.ui" line="105"/>
         <source>View</source>
         <translation>Вид</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="146"/>
+        <location filename="MainWindow.ui" line="110"/>
+        <source>Server</source>
+        <translation>Сервер</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="126"/>
         <source>New</source>
         <translation>Новый пункт</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="151"/>
+        <location filename="MainWindow.ui" line="131"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="156"/>
+        <location filename="MainWindow.ui" line="136"/>
         <source>Open Atlas</source>
         <translation>Открыть атлас</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="161"/>
+        <location filename="MainWindow.ui" line="141"/>
         <source>Open from file</source>
         <translation>Открыть из файла</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="166"/>
+        <location filename="MainWindow.ui" line="146"/>
         <source>Solver settings</source>
         <translation>Параметры координатометрии</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="151"/>
+        <source>Restart Server</source>
+        <translation>Перезапуск сервера</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="20"/>
@@ -182,12 +192,12 @@
 <context>
     <name>MainWindowController</name>
     <message>
-        <location filename="MainWindowController.cpp" line="100"/>
+        <location filename="MainWindowController.cpp" line="84"/>
         <source>Unable to connect to server</source>
         <translation>Неудалось подключиться к серверу</translation>
     </message>
     <message>
-        <location filename="MainWindowController.cpp" line="100"/>
+        <location filename="MainWindowController.cpp" line="84"/>
         <source>Please try to restart application</source>
         <translation>Попробуйте перезапустить приложение</translation>
     </message>
