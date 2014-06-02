@@ -616,7 +616,7 @@
     <message>
         <location filename="Tabs/Solver/SolverSettingsDialog.ui" line="77"/>
         <source>Clear</source>
-        <translation>Очистить</translation>
+        <translation>Сброс</translation>
     </message>
     <message>
         <location filename="Tabs/Solver/SolverSettingsDialog.cpp" line="10"/>

@@ -10,7 +10,7 @@ SolverSettingsDialog::SolverSettingsDialog(QWidget *parent) :
 	setWindowIconText(tr("Detector"));
 	setWindowTitle(tr("Solver settings"));
 
-	ui->checkBoxAuto->setCheckState(Qt::Unchecked);
+	ui->checkBoxAuto->setCheckState(Qt::Checked);
 
 	ui->AltitudeSpinBox->setValue(0);
 	ui->AltitudeSpinBox->setRange(0, 10000);

@@ -6,7 +6,7 @@ SolverSettingsDialogController::SolverSettingsDialogController(int id, ITabManag
 	m_id = id;
 	m_tabManager = tabManager;
 
-	m_autoStateValue = false;
+	m_autoStateValue = true;
 	m_height = 0;
 	m_trackLength = 0;
 	m_countNum = 0;
@@ -80,14 +80,5 @@ void SolverSettingsDialogController::autoState(bool)
 
 void SolverSettingsDialogController::clear()
 {
-	m_autoStateValue = false;
-	m_height = 0;
-	m_trackLength = 0;
-	m_countNum = 0;
-
-	m_view->setHeight(m_height);
-	m_view->setTrackLength(m_trackLength);
-	m_view->setCountNum(m_countNum);
-	m_view->setAutoState(m_autoStateValue);
-	//m_view->done(SOLVERSETTINGDIALOGCLEAR);
+	m_view->done(SOLVERSETTINGDIALOGCLEAR);
 }
