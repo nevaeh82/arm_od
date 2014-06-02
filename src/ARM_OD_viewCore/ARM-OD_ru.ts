@@ -186,7 +186,7 @@
     <message>
         <location filename="MainWindow.cpp" line="20"/>
         <source>Zaviruha</source>
-        <translation>Завируха</translation>
+        <translation>Завируха АРМ-ОД</translation>
     </message>
 </context>
 <context>
@@ -591,7 +591,7 @@
     <message>
         <location filename="Tabs/Solver/SolverSettingsDialog.ui" line="33"/>
         <source>Altitude</source>
-        <translation>Высота</translation>
+        <translation>Эшелон до, м.</translation>
     </message>
     <message>
         <location filename="Tabs/Solver/SolverSettingsDialog.ui" line="43"/>
