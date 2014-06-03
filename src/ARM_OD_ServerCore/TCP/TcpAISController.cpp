@@ -68,7 +68,6 @@ void TcpAISController::createTcpAISCoderInternalSlot()
 {
 	log_debug("Creating TcpAISCoder...");
 	m_tcpDeviceCoder = new TcpAISCoder(m_zoneManager, this);
-	m_tcpClient->setReconnectInterval(m_AISSettingStruct.reconnectInterval);
 }
 
 void TcpAISController::createTcpAISClientInternalSlot()
