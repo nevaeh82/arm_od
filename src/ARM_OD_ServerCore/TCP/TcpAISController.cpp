@@ -68,6 +68,7 @@ void TcpAISController::createTcpAISCoderInternalSlot()
 {
 	log_debug("Creating TcpAISCoder...");
 	m_tcpDeviceCoder = new TcpAISCoder(m_zoneManager, this);
+	m_tcpClient->setReconnectInterval(m_AISSettingStruct.reconnectInterval);
 }
 
 void TcpAISController::createTcpAISClientInternalSlot()
@@ -102,6 +103,7 @@ bool TcpAISController::init()
 			m_AISSettingStruct.host = settings.value("ip", "127.0.0.1").toString();
 			m_AISSettingStruct.port = settings.value("port", 2323).toInt();
 			m_AISSettingStruct.name = settings.value("name", "").toString();
+			m_AISSettingStruct.reconnectInterval = settings.value("reconnectInterval", 1000).toInt();
 
 			m_host = m_AISSettingStruct.host;
 			m_port = m_AISSettingStruct.port;

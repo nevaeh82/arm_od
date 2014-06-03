@@ -17,7 +17,7 @@ class TcpNIIPPController : public BaseTcpDeviceController
 
 private:
 	NIIPPSettings m_NIIPPSettingStruct;
-    int m_id;
+	int m_id;
 
 public:
 	explicit TcpNIIPPController(const QString& tcpDeviceName = BASE_TCP_DEVICE, QObject* parent = NULL);

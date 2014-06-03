@@ -26,6 +26,7 @@ bool TcpArmrClientController::init()
 			m_settings.host = settings.value("ip", "127.0.0.1").toString();
 			m_settings.port = settings.value("port", 6662).toInt();
 			m_settings.name = settings.value("name", "").toString();
+			m_settings.reconnectInterval = settings.value("reconnectInterval", 1000).toInt();
 
 			m_host = m_settings.host;
 			m_port = m_settings.port;

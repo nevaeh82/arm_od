@@ -24,6 +24,7 @@ typedef struct BaseSetting
 	QString name;
 	QString host;
 	quint32 port;
+	quint32 reconnectInterval;
 
 protected:
 	BaseSettingsType type;

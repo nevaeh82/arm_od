@@ -16,6 +16,7 @@ TcpKTRController::~TcpKTRController()
 void TcpKTRController::createTcpClient()
 {
 	BaseTcpDeviceController::createTcpClient();
+	m_tcpClient->setReconnectInterval(m_KTRSettingStruct.reconnectInterval);
 	connect(m_tcpClient, SIGNAL(signalConnectedToHost(int)), this, SLOT(tcpConnectionStatusInternalSlot(int)));
 }
 
@@ -62,6 +63,7 @@ bool TcpKTRController::init()
 			m_KTRSettingStruct.host = settings.value("ip", "127.0.0.1").toString();
 			m_KTRSettingStruct.port = settings.value("port", 2323).toInt();
 			m_KTRSettingStruct.name = settings.value("name", "").toString();
+			m_KTRSettingStruct.reconnectInterval = settings.value("reconnectInterval", 1000).toInt();
 
 			m_host = m_KTRSettingStruct.host;
 			m_port = m_KTRSettingStruct.port;

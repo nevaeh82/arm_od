@@ -19,7 +19,7 @@ void TcpNIIPPController::createTcpDeviceCoder()
 void TcpNIIPPController::createTcpNIIPPCoderInternalSlot()
 {
 	log_debug("Creating TcpNIIPPCoder...");
-    m_tcpDeviceCoder = new TcpNIIPPCoder(m_id, this);
+	m_tcpDeviceCoder = new TcpNIIPPCoder(m_id, this);
 
 }
 
@@ -38,7 +38,9 @@ bool TcpNIIPPController::init()
 			m_NIIPPSettingStruct.host = settings.value("ip", "127.0.0.1").toString();
 			m_NIIPPSettingStruct.port = settings.value("port", 2323).toInt();
 			m_NIIPPSettingStruct.name = settings.value("name", "").toString();
-            m_id = settings.value("id", 0).toInt();
+			m_NIIPPSettingStruct.reconnectInterval = settings.value("reconnectInterval", 1000).toInt();
+
+			m_id = settings.value("id", 0).toInt();
 
 			m_host = m_NIIPPSettingStruct.host;
 			m_port = m_NIIPPSettingStruct.port;
@@ -61,5 +63,5 @@ QByteArray TcpNIIPPController::getFullInfo()
 	QByteArray ba;
 	QDataStream dataStream(&ba, QIODevice::WriteOnly);
 	dataStream << m_NIIPPSettingStruct;
-    return ba;
+	return ba;
 }
