@@ -20,6 +20,9 @@ protected:
 	double m_speed;
 	double m_angle;
 
+	double m_lattitudeStddev;
+	double m_longtitudeStddev;
+
 	bool m_possible;
 	bool m_initialized;
 	bool m_isHistorical;
@@ -42,6 +45,12 @@ public:
 
 	void setPossible(bool value);
 	inline bool possible() { return m_possible; }
+
+	void setLattitudeStddev(double lattitude);
+	inline double lattitudeStddev() { return m_lattitudeStddev; }
+
+	void setLongtitudeStddev(double longtitude);
+	inline double longtitudeStddev() { return m_longtitudeStddev; }
 
 	void setSlice(const QPointF &slice);
 

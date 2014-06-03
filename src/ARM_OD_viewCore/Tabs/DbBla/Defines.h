@@ -48,6 +48,8 @@ typedef struct UavInfo
 	uint source; // FK
 	double lat;
 	double lon;
+	double latStddev;
+	double lonStddev;
 	double alt;
 	double speed;
 	double yaw;

@@ -70,6 +70,18 @@ void BplaAbstract::setAngle(double angle)
 	m_angle = angle;
 }
 
+void BplaAbstract::setLattitudeStddev(double lattitude)
+{
+	m_lattitudeStddev = lattitude;
+	updateName();
+}
+
+void BplaAbstract::setLongtitudeStddev(double longtitude)
+{
+	m_longtitudeStddev = longtitude;
+	updateName();
+}
+
 void BplaAbstract::setSlice(const QPointF& slice)
 {
 	PwGisPointList* points = m_slices->points();
@@ -107,6 +119,16 @@ void BplaAbstract::update(const UavInfo& uav)
 
 	if( uav.speed != m_speed ) {
 		m_speed = uav.speed;
+		changed = true;
+	}
+
+	if(uav.latStddev != m_lattitudeStddev ) {
+		m_lattitudeStddev = uav.latStddev;
+		changed = true;
+	}
+
+	if(uav.lonStddev != m_longtitudeStddev ) {
+		m_longtitudeStddev = uav.lonStddev;
 		changed = true;
 	}
 

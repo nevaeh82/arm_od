@@ -19,6 +19,8 @@ typedef struct UAVPositionData {
 		device		= 0;
 		latitude	= 0.0;
 		longitude	= 0.0;
+		latitudeStddev	= 0.0;
+		longitudeStddev	= 0.0;
 		altitude	= 0.0;
 		speed		= 0.0;
 		course		= 0.0;
@@ -34,6 +36,8 @@ typedef struct UAVPositionData {
 		device		= data.device;
 		latitude	= data.latitude;
 		longitude	= data.longitude;
+		latitudeStddev	= data.latitudeStddev;
+		longitudeStddev	= data.longitudeStddev;
 		altitude	= data.altitude;
 		speed		= data.speed;
 		course		= data.course;
@@ -48,6 +52,8 @@ typedef struct UAVPositionData {
 	double		latitude;
 	double		longitude;
 	double		altitude;
+	double		latitudeStddev;
+	double		longitudeStddev;
 	double		speed;
 	double		course;
 	double		frequency;

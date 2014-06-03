@@ -512,13 +512,17 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/Features/EnemyBplaFeature.cpp" line="15"/>
         <source>UAV_enemy (#%1)\n%2\n%3</source>
         <oldsource>UAV_enemy-H (#%1)\n%2\n%3</oldsource>
-        <translation>Enemy UAV (#%1)\n%2\n%3</translation>
+        <translation type="obsolete">Enemy UAV (#%1)\n%2\n%3</translation>
     </message>
     <message>
-        <location filename="Map/Features/EnemyBplaFeature.cpp" line="17"/>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="18"/>
+        <source>UAV_enemy (#%1)\n%2\n%3\n%4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="22"/>
         <location filename="Map/Features/FriendBplaFeature.cpp" line="27"/>
         <location filename="Tabs/DbBla/UavHistory.cpp" line="269"/>
         <source>%1-H</source>

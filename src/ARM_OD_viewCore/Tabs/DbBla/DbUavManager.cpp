@@ -428,6 +428,8 @@ void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QSt
 	uavInfo.device = deviceUnknownId; // FK
 	uavInfo.lat = positionData.latitude;
 	uavInfo.lon = positionData.longitude;
+	uavInfo.latStddev = positionData.latitudeStddev;
+	uavInfo.lonStddev = positionData.longitudeStddev;
 	uavInfo.alt = positionData.altitude;
 	uavInfo.speed = positionData.speed;
 	uavInfo.yaw = positionData.course;
@@ -459,9 +461,11 @@ void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy,
 	positionData.speed = positionDataEnemy.speed;
 	positionData.state = positionDataEnemy.state;
 
-    // готово
-    positionData.latitude = positionDataEnemy.track.last().x();
-    positionData.longitude = positionDataEnemy.track.last().y();
+	// готово
+	positionData.latitude = positionDataEnemy.track.last().x();
+	positionData.longitude = positionDataEnemy.track.last().y();
+	positionData.latitudeStddev = positionDataEnemy.pointStdDev.x();
+	positionData.longitudeStddev = positionDataEnemy.pointStdDev.y();
 
 	if(positionDataEnemy.frequency < 0) {
 
