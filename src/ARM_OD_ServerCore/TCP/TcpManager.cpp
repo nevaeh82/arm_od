@@ -269,13 +269,33 @@ void TcpManager::onMethodCalledInternalSlot(const QString& method, const QVarian
 		controller->sendData(MessageSP(new Message<QByteArray>(TCP_ARMR_SEND_SOLVER_DATA, argument.toByteArray())));*/
 
 		m_rpcClient->sendDataByRpc(TCP_ARMR_SEND_SOLVER_DATA, argument.toByteArray());
-    } else if (method == RPC_SLOT_SET_NIIPP_BPLA) {
-            //TODO: REMOVE RPCCLIENT USAGE WHEN TCP CLIENT PROTOBUF WILL BE TESTED
+	} else if (method == RPC_SLOT_SET_NIIPP_BPLA) {
+			//TODO: REMOVE RPCCLIENT USAGE WHEN TCP CLIENT PROTOBUF WILL BE TESTED
 
-            BaseTcpDeviceController* controller = m_controllersMap.value("NIIPP_1", NULL);
-            if (controller == NULL) {
-                return;
-            }
-            controller->sendData(MessageSP(new Message<QByteArray>(TCP_NIIPP_REQUEST_PBLA, argument.toByteArray())));
-    }
+			QString name;
+			QDataStream ds(&argument.toByteArray(), QIODevice::ReadOnly);
+
+			int id = -1;
+			ds >> id;
+
+			switch (id) {
+				case 100:
+					name = "NIIPP_1";
+					break;
+
+				case 101:
+					name = "NIIPP_2";
+					break;
+
+				default:
+					log_info( QString( "Received unknown NIIPP ID from solver: %1" ).arg( id ) );
+					return;
+			}
+
+			BaseTcpDeviceController* controller = m_controllersMap.value(name, NULL);
+			if (controller == NULL) {
+				return;
+			}
+			controller->sendData(MessageSP(new Message<QByteArray>(TCP_NIIPP_REQUEST_PBLA, argument.toByteArray())));
+	}
 }
