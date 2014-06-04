@@ -5,17 +5,19 @@ TcpKTRCoder::TcpKTRCoder(QObject* parent) :
 {
 	m_altitude = 0;
 
-	QString fileName = "./logBPLA.txt";
-	m_logFile.setFileName(fileName);
+	QDir dir;
+	dir.mkdir("./logs/SpecialLogs");
 
-	if(!m_logFile.open(QIODevice::WriteOnly)) {
-		log_debug(QString("Cannot open file: %1").arg(fileName));
+	m_logManager = new LogManager("./logs/SpecialLogs/logBPLA.txt");
+
+	if(!m_logManager->isFileOpened()) {
+		log_debug(QString("Cannot open file"));
 	}
 }
 
 TcpKTRCoder::~TcpKTRCoder()
 {
-	m_logFile.close();
+	delete m_logManager;
 }
 
 MessageSP TcpKTRCoder::encode(const QByteArray& data)
@@ -154,7 +156,7 @@ MessageSP TcpKTRCoder::parseLocationFromBoard(const QByteArray& data)
 	point.setY(longitude);
 
 
-	if(m_logFile.isOpen()) {
+	//if(m_logFile.isOpen()) {
 		QString dataString;
 		dataString.append(QDateTime::currentDateTime().toString("dd-MM-yyyy  hh-mm-ss.zzz"));
 		/// TODO : recheck
@@ -167,9 +169,8 @@ MessageSP TcpKTRCoder::parseLocationFromBoard(const QByteArray& data)
 		dataString.append(" ");
 		dataString.append(QString::number(m_altitude, 'f', 6));
 		dataString.append("\n");
-		m_logFile.write(dataString.toStdString().c_str());
-		m_logFile.flush();
-	}
+		m_logManager->writeToFile(dataString);
+	//}
 
 	UAVPositionData positionData;
 	positionData.latitude = latitude;

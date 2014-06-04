@@ -8,6 +8,9 @@
 #include <QVector>
 #include <QDateTime>
 #include <QDataStream>
+#include <QDir>
+
+#include <logManager/LogManager.h>
 
 #include "TcpDefines.h"
 #include "UAVDefines.h"
@@ -20,7 +23,7 @@ class TcpKTRCoder : public BaseTcpDeviceCoder
 
 private:
 	double m_altitude;
-	QFile m_logFile;
+	LogManager* m_logManager;
 
 public:
 	explicit TcpKTRCoder(QObject* parent = NULL);

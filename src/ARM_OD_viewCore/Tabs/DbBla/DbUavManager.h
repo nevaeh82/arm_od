@@ -8,6 +8,9 @@
 #include <QTimer>
 #include <Interfaces/IRpcListener.h>
 #include <QFile>
+#include <QDir>
+
+#include <logManager/LogManager.h>
 
 #include "Tabs/DbBla/DbUavController.h"
 
@@ -41,6 +44,7 @@ private:
 	IUavHistory* m_uavHistory;
 
 	QFile* fi;
+	LogManager* m_logManager;
 
 public:
 	explicit DbUavManager(int lifeTime = MAX_LIFE_TIME, QObject *parent = 0);

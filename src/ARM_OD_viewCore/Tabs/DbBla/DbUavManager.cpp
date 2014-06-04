@@ -3,12 +3,13 @@
 DbUavManager::DbUavManager(int lifeTime, QObject *parent) :
 	QObject(parent)
 {
-
-    fi = new QFile("logUAVs.log");
-    if(!fi->open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        log_debug("error");
-    }
+	QDir dir;
+	dir.mkdir("./logs/SpecialLogs");
+	m_logManager = new LogManager("./logs/SpecialLogs/logUAVs.log");
+	if(!m_logManager)
+	{
+		log_debug("error");
+	}
 
 	m_dbController = NULL;
 	m_uavHistory = NULL;
@@ -21,7 +22,7 @@ DbUavManager::DbUavManager(int lifeTime, QObject *parent) :
 
 DbUavManager::~DbUavManager()
 {
-    fi->close();
+	delete m_logManager;
 }
 
 QMap<uint, Uav> DbUavManager::getKnownUavList()
@@ -327,11 +328,8 @@ void DbUavManager::onMethodCalled(const QString& method, const QVariant& argumen
 			return;
 		}
 
-        QString dataToFile = QTime::currentTime().toString("hh:mm:ss:zzz") + " " + QString::number(positionDataVector.at(0).latitude) + " " + QString::number(positionDataVector.at(0).longitude) + " " + QString::number(positionDataVector.at(0).altitude) + "\n";
-
-        QTextStream outstream(fi);
-        outstream << dataToFile;
-        fi->flush();
+		QString dataToFile = QTime::currentTime().toString("hh:mm:ss:zzz") + " " + QString::number(positionDataVector.at(0).latitude) + " " + QString::number(positionDataVector.at(0).longitude) + " " + QString::number(positionDataVector.at(0).altitude) + "\n";
+		m_logManager->writeToFile(dataToFile);
 
 		/// Now we take first point, but we need to take more than 1 point
 		UAVPositionData positionData = positionDataVector.at(0);

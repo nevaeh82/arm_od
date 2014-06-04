@@ -5,6 +5,7 @@
 
 #include <QSettings>
 #include <QDataStream>
+#include <QDir>
 
 #include "TcpDevicesDefines.h"
 #include "TcpKTRCoder.h"

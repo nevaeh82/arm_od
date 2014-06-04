@@ -22,7 +22,7 @@ INCLUDEPATH += $$PWD
 SOURCES += \
     Rpc/RpcDefines.cpp \
     SettingsManager/DbBlaSettingsManager.cpp \
-    SettingsManager/EnviromentSettingsManager.cpp
+	SettingsManager/EnviromentSettingsManager.cpp
 
 HEADERS += \
     Rpc/RpcDefines.h \
@@ -36,4 +36,4 @@ HEADERS += \
     SettingsManager/DbBlaSettingsManager.h \
     SettingsManager/EnviromentSettingsManager.h \
     Interfaces/SettingsManager/IDbBlaSettingsManager.h \
-    Interfaces/SettingsManager/IEnviromentSettingsManager.h
+	Interfaces/SettingsManager/IEnviromentSettingsManager.h
