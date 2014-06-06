@@ -125,20 +125,22 @@ void RPCClient::rpcSlotServerSendAisData(QByteArray data)
 
 void RPCClient::rpcSendBplaPoints(QByteArray data)
 {
-	if(m_solverAuto == false) {
+	//DISABLE auto mode for receiving points
+	//if(m_solverAuto == false) {
 		foreach (IRpcListener* reciever, m_receiversList) {
 			reciever->onMethodCalled(RPC_SLOT_SERVER_SEND_BPLA_POINTS, QVariant(data));
 		}
-	}
+	//}
 }
 
 void RPCClient::rpcSendBplaPointsAuto(QByteArray data)
 {
-	if(m_solverAuto == true) {
+	//DISABLE auto mode for receiving points
+	//if(m_solverAuto == true) {
 		foreach (IRpcListener* reciever, m_receiversList) {
 			reciever->onMethodCalled(RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO, QVariant(data));
 		}
-	}
+	//}
 }
 
 void RPCClient::rpcSendHyperbola(QByteArray data)

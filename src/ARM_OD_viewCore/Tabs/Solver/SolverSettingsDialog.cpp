@@ -11,6 +11,8 @@ SolverSettingsDialog::SolverSettingsDialog(QWidget *parent) :
 	setWindowTitle(tr("Solver settings"));
 
 	ui->checkBoxAuto->setCheckState(Qt::Checked);
+	//Hide AUtomode check. QUICK bad fix
+	ui->checkBoxAuto->setVisible(false);
 
 	ui->AltitudeSpinBox->setValue(0);
 	ui->AltitudeSpinBox->setRange(0, 10000);
