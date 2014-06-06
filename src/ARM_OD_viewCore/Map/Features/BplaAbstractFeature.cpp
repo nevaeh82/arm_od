@@ -18,6 +18,7 @@ BplaAbstract::BplaAbstract(IObjectsFactory* factory, const QString& id, const Ua
 	setAngle( uav.yaw );
 
 	m_isHistorical = uav.historical;
+	m_sourceId = uav.source;
 	m_initialized = true;
 }
 
@@ -98,7 +99,6 @@ void BplaAbstract::setSlice(const QPointF& slice)
 void BplaAbstract::update(const UavInfo& uav)
 {
 	bool changed = false;
-
 
 	QPointF point( uav.lon, uav.lat );
 

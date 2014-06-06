@@ -335,9 +335,11 @@ void DbUavManager::onMethodCalled(const QString& method, const QVariant& argumen
 		UAVPositionData positionData = positionDataVector.at(0);
 		addUavInfoToDb(positionData, OUR_UAV_ROLE, "UnknownUavType", "UnknownStatus", "UnknownDeviceType", "UnknownSourceType");
 	} else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS) {
-		sendEnemyUavPoints(data);
+		sendEnemyUavPoints(data, UAV_SOLVER_MANUAL_SOURCE);
 	} else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO) {
-		sendEnemyUavPoints(data);
+		sendEnemyUavPoints(data, UAV_SOLVER_AUTO_SOURCE);
+	} else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_SINGLE) {
+		sendEnemyUavPoints(data, UAV_SOLVER_SINGLE_SOURCE);
 	}
 }
 
@@ -439,14 +441,35 @@ void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QSt
 	addUavInfo(uavInfo);
 }
 
-void DbUavManager::sendEnemyUavPoints(const QByteArray& data)
+void DbUavManager::sendEnemyUavPoints(const QByteArray& data, uint sourceType)
 {
 	QByteArray inputData = data;
 	QDataStream inputDataStream(&inputData, QIODevice::ReadOnly);
 	UAVPositionDataEnemy uavEnemy;
 	inputDataStream >> uavEnemy;
 
-	addUavInfoToDb(uavEnemy, ENEMY_UAV_ROLE, "UnknownUavType", "UnknownStatus", "UnknownDeviceType", "UnknownSourceType");
+	QString sourceTypeStr;
+
+	switch( sourceType ) {
+		case UAV_SOLVER_MANUAL_SOURCE:
+			sourceTypeStr = "Solver Manual";
+			break;
+
+		case UAV_SOLVER_AUTO_SOURCE:
+			sourceTypeStr = "Solver Auto";
+			break;
+
+		case UAV_SOLVER_SINGLE_SOURCE:
+			sourceTypeStr = "Solver Single";
+			break;
+
+		default:
+			sourceTypeStr = "UnknownSourceType";
+	}
+
+	uavEnemy.sourceType = sourceType;
+
+	addUavInfoToDb(uavEnemy, ENEMY_UAV_ROLE, "UnknownUavType", "UnknownStatus", "UnknownDeviceType", sourceTypeStr);
 }
 
 void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy, const QString &role,
@@ -474,6 +497,7 @@ void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy,
 	}
 
 	positionData.frequency = positionDataEnemy.frequency;
+	positionData.sourceType = positionDataEnemy.sourceType;
 
 	addUavInfoToDb(positionData, role, uavType, status, deviceType, sourceType);
 }

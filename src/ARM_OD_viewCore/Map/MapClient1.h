@@ -48,8 +48,8 @@ private:
 
 	// Map features
 	MapFeature::NiippPoint* m_niippPoint;
-	QMap<int, MapFeature::FriendBpla*> m_friendBplaList;
-	QMap<int, MapFeature::EnemyBpla*> m_enemyBplaList;
+	QMap<QString, MapFeature::FriendBpla*> m_friendBplaList;
+	QMap<QString, MapFeature::EnemyBpla*> m_enemyBplaList;
 	QMap<int, MapFeature::Niipp*> m_niippList;
 	QMap<int, MapFeature::Pelengator*> m_pelengatorList;
 	QMap<int, MapFeature::PelengatorPoint*> m_pelengatorPointsList;
@@ -58,6 +58,8 @@ private:
 	QMap<QString, MapFeature::Station*> m_stationList;
 	QList<MapFeature::CheckPoint*> m_checkPointsList;
 	QMap<int, MapFeature::Hyperbole*> m_hyperboleList;
+
+	QSet<uint> m_uavKnownSources;
 
 	QTimer m_bplaRedrawTimer;
 
@@ -84,8 +86,8 @@ private:
 	void readStationsFromFile(QString fileName);
 	void readCheckPointsFromFile(QString fileName);
 
-	int getUavInternalId(const UavInfo& uav);
-	int getUavInternalId(const Uav& uav);
+	QString getUavInternalId(const UavInfo& uav);
+	QString getUavInternalId(const Uav& uav, uint source);
 
 public slots:
 	virtual void init();

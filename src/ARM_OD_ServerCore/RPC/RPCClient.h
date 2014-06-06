@@ -17,10 +17,10 @@ typedef QPointF                  rpc_QPointF;
 
 class RPCClient : public QObject, public IClient
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    RPCClient(IRouter *router, IRPC* server);
-    ~RPCClient();
+	RPCClient(IRouter *router, IRPC* server);
+	~RPCClient();
 
 public:
 	virtual void setId(int _id);
@@ -30,13 +30,13 @@ public:
 	virtual void sendData(QSharedPointer<IMessageOld> msg_ptr);
 
 private:
-    int             _id;
-    int             _type;
-    IRouter*        _router;
-    IRPC*           _server;
+	int             _id;
+	int             _type;
+	IRouter*        _router;
+	IRPC*           _server;
 
 signals:
-    void signalReadyData(rpc_msg msg_ptr);
+	void signalReadyData(rpc_msg msg_ptr);
 
 	/// RPC signals
 	void signalSendToRPCBLAPoints(quint64,int,rpc_QPointF,double,double,double,int);
@@ -45,6 +45,7 @@ signals:
 	/// from ARM_R
 	void signalSendToRPCBPLAPoints(quint64, QByteArray*);
 	void signalSendToRPCBPLAPointsAuto(quint64, QByteArray*);
+	void signalSendToRPCBPLAPointsSingle(quint64, QByteArray*);
 	void signalSendToRPCHyperbola(quint64, QByteArray*);
 
 	/// from NIIPP

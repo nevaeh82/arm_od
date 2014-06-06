@@ -66,6 +66,9 @@ void RPCClient::_slotGetData(rpc_msg msg_ptr)
 	case ARM_R_SERVER_BPLA_COORDS_AUTO:
 		emit signalSendToRPCBPLAPointsAuto(cid, dd);
 		break;
+	case ARM_R_SERVER_BPLA_COORDS_SINGLE:
+		emit signalSendToRPCBPLAPointsSingle(cid, dd);
+		break;
 	case ARM_R_SERVER_HYPERBOLA:
 		emit signalSendToRPCHyperbola(cid, dd);
 		break;

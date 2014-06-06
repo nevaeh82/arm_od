@@ -77,10 +77,10 @@ PwGisStyle* MapStyleManager::createFriendBplaSliceStyle(const QString& layerId)
 	return style;
 }
 
-PwGisStyle* MapStyleManager::createEnemyBplaStyle(const QString& layerId)
+PwGisStyle* MapStyleManager::createEnemyBplaStyle(const QString& layerId, uint source)
 {
 	bool exists;
-	PwGisStyle* style = createStyle( MAP_STYLE_NAME_ENEMY_BPLA, &exists );
+	PwGisStyle* style = createStyle( MapStyleManager::getEnemyBplaStyleName(source), &exists );
 
 	if( !exists ) {
 		style->setProperty( PwGisStyle::mapFontColor, "blue" );
@@ -95,10 +95,10 @@ PwGisStyle* MapStyleManager::createEnemyBplaStyle(const QString& layerId)
 	return style;
 }
 
-PwGisStyle* MapStyleManager::createEnemyBplaTrackStyle(const QString& layerId)
+PwGisStyle* MapStyleManager::createEnemyBplaTrackStyle(const QString& layerId, uint source)
 {
 	bool exists;
-	PwGisStyle* style = createStyle( MAP_STYLE_NAME_ENEMY_BPLA_TRACK, &exists );
+	PwGisStyle* style = createStyle( MapStyleManager::getEnemyBplaTrackStyleName(source), &exists );
 
 	if( !exists ) {
 		style->setProperty( PwGisStyle::strokeColor, "blue" );

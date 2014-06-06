@@ -83,33 +83,43 @@ void MapClient1::init()
 	removeAll();
 
 	// create marker layers
-	this->addMarkerLayer( 0, "OP", tr( "OP" ) );
+	addMarkerLayer( 0, "OP", tr( "OP" ) );
 
-	this->addMarkerLayer( 1, "UAV_enemy", tr( "UAV_enemy" ) );
-	this->addMarkerLayer( 2, "UAV_enemy_track", tr( "UAV_enemy_track" ) );
+	addMarkerLayer( 101, "UAV_enemy_track_manual", tr( "UAV_enemy_track_manual" ) );
+	addMarkerLayer( 100, "UAV_enemy_manual", tr( "UAV_enemy_manual" ) );
 
-	this->addMarkerLayer( 3, "UAV", tr( "UAV" ) );
-	this->addMarkerLayer( 4, "UAV_track_autopilot", tr( "UAV_track_autopilot" ) );
-	this->addMarkerLayer( 5, "UAV_track_KTR", tr( "UAV_track_KTR" ) );
+	addMarkerLayer( 103, "UAV_enemy_track_auto", tr( "UAV_enemy_track_auto" ) );
+	addMarkerLayer( 102, "UAV_enemy_auto", tr( "UAV_enemy_auto" ) );
 
-	this->addMarkerLayer( 6, "Atlant", tr( "Atlant" ) );
-	this->addMarkerLayer( 7, "Atlant_target", tr( "Atlant target" ) );
-	this->addMarkerLayer( 8, "Grid", tr( "Grid" ) );
-	this->addMarkerLayer( 9, "Checkpoints", tr( "Checkpoints" ) );
-	this->addMarkerLayer( 10, "Interception_point", tr( "Interception point" ) );
-	this->addMarkerLayer( 11, "Civil_ships", tr( "Civil ships" ) );
-	this->addMarkerLayer( 12, "Diversion_points", tr( "Diversion points" ) );
-	this->addMarkerLayer( 13, "SPIP_DD", tr( "SPIP DD" ) );
-	this->addMarkerLayer( 14, "Hyperbole", tr( "Hyperbole" ) );
-	this->addMarkerLayer( 15, "History", tr( "History" ) );
+	addMarkerLayer( 104, "UAV_enemy_single", tr( "UAV_enemy_single" ) );
+
+	addMarkerLayer( 5, "UAV_track_KTR", tr( "UAV_track_KTR" ) );
+	addMarkerLayer( 4, "UAV_track_autopilot", tr( "UAV_track_autopilot" ) );
+	addMarkerLayer( 3, "UAV", tr( "UAV" ) );
+
+	addMarkerLayer( 6, "Atlant", tr( "Atlant" ) );
+	addMarkerLayer( 7, "Atlant_target", tr( "Atlant target" ) );
+	addMarkerLayer( 8, "Grid", tr( "Grid" ) );
+	addMarkerLayer( 9, "Checkpoints", tr( "Checkpoints" ) );
+	addMarkerLayer( 10, "Interception_point", tr( "Interception point" ) );
+	addMarkerLayer( 11, "Civil_ships", tr( "Civil ships" ) );
+	addMarkerLayer( 12, "Diversion_points", tr( "Diversion points" ) );
+	addMarkerLayer( 13, "SPIP_DD", tr( "SPIP DD" ) );
+	addMarkerLayer( 14, "Hyperbole", tr( "Hyperbole" ) );
+	addMarkerLayer( 15, "History", tr( "History" ) );
 
 	showLayer( 8, false );
 
 	// create styles for features
 	m_styleManager->createStationStyle( m_mapLayers.value(0) )->apply();
 
-	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(1) )->apply();
-	m_styleManager->createEnemyBplaTrackStyle( m_mapLayers.value(2) )->apply();
+	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(100), UAV_SOLVER_MANUAL_SOURCE )->apply();
+	m_styleManager->createEnemyBplaTrackStyle( m_mapLayers.value(101), UAV_SOLVER_MANUAL_SOURCE )->apply();
+
+	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(102), UAV_SOLVER_AUTO_SOURCE )->apply();
+	m_styleManager->createEnemyBplaTrackStyle( m_mapLayers.value(103), UAV_SOLVER_AUTO_SOURCE )->apply();
+
+	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(104), UAV_SOLVER_SINGLE_SOURCE )->apply();
 
 	m_styleManager->createFriendBplaStyle( m_mapLayers.value(3) )->apply();
 	m_styleManager->createFriendBplaTrackStyle( m_mapLayers.value(4) )->apply();
@@ -253,22 +263,22 @@ void MapClient1::readCheckPointsFromFile(QString fileName)
 	}
 }
 
-int MapClient1::getUavInternalId(const UavInfo& uav)
+QString MapClient1::getUavInternalId(const UavInfo& uav)
 {
-	int id = uav.uavId;
-
-	if( uav.historical ) {
-		id += 100000;
-	}
+	QString id = QString("%1_%2_%3")
+			.arg(uav.uavId)
+			.arg(uav.source)
+			.arg(uav.historical ? 1 : 0);
 
 	return id;
 }
 
-int MapClient1::getUavInternalId(const Uav& uav)
+QString MapClient1::getUavInternalId(const Uav& uav, uint source)
 {
 	UavInfo info;
 	info.uavId = uav.uavId;
 	info.historical = uav.historical;
+	info.source = source;
 
 	return getUavInternalId( info );
 }
@@ -393,8 +403,10 @@ void MapClient1::removeInterceptionData( int friendBplaId, int enemyBplaId )
 
 void MapClient1::addFriendBplaInternal(const UavInfo& uav)
 {
-	int id = getUavInternalId( uav );
+	QString id = getUavInternalId( uav );
 	MapFeature::FriendBpla* bpla = m_friendBplaList.value( id, NULL );
+
+	m_uavKnownSources << uav.source;
 
 	switch( uav.source ) {
 		// if we get data about UAV from slices source...
@@ -422,8 +434,10 @@ void MapClient1::addFriendBplaInternal(const UavInfo& uav)
 
 void MapClient1::addEnemyBplaInternal(const UavInfo& uav)
 {
-	int id = getUavInternalId( uav );
+	QString id = getUavInternalId( uav );
 	MapFeature::EnemyBpla* bpla = m_enemyBplaList.value( id, NULL );
+
+	m_uavKnownSources << uav.source;
 
 	if( bpla != NULL ) {
 		bpla->update( uav );
@@ -435,14 +449,16 @@ void MapClient1::addEnemyBplaInternal(const UavInfo& uav)
 
 void MapClient1::removeBplaInternal(const Uav& uav)
 {
-	int id = getUavInternalId( uav );
+	foreach(uint source, m_uavKnownSources) {
+		QString id = getUavInternalId( uav, source );
 
-	if( m_friendBplaList.contains( id ) ) {
-		delete m_friendBplaList.take( id );
-	}
+		if( m_friendBplaList.contains( id ) ) {
+			delete m_friendBplaList.take( id );
+		}
 
-	if( m_enemyBplaList.contains( id ) ) {
-		delete m_enemyBplaList.take( id );
+		if( m_enemyBplaList.contains( id ) ) {
+			delete m_enemyBplaList.take( id );
+		}
 	}
 }
 

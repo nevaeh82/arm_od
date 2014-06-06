@@ -114,7 +114,7 @@ public:
 private:
 	void addUavInfoToDb(const UAVPositionData& positionData, const QString& role,
 						const QString& uavType, const QString& status, const QString& deviceType, const QString &sourceType);
-	void sendEnemyUavPoints(const QByteArray& data);
+	void sendEnemyUavPoints(const QByteArray& data, uint sourceType);
 	void addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy, const QString &role,
 						const QString &uavType, const QString &status, const QString &deviceType, const QString &sourceType);
 

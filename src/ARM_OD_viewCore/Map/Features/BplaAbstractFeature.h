@@ -13,6 +13,8 @@ namespace MapFeature {
 class BplaAbstract : public Marker
 {
 protected:
+	uint m_sourceId;
+
 	Path* m_tail;
 	Path* m_slices;
 

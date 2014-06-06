@@ -3,7 +3,7 @@
 #include <QDebug>
 #include <QThread>
 
-RPCServer::RPCServer(QObject* parent) 
+RPCServer::RPCServer(QObject* parent)
 	: RpcServerBase(parent)
 	, _router(0)
 	, _subscriber(0)
@@ -83,6 +83,7 @@ void RPCServer::_slotRPCConnetion(quint64 client)
 	connect(cl, SIGNAL(signalSendToRPCAISData(quint64,QByteArray*)), this, SLOT(rpc_slot_send_ais_data(quint64,QByteArray*)));
 	connect(cl, SIGNAL(signalSendToRPCBPLAPoints(quint64,QByteArray*)), this, SLOT(rpc_slot_send_bpla_points(quint64,QByteArray*)));
 	connect(cl, SIGNAL(signalSendToRPCBPLAPointsAuto(quint64,QByteArray*)), this, SLOT(rpc_slot_send_bpla_points_auto(quint64,QByteArray*)));
+	connect(cl, SIGNAL(signalSendToRPCBPLAPointsSingle(quint64,QByteArray*)), this, SLOT(rpc_slot_send_bpla_points_single(quint64,QByteArray*)));
 	connect(cl, SIGNAL(signalSendToRPCHyperbola(quint64,QByteArray*)), this, SLOT(rpc_slot_send_hyperbola(quint64,QByteArray*)));
 
 	connect(cl, SIGNAL(signalSendToNIIPPPoints(quint64,QByteArray*)), this, SLOT(rpc_slot_send_NIIPP_data(quint64,QByteArray*)));
@@ -165,12 +166,12 @@ void RPCServer::rpc_slot_set_niipp_data(quint64 client, QByteArray data)
 	QDataStream ds(&data, QIODevice::ReadOnly);
 	int id = -1;
 	ds >> id;
-    QByteArray ba;
-    ba.append(data);
+	QByteArray ba;
+	ba.append(data);
 
-    foreach (IRpcListener* listener, m_receiversList) {
-        listener->onMethodCalled(RPC_SLOT_SET_NIIPP_BPLA, QVariant(ba));
-    }
+	foreach (IRpcListener* listener, m_receiversList) {
+		listener->onMethodCalled(RPC_SLOT_SET_NIIPP_BPLA, QVariant(ba));
+	}
 
 
 //	QSharedPointer<IMessageOld> msg(new MessageOld(id, NIIPP_BPLA, ba));
@@ -253,6 +254,11 @@ void RPCServer::rpc_slot_send_bpla_points(quint64 client, QByteArray* data)
 void RPCServer::rpc_slot_send_bpla_points_auto(quint64 client, QByteArray *data)
 {
 	m_serverPeer->call( RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO, QVariant::fromValue(*data));
+}
+
+void RPCServer::rpc_slot_send_bpla_points_single(quint64 client, QByteArray *data)
+{
+	m_serverPeer->call( RPC_SLOT_SERVER_SEND_BPLA_POINTS_SINGLE, QVariant::fromValue(*data));
 }
 
 void RPCServer::rpc_slot_send_hyperbola(quint64 client, QByteArray *data)

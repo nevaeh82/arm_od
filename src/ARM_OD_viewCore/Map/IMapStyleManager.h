@@ -9,8 +9,8 @@
 #define MAP_STYLE_NAME_FRIEND_BPLA			"FriendBPLA"
 #define MAP_STYLE_NAME_FRIEND_BPLA_TRACK	"FriendBPLA_Track"
 #define MAP_STYLE_NAME_FRIEND_BPLA_SLICE	"FriendBPLA_Slice"
-#define MAP_STYLE_NAME_ENEMY_BPLA			"EmenyBPLA"
-#define MAP_STYLE_NAME_ENEMY_BPLA_TRACK		"EmenyBPLA_Track"
+#define MAP_STYLE_NAME_ENEMY_BPLA			"EmenyBPLA_%1"
+#define MAP_STYLE_NAME_ENEMY_BPLA_TRACK		"EmenyBPLA_Track_%1"
 #define MAP_STYLE_NAME_INTERCEPTION			"Interception"
 #define MAP_STYLE_NAME_NIIPP				"Niipp"
 #define MAP_STYLE_NAME_NIIPP_POINT			"NiippPoint"
@@ -32,8 +32,8 @@ public:
 	virtual PwGisStyle* createFriendBplaStyle(const QString& layerId) = 0;
 	virtual PwGisStyle* createFriendBplaTrackStyle(const QString& layerId) = 0;
 	virtual PwGisStyle* createFriendBplaSliceStyle(const QString& layerId) = 0;
-	virtual PwGisStyle* createEnemyBplaStyle(const QString& layerId) = 0;
-	virtual PwGisStyle* createEnemyBplaTrackStyle(const QString& layerId) = 0;
+	virtual PwGisStyle* createEnemyBplaStyle(const QString& layerId, uint source) = 0;
+	virtual PwGisStyle* createEnemyBplaTrackStyle(const QString& layerId, uint source) = 0;
 	virtual PwGisStyle* createInterceptionStyle(const QString& layerId) = 0;
 	virtual PwGisStyle* createNiippStyle(const QString& layerId) = 0;
 	virtual PwGisStyle* createNiippPointStyle(const QString& layerId) = 0;
@@ -49,8 +49,8 @@ public:
 	virtual PwGisStyle* getFriendBplaStyle() = 0;
 	virtual PwGisStyle* getFriendBplaTrackStyle() = 0;
 	virtual PwGisStyle* getFriendBplaSliceStyle() = 0;
-	virtual PwGisStyle* getEnemyBplaStyle() = 0;
-	virtual PwGisStyle* getEnemyBplaTrackStyle() = 0;
+	virtual PwGisStyle* getEnemyBplaStyle(uint source) = 0;
+	virtual PwGisStyle* getEnemyBplaTrackStyle(uint source) = 0;
 	virtual PwGisStyle* getInterceptionStyle() = 0;
 	virtual PwGisStyle* getNiippStyle() = 0;
 	virtual PwGisStyle* getNiippPointStyle() = 0;
@@ -61,7 +61,6 @@ public:
 	virtual PwGisStyle* getCheckpointsStyle() = 0;
 	virtual PwGisStyle* getHistoryStyle() = 0;
 	virtual PwGisStyle* getHyperboleStyle() = 0;
-
 };
 
 #endif // IMAPSTYLEMANAGER_H

@@ -58,6 +58,7 @@ bool RPCClient_R::start(quint16 port, QHostAddress address)
 
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_DEF, this, SLOT(rpcSlotServerSendBplaDef(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_DEF_AUTO, this, SLOT(rpcSlotServerSendBplaDefAuto(QByteArray)));
+	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_DEF_SINGLE, this, SLOT(rpcSlotServerSendBplaDefSingle(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_HYPERBOLA, this, SLOT(rpcSlotServerSendHyperbola(QByteArray)));
 
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_ATLANT_DIRECTION, this, SLOT(rpcSlotServerAtlantDirection(QByteArray)));
@@ -69,7 +70,7 @@ bool RPCClient_R::start(quint16 port, QHostAddress address)
 
 void RPCClient_R::setCommand(IMessageOld *msg)
 {
-    emit signalSetCommand(msg);
+	emit signalSetCommand(msg);
 }
 
 void RPCClient_R::pushMsg(QByteArray msg)
@@ -98,36 +99,36 @@ void RPCClient_R::slotSetCommand(IMessageOld *msg)
 
 void RPCClient_R::slotPushMsg(QByteArray msg)
 {
-    emit signalSetSolver(msg);
+	emit signalSetSolver(msg);
 }
 
 void RPCClient_R::slotGetData(QSharedPointer<IMessageOld> msg_ptr)
 {
 	/*int type1 = 1;
-    int id = 0;
-    IMessageOld *f = (msg_ptr.data());
-    QByteArray* dd = f->get(id, type1);
-    QDataStream ds(*dd);
-    int id1 = 0;
-    ds >> id1;
-    int count = 0;
-    ds >> count;
-    double val = 0;
-    ds >> val;
-    QByteArray ba11;
-    ba11.append(*dd);
+	int id = 0;
+	IMessageOld *f = (msg_ptr.data());
+	QByteArray* dd = f->get(id, type1);
+	QDataStream ds(*dd);
+	int id1 = 0;
+	ds >> id1;
+	int count = 0;
+	ds >> count;
+	double val = 0;
+	ds >> val;
+	QByteArray ba11;
+	ba11.append(*dd);
 
-    switch(type1)
-    {
-    case SOLVER_SET:
-            emit signalSetSolver(ba11);
-        break;
-    case SOLVER_CLEAR:
-            emit signalSetSolverClear(ba11);
-        break;
-    default:
-        return;
-        break;
+	switch(type1)
+	{
+	case SOLVER_SET:
+			emit signalSetSolver(ba11);
+		break;
+	case SOLVER_CLEAR:
+			emit signalSetSolverClear(ba11);
+		break;
+	default:
+		return;
+		break;
 	}*/
 }
 
@@ -147,7 +148,7 @@ void RPCClient_R::rpcSlotServerSendBplaDef(QByteArray ba1)
 //    qDebug() << "GOT FROM SERVER ID BPLA! = ";// << id;
 	QByteArray ba2 = encodeToEnemyUav(ba1);
 
-    QByteArray *ba = new QByteArray();
+	QByteArray *ba = new QByteArray();
 	ba->append(ba2);
 
 	QSharedPointer<IMessageOld> msg(new MessageOld(m_id, ARM_R_SERVER_BPLA_COORDS, ba));
@@ -164,6 +165,19 @@ void RPCClient_R::rpcSlotServerSendBplaDefAuto(QByteArray ba)
 
 	QSharedPointer<IMessageOld> msg(new MessageOld(m_id, ARM_R_SERVER_BPLA_COORDS_AUTO, ba1));
 	m_subscriber->data_ready(ARM_R_SERVER_BPLA_COORDS_AUTO, msg);
+
+}
+
+void RPCClient_R::rpcSlotServerSendBplaDefSingle(QByteArray ba)
+{
+	//    qDebug() << "GOT FROM SERVER ID BPLA! = ";// << id;
+	QByteArray ba2 = encodeToEnemyUav(ba);
+
+	QByteArray *ba1 = new QByteArray();
+	ba1->append(ba2);
+
+	QSharedPointer<IMessageOld> msg(new MessageOld(m_id, ARM_R_SERVER_BPLA_COORDS_SINGLE, ba1));
+	m_subscriber->data_ready(ARM_R_SERVER_BPLA_COORDS_SINGLE, msg);
 
 }
 
@@ -187,8 +201,8 @@ void RPCClient_R::rpcSlotServerSendHyperbola(QByteArray ba)
 
 void RPCClient_R::rpcSlotServerAtlantDirection(QByteArray ba1)
 {
-    QByteArray *ba = new QByteArray();
-    ba->append(ba1);
+	QByteArray *ba = new QByteArray();
+	ba->append(ba1);
 //    qDebug() << "GOT FROM SERVER ATLANT! = ";// << id;
 
 	QSharedPointer<IMessageOld> msg1(new MessageOld(m_id, ARM_R_SERVER_ATLANT_DIRECTION, ba));
@@ -198,8 +212,8 @@ void RPCClient_R::rpcSlotServerAtlantDirection(QByteArray ba1)
 
 void RPCClient_R::rpcSlotServerAtlantPosition(QByteArray ba1)
 {
-    QByteArray *ba = new QByteArray();
-    ba->append(ba1);
+	QByteArray *ba = new QByteArray();
+	ba->append(ba1);
 
 	QSharedPointer<IMessageOld> msg1(new MessageOld(m_id, ARM_R_SERVER_ATLANT_POSITION, ba));
 	m_subscriber->data_ready(ARM_R_SERVER_ATLANT_POSITION, msg1);

@@ -88,6 +88,7 @@ public slots:
 	///rpc_server
 	void rpcSlotServerSendBplaDef(QByteArray ba);
 	void rpcSlotServerSendBplaDefAuto(QByteArray ba);
+	void rpcSlotServerSendBplaDefSingle(QByteArray ba);
 	void rpcSlotServerSendHyperbola(QByteArray ba);
 
 	void rpcSlotServerAtlantDirection(QByteArray ba);

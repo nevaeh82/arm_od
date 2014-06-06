@@ -22,8 +22,8 @@ public:
 	virtual PwGisStyle* createFriendBplaStyle(const QString& layerId);
 	virtual PwGisStyle* createFriendBplaTrackStyle(const QString& layerId);
 	virtual PwGisStyle* createFriendBplaSliceStyle(const QString& layerId);
-	virtual PwGisStyle* createEnemyBplaStyle(const QString& layerId);
-	virtual PwGisStyle* createEnemyBplaTrackStyle(const QString& layerId);
+	virtual PwGisStyle* createEnemyBplaStyle(const QString& layerId, uint source);
+	virtual PwGisStyle* createEnemyBplaTrackStyle(const QString& layerId, uint source);
 	virtual PwGisStyle* createInterceptionStyle(const QString& layerId);
 	virtual PwGisStyle* createNiippStyle(const QString& layerId);
 	virtual PwGisStyle* createNiippPointStyle(const QString& layerId);
@@ -39,8 +39,8 @@ public:
 	inline virtual PwGisStyle* getFriendBplaStyle() { return getStyle( MAP_STYLE_NAME_FRIEND_BPLA ); }
 	inline virtual PwGisStyle* getFriendBplaTrackStyle() { return getStyle( MAP_STYLE_NAME_FRIEND_BPLA_TRACK ); }
 	inline virtual PwGisStyle* getFriendBplaSliceStyle() { return getStyle( MAP_STYLE_NAME_FRIEND_BPLA_SLICE ); }
-	inline virtual PwGisStyle* getEnemyBplaStyle() { return getStyle( MAP_STYLE_NAME_ENEMY_BPLA ); }
-	inline virtual PwGisStyle* getEnemyBplaTrackStyle() { return getStyle( MAP_STYLE_NAME_ENEMY_BPLA_TRACK ); }
+	inline virtual PwGisStyle* getEnemyBplaStyle(uint source) { return getStyle( MapStyleManager::getEnemyBplaStyleName(source) ); }
+	inline virtual PwGisStyle* getEnemyBplaTrackStyle(uint source) { return getStyle( MapStyleManager::getEnemyBplaTrackStyleName(source) ); }
 	inline virtual PwGisStyle* getInterceptionStyle() { return getStyle( MAP_STYLE_NAME_INTERCEPTION ); }
 	inline virtual PwGisStyle* getNiippStyle() { return getStyle( MAP_STYLE_NAME_NIIPP ); }
 	inline virtual PwGisStyle* getNiippPointStyle() { return getStyle( MAP_STYLE_NAME_NIIPP_POINT ); }
@@ -51,6 +51,9 @@ public:
 	inline virtual PwGisStyle* getCheckpointsStyle() { return getStyle( MAP_STYLE_NAME_CHECK_POINTS ); }
 	inline virtual PwGisStyle* getHistoryStyle() { return getStyle( MAP_STYLE_NAME_HISTORY ); }
 	inline virtual PwGisStyle* getHyperboleStyle() { return getStyle( MAP_STYLE_NAME_HYPERBOLE ); }
+
+	static inline QString getEnemyBplaStyleName(uint source) { return QString(MAP_STYLE_NAME_ENEMY_BPLA).arg(source); }
+	static inline QString getEnemyBplaTrackStyleName(uint source) { return QString(MAP_STYLE_NAME_ENEMY_BPLA_TRACK).arg(source); }
 
 protected:
 	/// Creates style with \a name

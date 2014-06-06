@@ -8,8 +8,13 @@
 #include <QDataStream>
 #include <QSharedPointer>
 
-#define UAV_AUTOPILOT_SOURCE	1
-#define UAV_SLICES_SOURCE		622
+#define UAV_AUTOPILOT_SOURCE		1
+
+#define UAV_SOLVER_AUTO_SOURCE		100
+#define UAV_SOLVER_MANUAL_SOURCE	101
+#define UAV_SOLVER_SINGLE_SOURCE	102
+
+#define UAV_SLICES_SOURCE			622
 
 typedef struct UAVPositionData {
 
@@ -91,6 +96,7 @@ typedef struct UAVPositionDataEnemy
 		frequency	= -1;
 		time	= QTime::currentTime();
 		pointStdDev	= QPointF(0.0, 0.0);
+		sourceType  = 0;
 	}
 
 	UAVPositionDataEnemy(const UAVPositionDataEnemy& object)
@@ -103,6 +109,7 @@ typedef struct UAVPositionDataEnemy
 		time		= object.time;
 		pointStdDev	= object.pointStdDev;
 		track		= object.track;
+		sourceType  = object.sourceType;
 	}
 
 	double		altitude;
@@ -113,6 +120,7 @@ typedef struct UAVPositionDataEnemy
 	QTime		time;
 	QPointF		pointStdDev;
 	QVector<QPointF>	track;
+	uint		sourceType;
 
 } UAVPositionDataEnemy;
 
