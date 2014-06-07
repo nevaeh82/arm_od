@@ -183,13 +183,13 @@ void RPCClient_R::rpcSlotServerSendBplaDefSingle(QByteArray ba)
 
 void RPCClient_R::rpcSlotServerSendHyperbola(QByteArray ba)
 {
-	QByteArray inputData = ba;
-	QDataStream inputDataStream(&inputData, QIODevice::ReadOnly);
+//	QByteArray inputData = ba;
+//	QDataStream inputDataStream(&inputData, QIODevice::ReadOnly);
 
-	QList<QPointF> hyperbola;
-	double frequency;
-	inputDataStream >> hyperbola;
-	inputDataStream >> frequency;
+//	QList<QPointF> hyperbola;
+//	double frequency;
+//	inputDataStream >> hyperbola;
+//	inputDataStream >> frequency;
 
 	QByteArray *dataToSend = new QByteArray();
 	dataToSend->append(ba);

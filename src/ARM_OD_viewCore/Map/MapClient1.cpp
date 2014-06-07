@@ -61,8 +61,8 @@ MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 	connect( this, SIGNAL(interceptionRemoved(int, int)),
 			 this, SLOT(removeInterceptionData(int, int)) );
 
-	connect( this, SIGNAL(hyperboleAdded(int,QVector<QPointF>,QTime,QColor)),
-			 this, SLOT(addInHyperbole(int,QVector<QPointF>,QTime,QColor)) );
+	connect( this, SIGNAL(hyperboleAdded(QByteArray,QTime,QColor)),
+			 this, SLOT(addInHyperbole(QByteArray,QTime,QColor)) );
 
 	connect( this, SIGNAL(interceptionPointAdded(int, int, QPointF, float, float, int, float, float)),
 			 this, SLOT(addInterceptionPointData(int, int, QPointF, float, float, int, float, float)) );
@@ -146,21 +146,44 @@ void MapClient1::init()
 			 this, SLOT( addPeleng( int, int, double, double, double ) ) );
 }
 
-void MapClient1::addHyperbole(int id, const QVector<QPointF> &polyline, const QTime time, const QColor color)
+void MapClient1::addHyperbole(QByteArray data, const QTime time, const QColor color)
 {
-	emit hyperboleAdded(id, polyline, time, color);
+	emit hyperboleAdded(data, time, color);
 }
 
-void MapClient1::addInHyperbole(int id, const QVector<QPointF>& polyline, const QTime time, const QColor color )
+void MapClient1::addInHyperbole(QByteArray data, const QTime time, const QColor color )
 {
-	MapFeature::Hyperbole* hyperbole = m_hyperboleList.value( id, NULL );
-
-	if( hyperbole != NULL ) {
-		hyperbole->updatePath( polyline, time );
+	QDataStream ds(&data, QIODevice::ReadWrite);
+	double frequency;
+	ds >> frequency;
+	int count = 0;
+	ds >> count;
+	QList<QVector<QPointF>> list;
+	for(int i = 0; i < count; ++i)
+	{
+		QVector<QPointF> heperb;
+		ds >> heperb;
+		list.append(heperb);
 	}
-	else {
-		hyperbole = m_factory->createHyperbole( polyline, time, color );
-		m_hyperboleList.insert( id, hyperbole );
+
+	for(int j = 0; j < m_hyperboleList.count(); ++j)
+	{
+		MapFeature::Hyperbole* hyperbole = m_hyperboleList.value( j );
+		hyperbole->removeFromMap();
+//		delete hyperbole;
+//		m_hyperboleList.remove(j);
+	}
+
+	for(int i = 0; i < list.count(); ++i)
+	{
+		MapFeature::Hyperbole* hyperbole = m_hyperboleList.value( i );
+		if( hyperbole != NULL ) {
+			hyperbole->updatePath( list.at(i), time );
+		}
+		else {
+			hyperbole = m_factory->createHyperbole( list.at(i), time, color );
+			m_hyperboleList.insert( i, hyperbole );
+		}
 	}
 }
 

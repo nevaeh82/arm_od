@@ -109,7 +109,7 @@ public slots:
 
 	virtual void removeNiippPoint();
 
-	virtual void addHyperbole( int id, const QVector<QPointF>& polyline, const QTime time, const QColor color  = QColor::Invalid );
+	virtual void addHyperbole( QByteArray data, const QTime time, const QColor color  = QColor::Invalid );
 
 	virtual void removeAll();
 
@@ -129,7 +129,7 @@ private slots:
 	void addInterceptionPointData(int friendBplaId, int enemyBplaId, QPointF position,
 								  float height, float radius, int time,
 								  float course, float speed );
-	void addInHyperbole( int id, const QVector<QPointF>& polyline, const QTime time, const QColor color );
+	void addInHyperbole( QByteArray data, const QTime time, const QColor color );
 
 	void redrawAllBpla();
 	void updateCircle();
@@ -151,7 +151,7 @@ signals:
 	void interceptionPointAdded( int bla_id, int bpla_id, QPointF aCoord,
 		float aHgt, float aRadius, int aTime, float aIntcCourse, float aIntcSpeed );
 
-	void hyperboleAdded( int id, const QVector<QPointF>& polyline, const QTime time, const QColor color);
+	void hyperboleAdded(QByteArray data, const QTime time, const QColor color);
 };
 
 #endif // MAPCLIENT1_H

@@ -172,6 +172,8 @@ void MapController::onUavInfoChanged(const UavInfo& uavInfo, const QString& uavR
 /// \todo Refactor this peace of shit
 void MapController::onMethodCalled(const QString& method, const QVariant& argument)
 {
+	double f;
+	int c;
 	IMapClient* client = getMapClient();
 	if( NULL == client ) return;
 
@@ -233,11 +235,6 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 		client->addEnemyBpla( uav );
 	}
 	else if( method == RPC_SLOT_SERVER_SEND_HYPERBOLA ) {
-		QDataStream ds(&data, QIODevice::ReadWrite);
-		QVector<QPointF> list;
-		double frequency;
-		ds >> list;
-		ds >> frequency;
-		client->addHyperbole((int)frequency, list, QTime::currentTime());
+		client->addHyperbole(data, QTime::currentTime());
 	}
 }

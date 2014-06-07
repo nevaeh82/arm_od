@@ -430,9 +430,29 @@ void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QSt
 	uavInfo.lon = positionData.longitude;
 	uavInfo.latStddev = positionData.latitudeStddev;
 	uavInfo.lonStddev = positionData.longitudeStddev;
-	uavInfo.alt = positionData.altitude;
+	if(positionData.altitude != positionData.altitude)
+	{
+		uavInfo.alt = 0;
+	}else
+	if(positionData.altitude < 100 || positionData.altitude > 10000)
+	{
+		uavInfo.alt = 0;
+	}else
+	{
+		uavInfo.alt = positionData.altitude;
+	}
 	uavInfo.speed = positionData.speed;
-	uavInfo.yaw = positionData.course;
+	if(positionData.course != positionData.course)
+	{
+		uavInfo.yaw = 0;
+	}else
+	if(positionData.course < 0 || positionData.course > 359)
+	{
+		uavInfo.yaw = 0;
+	}
+	else {
+		uavInfo.yaw = positionData.course;
+	}
 	uavInfo.restTime = QTime(1, 0);
 	uavInfo.statusId = statusUnknownId; // FK
 	uavInfo.dateTime = positionData.dateTime;

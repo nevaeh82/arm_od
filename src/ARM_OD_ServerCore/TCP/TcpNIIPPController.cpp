@@ -38,7 +38,7 @@ bool TcpNIIPPController::init()
 			m_NIIPPSettingStruct.host = settings.value("ip", "127.0.0.1").toString();
 			m_NIIPPSettingStruct.port = settings.value("port", 2323).toInt();
 			m_NIIPPSettingStruct.name = settings.value("name", "").toString();
-			m_NIIPPSettingStruct.reconnectInterval = settings.value("reconnectInterval", 1000).toInt();
+			m_NIIPPSettingStruct.reconnectInterval = settings.value("reconnectInterval", 3000).toInt();
 
 			m_id = settings.value("id", 0).toInt();
 
