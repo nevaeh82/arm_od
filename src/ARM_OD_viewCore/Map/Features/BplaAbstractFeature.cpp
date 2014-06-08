@@ -8,6 +8,7 @@ namespace MapFeature {
 BplaAbstract::BplaAbstract(IObjectsFactory* factory, const QString& id, const UavInfo& uav)
 	: Marker( factory, id, QString::number( uav.id ), QPointF( uav.lon, uav.lat ) )
 	, m_initialized( false )
+	, m_tailEnabled( true )
 {
 	m_tail = factory->createPath();
 	m_slices = factory->createPath();
@@ -34,19 +35,21 @@ void BplaAbstract::setPosition(const QPointF& position)
 {
 	Marker::setPosition( position );
 
-	PwGisPointList* points = m_tail->points();
+	if ( m_tailEnabled ) {
+		PwGisPointList* points = m_tail->points();
 
-	points->append( new PwGisLonLat( m_position ) );
+		points->append( new PwGisLonLat( m_position ) );
 
-	while( points->length() > TRACK_LENGTH ) {
-		PwGisLonLat* point = points->first();
-		points->removeFirst();
-		delete point;
-	}
+		while( points->length() > TRACK_LENGTH ) {
+			PwGisLonLat* point = points->first();
+			points->removeFirst();
+			delete point;
+		}
 
-	if ( points->first() == points->last() ) {
-		removeFromMap();
-		return;
+		if ( points->first() == points->last() ) {
+			removeFromMap();
+			return;
+		}
 	}
 
 	updateName();

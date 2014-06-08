@@ -14,7 +14,6 @@ PrmSimulator::PrmSimulator(const uint& port, QObject *parent )
 {
 	qsrand( time(0) );
 
-
 	centerLat = 42.511183 + (double)qrand() / RAND_MAX * 0.2;
 	centerLon = 41.6905 + (double)qrand() / RAND_MAX;
 	alt = 1500 + qrand() % 1000;
@@ -47,10 +46,8 @@ bool PrmSimulator::start( quint16 port, QHostAddress ipAddress )
 	return RpcServerBase::start( m_port );
 }
 
-void PrmSimulator::update()
+void PrmSimulator::encodeBplaData(QDataStream& stream)
 {
-	// calculate new position of BPLA
-	angle++;
 	double radius = 0.005 + (double)qrand() / RAND_MAX * 0.005;
 	double lon = cos((180 - angle) * M_PI / 180) * radius + centerLon;
 	double lat = sin((180 - angle) * M_PI / 180) * radius + centerLat;
@@ -62,10 +59,6 @@ void PrmSimulator::update()
 		path.remove( 0, path.size() - 50 );
 	}
 
-	// prepare data to send
-	QByteArray data;
-	QDataStream stream( &data, QIODevice::WriteOnly );
-
 	double sp = (double) (1 + qrand() % 10);
 	stream << QTime(1, 1, 1);
 	stream << mode;
@@ -75,6 +68,17 @@ void PrmSimulator::update()
 	stream << (double) alt;
 	stream << (double) bearing;
 	stream << frequency;
+}
+
+void PrmSimulator::update()
+{
+	// calculate new position of BPLA
+	angle++;
+
+	// prepare data to send
+	QByteArray data;
+	QDataStream stream( &data, QIODevice::WriteOnly );
+	encodeBplaData( stream );
 
 	int functionRand = qrand() % 3;
 	QString function;
@@ -88,8 +92,12 @@ void PrmSimulator::update()
 			break;
 
 		case 2:
-			function = RPC_SLOT_SERVER_SEND_BPLA_DEF_SINLE;
+			function = RPC_SLOT_SERVER_SEND_BPLA_DEF_SINGLE;
 			break;
+	}
+
+	if (functionRand == 2) {
+		encodeBplaData( stream );
 	}
 
 	m_serverPeer->call( function, QVariant( data ) );

@@ -270,7 +270,7 @@ int DbUavController::addUavInfo(const UavInfo& info)
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare(QString("INSERT INTO info (uavId, device, source, latitude, longitude, altitude, speed, yaw, restTime, statusTypeId, datetime)")
+	bool succeeded = query.prepare(QString("REPLACE INTO info (uavId, device, source, latitude, longitude, altitude, speed, yaw, restTime, statusTypeId, datetime)")
 								   + QString("VALUES(:uavId, :device, :source, :lat, :lon, :alt, :speed, :yaw, :restTime, :statusId, :dateTime);"));
 
 	if (!succeeded){

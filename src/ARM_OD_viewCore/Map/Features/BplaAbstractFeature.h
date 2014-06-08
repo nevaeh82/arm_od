@@ -28,6 +28,7 @@ protected:
 	bool m_possible;
 	bool m_initialized;
 	bool m_isHistorical;
+	bool m_tailEnabled;
 
 	BplaAbstract(IObjectsFactory* factory, const QString& id, const UavInfo& uav);
 

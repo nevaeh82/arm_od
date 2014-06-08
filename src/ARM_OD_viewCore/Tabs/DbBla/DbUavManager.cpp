@@ -1,3 +1,5 @@
+#include <QDebug>
+
 #include "DbUavManager.h"
 
 DbUavManager::DbUavManager(int lifeTime, QObject *parent) :
@@ -339,7 +341,7 @@ void DbUavManager::onMethodCalled(const QString& method, const QVariant& argumen
 	} else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO) {
 		sendEnemyUavPoints(data, UAV_SOLVER_AUTO_SOURCE);
 	} else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_SINGLE) {
-		sendEnemyUavPoints(data, UAV_SOLVER_SINGLE_SOURCE);
+		sendEnemyUavPoints(data, UAV_SOLVER_SINGLE_1_SOURCE);
 	}
 }
 
@@ -461,35 +463,50 @@ void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QSt
 	addUavInfo(uavInfo);
 }
 
-void DbUavManager::sendEnemyUavPoints(const QByteArray& data, uint sourceType)
+QString DbUavManager::getEnemySourceTypeName(uint sourceType)
 {
-	QByteArray inputData = data;
-	QDataStream inputDataStream(&inputData, QIODevice::ReadOnly);
-	UAVPositionDataEnemy uavEnemy;
-	inputDataStream >> uavEnemy;
-
-	QString sourceTypeStr;
+	QString name;
 
 	switch( sourceType ) {
 		case UAV_SOLVER_MANUAL_SOURCE:
-			sourceTypeStr = "Solver Manual";
+			name = "Solver Manual";
 			break;
 
 		case UAV_SOLVER_AUTO_SOURCE:
-			sourceTypeStr = "Solver Auto";
+			name = "Solver Auto";
 			break;
 
-		case UAV_SOLVER_SINGLE_SOURCE:
-			sourceTypeStr = "Solver Single";
+		case UAV_SOLVER_SINGLE_1_SOURCE:
+			name = "Solver Single 1";
+			break;
+
+		case UAV_SOLVER_SINGLE_2_SOURCE:
+			name = "Solver Single 2";
 			break;
 
 		default:
-			sourceTypeStr = "UnknownSourceType";
+			name = "UnknownSourceType";
 	}
 
-	uavEnemy.sourceType = sourceType;
+	return name;
+}
 
-	addUavInfoToDb(uavEnemy, ENEMY_UAV_ROLE, "UnknownUavType", "UnknownStatus", "UnknownDeviceType", sourceTypeStr);
+void DbUavManager::sendEnemyUavPoints(const QByteArray& data, uint sourceType)
+{
+	QDataStream ds( data );
+
+	UAVPositionDataEnemy uav;
+	ds >> uav;
+	uav.sourceType = sourceType;
+	addUavInfoToDb(uav, ENEMY_UAV_ROLE, "UnknownUavType", "UnknownStatus", "UnknownDeviceType",
+				   getEnemySourceTypeName(uav.sourceType));
+
+	if (sourceType != UAV_SOLVER_SINGLE_1_SOURCE) return;
+
+	ds >> uav;
+	uav.sourceType = UAV_SOLVER_SINGLE_2_SOURCE;
+	addUavInfoToDb(uav, ENEMY_UAV_ROLE, "UnknownUavType", "UnknownStatus", "UnknownDeviceType",
+				   getEnemySourceTypeName(uav.sourceType));
 }
 
 void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy, const QString &role,

@@ -118,7 +118,8 @@ void MapClient1::init()
 	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(102), UAV_SOLVER_AUTO_SOURCE )->apply();
 	m_styleManager->createEnemyBplaTrackStyle( m_mapLayers.value(103), UAV_SOLVER_AUTO_SOURCE )->apply();
 
-	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(104), UAV_SOLVER_SINGLE_SOURCE )->apply();
+	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(104), UAV_SOLVER_SINGLE_1_SOURCE )->apply();
+	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(104), UAV_SOLVER_SINGLE_2_SOURCE )->apply();
 
 	m_styleManager->createFriendBplaStyle( m_mapLayers.value(3) )->apply();
 	m_styleManager->createFriendBplaTrackStyle( m_mapLayers.value(4) )->apply();

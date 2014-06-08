@@ -118,6 +118,8 @@ private:
 	void addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy, const QString &role,
 						const QString &uavType, const QString &status, const QString &deviceType, const QString &sourceType);
 
+	QString getEnemySourceTypeName(uint sourceType);
+
 private slots:
 	void timeoutSlot(const QString& key);
 };

@@ -171,7 +171,7 @@ void RPCClient_R::rpcSlotServerSendBplaDefAuto(QByteArray ba)
 void RPCClient_R::rpcSlotServerSendBplaDefSingle(QByteArray ba)
 {
 	//    qDebug() << "GOT FROM SERVER ID BPLA! = ";// << id;
-	QByteArray ba2 = encodeToEnemyUav(ba);
+	QByteArray ba2 = encodeToEnemyUav(ba, true);
 
 	QByteArray *ba1 = new QByteArray();
 	ba1->append(ba2);
@@ -220,10 +220,13 @@ void RPCClient_R::rpcSlotServerAtlantPosition(QByteArray ba1)
 
 }
 
-QByteArray RPCClient_R::encodeToEnemyUav(const QByteArray& data)
+QByteArray RPCClient_R::encodeToEnemyUav(const QByteArray& data, bool singleMode)
 {
 	QByteArray inputData = data;
 	QDataStream inputDataStream(&inputData, QIODevice::ReadOnly);
+
+	QByteArray dataToSend;
+	QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
 
 	UAVPositionDataEnemy uav;
 	inputDataStream >> uav.time;
@@ -234,10 +237,19 @@ QByteArray RPCClient_R::encodeToEnemyUav(const QByteArray& data)
 	inputDataStream >> uav.altitude;
 	inputDataStream >> uav.course;
 	inputDataStream >> uav.frequency;
-
-	QByteArray dataToSend;
-	QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
 	dataStream << uav;
+
+	if (singleMode) {
+		inputDataStream >> uav.time;
+		inputDataStream >> uav.state;
+		inputDataStream >> uav.pointStdDev;
+		inputDataStream >> uav.track;
+		inputDataStream >> uav.speed;
+		inputDataStream >> uav.altitude;
+		inputDataStream >> uav.course;
+		inputDataStream >> uav.frequency;
+		dataStream << uav;
+	}
 
 	return dataToSend;
 }

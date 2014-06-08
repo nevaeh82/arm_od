@@ -12,7 +12,7 @@
 
 #define RPC_SLOT_SERVER_SEND_BPLA_DEF          "rpc_slot_server_send_bpla_def"
 #define RPC_SLOT_SERVER_SEND_BPLA_DEF_AUTO     "rpc_slot_server_send_bpla_def_auto"
-#define RPC_SLOT_SERVER_SEND_BPLA_DEF_SINLE    "rpc_slot_server_send_bpla_def_single"
+#define RPC_SLOT_SERVER_SEND_BPLA_DEF_SINGLE   "rpc_slot_server_send_bpla_def_single"
 #define RPC_SLOT_SERVER_SEND_HYPERBOLA         "rpc_slot_server_send_hyperbola"
 
 class PrmSimulator : public RpcServerBase
@@ -41,6 +41,7 @@ public:
 
 	bool start( quint16 port = 0, QHostAddress ipAddress = QHostAddress::Any );
 
+	void encodeBplaData(QDataStream& stream);
 protected slots:
 	void update();
 };

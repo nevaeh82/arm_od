@@ -66,7 +66,7 @@ private slots:
 
 private:
 	void formCommand(IMessageOld *msg);
-	QByteArray encodeToEnemyUav(const QByteArray& data);
+	QByteArray encodeToEnemyUav(const QByteArray& data, bool singleMode = false);
 
 private slots:
 	void slotRCPConnetion();

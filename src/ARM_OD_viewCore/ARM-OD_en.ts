@@ -193,7 +193,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="86"/>
+        <location filename="Map/MapClient1.cpp" line="85"/>
         <source>OP</source>
         <translation></translation>
     </message>
@@ -204,7 +204,7 @@
         <translation type="unfinished">Enemy UAV</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="89"/>
+        <location filename="Map/MapClient1.cpp" line="87"/>
         <source>UAV_enemy_track_manual</source>
         <oldsource>UAV_enemy_track</oldsource>
         <translation type="unfinished">Enemy UAV track</translation>
@@ -215,83 +215,83 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="92"/>
+        <location filename="Map/MapClient1.cpp" line="90"/>
         <source>UAV_enemy_track_auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="94"/>
+        <location filename="Map/MapClient1.cpp" line="93"/>
         <source>UAV_enemy_single</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="96"/>
+        <location filename="Map/MapClient1.cpp" line="97"/>
         <source>UAV</source>
         <translation>Friend UAV</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="97"/>
+        <location filename="Map/MapClient1.cpp" line="96"/>
         <source>UAV_track_autopilot</source>
         <oldsource>UAV_track</oldsource>
         <translation>Friend UAV track from autopilot</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="98"/>
+        <location filename="Map/MapClient1.cpp" line="95"/>
         <source>UAV_track_KTR</source>
         <translation>Friend UAV track from KTR</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="100"/>
+        <location filename="Map/MapClient1.cpp" line="99"/>
         <source>Atlant</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="101"/>
+        <location filename="Map/MapClient1.cpp" line="100"/>
         <source>Atlant target</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="102"/>
+        <location filename="Map/MapClient1.cpp" line="101"/>
         <source>Grid</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="103"/>
+        <location filename="Map/MapClient1.cpp" line="102"/>
         <source>Checkpoints</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="104"/>
+        <location filename="Map/MapClient1.cpp" line="103"/>
         <source>Interception point</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="105"/>
+        <location filename="Map/MapClient1.cpp" line="104"/>
         <source>Civil ships</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="106"/>
+        <location filename="Map/MapClient1.cpp" line="105"/>
         <source>Diversion points</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="107"/>
+        <location filename="Map/MapClient1.cpp" line="106"/>
         <source>SPIP DD</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="108"/>
+        <location filename="Map/MapClient1.cpp" line="107"/>
         <source>Hyperbole</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="109"/>
+        <location filename="Map/MapClient1.cpp" line="108"/>
         <source>History</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="547"/>
+        <location filename="Map/MapClient1.cpp" line="565"/>
         <source>Ingur</source>
         <translation></translation>
     </message>
@@ -535,31 +535,41 @@
     </message>
     <message>
         <location filename="Map/Features/EnemyBplaFeature.cpp" line="19"/>
-        <source>UAV Enemy M</source>
+        <source>UAV Enemy (#%2-M%1)</source>
+        <oldsource>UAV Enemy (#%1-M)</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="Map/Features/EnemyBplaFeature.cpp" line="23"/>
-        <source>UAV Enemy A</source>
+        <source>UAV Enemy (#%2-A%1)</source>
+        <oldsource>UAV Enemy (#%1-A)</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="Map/Features/EnemyBplaFeature.cpp" line="27"/>
-        <source>UAV Enemy S</source>
+        <source>UAV Enemy (#%2-S1%1)</source>
+        <oldsource>UAV Enemy (#%1-S1)</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="Map/Features/EnemyBplaFeature.cpp" line="31"/>
-        <source>UAV Enemy</source>
+        <source>UAV Enemy (#%2-S2%1)</source>
+        <oldsource>UAV Enemy (#%1-S2)</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="Map/Features/EnemyBplaFeature.cpp" line="35"/>
-        <source>(#%1)\n%2\n%3\n%4</source>
+        <source>UAV Enemy (#%2%1)</source>
+        <oldsource>UAV Enemy (#%1)</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/Features/EnemyBplaFeature.cpp" line="45"/>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="40"/>
+        <source>BPLA_HISTORICAL_SUFFIX</source>
+        <oldsource>BPLA_HISTORICAL</oldsource>
+        <translation>H</translation>
+    </message>
+    <message>
         <location filename="Map/Features/FriendBplaFeature.cpp" line="27"/>
         <location filename="Tabs/DbBla/UavHistory.cpp" line="269"/>
         <source>%1-H</source>
