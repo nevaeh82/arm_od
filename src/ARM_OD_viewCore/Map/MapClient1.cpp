@@ -84,6 +84,17 @@ void MapClient1::init()
 	// create marker layers
 	addMarkerLayer( 0, "OP", tr( "OP" ) );
 
+	addMarkerLayer( 6, "Atlant", tr( "Atlant" ) );
+	addMarkerLayer( 7, "Atlant_target", tr( "Atlant target" ) );
+	addMarkerLayer( 8, "Grid", tr( "Grid" ) );
+	addMarkerLayer( 9, "Checkpoints", tr( "Checkpoints" ) );
+	addMarkerLayer( 10, "Interception_point", tr( "Interception point" ) );
+	addMarkerLayer( 11, "Civil_ships", tr( "Civil ships" ) );
+	addMarkerLayer( 12, "Diversion_points", tr( "Diversion points" ) );
+	addMarkerLayer( 13, "SPIP_DD", tr( "SPIP DD" ) );
+	addMarkerLayer( 14, "Hyperbole", tr( "Hyperbole" ) );
+	addMarkerLayer( 15, "History", tr( "History" ) );
+
 	addMarkerLayer( 101, "UAV_enemy_track_manual", tr( "UAV_enemy_track_manual" ) );
 	addMarkerLayer( 100, "UAV_enemy_manual", tr( "UAV_enemy_manual" ) );
 
@@ -95,17 +106,6 @@ void MapClient1::init()
 	addMarkerLayer( 5, "UAV_track_KTR", tr( "UAV_track_KTR" ) );
 	addMarkerLayer( 4, "UAV_track_autopilot", tr( "UAV_track_autopilot" ) );
 	addMarkerLayer( 3, "UAV", tr( "UAV" ) );
-
-	addMarkerLayer( 6, "Atlant", tr( "Atlant" ) );
-	addMarkerLayer( 7, "Atlant_target", tr( "Atlant target" ) );
-	addMarkerLayer( 8, "Grid", tr( "Grid" ) );
-	addMarkerLayer( 9, "Checkpoints", tr( "Checkpoints" ) );
-	addMarkerLayer( 10, "Interception_point", tr( "Interception point" ) );
-	addMarkerLayer( 11, "Civil_ships", tr( "Civil ships" ) );
-	addMarkerLayer( 12, "Diversion_points", tr( "Diversion points" ) );
-	addMarkerLayer( 13, "SPIP_DD", tr( "SPIP DD" ) );
-	addMarkerLayer( 14, "Hyperbole", tr( "Hyperbole" ) );
-	addMarkerLayer( 15, "History", tr( "History" ) );
 
 	showLayer( 8, false );
 
