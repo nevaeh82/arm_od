@@ -30,7 +30,9 @@ protected:
 public:
 	virtual void onUavAdded(const Uav &uav, const QString& uavRole);
 	virtual void onUavRemoved(const Uav &uav, const QString& uavRole);
-	virtual void onUavInfoChanged(const UavInfo &uavInfo, const QString& uavRole);
+	virtual void onUavInfoChanged(const UavInfo &uavInfo, const QString& uavRole,
+								  const QVector<QPointF> &tail = QVector<QPointF>(),
+								  const QVector<QPointF> &tailStdDev = QVector<QPointF>());
 	virtual void onStatusChanged(Status) {}
 
 	void setTargetRole(const QString& role);

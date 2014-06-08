@@ -39,41 +39,41 @@ void NiippController::setData(QByteArray data)
 
 void NiippController::slotStopClicked()
 {
-    m_model->stopCommad();
+	m_model->stopCommad();
 }
 
 void NiippController::slotStartClicked()
 {
-    m_model->startCommand();
+	m_model->startCommand();
 }
 
 void NiippController::slotOpenRDP()
 {
-    int ret = openRDP(m_model->getId());
-    log_debug(QString("Open RDP for NIIPP = %1").arg(QString::number(ret)));
+	int ret = openRDP(m_model->getId());
+	log_debug(QString("Open RDP for NIIPP = %1").arg(QString::number(ret)));
 
 }
 
 int NiippController::openRDP(int id)
 {
-    QProcess process;
+	QProcess process;
 //    process.setReadChannelMode(ForwardedChannels);
-    switch(id)
-    {
-    case 100:
-        process.start("mstsc RDP/spip_dd1.rdp");
-        break;
-    case 101:
-        process.start("mstsc RDP/spip_dd2.rdp");
-        break;
-    default:
-        return -1;
-        break;
-    }
+	switch(id)
+	{
+	case 100:
+		process.start("mstsc RDP/spip_dd1.rdp");
+		break;
+	case 101:
+		process.start("mstsc RDP/spip_dd2.rdp");
+		break;
+	default:
+		return -1;
+		break;
+	}
 
-    if (!process.waitForFinished(-1))
-        return -2;
-    return process.exitStatus() == QProcess::NormalExit ? process.exitCode() : -1;
+	if (!process.waitForFinished(-1))
+		return -2;
+	return process.exitStatus() == QProcess::NormalExit ? process.exitCode() : -1;
 }
 
 void NiippController::enableComplex(bool state)
@@ -89,8 +89,8 @@ void NiippController::clear()
 
 void NiippController::changeValuePower(int value)
 {
-    m_model->setSBpowerValue(value);
-    m_model->changeValuePower(0, value );
+	m_model->setSBpowerValue(value);
+	m_model->changeValuePower(0, value );
 	m_view->changeValuePower( value, m_model->getRadiusCircle(),
 							  m_model->getRadiusSector(), m_model->getAntenaType() );
 
@@ -119,9 +119,9 @@ void NiippController::setAntennaType(int value)
 		m_model->setMode( m_view->getModeIndex() );
 	}
 
-    m_model->setAntenaIndex(value);
+	m_model->setAntenaIndex(value);
 
-    m_model->setAntennaType(0, value );
+	m_model->setAntennaType(0, value );
 	m_view->setAntennaType( m_model->getAntenaType(), getModeCurrentIndex() );
 	m_mapController->updateNiippPowerZone( *m_model );
 }
@@ -190,83 +190,88 @@ Niipp::WorkMode NiippController::getModeCurrentIndex()
 	return m_model->getModeCurrentIndex();
 }
 
-void NiippController::onUavInfoChanged(const UavInfo& uavInfo, const QString& uavRole)
+void NiippController::onUavInfoChanged(const UavInfo& uavInfo, const QString& uavRole,
+									   const QVector<QPointF>& tail,
+									   const QVector<QPointF>& tailStdDev)
 {
+	Q_UNUSED( tail );
+	Q_UNUSED( tailStdDev );
+
 	if( uavRole != ENEMY_UAV_ROLE ) return;
 
 	/// \todo: I don't know why numbers are 100 and 101. It's became from MapClient1
 	if( getId() == 100 || getId() == 101 ) {
 		QPointF point( uavInfo.lon, uavInfo.lat );
 		sendEnemyBpla( point, m_model->getPoint(), uavInfo.alt, uavInfo.yaw );
-    }
+	}
 }
 
 void NiippController::onMethodCalled(const QString &method, const QVariant &argument)
 {
-    QByteArray data = argument.toByteArray();
+	QByteArray data = argument.toByteArray();
 
-    if( method == RPC_SLOT_SERVER_SEND_NIIPP_DATA ) {
-        QDataStream ds(&data, QIODevice::ReadOnly);
+	if( method == RPC_SLOT_SERVER_SEND_NIIPP_DATA ) {
+		QDataStream ds(&data, QIODevice::ReadOnly);
 
-        log_info("IN NIIPP CONTROLLER!");
+		log_info("IN NIIPP CONTROLLER!");
 
-        int id;
-        QDateTime dt;
-        QTime time;
-        int mode;
-        QPointF point;
-        QString NS;
-        QString EW;
-        int alt;
-        int zone;
-        int course;
-        int angle;
+		int id;
+		QDateTime dt;
+		QTime time;
+		int mode;
+		QPointF point;
+		QString NS;
+		QString EW;
+		int alt;
+		int zone;
+		int course;
+		int angle;
 
-        ds >> id;
-        ds >> dt;
-        ds >> time;
-        ds >> mode;
-        ds >> point;
-        ds >> NS;
-        ds >> EW;
-        ds >> alt;
-        ds >> zone;
-        ds >> course;
-        ds >> angle;
+		ds >> id;
+		ds >> dt;
+		ds >> time;
+		ds >> mode;
+		ds >> point;
+		ds >> NS;
+		ds >> EW;
+		ds >> alt;
+		ds >> zone;
+		ds >> course;
+		ds >> angle;
 
-        if(m_model->getId() != id)
-            return;
+		if(m_model->getId() != id)
+			return;
 
-        QPointF latlon;
-        switch( id ) {
-            case 100:
-                latlon.setX(42.511183);
-                latlon.setY(41.6905);
-                break;
+		QPointF latlon;
+		switch( id ) {
+			case 100:
+				latlon.setX(42.511183);
+				latlon.setY(41.6905);
+				break;
 
-            case 101:
-                latlon.setX(42.634183);
-                latlon.setY(41.912167);
-                break;
-        }
+			case 101:
+				latlon.setX(42.634183);
+				latlon.setY(41.912167);
+				break;
+		}
 
 //        Niipp niipp( id, QString::number( id ), latlon, NULL );
 
-        m_model->setAntennaType(1, mode == 1 ? 1 : 0 );
-        m_model->changeValuePower(1, zone );
-        log_info(QString("IN NIIPP CONTROLLER SET ANGLE = %1!").arg(course));
-        m_model->setAngel(course);
-        m_view->setStatusText(mode);
+		m_model->setAntennaType(1, mode == 1 ? 1 : 0 );
+		m_model->changeValuePower(1, zone );
+		log_info(QString("IN NIIPP CONTROLLER SET ANGLE = %1!").arg(course));
+		m_model->setAngel(course);
+		m_view->setStatusText(mode);
 
 
-        m_mapController->updateNiippPowerZone( *m_model );
+		m_mapController->updateNiippPowerZone( *m_model );
 
-        /// TODO: recheck following. WTF?!
-        //		QByteArray ba1;
-        //		QDataStream ds2(&ba1, QIODevice::WriteOnly);
-        //		ds2 << mode;
-        //		m_tabManager->send_data_niipp_control(id, ba1);
-        }
+		/// TODO: recheck following. WTF?!
+		//		QByteArray ba1;
+		//		QDataStream ds2(&ba1, QIODevice::WriteOnly);
+		//		ds2 << mode;
+		//		m_tabManager->send_data_niipp_control(id, ba1);
+		}
 
 }
 
@@ -276,10 +281,10 @@ void NiippController::appendView(NiippWidget *view)
 
 	connect(m_view, SIGNAL(complexEnabled(bool)), this, SLOT(enableComplex(bool)));
 	connect(m_view, SIGNAL(valuePowerChanged(int)), this, SLOT(changeValuePower(int)));
-    connect(m_view, SIGNAL(stopClicked()), this, SLOT(slotStopClicked()));
-    connect(m_view, SIGNAL(startClicked()), this, SLOT(slotStartClicked()));
+	connect(m_view, SIGNAL(stopClicked()), this, SLOT(slotStopClicked()));
+	connect(m_view, SIGNAL(startClicked()), this, SLOT(slotStartClicked()));
 	connect(m_view, SIGNAL(antennaTypeChanged(int)), this, SLOT(setAntennaType(int)));
 	connect(m_view, SIGNAL(modeChanged(int)), this, SLOT(changeMode(int)));
 	connect(m_view, SIGNAL(cleared()), this, SLOT(clear()));
-    connect(m_view, SIGNAL(signalOpenRDP()), this, SLOT(slotOpenRDP()));
+	connect(m_view, SIGNAL(signalOpenRDP()), this, SLOT(slotOpenRDP()));
 }

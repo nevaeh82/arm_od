@@ -19,7 +19,7 @@
 #include "Niipp.h"
 
 class NiippController : public QObject, public IController<NiippWidget>, public INiippController,
-        public IUavDbChangedListener, public IRpcListener
+		public IUavDbChangedListener, public IRpcListener
 {
 	Q_OBJECT
 
@@ -49,15 +49,17 @@ public:
 	// interface IUavDbChangedListener
 	virtual void onUavAdded(const Uav&, const QString&) {}
 	virtual void onUavRemoved(const Uav&, const QString&) {}
-	virtual void onUavInfoChanged(const UavInfo& uavInfo, const QString& uavRole);
+	virtual void onUavInfoChanged(const UavInfo& uavInfo, const QString& uavRole,
+								  const QVector<QPointF> &tail = QVector<QPointF>(),
+								  const QVector<QPointF> &tailStdDev = QVector<QPointF>());
 
-    virtual void onMethodCalled(const QString& method, const QVariant& argument);
+	virtual void onMethodCalled(const QString& method, const QVariant& argument);
 
 
 private:
 	void stopCommad();
 	QByteArray encode(QStringList list);
-    int openRDP(int id);
+	int openRDP(int id);
 
 private slots:
 	void changeAngel(double value);
@@ -65,9 +67,9 @@ private slots:
 	void changeMode(int value);
 	void enableComplex(bool state);
 	void clear();
-    void slotStopClicked();
-    void slotStartClicked();
-    void slotOpenRDP();
+	void slotStopClicked();
+	void slotStartClicked();
+	void slotOpenRDP();
 
 public slots:
 	virtual void setPower(double value);

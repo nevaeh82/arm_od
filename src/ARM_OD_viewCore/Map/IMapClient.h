@@ -40,7 +40,9 @@ public:
 	virtual void showLayer( int index, bool state ) = 0;
 
 	virtual void addFriendBpla( const UavInfo& uav ) = 0;
-	virtual void addEnemyBpla( const UavInfo& uav ) = 0;
+	virtual void addEnemyBpla( const UavInfo& uav,
+							   const QVector<QPointF> &tail = QVector<QPointF>(),
+							   const QVector<QPointF> &tailStdDev = QVector<QPointF>() ) = 0;
 	virtual void removeBpla( const Uav& uav ) = 0;
 
 	virtual void addAis( QMap<int, QVector<QString> > vec ) = 0;

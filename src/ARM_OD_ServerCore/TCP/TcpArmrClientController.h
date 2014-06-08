@@ -23,8 +23,8 @@ public:
 	virtual ~TcpArmrClientController();
 
 	virtual bool init();
+
 	// ITcpDeviceController interface
-public:
 	virtual void createTcpDeviceCoder();
 	virtual QObject* asQObject();
 

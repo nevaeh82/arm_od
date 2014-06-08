@@ -25,7 +25,9 @@ public:
 
 	void onUavAdded(const Uav&, const QString&) {}
 	void onUavRemoved(const Uav&, const QString&) {}
-	void onUavInfoChanged(const UavInfo& uavInfo, const QString&);
+	void onUavInfoChanged(const UavInfo& uavInfo, const QString&,
+						  const QVector<QPointF> &tail = QVector<QPointF>(),
+						  const QVector<QPointF> &tailStdDev = QVector<QPointF>());
 	void onStatusChanged(Status status);
 
 signals:

@@ -153,7 +153,9 @@ void MapController::onUavRemoved(const Uav& uav, const QString&)
 	client->removeBpla( uav );
 }
 
-void MapController::onUavInfoChanged(const UavInfo& uavInfo, const QString& uavRole)
+void MapController::onUavInfoChanged(const UavInfo& uavInfo, const QString& uavRole,
+									 const QVector<QPointF>& tail,
+									 const QVector<QPointF>& tailStdDev)
 {
 	IMapClient* client = getMapClient();
 	if( NULL == client ) return;
@@ -164,7 +166,7 @@ void MapController::onUavInfoChanged(const UavInfo& uavInfo, const QString& uavR
 	}
 
 	if( uavRole == ENEMY_UAV_ROLE ) {
-		client->addEnemyBpla( uavInfo );
+		client->addEnemyBpla( uavInfo, tail, tailStdDev );
 		return;
 	}
 }

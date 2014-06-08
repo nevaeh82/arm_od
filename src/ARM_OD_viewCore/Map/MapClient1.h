@@ -96,7 +96,9 @@ public slots:
 	virtual void justifyMap();
 
 	virtual void addFriendBpla( const UavInfo& uav );
-	virtual void addEnemyBpla( const UavInfo& uav );
+	virtual void addEnemyBpla( const UavInfo& uav,
+							   const QVector<QPointF> &tail = QVector<QPointF>(),
+							   const QVector<QPointF> &tailStdDev = QVector<QPointF>() );
 	virtual void removeBpla( const Uav &uav );
 
 	virtual void addAis( QMap<int, QVector<QString> > vec );
@@ -115,7 +117,9 @@ public slots:
 
 private slots:
 	void addFriendBplaInternal( const UavInfo& uav );
-	void addEnemyBplaInternal( const UavInfo& uav );
+	void addEnemyBplaInternal( const UavInfo& uav,
+							   const QVector<QPointF> &tail = QVector<QPointF>(),
+							   const QVector<QPointF> &tailStdDev = QVector<QPointF>() );
 	void removeBplaInternal( const Uav& uav );
 
 	void setAisData(QMap<int, QVector<QString> > data );
@@ -136,7 +140,9 @@ private slots:
 
 signals:
 	void friendBplaAdded( const UavInfo& uav );
-	void enemyBplaAdded( const UavInfo& uav );
+	void enemyBplaAdded( const UavInfo& uav,
+						 const QVector<QPointF> &tail = QVector<QPointF>(),
+						 const QVector<QPointF> &tailStdDev = QVector<QPointF>() );
 	void bplaRemoved( const Uav& uav );
 
 	void aisAdded( QMap<int, QVector<QString> > vec );

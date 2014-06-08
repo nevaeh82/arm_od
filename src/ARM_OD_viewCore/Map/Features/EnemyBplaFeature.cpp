@@ -13,6 +13,10 @@ EnemyBpla::EnemyBpla(IObjectsFactory* factory, const QString& id, const UavInfo&
 	m_styleName = MapStyleManager::getEnemyBplaStyleName( uav.source );
 	m_trackStyleName = MapStyleManager::getEnemyBplaTrackStyleName( uav.source );
 
+	if ( !uav.historical ) {
+		m_autoTail = false;
+	}
+
 	registerStyle();
 
 	// init source label

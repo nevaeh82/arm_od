@@ -9,6 +9,7 @@ BplaAbstract::BplaAbstract(IObjectsFactory* factory, const QString& id, const Ua
 	: Marker( factory, id, QString::number( uav.id ), QPointF( uav.lon, uav.lat ) )
 	, m_initialized( false )
 	, m_tailEnabled( true )
+	, m_autoTail( true )
 {
 	m_tail = factory->createPath();
 	m_slices = factory->createPath();
@@ -35,7 +36,7 @@ void BplaAbstract::setPosition(const QPointF& position)
 {
 	Marker::setPosition( position );
 
-	if ( m_tailEnabled ) {
+	if ( m_tailEnabled && m_autoTail ) {
 		PwGisPointList* points = m_tail->points();
 
 		points->append( new PwGisLonLat( m_position ) );
@@ -45,14 +46,21 @@ void BplaAbstract::setPosition(const QPointF& position)
 			points->removeFirst();
 			delete point;
 		}
-
-		if ( points->first() == points->last() ) {
-			removeFromMap();
-			return;
-		}
 	}
 
 	updateName();
+}
+
+void BplaAbstract::setTail(const QVector<QPointF>& tail, const QVector<QPointF>& tailStdDev)
+{
+	PwGisPointList* points = m_tail->points();
+
+	points->clear();
+	points->append( new PwGisLonLat( m_position ) );
+
+	foreach( QPointF point, tail ) {
+		points->append( new PwGisLonLat( point.y(), point.x() ) );
+	}
 }
 
 void BplaAbstract::setAltitude(double altitude)

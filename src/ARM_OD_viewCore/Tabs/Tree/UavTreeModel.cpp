@@ -167,8 +167,13 @@ void UavTreeModel::onUavRemoved(const Uav &uav, const QString& uavRole)
 	}
 }
 
-void UavTreeModel::onUavInfoChanged(const UavInfo &uavInfo, const QString& uavRole)
+void UavTreeModel::onUavInfoChanged(const UavInfo &uavInfo, const QString& uavRole,
+									const QVector<QPointF>& tail,
+									const QVector<QPointF>& tailStdDev)
 {
+	Q_UNUSED( tail );
+	Q_UNUSED( tailStdDev );
+
 	if (uavRole != m_targetRole){
 		return;
 	}

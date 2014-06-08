@@ -18,10 +18,6 @@ public:
 	virtual MessageSP encode(const QByteArray& data);
 	virtual QByteArray decode(const MessageSP message);
 	virtual QObject* asQObject();
-
-private:
-	QByteArray encodeToEnemyUav(const QByteArray& data);
-	
 };
 
 #endif // TCPARMRCLIENTCODER_H

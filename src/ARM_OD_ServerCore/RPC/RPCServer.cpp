@@ -125,6 +125,8 @@ void RPCServer::sendDataByRpcSlot(QString signalType, QByteArray data)
 		emit signalSendToRPCBPLAPoints(data);
 	} else if (signalType == RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO) {
 		emit signalSendToRPCBPLAPointsAuto(data);
+	} else if (signalType == RPC_SLOT_SERVER_SEND_BPLA_POINTS_SINGLE) {
+		emit signalSendToRPCBPLAPointsSingle(data);
 	} else if (signalType == RPC_SLOT_SERVER_SEND_BLA_POINTS) {
 		emit signalSendToRPCBLAPoints(data);
 	} else if (signalType == RPC_SLOT_SERVER_SEND_HYPERBOLA) {

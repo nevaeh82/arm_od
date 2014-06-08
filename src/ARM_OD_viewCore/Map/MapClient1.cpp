@@ -45,8 +45,8 @@ MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 	connect( this, SIGNAL(friendBplaAdded(UavInfo)),
 			 this, SLOT(addFriendBplaInternal(UavInfo)) );
 
-	connect( this, SIGNAL(enemyBplaAdded(UavInfo)),
-			 this, SLOT(addEnemyBplaInternal(UavInfo)) );
+	connect( this, SIGNAL(enemyBplaAdded(UavInfo,QVector<QPointF>,QVector<QPointF>)),
+			 this, SLOT(addEnemyBplaInternal(UavInfo,QVector<QPointF>,QVector<QPointF>)) );
 
 	connect( this, SIGNAL(bplaRemoved(Uav)),
 			 this, SLOT(removeBplaInternal(Uav)) );
@@ -194,9 +194,10 @@ void MapClient1::addFriendBpla(const UavInfo& uav)
 	emit friendBplaAdded( uav );
 }
 
-void MapClient1::addEnemyBpla(const UavInfo& uav)
+void MapClient1::addEnemyBpla(const UavInfo& uav,
+							  const QVector<QPointF>& tail, const QVector<QPointF>& tailStdDev)
 {
-	emit enemyBplaAdded( uav );
+	emit enemyBplaAdded( uav, tail, tailStdDev );
 }
 
 void MapClient1::removeBpla(const Uav& uav)
@@ -456,7 +457,9 @@ void MapClient1::addFriendBplaInternal(const UavInfo& uav)
 	}
 }
 
-void MapClient1::addEnemyBplaInternal(const UavInfo& uav)
+void MapClient1::addEnemyBplaInternal(const UavInfo& uav,
+									  const QVector<QPointF>& tail,
+									  const QVector<QPointF>& tailStdDev)
 {
 	QString id = getUavInternalId( uav );
 	MapFeature::EnemyBpla* bpla = m_enemyBplaList.value( id, NULL );
@@ -468,6 +471,10 @@ void MapClient1::addEnemyBplaInternal(const UavInfo& uav)
 	} else {
 		bpla = m_factory->createEnemyBpla( uav );
 		m_enemyBplaList.insert( id, bpla );
+	}
+
+	if( !uav.historical ) {
+		bpla->setTail( tail, tailStdDev );
 	}
 }
 

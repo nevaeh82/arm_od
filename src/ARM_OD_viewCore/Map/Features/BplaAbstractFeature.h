@@ -29,6 +29,7 @@ protected:
 	bool m_initialized;
 	bool m_isHistorical;
 	bool m_tailEnabled;
+	bool m_autoTail;
 
 	BplaAbstract(IObjectsFactory* factory, const QString& id, const UavInfo& uav);
 
@@ -36,6 +37,7 @@ public:
 	virtual ~BplaAbstract();
 
 	virtual void setPosition(const QPointF &position);
+	virtual void setTail(const QVector<QPointF> &tail, const QVector<QPointF> &tailStdDev = QVector<QPointF>());
 
 	void setAltitude(double altitude);
 	inline double altitude() { return m_altitude; }
@@ -56,6 +58,7 @@ public:
 	inline double longtitudeStddev() { return m_longtitudeStddev; }
 
 	void setSlice(const QPointF &slice);
+
 
 	void update(const UavInfo& uav);
 

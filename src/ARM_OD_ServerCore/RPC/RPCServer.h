@@ -96,6 +96,7 @@ signals:
 
 	void signalSendToRPCBPLAPoints(QByteArray);
 	void signalSendToRPCBPLAPointsAuto(QByteArray);
+	void signalSendToRPCBPLAPointsSingle(QByteArray);
 	void signalSendToRPCHyperbola(QByteArray);
 	void signalSendToRPCAtlantDirection(QByteArray);
 	void signalSendToRPCAtlantPosition(QByteArray);

@@ -71,7 +71,9 @@ public:
 	// interface IUavHistoryListener
 	virtual void onUavAdded(const Uav&, const QString&) {}
 	virtual void onUavRemoved(const Uav& uav, const QString&);
-	virtual void onUavInfoChanged(const UavInfo& uavInfo, const QString& uavRole);
+	virtual void onUavInfoChanged(const UavInfo& uavInfo, const QString& uavRole,
+								  const QVector<QPointF> &tail = QVector<QPointF>(),
+								  const QVector<QPointF> &tailStdDev = QVector<QPointF>());
 	virtual void onStatusChanged(Status) {}
 
 private:

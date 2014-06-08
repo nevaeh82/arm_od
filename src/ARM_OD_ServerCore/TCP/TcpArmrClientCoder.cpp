@@ -26,11 +26,12 @@ MessageSP TcpArmrClientCoder::encode(const QByteArray &data)
 				break;
 			case Zaviruha::sendBplaPoints:
 				method = QString(ARM_R_SERVER_BPLA_COORDS);
-				dataToSend = encodeToEnemyUav(data);
 				break;
 			case Zaviruha::sendBplaPointsAuto:
 				method = QString(ARM_R_SERVER_BPLA_COORDS_AUTO);
-				dataToSend = encodeToEnemyUav(data);
+				break;
+			case Zaviruha::sendBplaPointsSingle:
+				method = QString(ARM_R_SERVER_BPLA_COORDS_SINGLE);
 				break;
 			default:
 				break;
@@ -88,25 +89,4 @@ QByteArray TcpArmrClientCoder::decode(const MessageSP message)
 QObject *TcpArmrClientCoder::asQObject()
 {
 	return this;
-}
-
-QByteArray TcpArmrClientCoder::encodeToEnemyUav(const QByteArray& data)
-{
-	QByteArray inputData = data;
-	QDataStream inputDataStream(&inputData, QIODevice::ReadOnly);
-
-	UAVPositionDataEnemy uav;
-	inputDataStream >> uav.time;
-	inputDataStream >> uav.state;
-	inputDataStream >> uav.pointStdDev;
-	inputDataStream >> uav.track;
-	inputDataStream >> uav.speed;
-	inputDataStream >> uav.altitude;
-	inputDataStream >> uav.course;
-
-	QByteArray dataToSend;
-	QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
-	dataStream << uav;
-
-	return dataToSend;
 }

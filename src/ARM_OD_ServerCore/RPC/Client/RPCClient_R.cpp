@@ -1,6 +1,7 @@
-#include "RPCClient_R.h"
-
 #include <QDebug>
+
+#include "TCP/TcpArmrClientCoder.h"
+#include "RPCClient_R.h"
 
 RPCClient_R::RPCClient_R(IRouter* router, QObject *parent):
 	RpcRoutedClient( RPC_METHOD_REGISTER_CLIENT, RPC_METHOD_DEREGISTER_CLIENT, parent )
@@ -143,40 +144,31 @@ void RPCClient_R::slotRCPConnetion()
 	emit signalSetClientId(m_id);
 }
 
-void RPCClient_R::rpcSlotServerSendBplaDef(QByteArray ba1)
+void RPCClient_R::rpcSlotServerSendBplaDef(QByteArray ba)
 {
-//    qDebug() << "GOT FROM SERVER ID BPLA! = ";// << id;
-	QByteArray ba2 = encodeToEnemyUav(ba1);
+	QByteArray *out = new QByteArray();
+	out->append(ba);
 
-	QByteArray *ba = new QByteArray();
-	ba->append(ba2);
-
-	QSharedPointer<IMessageOld> msg(new MessageOld(m_id, ARM_R_SERVER_BPLA_COORDS, ba));
+	QSharedPointer<IMessageOld> msg(new MessageOld(m_id, ARM_R_SERVER_BPLA_COORDS, out));
 	m_subscriber->data_ready(ARM_R_SERVER_BPLA_COORDS, msg);
 }
 
 void RPCClient_R::rpcSlotServerSendBplaDefAuto(QByteArray ba)
 {
-//    qDebug() << "GOT FROM SERVER ID BPLA! = ";// << id;
-	QByteArray ba2 = encodeToEnemyUav(ba);
+	QByteArray *out = new QByteArray();
+	out->append(ba);
 
-	QByteArray *ba1 = new QByteArray();
-	ba1->append(ba2);
-
-	QSharedPointer<IMessageOld> msg(new MessageOld(m_id, ARM_R_SERVER_BPLA_COORDS_AUTO, ba1));
+	QSharedPointer<IMessageOld> msg(new MessageOld(m_id, ARM_R_SERVER_BPLA_COORDS_AUTO, out));
 	m_subscriber->data_ready(ARM_R_SERVER_BPLA_COORDS_AUTO, msg);
 
 }
 
 void RPCClient_R::rpcSlotServerSendBplaDefSingle(QByteArray ba)
 {
-	//    qDebug() << "GOT FROM SERVER ID BPLA! = ";// << id;
-	QByteArray ba2 = encodeToEnemyUav(ba, true);
+	QByteArray *out = new QByteArray();
+	out->append(ba);
 
-	QByteArray *ba1 = new QByteArray();
-	ba1->append(ba2);
-
-	QSharedPointer<IMessageOld> msg(new MessageOld(m_id, ARM_R_SERVER_BPLA_COORDS_SINGLE, ba1));
+	QSharedPointer<IMessageOld> msg(new MessageOld(m_id, ARM_R_SERVER_BPLA_COORDS_SINGLE, out));
 	m_subscriber->data_ready(ARM_R_SERVER_BPLA_COORDS_SINGLE, msg);
 
 }
@@ -231,8 +223,8 @@ QByteArray RPCClient_R::encodeToEnemyUav(const QByteArray& data, bool singleMode
 	UAVPositionDataEnemy uav;
 	inputDataStream >> uav.time;
 	inputDataStream >> uav.state;
-	inputDataStream >> uav.pointStdDev;
-	inputDataStream >> uav.track;
+	inputDataStream >> uav.latLonStdDev;
+	inputDataStream >> uav.latLon;
 	inputDataStream >> uav.speed;
 	inputDataStream >> uav.altitude;
 	inputDataStream >> uav.course;
@@ -242,8 +234,8 @@ QByteArray RPCClient_R::encodeToEnemyUav(const QByteArray& data, bool singleMode
 	if (singleMode) {
 		inputDataStream >> uav.time;
 		inputDataStream >> uav.state;
-		inputDataStream >> uav.pointStdDev;
-		inputDataStream >> uav.track;
+		inputDataStream >> uav.latLonStdDev;
+		inputDataStream >> uav.latLon;
 		inputDataStream >> uav.speed;
 		inputDataStream >> uav.altitude;
 		inputDataStream >> uav.course;

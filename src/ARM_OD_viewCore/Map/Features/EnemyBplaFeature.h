@@ -28,6 +28,7 @@ protected:
 	virtual inline QString getTrackStyleName() const { return m_trackStyleName; }
 	virtual inline QString getSliceStyleName() const { return m_trackStyleName; }
 
+
 	EnemyBpla(IObjectsFactory* factory, const QString& id, const UavInfo& uav);
 
 public:

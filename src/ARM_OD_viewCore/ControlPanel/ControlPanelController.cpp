@@ -33,8 +33,13 @@ void ControlPanelController::setUavHistory(IUavHistory *history)
 	onStatusChanged( m_uavHistory->getStatus() );
 }
 
-void ControlPanelController::onUavInfoChanged(const UavInfo& uavInfo, const QString&)
+void ControlPanelController::onUavInfoChanged(const UavInfo& uavInfo, const QString&,
+											  const QVector<QPointF>& tail,
+											  const QVector<QPointF>& tailStdDev)
 {
+	Q_UNUSED( tail );
+	Q_UNUSED( tailStdDev );
+
 	emit currentDateTimeChanged( uavInfo.dateTime );
 }
 

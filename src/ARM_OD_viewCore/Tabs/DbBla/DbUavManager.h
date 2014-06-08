@@ -60,7 +60,9 @@ public:
 	Uav getUav(const uint id);
 	bool getUavsByRole(const QString& role, QList<Uav>& uavs);
 
-	int addUavInfo(const UavInfo&);
+	int addUavInfo(const UavInfo&, bool actual = true,
+				   const QVector<QPointF>& tail = QVector<QPointF>(),
+				   const QVector<QPointF>& tailStdDev = QVector<QPointF>());
 	bool getUavInfoByUavId(const uint uavId, QList<UavInfo>& uavInfoList);
 
 	IUavHistory* getUavHistory();
@@ -112,11 +114,19 @@ public:
 	virtual void onMethodCalled(const QString& method, const QVariant& argument);
 
 private:
-	void addUavInfoToDb(const UAVPositionData& positionData, const QString& role,
-						const QString& uavType, const QString& status, const QString& deviceType, const QString &sourceType);
 	void sendEnemyUavPoints(const QByteArray& data, uint sourceType);
 	void addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy, const QString &role,
-						const QString &uavType, const QString &status, const QString &deviceType, const QString &sourceType);
+						const QString &uavType, const QString &status,
+						const QString &deviceType, const QString &sourceType,
+						bool actual = false,
+						const QVector<QPointF> &tail = QVector<QPointF>(),
+						const QVector<QPointF> &tailStdDev = QVector<QPointF>());
+	void addUavInfoToDb(const UAVPositionData& positionData, const QString& role,
+						const QString& uavType, const QString& status,
+						const QString& deviceType, const QString &sourceType,
+						bool actual = true,
+						const QVector<QPointF> &tail = QVector<QPointF>(),
+						const QVector<QPointF> &tailStdDev = QVector<QPointF>());
 
 	QString getEnemySourceTypeName(uint sourceType);
 

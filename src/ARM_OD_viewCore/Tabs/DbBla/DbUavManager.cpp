@@ -66,7 +66,8 @@ bool DbUavManager::getUavsByRole(const QString &role, QList<Uav> &uavs)
 	return m_dbController->getUavsByRole(role, uavs);
 }
 
-int DbUavManager::addUavInfo(const UavInfo &uavInfo)
+int DbUavManager::addUavInfo(const UavInfo &uavInfo, bool actual,
+							 const QVector<QPointF>& tail, const QVector<QPointF>& tailStdDev)
 {
 	QMutexLocker deleteLocker(&m_deleteMutex);
 
@@ -85,6 +86,14 @@ int DbUavManager::addUavInfo(const UavInfo &uavInfo)
 
 	if (uav.name.isEmpty()) {
 		uav.name = QString::number(uav.uavId);
+	}
+
+	// If current record is not actual information about BPLA
+	// we try just to insert/update uav info record
+	int recordIndex = m_dbController->addUavInfo(uavInfo);
+
+	if (!actual) {
+		return recordIndex;
 	}
 
 	QString uavRole = getUavRole(uav.roleId).code;
@@ -111,19 +120,18 @@ int DbUavManager::addUavInfo(const UavInfo &uavInfo)
 		lifeTimer->start( m_lifeTime );
 	}
 
-	int newUavInfo = m_dbController->addUavInfo(uavInfo);
 	UavInfo uavInfoForListeners = uavInfo;
 	uavInfoForListeners.uavId = uav.uavId;
 
 	uavInfoForListeners.source = getSource(uavInfo.source).sourceId;
 
-	if (newUavInfo != INVALID_INDEX){
+	if (recordIndex != INVALID_INDEX){
 		foreach (IUavDbChangedListener* receiver, m_receiversList){
-			receiver->onUavInfoChanged(uavInfoForListeners, uavRole);
+			receiver->onUavInfoChanged(uavInfoForListeners, uavRole, tail, tailStdDev);
 		}
 	}
 
-	return newUavInfo;
+	return recordIndex;
 }
 
 bool DbUavManager::getUavInfoByUavId(const uint uavId, QList<UavInfo>& uavInfoList)
@@ -345,8 +353,12 @@ void DbUavManager::onMethodCalled(const QString& method, const QVariant& argumen
 	}
 }
 
-void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QString& role, const QString& uavType,
-								  const QString& status, const QString& deviceType, const QString& sourceType)
+void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QString& role,
+								  const QString& uavType, const QString& status,
+								  const QString& deviceType, const QString& sourceType,
+								  bool actual,
+								  const QVector<QPointF>& tail,
+								  const QVector<QPointF>& tailStdDev)
 {
 	QMutexLocker locker(&m_mutex);
 
@@ -460,7 +472,7 @@ void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QSt
 	uavInfo.dateTime = positionData.dateTime;
 	uavInfo.source = sourceId;
 
-	addUavInfo(uavInfo);
+	addUavInfo(uavInfo, actual, tail, tailStdDev);
 }
 
 QString DbUavManager::getEnemySourceTypeName(uint sourceType)
@@ -493,25 +505,45 @@ QString DbUavManager::getEnemySourceTypeName(uint sourceType)
 
 void DbUavManager::sendEnemyUavPoints(const QByteArray& data, uint sourceType)
 {
-	QDataStream ds( data );
+	QDataStream ds(data);
 
-	UAVPositionDataEnemy uav;
-	ds >> uav;
-	uav.sourceType = sourceType;
-	addUavInfoToDb(uav, ENEMY_UAV_ROLE, "UnknownUavType", "UnknownStatus", "UnknownDeviceType",
-				   getEnemySourceTypeName(uav.sourceType));
+	QList<UAVPositionDataEnemy> uavList;
+	ds >> uavList;
 
-	if (sourceType != UAV_SOLVER_SINGLE_1_SOURCE) return;
+	QVector<QPointF> tail;
+	QVector<QPointF> tailStdDev;
 
-	ds >> uav;
-	uav.sourceType = UAV_SOLVER_SINGLE_2_SOURCE;
-	addUavInfoToDb(uav, ENEMY_UAV_ROLE, "UnknownUavType", "UnknownStatus", "UnknownDeviceType",
-				   getEnemySourceTypeName(uav.sourceType));
+	bool isActual; // is it record displays information about BPLA in current time?
+	QVector<QPointF> emptyVector;
+
+	for ( int i = 0; i < uavList.length(); i++ ) {
+		UAVPositionDataEnemy &uav = uavList[i];
+		uav.sourceType = sourceType == UAV_SOLVER_SINGLE_1_SOURCE && i % 2 == 1
+						? UAV_SOLVER_SINGLE_2_SOURCE : sourceType;
+
+		tail << uav.latLon;
+		tailStdDev << uav.latLonStdDev;
+
+		isActual = i + 1 == uavList.length()
+					|| sourceType == UAV_SOLVER_SINGLE_1_SOURCE
+					|| sourceType == UAV_SOLVER_SINGLE_2_SOURCE;
+
+		addUavInfoToDb( uav, ENEMY_UAV_ROLE,
+						"UnknownUavType", "UnknownStatus", "UnknownDeviceType",
+						getEnemySourceTypeName(uav.sourceType),
+						isActual,
+						isActual ? tail : emptyVector,
+						isActual ? tailStdDev : emptyVector );
+
+	}
 }
 
 void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy, const QString &role,
 								  const QString &uavType, const QString &status, const QString &deviceType,
-								  const QString &sourceType)
+								  const QString &sourceType,
+								  bool actual,
+								  const QVector<QPointF> &tail,
+								  const QVector<QPointF> &tailStdDev)
 {
 	UAVPositionData positionData;
 	positionData.altitude = positionDataEnemy.altitude;
@@ -520,10 +552,10 @@ void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy,
 	positionData.state = positionDataEnemy.state;
 
 	// готово
-	positionData.latitude = positionDataEnemy.track.last().x();
-	positionData.longitude = positionDataEnemy.track.last().y();
-	positionData.latitudeStddev = positionDataEnemy.pointStdDev.x();
-	positionData.longitudeStddev = positionDataEnemy.pointStdDev.y();
+	positionData.latitude = positionDataEnemy.latLon.x();
+	positionData.longitude = positionDataEnemy.latLon.y();
+	positionData.latitudeStddev = positionDataEnemy.latLonStdDev.x();
+	positionData.longitudeStddev = positionDataEnemy.latLonStdDev.y();
 
 	if(positionDataEnemy.frequency < 0) {
 
@@ -536,7 +568,7 @@ void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy,
 	positionData.frequency = positionDataEnemy.frequency;
 	positionData.sourceType = positionDataEnemy.sourceType;
 
-	addUavInfoToDb(positionData, role, uavType, status, deviceType, sourceType);
+	addUavInfoToDb(positionData, role, uavType, status, deviceType, sourceType, actual, tail, tailStdDev);
 }
 
 void DbUavManager::timeoutSlot(const QString& key)
