@@ -283,9 +283,15 @@ void MapClient1::readCheckPointsFromFile(QString fileName)
 
 QString MapClient1::getUavInternalId(const UavInfo& uav)
 {
+	uint source = uav.source;
+
+	if ( source == UAV_SLICES_SOURCE ) {
+		source = UAV_AUTOPILOT_SOURCE;
+	}
+
 	QString id = QString("%1_%2_%3")
 			.arg(uav.uavId)
-			.arg(uav.source)
+			.arg(source)
 			.arg(uav.historical ? 1 : 0);
 
 	return id;
