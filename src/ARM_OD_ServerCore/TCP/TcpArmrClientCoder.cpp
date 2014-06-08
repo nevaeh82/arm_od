@@ -30,9 +30,10 @@ MessageSP TcpArmrClientCoder::encode(const QByteArray &data)
 			case Zaviruha::sendBplaPointsAuto:
 				method = QString(ARM_R_SERVER_BPLA_COORDS_AUTO);
 				break;
-			case Zaviruha::sendBplaPointsSingle:
-				method = QString(ARM_R_SERVER_BPLA_COORDS_SINGLE);
-				break;
+			/// todo: Update CISCommonLib before
+//			case Zaviruha::sendBplaPointsSingle:
+//				method = QString(ARM_R_SERVER_BPLA_COORDS_SINGLE);
+//				break;
 			default:
 				break;
 		}
