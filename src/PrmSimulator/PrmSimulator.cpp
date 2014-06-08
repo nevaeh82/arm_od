@@ -15,8 +15,8 @@ PrmSimulator::PrmSimulator(const uint& port, QObject *parent )
 	qsrand( time(0) );
 
 
-    centerLat = 42.511183 + (double)qrand() / RAND_MAX * 0.2;
-    centerLon = 41.6905 + (double)qrand() / RAND_MAX;
+	centerLat = 42.511183 + (double)qrand() / RAND_MAX * 0.2;
+	centerLon = 41.6905 + (double)qrand() / RAND_MAX;
 	alt = 1500 + qrand() % 1000;
 
 	mode = 1;
@@ -79,17 +79,26 @@ void PrmSimulator::update()
 	m_serverPeer->call( RPC_SLOT_SERVER_SEND_BPLA_DEF, QVariant( data ) );
 
 	QByteArray dataToSend;
-	QVector<QPointF> tmpHyperb;
 
-	tmpHyperb.append(QPointF(60, 30));
-	tmpHyperb.append(QPointF(61, 31));
-	tmpHyperb.append(QPointF(62, 32));
-	tmpHyperb.append(QPointF(63, 31));
-	tmpHyperb.append(QPointF(64, 31));
+	int size = 1 + qrand() % 10;
+	QTime time = QTime::currentTime();
+	QList<QVector<QPointF>> list;
+
+	for( int i=0; i < size; i++) {
+		QVector<QPointF> tmpHyperb;
+		tmpHyperb.append(QPointF(60, 30 + i*10));
+		tmpHyperb.append(QPointF(61, 31 + i*10));
+		tmpHyperb.append(QPointF(62, 32 + i*10));
+		tmpHyperb.append(QPointF(63, 31 + i*10));
+		tmpHyperb.append(QPointF(64, 31 + i*10));
+
+		list << tmpHyperb;
+	}
 
 	QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
-	dataStream << tmpHyperb;
-	dataStream << (double)1830;
+	dataStream << (double) 1830;
+	dataStream << time;
+	dataStream << list;
 
 	m_serverPeer->call( RPC_SLOT_SERVER_SEND_HYPERBOLA, QVariant( dataToSend ) );
 }

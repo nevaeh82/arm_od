@@ -7,7 +7,6 @@
 
 #define clearObjectsList(type, map) foreach( type* item, map ) { delete item; } map.clear();
 
-
 MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 	: QObject( parent )
 	, m_mux( QMutex::Recursive )
@@ -61,8 +60,8 @@ MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 	connect( this, SIGNAL(interceptionRemoved(int, int)),
 			 this, SLOT(removeInterceptionData(int, int)) );
 
-	connect( this, SIGNAL(hyperboleAdded(QByteArray,QTime,QColor)),
-			 this, SLOT(addInHyperbole(QByteArray,QTime,QColor)) );
+	connect( this, SIGNAL(hyperboleAdded(QByteArray,QColor)),
+			 this, SLOT(addHyperboleInternal(QByteArray,QColor)) );
 
 	connect( this, SIGNAL(interceptionPointAdded(int, int, QPointF, float, float, int, float, float)),
 			 this, SLOT(addInterceptionPointData(int, int, QPointF, float, float, int, float, float)) );
@@ -146,43 +145,38 @@ void MapClient1::init()
 			 this, SLOT( addPeleng( int, int, double, double, double ) ) );
 }
 
-void MapClient1::addHyperbole(QByteArray data, const QTime time, const QColor color)
+void MapClient1::addHyperboles(const QByteArray& data, const QColor color)
 {
-	emit hyperboleAdded(data, time, color);
+	emit hyperboleAdded(data, color);
 }
 
-void MapClient1::addInHyperbole(QByteArray data, const QTime time, const QColor color )
+void MapClient1::addHyperboleInternal(const QByteArray& data, const QColor color )
 {
-	QDataStream ds(&data, QIODevice::ReadWrite);
+	QDataStream ds(data);
+
 	double frequency;
 	ds >> frequency;
-	int count = 0;
-	ds >> count;
+
+	QTime time;
+	ds >> time;
+
 	QList<QVector<QPointF>> list;
-	for(int i = 0; i < count; ++i)
-	{
-		QVector<QPointF> heperb;
-		ds >> heperb;
-		list.append(heperb);
-	}
+	ds >> list;
 
-	for(int j = 0; j < m_hyperboleList.count(); ++j)
-	{
-		MapFeature::Hyperbole* hyperbole = m_hyperboleList.value( j );
-		hyperbole->removeFromMap();
-//		delete hyperbole;
-//		m_hyperboleList.remove(j);
-	}
-
-	for(int i = 0; i < list.count(); ++i)
-	{
-		MapFeature::Hyperbole* hyperbole = m_hyperboleList.value( i );
-		if( hyperbole != NULL ) {
-			hyperbole->updatePath( list.at(i), time );
+	// hide no needed hyporboles
+	if ( m_hyperboleList.count() > list.count() ) {
+		for ( int i = list.count(); i < m_hyperboleList.count(); ++i ) {
+			m_hyperboleList[i]->removeFromMap();
 		}
-		else {
-			hyperbole = m_factory->createHyperbole( list.at(i), time, color );
-			m_hyperboleList.insert( i, hyperbole );
+	}
+
+	for ( int i = 0; i < list.count(); ++i ) {
+		if( i < m_hyperboleList.count() ) {
+			m_hyperboleList[i]->updatePath( list[i], time );
+		} else {
+			MapFeature::Hyperbole* hyperbole;
+			hyperbole = m_factory->createHyperbole( list[i], time, color );
+			m_hyperboleList << hyperbole;
 		}
 	}
 }

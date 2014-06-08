@@ -57,7 +57,7 @@ private:
 	QMap<QString, MapFeature::Ais*> m_aisList;
 	QMap<QString, MapFeature::Station*> m_stationList;
 	QList<MapFeature::CheckPoint*> m_checkPointsList;
-	QMap<int, MapFeature::Hyperbole*> m_hyperboleList;
+	QList<MapFeature::Hyperbole*> m_hyperboleList;
 
 	QSet<uint> m_uavKnownSources;
 
@@ -109,7 +109,7 @@ public slots:
 
 	virtual void removeNiippPoint();
 
-	virtual void addHyperbole( QByteArray data, const QTime time, const QColor color  = QColor::Invalid );
+	virtual void addHyperboles( const QByteArray& data, const QColor color  = QColor::Invalid );
 
 	virtual void removeAll();
 
@@ -129,7 +129,7 @@ private slots:
 	void addInterceptionPointData(int friendBplaId, int enemyBplaId, QPointF position,
 								  float height, float radius, int time,
 								  float course, float speed );
-	void addInHyperbole( QByteArray data, const QTime time, const QColor color );
+	void addHyperboleInternal( const QByteArray& data, const QColor color );
 
 	void redrawAllBpla();
 	void updateCircle();
@@ -151,7 +151,7 @@ signals:
 	void interceptionPointAdded( int bla_id, int bpla_id, QPointF aCoord,
 		float aHgt, float aRadius, int aTime, float aIntcCourse, float aIntcSpeed );
 
-	void hyperboleAdded(QByteArray data, const QTime time, const QColor color);
+	void hyperboleAdded(const QByteArray& data, const QColor color);
 };
 
 #endif // MAPCLIENT1_H

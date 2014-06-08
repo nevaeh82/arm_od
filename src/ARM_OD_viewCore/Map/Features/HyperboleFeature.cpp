@@ -37,7 +37,7 @@ Hyperbole::~Hyperbole()
 
 void Hyperbole::updatePath(const QVector<QPointF>& polyline, const QTime timeMeasure )
 {
-	PolylineAbstract::setPolyline( polyline );
+	setPolyline( polyline );
 
 	m_path->setToolTip( timeMeasure.toString( Qt::SystemLocaleShortDate ) );
 

@@ -57,7 +57,7 @@ public:
 
 	virtual void addPerehvatPoint( int blaId, int bplaId, QPointF coord, float hgt, float radius, int time, float intcCourse, float intcSpeed ) = 0;
 
-	virtual void addHyperbole( QByteArray data, const QTime time, const QColor color = QColor::Invalid ) = 0;
+	virtual void addHyperboles( const QByteArray& data, const QColor color = QColor::Invalid ) = 0;
 
 	virtual void removeAll() = 0;
 };

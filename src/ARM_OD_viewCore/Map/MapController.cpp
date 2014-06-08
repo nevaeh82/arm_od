@@ -235,6 +235,6 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 		client->addEnemyBpla( uav );
 	}
 	else if( method == RPC_SLOT_SERVER_SEND_HYPERBOLA ) {
-		client->addHyperbole(data, QTime::currentTime());
+		client->addHyperboles(data);
 	}
 }
