@@ -76,7 +76,23 @@ void PrmSimulator::update()
 	stream << (double) bearing;
 	stream << frequency;
 
-	m_serverPeer->call( RPC_SLOT_SERVER_SEND_BPLA_DEF, QVariant( data ) );
+	int functionRand = qrand() % 3;
+	QString function;
+	switch (functionRand) {
+		case 0:
+			function = RPC_SLOT_SERVER_SEND_BPLA_DEF;
+			break;
+
+		case 1:
+			function = RPC_SLOT_SERVER_SEND_BPLA_DEF_AUTO;
+			break;
+
+		case 2:
+			function = RPC_SLOT_SERVER_SEND_BPLA_DEF_SINLE;
+			break;
+	}
+
+	m_serverPeer->call( function, QVariant( data ) );
 
 	QByteArray dataToSend;
 

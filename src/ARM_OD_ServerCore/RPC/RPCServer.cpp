@@ -153,6 +153,7 @@ void RPCServer::rpc_slot_set_client_id(quint64 client, int id)
 	_subscriber->add_subscription(KTR_BLA, cl);
 	_subscriber->add_subscription(ARM_R_SERVER_BPLA_COORDS, cl);
 	_subscriber->add_subscription(ARM_R_SERVER_BPLA_COORDS_AUTO, cl);
+	_subscriber->add_subscription(ARM_R_SERVER_BPLA_COORDS_SINGLE, cl);
 	_subscriber->add_subscription(ARM_R_SERVER_HYPERBOLA, cl);
 	_subscriber->add_subscription(NIIPP_ANSWER, cl);
 	_subscriber->add_subscription(ARM_R_SERVER_ATLANT_DIRECTION, cl);
