@@ -569,6 +569,17 @@ void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy,
 	positionData.frequency = positionDataEnemy.frequency;
 	positionData.sourceType = positionDataEnemy.sourceType;
 
+	// transform time to dateTime
+	QTime time = positionDataEnemy.time;
+	positionData.dateTime.setTime( time );
+
+	// workaround if dateTime is greather then current system dateTime
+	// we should reduce a day
+	/// \todo we sould pass data from ARM R in DateTime format
+	if ( positionData.dateTime > QDateTime::currentDateTime() ) {
+		positionData.dateTime = positionData.dateTime.addDays( -1 );
+	}
+
 	addUavInfoToDb(positionData, role, uavType, status, deviceType, sourceType, actual, tail, tailStdDev);
 }
 

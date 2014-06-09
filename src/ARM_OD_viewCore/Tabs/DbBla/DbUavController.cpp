@@ -270,8 +270,12 @@ int DbUavController::addUavInfo(const UavInfo& info)
 	}
 
 	QSqlQuery query(m_db);
-	bool succeeded = query.prepare(QString("REPLACE INTO info (uavId, device, source, latitude, longitude, altitude, speed, yaw, restTime, statusTypeId, datetime)")
-								   + QString("VALUES(:uavId, :device, :source, :lat, :lon, :alt, :speed, :yaw, :restTime, :statusId, :dateTime);"));
+	bool succeeded = query.prepare(
+				"INSERT INTO info (uavId, device, source, latitude, longitude, altitude, speed, yaw, restTime, statusTypeId, datetime) "
+				"VALUES(:uavId, :device, :source, :lat, :lon, :alt, :speed, :yaw, :restTime, :statusId, :dateTime) "
+				"ON DUPLICATE KEY UPDATE "
+				"latitude = :lat2, longitude = :lon2, altitude = :alt2, speed = :speed2, yaw = :yaw2, restTime = :restTime2, statusTypeId = :statusId2"
+				);
 
 	if (!succeeded){
 		QString er = query.lastError().text();
@@ -283,12 +287,19 @@ int DbUavController::addUavInfo(const UavInfo& info)
 	query.bindValue(":device", info.device);
 	query.bindValue(":source", info.source);
 	query.bindValue(":lat", info.lat);
+	query.bindValue(":lat2", info.lat);
 	query.bindValue(":lon", info.lon);
+	query.bindValue(":lon2", info.lon);
 	query.bindValue(":alt", info.alt);
+	query.bindValue(":alt2", info.alt);
 	query.bindValue(":speed", info.speed);
+	query.bindValue(":speed2", info.speed);
 	query.bindValue(":yaw", info.yaw);
+	query.bindValue(":yaw2", info.yaw);
 	query.bindValue(":restTime", info.restTime.toString("hh:mm:ss"));
+	query.bindValue(":restTime2", info.restTime.toString("hh:mm:ss"));
 	query.bindValue(":statusId", info.statusId);
+	query.bindValue(":statusId2", info.statusId);
 	query.bindValue(":dateTime", info.dateTime.toString("yyyy-MM-dd hh:mm:ss"));
 
 	succeeded = query.exec();

@@ -8,7 +8,8 @@
 
 #include "PrmSimulator.h"
 
-#define ANGLE_STEP 0.5
+#define UPDATE_INTERVAL 1000
+#define ANGLE_STEP		0.5
 
 PrmSimulator::PrmSimulator(const uint& port, QObject *parent )
 	: RpcServerBase( parent )
@@ -29,7 +30,7 @@ PrmSimulator::PrmSimulator(const uint& port, QObject *parent )
 	frequency = (double) (-1 + qrand() % 100);
 
 	connect( &m_updateTimer, SIGNAL(timeout()), SLOT(update()) );
-	m_updateTimer.start( 100 );
+	m_updateTimer.start( UPDATE_INTERVAL );
 }
 
 PrmSimulator::~PrmSimulator()
@@ -48,7 +49,7 @@ bool PrmSimulator::start( quint16 port, QHostAddress ipAddress )
 	return RpcServerBase::start( m_port );
 }
 
-UAVPositionDataEnemy PrmSimulator::encodeBplaData()
+UAVPositionDataEnemy PrmSimulator::encodeBplaData(const QTime& time)
 {
 	double radius = 0.005 + (double)qrand() / RAND_MAX * 0.0001;
 	double lon = cos((180 - angle) * M_PI / 180) * radius + centerLon;
@@ -66,7 +67,7 @@ UAVPositionDataEnemy PrmSimulator::encodeBplaData()
 	uav.latLonStdDev = QPointF( lat - 0.005 + qrand() % 10 / 100, lon - 0.005 + qrand() % 10 / 100 );
 	uav.speed = speed;
 	uav.state = 1;
-	uav.time = QTime::currentTime();
+	uav.time = time;
 
 	return uav;
 }
@@ -75,6 +76,7 @@ void PrmSimulator::sendUavsData()
 {
 	// generate data source type
 	int functionRand = qrand() % 3;
+
 	QString function;
 	switch (functionRand) {
 		case 0:
@@ -96,16 +98,18 @@ void PrmSimulator::sendUavsData()
 	// encode BPLA data
 	QList<UAVPositionDataEnemy> list;
 
+	QTime time = QTime::currentTime();
+
 	if (functionRand == 2) {
 		list << encodeBplaData(); // it's for UAV_SOLVER_SINGLE_1_SOURCE
 		list << encodeBplaData(); // it's for UAV_SOLVER_SINGLE_2_SOURCE
 	} else {
 		int tailLength = 20;
 
-		angle -= tailLength * ANGLE_STEP * 10;
+		angle -= tailLength * ANGLE_STEP;
 		for ( int i = 0; i < tailLength; i++ ) {
-			list << encodeBplaData();
-			angle += ANGLE_STEP * 10;
+			list << encodeBplaData( time.addMSecs( (i - tailLength + 1) * UPDATE_INTERVAL ) );
+			angle += ANGLE_STEP;
 		}
 	}
 
