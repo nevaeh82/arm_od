@@ -10,6 +10,8 @@
 
 #include <RPC/RpcServerBase.h>
 
+#include <UAVDefines.h>
+
 #define RPC_SLOT_SERVER_SEND_BPLA_DEF          "rpc_slot_server_send_bpla_def"
 #define RPC_SLOT_SERVER_SEND_BPLA_DEF_AUTO     "rpc_slot_server_send_bpla_def_auto"
 #define RPC_SLOT_SERVER_SEND_BPLA_DEF_SINGLE   "rpc_slot_server_send_bpla_def_single"
@@ -30,10 +32,13 @@ private:
 	int alt;
 	int zone;
 	int bearing;
-	int angle;
+	double angle;
 	double frequency;
 
-	QVector<QPointF> path;
+	UAVPositionDataEnemy encodeBplaData();
+
+	void sendUavsData();
+	void sendHyperbolas();
 
 public:
 	explicit PrmSimulator( const uint& port, QObject *parent = 0 );
@@ -41,7 +46,6 @@ public:
 
 	bool start( quint16 port = 0, QHostAddress ipAddress = QHostAddress::Any );
 
-	void encodeBplaData(QDataStream& stream);
 protected slots:
 	void update();
 };

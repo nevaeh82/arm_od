@@ -516,6 +516,9 @@ void DbUavManager::sendEnemyUavPoints(const QByteArray& data, uint sourceType)
 	bool isActual; // is it record displays information about BPLA in current time?
 	QVector<QPointF> emptyVector;
 
+	bool singleSourceType = sourceType == UAV_SOLVER_SINGLE_1_SOURCE
+			|| sourceType == UAV_SOLVER_SINGLE_2_SOURCE;
+
 	for ( int i = 0; i < uavList.length(); i++ ) {
 		UAVPositionDataEnemy &uav = uavList[i];
 		uav.sourceType = sourceType == UAV_SOLVER_SINGLE_1_SOURCE && i % 2 == 1
@@ -524,16 +527,14 @@ void DbUavManager::sendEnemyUavPoints(const QByteArray& data, uint sourceType)
 		tail << uav.latLon;
 		tailStdDev << uav.latLonStdDev;
 
-		isActual = i + 1 == uavList.length()
-					|| sourceType == UAV_SOLVER_SINGLE_1_SOURCE
-					|| sourceType == UAV_SOLVER_SINGLE_2_SOURCE;
+		isActual = i + 1 == uavList.length() || singleSourceType;
 
 		addUavInfoToDb( uav, ENEMY_UAV_ROLE,
 						"UnknownUavType", "UnknownStatus", "UnknownDeviceType",
 						getEnemySourceTypeName(uav.sourceType),
 						isActual,
-						isActual ? tail : emptyVector,
-						isActual ? tailStdDev : emptyVector );
+						isActual && !singleSourceType ? tail : emptyVector,
+						isActual && !singleSourceType ? tailStdDev : emptyVector );
 
 	}
 }

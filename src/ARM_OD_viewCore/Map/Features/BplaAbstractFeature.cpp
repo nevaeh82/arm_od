@@ -56,11 +56,12 @@ void BplaAbstract::setTail(const QVector<QPointF>& tail, const QVector<QPointF>&
 	PwGisPointList* points = m_tail->points();
 
 	points->clear();
-	points->append( new PwGisLonLat( m_position ) );
 
 	foreach( QPointF point, tail ) {
 		points->append( new PwGisLonLat( point.y(), point.x() ) );
 	}
+
+	points->append( new PwGisLonLat( m_position ) );
 }
 
 void BplaAbstract::setAltitude(double altitude)

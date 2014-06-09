@@ -8,6 +8,8 @@
 
 #include "PrmSimulator.h"
 
+#define ANGLE_STEP 0.5
+
 PrmSimulator::PrmSimulator(const uint& port, QObject *parent )
 	: RpcServerBase( parent )
 	, m_port( port )
@@ -46,40 +48,32 @@ bool PrmSimulator::start( quint16 port, QHostAddress ipAddress )
 	return RpcServerBase::start( m_port );
 }
 
-void PrmSimulator::encodeBplaData(QDataStream& stream)
+UAVPositionDataEnemy PrmSimulator::encodeBplaData()
 {
-	double radius = 0.005 + (double)qrand() / RAND_MAX * 0.005;
+	double radius = 0.005 + (double)qrand() / RAND_MAX * 0.0001;
 	double lon = cos((180 - angle) * M_PI / 180) * radius + centerLon;
 	double lat = sin((180 - angle) * M_PI / 180) * radius + centerLat;
 
-	path << QPointF( lat, lon );
+	double speed = (double) (1 + qrand() % 10);
 
-	// limit path points
-	if (path.size() > 50) {
-		path.remove( 0, path.size() - 50 );
-	}
+	UAVPositionDataEnemy uav;
 
-	double sp = (double) (1 + qrand() % 10);
-	stream << QTime(1, 1, 1);
-	stream << mode;
-	stream << path.last();
-	stream << path;
-	stream << sp;
-	stream << (double) alt;
-	stream << (double) bearing;
-	stream << frequency;
+	uav.altitude = alt;
+	uav.altitudeStdDev = alt - 5 + qrand() % 10;
+	uav.course = angle;
+	uav.frequency = frequency;
+	uav.latLon = QPointF( lat, lon );
+	uav.latLonStdDev = QPointF( lat - 0.005 + qrand() % 10 / 100, lon - 0.005 + qrand() % 10 / 100 );
+	uav.speed = speed;
+	uav.state = 1;
+	uav.time = QTime::currentTime();
+
+	return uav;
 }
 
-void PrmSimulator::update()
+void PrmSimulator::sendUavsData()
 {
-	// calculate new position of BPLA
-	angle++;
-
-	// prepare data to send
-	QByteArray data;
-	QDataStream stream( &data, QIODevice::WriteOnly );
-	encodeBplaData( stream );
-
+	// generate data source type
 	int functionRand = qrand() % 3;
 	QString function;
 	switch (functionRand) {
@@ -96,12 +90,35 @@ void PrmSimulator::update()
 			break;
 	}
 
+	// update base telemetry parameters
+	angle += ANGLE_STEP;
+
+	// encode BPLA data
+	QList<UAVPositionDataEnemy> list;
+
 	if (functionRand == 2) {
-		encodeBplaData( stream );
+		list << encodeBplaData(); // it's for UAV_SOLVER_SINGLE_1_SOURCE
+		list << encodeBplaData(); // it's for UAV_SOLVER_SINGLE_2_SOURCE
+	} else {
+		int tailLength = 20;
+
+		angle -= tailLength * ANGLE_STEP * 10;
+		for ( int i = 0; i < tailLength; i++ ) {
+			list << encodeBplaData();
+			angle += ANGLE_STEP * 10;
+		}
 	}
 
-	m_serverPeer->call( function, QVariant( data ) );
+	QByteArray data;
+	QDataStream stream( &data, QIODevice::WriteOnly );
+	stream << list;
 
+	m_serverPeer->call( function, QVariant( data ) );
+}
+
+void PrmSimulator::sendHyperbolas()
+{
+	// send hyperbolas data
 	QByteArray dataToSend;
 
 	int size = 1 + qrand() % 10;
@@ -125,4 +142,10 @@ void PrmSimulator::update()
 	dataStream << list;
 
 	m_serverPeer->call( RPC_SLOT_SERVER_SEND_HYPERBOLA, QVariant( dataToSend ) );
+}
+
+void PrmSimulator::update()
+{
+	sendUavsData();
+	sendHyperbolas();
 }

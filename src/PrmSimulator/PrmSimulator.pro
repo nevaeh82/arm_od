@@ -19,3 +19,4 @@ HEADERS += \
 include( ../../specs/project.pri )
 include( ../../specs/CISCommonLib.pri )
 include( ../../specs/qxt.pri )
+include( ../ARM_OD_Common/reference.pri )
