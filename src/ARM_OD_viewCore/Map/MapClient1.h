@@ -86,9 +86,6 @@ private:
 	void readStationsFromFile(QString fileName);
 	void readCheckPointsFromFile(QString fileName);
 
-	QString getUavInternalId(const UavInfo& uav);
-	QString getUavInternalId(const Uav& uav, uint source);
-
 public slots:
 	virtual void init();
 	virtual void setPoint();

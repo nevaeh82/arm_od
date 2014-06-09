@@ -2,6 +2,7 @@
 
 #include <Logger.h>
 
+#include "Uav/UavModel.h"
 #include "Map/MapStyleManager.h"
 #include "Map/MapClient1.h"
 
@@ -282,32 +283,6 @@ void MapClient1::readCheckPointsFromFile(QString fileName)
 	}
 }
 
-QString MapClient1::getUavInternalId(const UavInfo& uav)
-{
-	uint source = uav.source;
-
-	if ( source == UAV_SLICES_SOURCE ) {
-		source = UAV_AUTOPILOT_SOURCE;
-	}
-
-	QString id = QString("%1_%2_%3")
-			.arg(uav.uavId)
-			.arg(source)
-			.arg(uav.historical ? 1 : 0);
-
-	return id;
-}
-
-QString MapClient1::getUavInternalId(const Uav& uav, uint source)
-{
-	UavInfo info;
-	info.uavId = uav.uavId;
-	info.historical = uav.historical;
-	info.source = source;
-
-	return getUavInternalId( info );
-}
-
 void MapClient1::setPoint()
 {
 	QString mapObjectsSettingFile = QCoreApplication::applicationDirPath();
@@ -428,7 +403,7 @@ void MapClient1::removeInterceptionData( int friendBplaId, int enemyBplaId )
 
 void MapClient1::addFriendBplaInternal(const UavInfo& uav)
 {
-	QString id = getUavInternalId( uav );
+	QString id = UavModel::getExtendedId( uav );
 	MapFeature::FriendBpla* bpla = m_friendBplaList.value( id, NULL );
 
 	m_uavKnownSources << uav.source;
@@ -461,7 +436,7 @@ void MapClient1::addEnemyBplaInternal(const UavInfo& uav,
 									  const QVector<QPointF>& tail,
 									  const QVector<QPointF>& tailStdDev)
 {
-	QString id = getUavInternalId( uav );
+	QString id = UavModel::getExtendedId( uav );
 	MapFeature::EnemyBpla* bpla = m_enemyBplaList.value( id, NULL );
 
 	m_uavKnownSources << uav.source;
@@ -481,7 +456,7 @@ void MapClient1::addEnemyBplaInternal(const UavInfo& uav,
 void MapClient1::removeBplaInternal(const Uav& uav)
 {
 	foreach(uint source, m_uavKnownSources) {
-		QString id = getUavInternalId( uav, source );
+		QString id = UavModel::getExtendedId( uav, source );
 
 		if( m_friendBplaList.contains( id ) ) {
 			delete m_friendBplaList.take( id );

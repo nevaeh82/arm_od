@@ -1,3 +1,4 @@
+#include <QDebug>
 #include <QSqlError>
 #include <QSqlRecord>
 #include <QEventLoop>
@@ -6,6 +7,7 @@
 #include <Logger.h>
 
 #include "UavHistory.h"
+#include "Uav/UavModel.h"
 #include "Tabs/DbBla/Defines.h"
 #include "Tabs/DbBla/DbUavManager.h"
 
@@ -220,7 +222,7 @@ void UavHistory::stopInternal()
 
 void UavHistory::updateHistoryState()
 {
-	QMap<int, UavInfo> infoCollection;
+	QMap<QString, UavInfo> infoCollection;
 
 	// get actual datetime and zero it msecs because we don't care about msecs
 	QDateTime time = m_query.record().value( "datetime" ).toDateTime();
@@ -244,8 +246,11 @@ void UavHistory::updateHistoryState()
 		info.source = m_query.record().value( "sourceReal" ).toInt();
 		info.historical = true;
 
+		QString uavExtId = UavModel::getExtendedId( info );
+		infoCollection.insert( uavExtId, info );
+
+		// remember UAV role, because it is not keeped in UavInfo
 		m_uavRoles.insert( info.uavId, m_query.record().value( "code" ).toString() );
-		infoCollection.insert( info.uavId, info );
 
 		// remember last timestamp of UAV data changing
 		m_uavLastDate.insert( info.uavId, info.dateTime );
