@@ -93,7 +93,8 @@ public:
 	void stop();
 
 	QByteArray encodeBplaList();
-	QByteArray encodePosition(const uint& id);
+	QByteArray encodeKtrPosition(const uint& id);
+	QByteArray encodeAutopilotPosition(const uint& id);
 	QByteArray encodeAtitude(const uint& id);
 
 protected slots:

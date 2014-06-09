@@ -192,7 +192,40 @@ QByteArray KtrSimulator::encodeBplaList()
 	return data;
 }
 
-QByteArray KtrSimulator::encodePosition(const uint& id )
+QByteArray KtrSimulator::encodeKtrPosition(const uint& id)
+{
+	if (!m_bplaList.contains( id )) {
+		return QByteArray();
+	}
+
+	BplaSimulatorNode node = m_bplaList.value( id );
+
+	double radiusX = node.radiusX - 0.00005 + (double)qrand() / RAND_MAX * 0.0001;
+	double radiusY = node.radiusY - 0.00005 + (double)qrand() / RAND_MAX * 0.0001;
+
+	double lon = cos((180 - m_baseAngle) * M_PI / 180) * radiusX + node.centerLon;
+	double lat = sin((180 - m_baseAngle) * M_PI / 180) * radiusY + node.centerLat;
+
+	rotatePoint( node.centerLon, node.centerLat, node.angle, lon, lat );
+
+//	int deg = (int)angle;
+//	double frac = ( angle - (double)deg ) * 60;
+//	int min = (int)frac;
+//	int sec = ( frac - (double)min ) * 60;
+
+	QString str = QString( "$KTPGA,OBJ_ID=%1,1X,P0={%2*%3'%4\"|%5*%6'%7\"},END" )
+			.arg( id )
+			.arg( (int) lat )
+			.arg( (int) (( lat - (int) lat ) * 60) )
+			.arg( ((( lat - (int) lat ) * 60) - (int) (( lat - (int) lat ) * 60)) * 60, 0, 'f', 2 )
+			.arg( (int) lon )
+			.arg( (int) (( lon - (int) lon ) * 60) )
+			.arg( ((( lon - (int) lon ) * 60) - (int) (( lon - (int) lon ) * 60)) * 60, 0, 'f', 2 );
+
+	return str.toAscii();
+}
+
+QByteArray KtrSimulator::encodeAutopilotPosition(const uint& id )
 {
 	QByteArray data;
 
@@ -270,22 +303,18 @@ void KtrSimulator::update()
 			continue;
 		}
 
-		if (node.device == 622) {
-			//$KTPGA,OBJ_ID=1044,2X,P0={42*38'32.14"|41*38'7.81"},P1={42*35'1.21"|41*50'53.51"},END
+//		if (node.device == 622) {
 			QByteArray data;
 
-			data.append( "$KTPGA,OBJ_ID=1044,2X,P0={42*38'32.14\"|41*38'7.81\"},P1={42*35'1.21\"|41*50'53.51\"},END" );
-
+			data = encodeKtrPosition( id.toInt() );
 			writeAndFlush( socket, data );
-		} else {
-			QByteArray data;
 
-			data = encodePosition( id.toInt() );
+			data = encodeAutopilotPosition( id.toInt() );
 			writeAndFlush( socket, data );
 
 			data = encodeAtitude( id.toInt() );
 			writeAndFlush( socket, data );
-		}
+//		}
 	}
 }
 
