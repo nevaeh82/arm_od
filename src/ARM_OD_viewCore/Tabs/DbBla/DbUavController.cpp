@@ -383,8 +383,8 @@ bool DbUavController::getUavInfoByUavId(const uint uavId, QList<UavInfo> &uavInf
 IUavHistory* DbUavController::getUavHistory()
 {
 	if( m_uavHistory == NULL ) {
-		m_uavHistory = new UavHistory( m_db);
-		m_uavHistory->moveToThread( this->thread() );
+		m_uavHistory = new UavHistory( m_db );
+		m_uavHistory->moveToThread( thread() );
 	}
 
 	return m_uavHistory;

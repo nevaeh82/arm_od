@@ -25,10 +25,6 @@ TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
 	QThread* dbBlaManagerThread = new QThread;
 	//connect(m_dbUavManager, SIGNAL(destroyed()), dbBlaManagerThread, SLOT(terminate()));
 
-	connect(this, SIGNAL(finished()), dbBlaManagerThread, SLOT(quit()));
-	connect(this, SIGNAL(finished()), m_dbUavManager, SLOT(deleteLater()));
-	connect(this, SIGNAL(finished()), dbBlaManagerThread, SLOT(deleteLater()));
-
 	m_dbUavManager->moveToThread(dbBlaManagerThread);
 	dbBlaManagerThread->start();
 
@@ -48,6 +44,11 @@ TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
 	m_dbUavController->connectToDB(connectionStruct);
 
 	m_dbUavManager->setLifeTime( dbUavSettingsManager->getBlaLifeTime() );
+
+	connect(this, SIGNAL(finished()), dbBlaManagerThread, SLOT(quit()));
+	connect(this, SIGNAL(finished()), dbBlaManagerThread, SLOT(deleteLater()));
+	connect(this, SIGNAL(finished()), m_dbUavManager, SLOT(deleteLater()));
+	connect(this, SIGNAL(finished()), m_dbUavController, SLOT(deleteLater()));
 }
 
 TabManager::~TabManager()
@@ -55,8 +56,6 @@ TabManager::~TabManager()
 	emit finished();
 
 	clearAllInformation();
-
-	delete m_dbUavManager;
 }
 
 void TabManager::send_data_niipp_control(int id, QByteArray ba)
