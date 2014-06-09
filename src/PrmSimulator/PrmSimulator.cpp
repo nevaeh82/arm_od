@@ -64,7 +64,7 @@ UAVPositionDataEnemy PrmSimulator::encodeBplaData(const QTime& time)
 	uav.course = angle;
 	uav.frequency = frequency;
 	uav.latLon = QPointF( lat, lon );
-	uav.latLonStdDev = QPointF( lat - 0.005 + qrand() % 10 / 100, lon - 0.005 + qrand() % 10 / 100 );
+	uav.latLonStdDev = QPointF( (double)(qrand() % 100) / 100 - 0.5, (double)(qrand() % 100) / 100 - 0.5 );
 	uav.speed = speed;
 	uav.state = 1;
 	uav.time = time;

@@ -271,10 +271,16 @@ int DbUavController::addUavInfo(const UavInfo& info)
 
 	QSqlQuery query(m_db);
 	bool succeeded = query.prepare(
-				"INSERT INTO info (uavId, device, source, latitude, longitude, altitude, speed, yaw, restTime, statusTypeId, datetime) "
-				"VALUES(:uavId, :device, :source, :lat, :lon, :alt, :speed, :yaw, :restTime, :statusId, :dateTime) "
+				"INSERT INTO info "
+					"(uavId, device, source, latitude, longitude, altitude, "
+					"latitudeStdDev, longitudeStdDev, speed, yaw, restTime, statusTypeId, datetime) "
+				"VALUES "
+					"(:uavId, :device, :source, :lat, :lon, :alt, "
+					":latStdDev, :lonStdDev, :speed, :yaw, :restTime, :statusId, :dateTime) "
 				"ON DUPLICATE KEY UPDATE "
-				"latitude = :lat2, longitude = :lon2, altitude = :alt2, speed = :speed2, yaw = :yaw2, restTime = :restTime2, statusTypeId = :statusId2"
+					"latitude = :lat2, longitude = :lon2, altitude = :alt2, "
+					"latitudeStdDev = :latStdDev2, longitudeStdDev = :lonStdDev2, "
+					"speed = :speed2, yaw = :yaw2, restTime = :restTime2, statusTypeId = :statusId2"
 				);
 
 	if (!succeeded){
@@ -286,20 +292,32 @@ int DbUavController::addUavInfo(const UavInfo& info)
 	query.bindValue(":uavId", info.uavId);
 	query.bindValue(":device", info.device);
 	query.bindValue(":source", info.source);
+
 	query.bindValue(":lat", info.lat);
 	query.bindValue(":lat2", info.lat);
+	query.bindValue(":latStdDev", info.latStddev);
+	query.bindValue(":latStdDev2", info.latStddev);
+
 	query.bindValue(":lon", info.lon);
 	query.bindValue(":lon2", info.lon);
+	query.bindValue(":lonStdDev", info.lonStddev);
+	query.bindValue(":lonStdDev2", info.lonStddev);
+
 	query.bindValue(":alt", info.alt);
 	query.bindValue(":alt2", info.alt);
+
 	query.bindValue(":speed", info.speed);
 	query.bindValue(":speed2", info.speed);
+
 	query.bindValue(":yaw", info.yaw);
 	query.bindValue(":yaw2", info.yaw);
+
 	query.bindValue(":restTime", info.restTime.toString("hh:mm:ss"));
 	query.bindValue(":restTime2", info.restTime.toString("hh:mm:ss"));
+
 	query.bindValue(":statusId", info.statusId);
 	query.bindValue(":statusId2", info.statusId);
+
 	query.bindValue(":dateTime", info.dateTime.toString("yyyy-MM-dd hh:mm:ss"));
 
 	succeeded = query.exec();
@@ -344,14 +362,17 @@ bool DbUavController::getUavInfoByUavId(const uint uavId, QList<UavInfo> &uavInf
 		info.id = query.value(0).toInt();
 		info.uavId = query.value(1).toInt();
 		info.device = query.value(2).toInt();
-		info.lat = query.value(3).toDouble();
-		info.lon = query.value(4).toDouble();
-		info.alt = query.value(5).toDouble();
-		info.speed = query.value(6).toDouble();
-		info.yaw = query.value(7).toDouble();
-		info.restTime = QTime::fromString(query.value(8).toString());
-		info.statusId = query.value(9).toInt();
-		info.dateTime = QDateTime::fromString(query.value(10).toString());
+		info.source = query.value(3).toInt();
+		info.lat = query.value(4).toDouble();
+		info.lon = query.value(5).toDouble();
+		info.alt = query.value(6).toDouble();
+		info.latStddev = query.value(7).toDouble();
+		info.lonStddev = query.value(8).toDouble();
+		info.speed = query.value(10).toDouble();
+		info.yaw = query.value(11).toDouble();
+		info.restTime = QTime::fromString(query.value(12).toString());
+		info.statusId = query.value(13).toInt();
+		info.dateTime = QDateTime::fromString(query.value(14).toString());
 
 		uavInfoList.append(info);
 	}

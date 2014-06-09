@@ -55,13 +55,15 @@ void EnemyBpla::setName(const QString& name)
 {
 	m_originName = name;
 
+	QString latLonStdDev = QString("(%1, %2)")
+			.arg(m_lattitudeStddev, 0, 'f', 2)
+			.arg(m_longtitudeStddev, 0, 'f', 2);
+
 	BplaAbstract::setName( m_nameTranslated.arg(
 							   name,
 							   QString::number( m_altitude, 'f', 1 ),
 							   QString::number( m_speed * TO_KMH, 'f', 1 ),
-							   QString("(%1, %2)")
-							   .arg(m_lattitudeStddev, 0, 'f', 10)
-							   .arg(m_longtitudeStddev, 0, 'f', 10)) );
+							   latLonStdDev ));
 }
 
 void EnemyBpla::update(const UavInfo& uav)

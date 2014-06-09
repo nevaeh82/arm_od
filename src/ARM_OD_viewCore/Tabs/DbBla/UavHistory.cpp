@@ -235,9 +235,14 @@ void UavHistory::updateHistoryState()
 
 		info.id = m_query.record().value( "id" ).toInt();
 		info.uavId = m_query.record().value( "uavIdReal" ).toInt();
+
 		info.lat = m_query.record().value( "latitude" ).toDouble();
 		info.lon = m_query.record().value( "longitude" ).toDouble();
 		info.alt = m_query.record().value( "altitude" ).toDouble();
+
+		info.latStddev = m_query.record().value( "latitudeStdDev" ).toDouble();
+		info.lonStddev = m_query.record().value( "longitudeStdDev" ).toDouble();
+
 		info.speed = m_query.record().value( "speed" ).toDouble();
 		info.yaw = m_query.record().value( "yaw" ).toDouble();
 		info.restTime = m_query.record().value( "restTime" ).toTime();
