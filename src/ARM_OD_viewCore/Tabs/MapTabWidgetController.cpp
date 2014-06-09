@@ -1,8 +1,11 @@
 #include <QDebug>
+#include <QHeaderView>
 
 #include <TreeModel/TreeItem.h>
 
 #include "MapTabWidgetController.h"
+
+#define TREE_KEYS_COLUMN_MIN_WIDTH 170
 
 MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Station *> map_settings, ITabManager* tabManager, DbUavManager* db_bla, QObject* parent) :
 	QObject(parent)
@@ -52,9 +55,9 @@ MapTabWidgetController::~MapTabWidgetController()
 {
 	m_rpcClient->deregisterReceiver(m_uavDbManager);
 	m_rpcClient->deregisterReceiver(m_mapController);
-    m_rpcClient->deregisterReceiver(m_niipp1);
-    m_rpcClient->deregisterReceiver(m_niipp2);
-    m_rpcClient->stop();
+	m_rpcClient->deregisterReceiver(m_niipp1);
+	m_rpcClient->deregisterReceiver(m_niipp2);
+	m_rpcClient->stop();
 
 	m_mapController->closeAtlas();
 	m_mapController->closeMap();
@@ -70,8 +73,8 @@ MapTabWidgetController::~MapTabWidgetController()
 	m_uavDbManager->getUavHistory()->deregisterReceiver(m_enemyUavTreeModel);
 	m_uavDbManager->getUavHistory()->deregisterReceiver( m_controlPanelController );
 
-    m_uavDbManager->deregisterReceiver( m_niipp1 );
-    m_uavDbManager->deregisterReceiver( m_niipp2 );
+	m_uavDbManager->deregisterReceiver( m_niipp1 );
+	m_uavDbManager->deregisterReceiver( m_niipp2 );
 
 }
 
@@ -142,8 +145,8 @@ int MapTabWidgetController::createRPC()
 	m_rpcClient->registerReceiver(m_mapController);
 	m_rpcClient->registerReceiver(m_uavDbManager);
 
-    m_rpcClient->registerReceiver(m_niipp1);
-    m_rpcClient->registerReceiver(m_niipp2);
+	m_rpcClient->registerReceiver(m_niipp1);
+	m_rpcClient->registerReceiver(m_niipp2);
 
 	return 0;
 }
@@ -157,15 +160,25 @@ int MapTabWidgetController::closeRPC()
 
 int MapTabWidgetController::createTree()
 {
-	m_view->getBlaTreeView()->setModel(m_allyUavTreeModel);
-	m_view->getBlaTreeView()->setItemDelegate(m_treeDelegate);
-	connect(m_allyUavTreeModel, SIGNAL(onItemAddedSignal()), m_view->getBlaTreeView(), SLOT(expandAll()));
+	QTreeView *tree;
 
-	connect(m_view->getBlaTreeView(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onBlaTreeItemDoubleClicked(QModelIndex)));
+	tree = m_view->getBlaTreeView();
+	tree->setModel(m_allyUavTreeModel);
+	tree->setItemDelegate(m_treeDelegate);
+	tree->header()->resizeSection(0, qMax( TREE_KEYS_COLUMN_MIN_WIDTH, tree->header()->width() / 2 ) );
+	tree->header()->resizeSection(1, tree->header()->width() - tree->header()->sectionSize(0) );
 
-	m_view->getBplaTreeView()->setModel(m_enemyUavTreeModel);
-	m_view->getBplaTreeView()->setItemDelegate(m_treeDelegate);
-	connect(m_enemyUavTreeModel, SIGNAL(onItemAddedSignal()), m_view->getBplaTreeView(), SLOT(expandAll()));
+	connect(m_allyUavTreeModel, SIGNAL(onItemAddedSignal()), tree, SLOT(expandAll()));
+
+	connect(tree, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onBlaTreeItemDoubleClicked(QModelIndex)));
+
+	tree = m_view->getBplaTreeView();
+	tree->setModel(m_enemyUavTreeModel);
+	tree->setItemDelegate(m_treeDelegate);
+	tree->header()->resizeSection(0, qMax( TREE_KEYS_COLUMN_MIN_WIDTH, tree->header()->width() / 2 ) );
+	tree->header()->resizeSection(1, tree->header()->width() - tree->header()->sectionSize(0) );
+
+	connect(m_enemyUavTreeModel, SIGNAL(onItemAddedSignal()), tree, SLOT(expandAll()));
 
 	return 0;
 }
@@ -201,8 +214,8 @@ void MapTabWidgetController::appendView(MapTabWidget *view)
 	m_niipp1->appendView(m_view->getNiippWidget(1));
 	m_niipp2->appendView(m_view->getNiippWidget(2));
 
-    m_uavDbManager->registerReceiver( m_niipp1 );
-    m_uavDbManager->registerReceiver( m_niipp2 );
+	m_uavDbManager->registerReceiver( m_niipp1 );
+	m_uavDbManager->registerReceiver( m_niipp2 );
 
 
 

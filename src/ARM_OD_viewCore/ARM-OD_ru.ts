@@ -100,18 +100,18 @@
 <context>
     <name>ControlPanelController</name>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="100"/>
         <location filename="ControlPanel/ControlPanelController.cpp" line="105"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="110"/>
         <source>Unable to play history</source>
         <translation>Невозможно воспроизвести запись</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="100"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="105"/>
         <source>End date should be greater than start date.</source>
         <translation>Конечная дата должна быть больше начальной</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="105"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="110"/>
         <source>Data for selected period do not exist.</source>
         <translation>Данные для выбранного периода отсутствуют.</translation>
     </message>
@@ -205,85 +205,85 @@
 <context>
     <name>MapClient1</name>
     <message>
-        <location filename="Map/MapClient1.cpp" line="140"/>
+        <location filename="Map/MapClient1.cpp" line="141"/>
         <source>NIIPP</source>
         <translation>НИИПП</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="88"/>
+        <location filename="Map/MapClient1.cpp" line="100"/>
         <source>UAV_enemy_manual</source>
         <oldsource>UAV_enemy</oldsource>
         <translation>БПЛА Р</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="87"/>
+        <location filename="Map/MapClient1.cpp" line="99"/>
         <source>UAV_enemy_track_manual</source>
         <oldsource>UAV_enemy_track</oldsource>
         <translation>БПЛА Р: трек</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="91"/>
+        <location filename="Map/MapClient1.cpp" line="103"/>
         <source>UAV_enemy_auto</source>
         <translation>БПЛА А</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="90"/>
+        <location filename="Map/MapClient1.cpp" line="102"/>
         <source>UAV_enemy_track_auto</source>
         <translation>БПЛА А: трек</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="93"/>
+        <location filename="Map/MapClient1.cpp" line="105"/>
         <source>UAV_enemy_single</source>
         <translation>БПЛА Т</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="97"/>
+        <location filename="Map/MapClient1.cpp" line="109"/>
         <source>UAV</source>
         <translation>БЛА</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="96"/>
+        <location filename="Map/MapClient1.cpp" line="108"/>
         <source>UAV_track_autopilot</source>
         <oldsource>UAV_track</oldsource>
         <translation>БЛА: трек от автопилота</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="95"/>
+        <location filename="Map/MapClient1.cpp" line="107"/>
         <source>UAV_track_KTR</source>
         <translation>БЛА: трек от КТР</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="99"/>
+        <location filename="Map/MapClient1.cpp" line="88"/>
         <source>Atlant</source>
         <translation>Атлант</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="100"/>
+        <location filename="Map/MapClient1.cpp" line="89"/>
         <source>Atlant target</source>
         <translation>Атлант цель</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="101"/>
+        <location filename="Map/MapClient1.cpp" line="90"/>
         <source>Grid</source>
         <translation>Сетка</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="102"/>
+        <location filename="Map/MapClient1.cpp" line="91"/>
         <source>Checkpoints</source>
         <translation>Контрольные точки</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="103"/>
+        <location filename="Map/MapClient1.cpp" line="92"/>
         <source>Interception point</source>
         <translation>Точка перехвата</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="104"/>
+        <location filename="Map/MapClient1.cpp" line="93"/>
         <source>Civil ships</source>
         <translation>Гражданские суда</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="105"/>
+        <location filename="Map/MapClient1.cpp" line="94"/>
         <source>Diversion points</source>
         <translation>Точки увода</translation>
     </message>
@@ -292,27 +292,27 @@
         <translation type="obsolete">БПЛА Атлант(№</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="106"/>
+        <location filename="Map/MapClient1.cpp" line="95"/>
         <source>SPIP DD</source>
         <translation>СПИП ДД</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="85"/>
+        <location filename="Map/MapClient1.cpp" line="86"/>
         <source>OP</source>
         <translation>ОП</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="107"/>
+        <location filename="Map/MapClient1.cpp" line="96"/>
         <source>Hyperbole</source>
         <translation>Гипербола</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="108"/>
+        <location filename="Map/MapClient1.cpp" line="97"/>
         <source>History</source>
         <translation>История</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="565"/>
+        <location filename="Map/MapClient1.cpp" line="553"/>
         <source>Ingur</source>
         <translation>Ингур</translation>
     </message>
@@ -364,22 +364,22 @@
 <context>
     <name>MapTabWidgetController</name>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="29"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="32"/>
         <source>Property</source>
         <translation>Свойство</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="29"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="32"/>
         <source>Value</source>
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="192"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="205"/>
         <source>SPIP DD-1</source>
         <translation>СПИП ДД-1</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="198"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="211"/>
         <source>SPIP DD-2</source>
         <translation>СПИП ДД-2</translation>
     </message>
@@ -559,44 +559,44 @@
         <translation type="obsolete">БПЛА (№%1)\n%2\n%3\n%4</translation>
     </message>
     <message>
-        <location filename="Map/Features/EnemyBplaFeature.cpp" line="19"/>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="25"/>
         <source>UAV Enemy (#%2-M%1)</source>
         <oldsource>UAV Enemy (#%1-M)</oldsource>
         <translation>БПЛА (№%2-Р%1)</translation>
     </message>
     <message>
-        <location filename="Map/Features/EnemyBplaFeature.cpp" line="23"/>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="29"/>
         <source>UAV Enemy (#%2-A%1)</source>
         <oldsource>UAV Enemy (#%1-A)</oldsource>
         <translation>БПЛА (№%2-А%1)</translation>
     </message>
     <message>
-        <location filename="Map/Features/EnemyBplaFeature.cpp" line="27"/>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="33"/>
         <source>UAV Enemy (#%2-S1%1)</source>
         <oldsource>UAV Enemy (#%1-S1)</oldsource>
         <translation>БПЛА (№%2-Т1%1)</translation>
     </message>
     <message>
-        <location filename="Map/Features/EnemyBplaFeature.cpp" line="31"/>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="38"/>
         <source>UAV Enemy (#%2-S2%1)</source>
         <oldsource>UAV Enemy (#%1-S2)</oldsource>
         <translation>БПЛА (№%2-Т2%1)</translation>
     </message>
     <message>
-        <location filename="Map/Features/EnemyBplaFeature.cpp" line="35"/>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="43"/>
         <source>UAV Enemy (#%2%1)</source>
         <oldsource>UAV Enemy (#%1)</oldsource>
         <translation>БПЛА (№%2%1)</translation>
     </message>
     <message>
-        <location filename="Map/Features/EnemyBplaFeature.cpp" line="40"/>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="48"/>
         <source>BPLA_HISTORICAL_SUFFIX</source>
         <oldsource>BPLA_HISTORICAL</oldsource>
         <translation>И</translation>
     </message>
     <message>
         <location filename="Map/Features/FriendBplaFeature.cpp" line="27"/>
-        <location filename="Tabs/DbBla/UavHistory.cpp" line="269"/>
+        <location filename="Tabs/DbBla/UavHistory.cpp" line="279"/>
         <source>%1-H</source>
         <translation>%1-И</translation>
     </message>
@@ -687,34 +687,60 @@
 <context>
     <name>UavTreeModel</name>
     <message>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="99"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="179"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="97"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="204"/>
         <source>lat</source>
         <translation>Широта</translation>
     </message>
     <message>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="105"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="180"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="102"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="205"/>
         <source>lon</source>
         <translation>Долгота</translation>
     </message>
     <message>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="110"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="181"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="108"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="208"/>
         <source>alt</source>
         <translation>Высота</translation>
     </message>
     <message>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="115"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="183"/>
-        <source>lat (ktr)</source>
-        <translation>Широта(К)</translation>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="149"/>
+        <source>Autopilot</source>
+        <translation>Автопилот</translation>
     </message>
     <message>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="120"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="184"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="150"/>
+        <source>KTR</source>
+        <translation>КТР</translation>
+    </message>
+    <message>
+        <source>lat (ktr)</source>
+        <translation type="obsolete">Широта(К)</translation>
+    </message>
+    <message>
         <source>lon (ktr)</source>
-        <translation>Долгота(К)</translation>
+        <translation type="obsolete">Долгота(К)</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="153"/>
+        <source>Auto mode</source>
+        <translation>Автоматический</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="154"/>
+        <source>Manual mode</source>
+        <translation>Ручной</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="155"/>
+        <source>Single mode: Point 1</source>
+        <translation>Точка 1</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="156"/>
+        <source>Single mode: Point 2</source>
+        <translation>Точка 2</translation>
     </message>
 </context>
 </TS>

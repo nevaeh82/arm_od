@@ -56,23 +56,23 @@ HEADERS += \
 	UAV/ZInterception.h \
 	MainWindow.h \
 	MainWindowController.h \
-    Interfaces/IDbChangedListener.h \
-    Interfaces/IDbController.h \
-    Interfaces/IDbManager.h \
-    UiDefines.h \
-    Interfaces/ISettingsChangedListener.h \
-    Tabs/MapTabWidget.h \
-    Station.h \
-    Tabs/MapTabWidgetController.h \
-    ControlPanel/ControlPanel.h \
-    Interfaces/IUavDbChangedListener.h \
-    Tabs/DbBla/DbUavController.h \
-    Tabs/DbBla/Defines.h  \
-    Tabs/DbBla/IDbUavController.h \
-    Tabs/DbBla/DbUavManager.h \
-    Interfaces/IDbUavManager.h \
-    Tabs/Tree/UavTreeModel.h \
-    Tabs/RPC/RpcClientWrapper.h \
+	Interfaces/IDbChangedListener.h \
+	Interfaces/IDbController.h \
+	Interfaces/IDbManager.h \
+	UiDefines.h \
+	Interfaces/ISettingsChangedListener.h \
+	Tabs/MapTabWidget.h \
+	Station.h \
+	Tabs/MapTabWidgetController.h \
+	ControlPanel/ControlPanel.h \
+	Interfaces/IUavDbChangedListener.h \
+	Tabs/DbBla/DbUavController.h \
+	Tabs/DbBla/Defines.h  \
+	Tabs/DbBla/IDbUavController.h \
+	Tabs/DbBla/DbUavManager.h \
+	Interfaces/IDbUavManager.h \
+	Tabs/Tree/UavTreeModel.h \
+	Tabs/RPC/RpcClientWrapper.h \
 	Tabs/RPC/RpcConfigClient.h \
 	Map/Map.h \
 	Map/MapWidget.h \
@@ -96,15 +96,16 @@ HEADERS += \
 	Map/Features/NiippPointFeature.h \
 	Map/Features/PelengatorPointFeature.h \
 	Tabs/Solver/SolverSettingsDialog.h \
-    Map/Features/CheckPointFeature.h \
-    Map/Features/BplaAbstractFeature.h \
-    Interfaces/IUavHistory.h \
-    ControlPanel/ControlPanelController.h \
-    Tabs/DbBla/UavHistory.h \
-    Interfaces/IUavHistoryListener.h \
-    Map/Features/PolylineAbstract.h \
-    Map/Features/HyperboleFeature.h \
-    UAV/UavModel.h
+	Map/Features/CheckPointFeature.h \
+	Map/Features/BplaAbstractFeature.h \
+	Interfaces/IUavHistory.h \
+	ControlPanel/ControlPanelController.h \
+	Tabs/DbBla/UavHistory.h \
+	Interfaces/IUavHistoryListener.h \
+	Map/Features/PolylineAbstract.h \
+	Map/Features/HyperboleFeature.h \
+	Tabs/Tree/UavSettingsNode.h \
+	Uav/UavModel.h
 
 SOURCES += \
 	Common/CommandMessage.cpp \
@@ -119,14 +120,14 @@ SOURCES += \
 	UAV/ZInterception.cpp \
 	MainWindow.cpp \
 	MainWindowController.cpp \
-    Tabs/MapTabWidget.cpp \
-    Tabs/MapTabWidgetController.cpp \
-    ControlPanel/ControlPanel.cpp \
-    Tabs/RPC/Rpcclient.cpp \
-    Tabs/DbBla/DbUavController.cpp \
-    Tabs/DbBla/DbUavManager.cpp \
-    Tabs/Tree/UavTreeModel.cpp \
-    Tabs/RPC/RpcClientWrapper.cpp \
+	Tabs/MapTabWidget.cpp \
+	Tabs/MapTabWidgetController.cpp \
+	ControlPanel/ControlPanel.cpp \
+	Tabs/RPC/Rpcclient.cpp \
+	Tabs/DbBla/DbUavController.cpp \
+	Tabs/DbBla/DbUavManager.cpp \
+	Tabs/Tree/UavTreeModel.cpp \
+	Tabs/RPC/RpcClientWrapper.cpp \
 	Tabs/RPC/RpcConfigClient.cpp \
 	Map/Map.cpp \
 	Map/MapWidget.cpp \
@@ -146,13 +147,13 @@ SOURCES += \
 	Map/Features/NiippPointFeature.cpp \
 	Map/Features/PelengatorPointFeature.cpp \
 	Tabs/Solver/SolverSettingsDialog.cpp \
-    Map/Features/CheckPointFeature.cpp \
-    Map/Features/BplaAbstractFeature.cpp \
-    ControlPanel/ControlPanelController.cpp \
-    Tabs/DbBla/UavHistory.cpp \
-    Map/Features/PolylineAbstract.cpp \
-    Map/Features/HyperboleFeature.cpp \
-    UAV/UavModel.cpp
+	Map/Features/CheckPointFeature.cpp \
+	Map/Features/BplaAbstractFeature.cpp \
+	ControlPanel/ControlPanelController.cpp \
+	Tabs/DbBla/UavHistory.cpp \
+	Map/Features/PolylineAbstract.cpp \
+	Map/Features/HyperboleFeature.cpp \
+	UAV/UavModel.cpp
 
 FORMS += \
 	UAV/blaperehvatdialog.ui \

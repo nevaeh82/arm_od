@@ -83,18 +83,18 @@
 <context>
     <name>ControlPanelController</name>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="100"/>
         <location filename="ControlPanel/ControlPanelController.cpp" line="105"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="110"/>
         <source>Unable to play history</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="100"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="105"/>
         <source>End date should be greater than start date.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="105"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="110"/>
         <source>Data for selected period do not exist.</source>
         <translation></translation>
     </message>
@@ -188,110 +188,110 @@
 <context>
     <name>MapClient1</name>
     <message>
-        <location filename="Map/MapClient1.cpp" line="140"/>
+        <location filename="Map/MapClient1.cpp" line="141"/>
         <source>NIIPP</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="85"/>
+        <location filename="Map/MapClient1.cpp" line="86"/>
         <source>OP</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="88"/>
+        <location filename="Map/MapClient1.cpp" line="100"/>
         <source>UAV_enemy_manual</source>
         <oldsource>UAV_enemy</oldsource>
         <translation type="unfinished">Enemy UAV</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="87"/>
+        <location filename="Map/MapClient1.cpp" line="99"/>
         <source>UAV_enemy_track_manual</source>
         <oldsource>UAV_enemy_track</oldsource>
         <translation type="unfinished">Enemy UAV track</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="91"/>
+        <location filename="Map/MapClient1.cpp" line="103"/>
         <source>UAV_enemy_auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="90"/>
+        <location filename="Map/MapClient1.cpp" line="102"/>
         <source>UAV_enemy_track_auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="93"/>
+        <location filename="Map/MapClient1.cpp" line="105"/>
         <source>UAV_enemy_single</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="97"/>
+        <location filename="Map/MapClient1.cpp" line="109"/>
         <source>UAV</source>
         <translation>Friend UAV</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="96"/>
+        <location filename="Map/MapClient1.cpp" line="108"/>
         <source>UAV_track_autopilot</source>
         <oldsource>UAV_track</oldsource>
         <translation>Friend UAV track from autopilot</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="95"/>
+        <location filename="Map/MapClient1.cpp" line="107"/>
         <source>UAV_track_KTR</source>
         <translation>Friend UAV track from KTR</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="99"/>
+        <location filename="Map/MapClient1.cpp" line="88"/>
         <source>Atlant</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="100"/>
+        <location filename="Map/MapClient1.cpp" line="89"/>
         <source>Atlant target</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="101"/>
+        <location filename="Map/MapClient1.cpp" line="90"/>
         <source>Grid</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="102"/>
+        <location filename="Map/MapClient1.cpp" line="91"/>
         <source>Checkpoints</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="103"/>
+        <location filename="Map/MapClient1.cpp" line="92"/>
         <source>Interception point</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="104"/>
+        <location filename="Map/MapClient1.cpp" line="93"/>
         <source>Civil ships</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="105"/>
+        <location filename="Map/MapClient1.cpp" line="94"/>
         <source>Diversion points</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="106"/>
+        <location filename="Map/MapClient1.cpp" line="95"/>
         <source>SPIP DD</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="107"/>
+        <location filename="Map/MapClient1.cpp" line="96"/>
         <source>Hyperbole</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="108"/>
+        <location filename="Map/MapClient1.cpp" line="97"/>
         <source>History</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="565"/>
+        <location filename="Map/MapClient1.cpp" line="553"/>
         <source>Ingur</source>
         <translation></translation>
     </message>
@@ -343,22 +343,22 @@
 <context>
     <name>MapTabWidgetController</name>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="29"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="32"/>
         <source>Property</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="29"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="32"/>
         <source>Value</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="192"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="205"/>
         <source>SPIP DD-1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="198"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="211"/>
         <source>SPIP DD-2</source>
         <translation></translation>
     </message>
@@ -534,44 +534,44 @@
         <translation type="obsolete">Enemy UAV (#%1)\n%2\n%3</translation>
     </message>
     <message>
-        <location filename="Map/Features/EnemyBplaFeature.cpp" line="19"/>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="25"/>
         <source>UAV Enemy (#%2-M%1)</source>
         <oldsource>UAV Enemy (#%1-M)</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/Features/EnemyBplaFeature.cpp" line="23"/>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="29"/>
         <source>UAV Enemy (#%2-A%1)</source>
         <oldsource>UAV Enemy (#%1-A)</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/Features/EnemyBplaFeature.cpp" line="27"/>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="33"/>
         <source>UAV Enemy (#%2-S1%1)</source>
         <oldsource>UAV Enemy (#%1-S1)</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/Features/EnemyBplaFeature.cpp" line="31"/>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="38"/>
         <source>UAV Enemy (#%2-S2%1)</source>
         <oldsource>UAV Enemy (#%1-S2)</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/Features/EnemyBplaFeature.cpp" line="35"/>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="43"/>
         <source>UAV Enemy (#%2%1)</source>
         <oldsource>UAV Enemy (#%1)</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Map/Features/EnemyBplaFeature.cpp" line="40"/>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="48"/>
         <source>BPLA_HISTORICAL_SUFFIX</source>
         <oldsource>BPLA_HISTORICAL</oldsource>
         <translation>H</translation>
     </message>
     <message>
         <location filename="Map/Features/FriendBplaFeature.cpp" line="27"/>
-        <location filename="Tabs/DbBla/UavHistory.cpp" line="269"/>
+        <location filename="Tabs/DbBla/UavHistory.cpp" line="279"/>
         <source>%1-H</source>
         <translation></translation>
     </message>
@@ -662,34 +662,60 @@
 <context>
     <name>UavTreeModel</name>
     <message>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="99"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="179"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="97"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="204"/>
         <source>lat</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="105"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="180"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="102"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="205"/>
         <source>lon</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="110"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="181"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="108"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="208"/>
         <source>alt</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="115"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="183"/>
-        <source>lat (ktr)</source>
-        <translation>lat (KTR)</translation>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="149"/>
+        <source>Autopilot</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="120"/>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="184"/>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="150"/>
+        <source>KTR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>lat (ktr)</source>
+        <translation type="obsolete">lat (KTR)</translation>
+    </message>
+    <message>
         <source>lon (ktr)</source>
-        <translation>lon (KTR)</translation>
+        <translation type="obsolete">lon (KTR)</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="153"/>
+        <source>Auto mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="154"/>
+        <source>Manual mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="155"/>
+        <source>Single mode: Point 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Tree/UavTreeModel.cpp" line="156"/>
+        <source>Single mode: Point 2</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

@@ -40,6 +40,8 @@ public:
 private:
 	void onPropertyChanged(const UavInfo &uavInfo, const uint propId, const QString& name, const QVariant& value);
 
+	void addSourceNode(TreeItem* item, uint sourceType, QString name, uint uavId);
+
 private slots:
 	void updateData();
 };

@@ -7,7 +7,6 @@ MapTabWidget::MapTabWidget(QWidget* parent) :
 	ui(new Ui::MapTabWidget)
 {
 	ui->setupUi(this);
-
 }
 
 MapTabWidget::~MapTabWidget()

@@ -78,12 +78,55 @@ bool UavTreeModel::updateModelData(TreeItem *item)
 	return false;
 }
 
+void UavTreeModel::addSourceNode(TreeItem* item, uint sourceType, QString name, uint uavId)
+{
+	SettingsNode nodeSolverAuto;
+
+	Property inProperty;
+	inProperty.pid = uavId;
+	inProperty.isEditable = false;
+	inProperty.state = 0;
+
+	nodeSolverAuto.object.id = sourceType;
+	nodeSolverAuto.object.name = name;
+	nodeSolverAuto.object.isEditable = false;
+	nodeSolverAuto.object.pid = 0;
+	nodeSolverAuto.object.state = 0;
+
+	inProperty.id = LAT_PROPERTY_ID;
+	inProperty.name = tr("lat");
+	inProperty.value = 0;
+	nodeSolverAuto.properties.append(inProperty);
+
+	inProperty.id = LON_PROPERTY_ID;
+	inProperty.name = tr("lon");
+	inProperty.value = 0;
+	nodeSolverAuto.properties.append(inProperty);
+
+	if ( sourceType != UAV_SLICES_SOURCE ) {
+		inProperty.id = ALT_PROPERTY_ID;
+		inProperty.name = tr("alt");
+		inProperty.value = 0;
+		nodeSolverAuto.properties.append(inProperty);
+	}
+
+	TreeItem* sourceItem =  new TreeItem(nodeSolverAuto.object, item);
+
+	foreach (Property property, nodeSolverAuto.properties) {
+		TreeItem* childItem =  new TreeItem(property, sourceItem);
+		sourceItem->appendChild(childItem);
+	}
+
+	item->appendChild(sourceItem);
+}
+
 void UavTreeModel::onUavAdded(const Uav &uav, const QString& uavRole)
 {
 	if (uavRole != m_targetRole){
 		return;
 	}
 
+	//QString name = uav.name;
 	SettingsNode inSettingsNode;
 	inSettingsNode.object.id = uav.uavId;
 	inSettingsNode.object.name = uav.name;
@@ -91,51 +134,29 @@ void UavTreeModel::onUavAdded(const Uav &uav, const QString& uavRole)
 	inSettingsNode.object.pid = 0;
 	inSettingsNode.object.state = 0;
 
-	Property inProperty;
-	inProperty.pid = uav.uavId;
-	inProperty.id = LAT_PROPERTY_ID;
-	inProperty.isEditable = false;
-	inProperty.state = 0;
-	inProperty.name = tr("lat");
-	inProperty.value = 0;
+	emit layoutAboutToBeChanged();
 
-	inSettingsNode.properties.append(inProperty);
+	TreeItem* item =  new TreeItem(inSettingsNode.object, m_rootItem);
 
-	inProperty.id = LON_PROPERTY_ID;
-	inProperty.name = tr("lon");
-	inProperty.value = 0;
-	inSettingsNode.properties.append(inProperty);
-
-	inProperty.id = ALT_PROPERTY_ID;
-	inProperty.name = tr("alt");
-	inProperty.value = 0;
-	inSettingsNode.properties.append(inProperty);
-
-	inProperty.id = LAT_KTR_PROPERTY_ID;
-	inProperty.name = tr("lat (ktr)");
-	inProperty.value = 0;
-	inSettingsNode.properties.append(inProperty);
-
-	inProperty.id = LON_KTR_PROPERTY_ID;
-	inProperty.name = tr("lon (ktr)");
-	inProperty.value = 0;
-	inSettingsNode.properties.append(inProperty);
-
-	if (inSettingsNode.object.pid == 0) {
-		emit layoutAboutToBeChanged();
-
-		TreeItem* item =  new TreeItem(inSettingsNode.object, m_rootItem);
-
-		foreach (Property property, inSettingsNode.properties) {
-			TreeItem* childItem =  new TreeItem(property, item);
-			item->appendChild(childItem);
-		}
-
-		m_rootItem->appendChild(item);
-
-		emit layoutChanged();
+	foreach (Property property, inSettingsNode.properties) {
+		TreeItem* childItem =  new TreeItem(property, item);
+		item->appendChild(childItem);
 	}
 
+	m_rootItem->appendChild(item);
+
+	if ( uavRole == OUR_UAV_ROLE ) {
+		addSourceNode( item, UAV_AUTOPILOT_SOURCE, tr("Autopilot"), uav.uavId );
+		addSourceNode( item, UAV_SLICES_SOURCE, tr("KTR"), uav.uavId );
+	} else
+	if ( uavRole == ENEMY_UAV_ROLE ) {
+		addSourceNode( item, UAV_SOLVER_AUTO_SOURCE, tr("Auto mode"), uav.uavId );
+		addSourceNode( item, UAV_SOLVER_MANUAL_SOURCE, tr("Manual mode"), uav.uavId );
+		addSourceNode( item, UAV_SOLVER_SINGLE_1_SOURCE, tr("Single mode: Point 1"), uav.uavId );
+		addSourceNode( item, UAV_SOLVER_SINGLE_2_SOURCE, tr("Single mode: Point 2"), uav.uavId );
+	}
+
+	emit layoutChanged();
 	emit onItemAddedSignal();
 }
 
@@ -180,16 +201,14 @@ void UavTreeModel::onUavInfoChanged(const UavInfo &uavInfo, const QString& uavRo
 
 	QString number;
 
-	if (UAV_AUTOPILOT_SOURCE == uavInfo.source) {
-		onPropertyChanged(uavInfo, LAT_PROPERTY_ID, tr("lat"), number.sprintf( "%.4f", uavInfo.lat ));
-		onPropertyChanged(uavInfo, LON_PROPERTY_ID, tr("lon"), number.sprintf( "%.4f", uavInfo.lon ));
+	onPropertyChanged(uavInfo, LAT_PROPERTY_ID, tr("lat"), number.sprintf( "%.4f", uavInfo.lat ));
+	onPropertyChanged(uavInfo, LON_PROPERTY_ID, tr("lon"), number.sprintf( "%.4f", uavInfo.lon ));
+
+	if (UAV_SLICES_SOURCE != uavInfo.source) {
 		onPropertyChanged(uavInfo, ALT_PROPERTY_ID, tr("alt"), QString::number( (int) uavInfo.alt ));
-	} else {
-		onPropertyChanged(uavInfo, LAT_KTR_PROPERTY_ID, tr("lat (ktr)"), number.sprintf( "%.4f", uavInfo.lat ));
-		onPropertyChanged(uavInfo, LON_KTR_PROPERTY_ID, tr("lon (ktr)"), number.sprintf( "%.4f", uavInfo.lon ));
 	}
 
-	if(m_isNeedRedraw) {
+	if (m_isNeedRedraw) {
 		return;
 	}
 
@@ -208,7 +227,7 @@ void UavTreeModel::onPropertyChanged(const UavInfo &uavInfo, const uint propId, 
 	/// TODO: need to uncomment after imlementing of speed receiving from KTR
 	bool isInFlight = true;
 
-	if (uavInfo.source == UAV_AUTOPILOT_SOURCE) {
+	if (uavInfo.source != UAV_SLICES_SOURCE) {
 		isInFlight = /*(uavInfo.speed > 0) && */(uavInfo.alt > 0);
 	}
 
@@ -236,13 +255,41 @@ void UavTreeModel::onPropertyChanged(const UavInfo &uavInfo, const uint propId, 
 
 		if (uavInfo.historical == isReal) continue;
 
-		BaseItem item = stationItem->data();
-		item.state = (isInFlight ? 1 : 0);
-		stationItem->updateData(item);
+		int sourceState = isInFlight ? 1 : 0;;
+		int stationState = sourceState;
 
+		BaseItem data;
+		TreeItem* sourceItem = NULL;
+
+		// calculate common station state and try to find suitable source item
 		for (int j = 0; j< stationItem->childCount(); j++) {
-			if (stationItem->child(j)->data().id == inProperty.id) {
-				stationItem->child(j)->updateData(inProperty);
+			data = stationItem->child(j)->data();
+
+			if (stationState == 0 && data.state == 1) {
+				stationState = 1;
+			}
+
+			if (sourceItem  == NULL && data.id == uavInfo.source) {
+				sourceItem  = stationItem->child(j);
+			}
+		}
+
+		if (sourceItem == NULL) continue;
+
+		// update station item state
+		data = stationItem->data();
+		data.state = stationState;
+		stationItem->updateData(data);
+
+		// update source item state
+		data = sourceItem->data();
+		data.state = sourceState;
+		sourceItem->updateData(data);
+
+		// update source item property
+		for (int j = 0; j< sourceItem->childCount(); j++) {
+			if (sourceItem->child(j)->data().id == inProperty.id) {
+				sourceItem->child(j)->updateData(inProperty);
 				break;
 			}
 		}
