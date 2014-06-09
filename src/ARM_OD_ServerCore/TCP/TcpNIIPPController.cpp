@@ -16,6 +16,12 @@ void TcpNIIPPController::createTcpDeviceCoder()
 	emit createTcpNIIPPCoderInternalSignal();
 }
 
+void TcpNIIPPController::createTcpClient()
+{
+	BaseTcpDeviceController::createTcpClient();
+	m_tcpClient->setReconnectInterval(m_NIIPPSettingStruct.reconnectInterval);
+}
+
 void TcpNIIPPController::createTcpNIIPPCoderInternalSlot()
 {
 	log_debug("Creating TcpNIIPPCoder...");
@@ -45,7 +51,6 @@ bool TcpNIIPPController::init()
 			m_host = m_NIIPPSettingStruct.host;
 			m_port = m_NIIPPSettingStruct.port;
 			m_deviceType = TypeNIIPP;//m_flakonSettingStruct.type;
-			m_tcpClient->setReconnectInterval(m_NIIPPSettingStruct.reconnectInterval);
 
 			QByteArray baseInfo;
 			QDataStream dsBaseInfo(&baseInfo, QIODevice::WriteOnly);

@@ -31,7 +31,6 @@ bool TcpArmrClientController::init()
 			m_host = m_settings.host;
 			m_port = m_settings.port;
 			m_deviceType = TypeArmrTcpClient;
-			m_tcpClient->setReconnectInterval(m_settings.reconnectInterval);
 
 			QByteArray baseInfo;
 			QDataStream dsBaseInfo(&baseInfo, QIODevice::WriteOnly);
@@ -48,6 +47,12 @@ bool TcpArmrClientController::init()
 void TcpArmrClientController::createTcpDeviceCoder()
 {
 	emit createTcpArmrCoderInternalSignal();
+}
+
+void TcpArmrClientController::createTcpClient()
+{
+	BaseTcpDeviceController::createTcpClient();
+	m_tcpClient->setReconnectInterval(m_settings.reconnectInterval);
 }
 
 QObject *TcpArmrClientController::asQObject()

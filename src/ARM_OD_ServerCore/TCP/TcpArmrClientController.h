@@ -26,6 +26,7 @@ public:
 
 	// ITcpDeviceController interface
 	virtual void createTcpDeviceCoder();
+	void createTcpClient();
 	virtual QObject* asQObject();
 
 signals:

@@ -107,7 +107,6 @@ bool TcpAISController::init()
 			m_host = m_AISSettingStruct.host;
 			m_port = m_AISSettingStruct.port;
 			m_deviceType = TypeAIS;//m_flakonSettingStruct.type;
-			m_tcpClient->setReconnectInterval(m_AISSettingStruct.reconnectInterval);
 
 			QByteArray baseInfo;
 			QDataStream dsBaseInfo(&baseInfo, QIODevice::WriteOnly);
