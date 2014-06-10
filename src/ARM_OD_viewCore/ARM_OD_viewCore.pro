@@ -104,7 +104,6 @@ HEADERS += \
 	Interfaces/IUavHistoryListener.h \
 	Map/Features/PolylineAbstract.h \
 	Map/Features/HyperboleFeature.h \
-	Tabs/Tree/UavSettingsNode.h \
 	Uav/UavModel.h
 
 SOURCES += \

@@ -9,6 +9,7 @@ prebuild::
 	$(mkdir) $(DESTDIR)/Enviroment
 	$(mkdir) $(DESTDIR)/RDP
 	
+	$(cp) -ud $(SolutionDir)/settings/*.ini $(DESTDIR)
 	$(cp) -ud $(SolutionDir)/settings/DB/*.* $(DESTDIR)/DB
 	$(cp) -ud $(SolutionDir)/settings/images/*.* $(DESTDIR)/images
 	$(cp) -ud $(SolutionDir)/settings/Map/*.* $(DESTDIR)/Map

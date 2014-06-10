@@ -47,6 +47,8 @@ private:
 	QMap<int, int> m_mapPelengEvilIds;
 	int m_pelengEvilIds;
 
+	QRectF m_viewport;
+
 public:
 	MapController(QObject* parent = NULL);
 	virtual ~MapController();
@@ -78,6 +80,8 @@ public:
 
 private:
 	IMapClient* getMapClient();
+
+	void setViewport(QString viewport);
 
 public slots:
 	void openMapFromAtlas();

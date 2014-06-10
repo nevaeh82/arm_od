@@ -53,6 +53,8 @@ void BplaAbstract::setPosition(const QPointF& position)
 
 void BplaAbstract::setTail(const QVector<QPointF>& tail, const QVector<QPointF>& tailStdDev)
 {
+	Q_UNUSED( tailStdDev );
+
 	PwGisPointList* points = m_tail->points();
 
 	points->clear();

@@ -24,13 +24,61 @@ MapController::~MapController()
 	log_debug("~MapController()");
 }
 
+void MapController::setViewport(QString viewport)
+{
+	m_viewport = QRectF();
+
+	QStringList parts = viewport.split(" ");
+	bool toDouble;
+
+
+	if (parts.size() < 4) return;
+
+	double left = parts[0].toDouble( &toDouble );
+	if (!toDouble) return;
+
+	double top = parts[1].toDouble( &toDouble );
+	if (!toDouble) return;
+
+	double right = parts[2].toDouble( &toDouble );
+	if (!toDouble) return;
+
+	double bottom = parts[3].toDouble( &toDouble );
+	if (!toDouble) return;
+
+	top = qMax( top, bottom );
+	left = qMin( left, right );
+	right = qMax( left, right );
+	bottom = qMin( top, bottom );
+
+	m_viewport = QRectF( QPointF( left, top ), QPointF( right, bottom ) );
+}
+
 void MapController::init(QMap<int, Station*> stations)
 {
 	m_mapModel->setMapManager( m_view->getPwGis()->mapProvider()->mapManager() );
 	m_mapModel->setProfileManager( m_view->getPwGis()->mapProvider()->profileManager() );
 	m_mapModel->init( stations, m_view->getPwGis() );
 
+	// load map settings form client.ini
+	QString path = QApplication::applicationDirPath() + "/Client.ini";
+	QSettings settings(path, QSettings::IniFormat);
+
+	QString mapFile = settings.value("Map/file").toString();
+	QString viewport = settings.value("Map/viewport").toString();
+
+	// open default map
+	if (!mapFile.isEmpty()) {
+		if ( mapFile.indexOf("internet/") == 0 ) {
+			m_view->getPwGis()->mapProvider()->mapManager()->openAtlasMap( 0, mapFile );
+		} else {
+			m_view->getPwGis()->mapProvider()->mapManager()->openMap( mapFile );
+		}
+	}
+
 	m_view->getPwGis()->enableDebugger(false);
+
+	setViewport(viewport);
 
 	connect( m_mapModel, SIGNAL(modelMapReady()), this, SLOT(onMapReady()) );
 	connect( m_view->getPwGis(), SIGNAL(mapClicked(double,double)), this, SLOT(onMapClicked(double,double)) );
@@ -60,6 +108,13 @@ void MapController::onMapReady()
 {
 	//get_panel_widget()->setMouseTracking(true);
 	m_mapModel->setLayerManager(m_view->getPwGis()->mapProvider()->layerManager());
+
+	if ( !m_viewport.isNull() ) {
+		m_view->getPwGis()->mapProvider()->mapBounds()->zoomMapTo(
+					m_viewport.left(), m_viewport.top(),
+					m_viewport.right(), m_viewport.bottom() );
+	}
+
 	emit mapOpened();
 }
 
@@ -174,8 +229,6 @@ void MapController::onUavInfoChanged(const UavInfo& uavInfo, const QString& uavR
 /// \todo Refactor this peace of shit
 void MapController::onMethodCalled(const QString& method, const QVariant& argument)
 {
-	double f;
-	int c;
 	IMapClient* client = getMapClient();
 	if( NULL == client ) return;
 
