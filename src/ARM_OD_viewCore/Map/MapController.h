@@ -89,12 +89,13 @@ public slots:
 	void onMapReady();
 	void onMapClicked(double lon, double lat);
 
+	void loadMapSettings();
 	void setStationVisible(bool state);
 
 signals:
 	void mapOpened();
 	void atlasOpened();
-	void cancelMapOpen();
+	void mapOpenCanceled();
 };
 
 #endif // MAPCONTROLLER_H

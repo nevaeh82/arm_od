@@ -197,6 +197,8 @@ void MapTabWidgetController::appendView(MapTabWidget *view)
 	m_mapController->appendView(m_view->getMapWidget());
 	m_mapController->init(m_mapSettings);
 
+	connect( this, SIGNAL(initFinished()), m_mapController, SLOT(loadMapSettings()), Qt::QueuedConnection );
+
 	/// WTF?
 	QPointF latlon1;
 	latlon1.setX(42.511183);
@@ -219,6 +221,8 @@ void MapTabWidgetController::appendView(MapTabWidget *view)
 	m_uavDbManager->registerReceiver( m_niipp2 );
 
 	init();
+
+	emit initFinished();
 }
 
 void MapTabWidgetController::setRpcConfig(const quint16& port, const QString& host)

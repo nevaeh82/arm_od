@@ -60,25 +60,7 @@ void MapController::init(QMap<int, Station*> stations)
 	m_mapModel->setProfileManager( m_view->getPwGis()->mapProvider()->profileManager() );
 	m_mapModel->init( stations, m_view->getPwGis() );
 
-	// load map settings form client.ini
-	QString path = QApplication::applicationDirPath() + "/Client.ini";
-	QSettings settings(path, QSettings::IniFormat);
-
-	QString mapFile = settings.value("Map/file").toString();
-	QString viewport = settings.value("Map/viewport").toString();
-
-	// open default map
-	if (!mapFile.isEmpty()) {
-		if ( mapFile.indexOf("internet/") == 0 ) {
-			m_view->getPwGis()->mapProvider()->mapManager()->openAtlasMap( 0, mapFile );
-		} else {
-			m_view->getPwGis()->mapProvider()->mapManager()->openMap( mapFile );
-		}
-	}
-
 	m_view->getPwGis()->enableDebugger(false);
-
-	setViewport(viewport);
 
 	connect( m_mapModel, SIGNAL(modelMapReady()), this, SLOT(onMapReady()) );
 	connect( m_view->getPwGis(), SIGNAL(mapClicked(double,double)), this, SLOT(onMapClicked(double,double)) );
@@ -98,9 +80,8 @@ void MapController::openMapFromLocalFile()
 		tr( "Map files (*.chart *.sxf *.sit *.map *.gc *.gst)" ) );
 	if ( !filename.isNull() ) {
 		m_mapModel->openMap(filename);
-	}
-	else {
-		emit cancelMapOpen();
+	} else {
+		emit mapOpenCanceled();
 	}
 }
 
@@ -198,6 +179,27 @@ IMapClient* MapController::getMapClient()
 {
 	int mapClientId = 1; // I do not know, why.. Don't ask me.
 	return getMapClient( mapClientId );
+}
+
+void MapController::loadMapSettings()
+{
+	// load map settings form client.ini
+	QString path = QApplication::applicationDirPath() + "/Client.ini";
+	QSettings settings(path, QSettings::IniFormat);
+
+	QString mapFile = settings.value("Map/file").toString();
+	QString viewport = settings.value("Map/viewport").toString();
+
+	// open default map
+	if (!mapFile.isEmpty()) {
+		if ( mapFile.indexOf("internet/") == 0 ) {
+			m_view->getPwGis()->mapProvider()->mapManager()->openAtlasMap( 0, mapFile );
+		} else {
+			m_view->getPwGis()->mapProvider()->mapManager()->openMap( mapFile );
+		}
+	}
+
+	setViewport(viewport);
 }
 
 void MapController::onUavRemoved(const Uav& uav, const QString&)

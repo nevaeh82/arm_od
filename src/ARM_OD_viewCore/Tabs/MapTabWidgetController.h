@@ -56,7 +56,7 @@ private:
 
 	RpcClientWrapper*	m_rpcClient;
 
-	DbUavManager*          m_uavDbManager;
+	DbUavManager*       m_uavDbManager;
 
 	QMap<int, Station *> m_mapSettings;
 
@@ -95,6 +95,9 @@ signals:
 	void signalStartRPC();
 	void signalStopRPC();
 	void signalFinishRPC();
+
+	void initFinished();
+
 	void mapOpened();
 	void atlasOpened();
 	void cancelMapOpen();
