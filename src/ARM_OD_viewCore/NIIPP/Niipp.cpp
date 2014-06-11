@@ -321,7 +321,20 @@ void Niipp::setPoint(const QPointF& coord)
 
 void Niipp::setPointBpla(const QPointF &coord)
 {
-    m_pointBPLA = coord;
+	m_pointBPLA = coord;
+}
+
+void Niipp::getStatusConnection()
+{
+	if( m_parentTab == NULL ) return;
+
+	QByteArray ba;
+	QDataStream ds(&ba, QIODevice::ReadWrite);
+
+	ds << m_id;
+
+	CommandMessage* msg = new CommandMessage(COMMAND_GET_NIIPP_CONNECTION_STATUS, ba);
+	m_parentTab->send_data(0, msg);
 }
 
 

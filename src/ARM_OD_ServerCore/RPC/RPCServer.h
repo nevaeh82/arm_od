@@ -60,6 +60,7 @@ public slots:
 	void rpc_slot_set_client_id(quint64 client, int id);
 
 	void rpc_slot_set_niipp_data(quint64 client, QByteArray data);
+	void rpc_slot_get_niipp_connection_status(quint64 client, QByteArray data);
 
 	void rpc_slot_set_solver_data(quint64 client, QByteArray data);
 	void rpc_slot_set_solver_clear(quint64 client, QByteArray data);
@@ -82,6 +83,7 @@ public slots:
 
 	/// NIIPP
 	void rpc_slot_send_NIIPP_data(quint64 client, QByteArray* data);
+	void rpc_slot_send_NIIPP_connection_status(quint64 client, QByteArray* data);
 
 private:
 	QMap<quint64, IClient *> _map_clients;
@@ -104,6 +106,7 @@ signals:
 	void signalSendToRPCBLAPoints(QByteArray);
 	void signalSendToRPCAISData(QByteArray);
 	void signalSendToRPCNIIPPData(QByteArray);
+	void signalSendToRPCNIIPPConnectionStatus(QByteArray);
 
 	void sendDataByRpcSignal(QString signalType, QByteArray data);
 

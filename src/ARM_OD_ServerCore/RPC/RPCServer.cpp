@@ -23,6 +23,7 @@ bool RPCServer::start(quint16 port, QHostAddress address)
 
 	m_serverPeer->attachSlot(RPC_SLOT_SET_CLIENT_ID, this, SLOT(rpc_slot_set_client_id(quint64,int)));
 	m_serverPeer->attachSlot(RPC_SLOT_SET_NIIPP_BPLA, this, SLOT(rpc_slot_set_niipp_data(quint64,QByteArray)));
+	m_serverPeer->attachSlot(RPC_SLOT_GET_NIIPP_CONNECTION_STATUS, this, SLOT(rpc_slot_get_niipp_connection_status(quint64,QByteArray)));
 	m_serverPeer->attachSlot(RPC_SLOT_SET_SOLVER_DATA, this, SLOT(rpc_slot_set_solver_data(quint64, QByteArray)));
 	m_serverPeer->attachSlot(RPC_SLOT_SET_SOLVER_CLEAR, this, SLOT(rpc_slot_set_solver_clear(quint64,QByteArray)));
 
@@ -35,6 +36,7 @@ bool RPCServer::start(quint16 port, QHostAddress address)
 	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCBLAPoints(QByteArray)), RPC_SLOT_SERVER_SEND_BLA_POINTS);
 	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCAISData(QByteArray)), RPC_SLOT_SERVER_SEND_AIS_DATA);
 	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCNIIPPData(QByteArray)), RPC_SLOT_SERVER_SEND_NIIPP_DATA);
+	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCNIIPPConnectionStatus(QByteArray)), RPC_SLOT_SERVER_SEND_NIIPP_CONNECTION_STATUS);
 
 	// Signals and slots for config query
 	m_serverPeer->attachSlot(RPC_METHOD_CONFIG_REQUEST_GET_STATION_LIST, this, SLOT(requestGetStationListSlot(quint64,QString)));
@@ -135,6 +137,8 @@ void RPCServer::sendDataByRpcSlot(QString signalType, QByteArray data)
 		emit signalSendToRPCAISData(data);
 	} else if (signalType == RPC_SLOT_SERVER_SEND_NIIPP_DATA) {
 		emit signalSendToRPCNIIPPData(data);
+	} else if (signalType == RPC_SLOT_SERVER_SEND_NIIPP_CONNECTION_STATUS) {
+		emit signalSendToRPCNIIPPConnectionStatus(data);
 	}
 }
 
@@ -178,7 +182,20 @@ void RPCServer::rpc_slot_set_niipp_data(quint64 client, QByteArray data)
 
 
 //	QSharedPointer<IMessageOld> msg(new MessageOld(id, NIIPP_BPLA, ba));
-//	_subscriber->data_ready(NIIPP_BPLA, msg);
+	//	_subscriber->data_ready(NIIPP_BPLA, msg);
+}
+
+void RPCServer::rpc_slot_get_niipp_connection_status(quint64 client, QByteArray data)
+{
+	QDataStream ds(&data, QIODevice::ReadOnly);
+	int id = -1;
+	ds >> id;
+	QByteArray ba;
+	ba.append(data);
+
+	foreach (IRpcListener* listener, m_receiversList) {
+		listener->onMethodCalled(RPC_SLOT_GET_NIIPP_CONNECTION_STATUS, QVariant(ba));
+	}
 }
 
 void RPCServer::rpc_slot_set_solver_data(quint64 client, QByteArray data)
@@ -281,4 +298,9 @@ void RPCServer::rpc_slot_send_atlant_position(quint64 client, QByteArray *data)
 void RPCServer::rpc_slot_send_NIIPP_data(quint64 client, QByteArray *data)
 {
 	m_serverPeer->call(client, RPC_SLOT_SERVER_SEND_NIIPP_DATA, QVariant::fromValue(*data));
+}
+
+void RPCServer::rpc_slot_send_NIIPP_connection_status(quint64 client, QByteArray* data)
+{
+	m_serverPeer->call(client, RPC_SLOT_SERVER_SEND_NIIPP_CONNECTION_STATUS, QVariant::fromValue(*data));
 }

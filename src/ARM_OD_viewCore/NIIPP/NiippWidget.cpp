@@ -1,3 +1,5 @@
+#include <Tcp/BaseTcpClient.h>
+
 #include "NiippWidget.h"
 #include "ui_NiippWidget.h"
 
@@ -11,13 +13,18 @@ NiippWidget::NiippWidget(QWidget *parent)
 	ui->_pb_enable_complex->setStyleSheet(QString::fromUtf8("background-color: rgb(255,0,0);"));
 	connect(ui->_pb_enable_complex, SIGNAL(toggled(bool)), this, SLOT(enableComplex(bool)));
 	connect(ui->_pb_enable_complex, SIGNAL(toggled(bool)), this, SIGNAL(complexEnabled(bool)));
-    connect(ui->pbRDPNiipp, SIGNAL(clicked()), this, SIGNAL(signalOpenRDP()));
+	connect(ui->pbRDPNiipp, SIGNAL(clicked()), this, SIGNAL(signalOpenRDP()));
 
 	QFont* font = new QFont();
 	font->setBold(true);
 	font->setPixelSize(20);
 
 	ui->_sb_power->setFont(*font);
+
+	m_pmRoundRed = new QPixmap(":/images/signals/images/bullet_red.png");
+	m_pmRoundGreen = new QPixmap(":/images/signals/images/bullet_green.png");
+	ui->statusLbl->setFixedSize(16, 16);
+	//ui->statusLbl->setPixmap(m_pmRoundRed->scaled(16,16,Qt::KeepAspectRatio));
 
 	ui->_sl_power->setRange(0, 27);
 	ui->_sl_power->setTickPosition(QSlider::TicksBelow);
@@ -157,6 +164,16 @@ void NiippWidget::setAntennaType(int value, Niipp::WorkMode workMode)
 		{
 			ui->_le_status->setText(tr("Radiation"));
 		}
+	}
+}
+
+void NiippWidget::setStatusConnection(int status)
+{
+	if(status == TCP::Connected) {
+		ui->statusLbl->setPixmap(m_pmRoundGreen->scaled(16,16,Qt::KeepAspectRatio));
+	}
+	else {
+		ui->statusLbl->setPixmap(m_pmRoundRed->scaled(16,16,Qt::KeepAspectRatio));
 	}
 }
 

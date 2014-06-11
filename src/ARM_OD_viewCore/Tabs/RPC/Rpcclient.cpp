@@ -47,6 +47,7 @@ void RPCClient::startInternalSlot(quint16 port, QString ipAddress)
 
 	m_clientPeer->attachSignal(this, SIGNAL(signalSetClientId(int)), RPC_SLOT_SET_CLIENT_ID);
 	m_clientPeer->attachSignal(this, SIGNAL(signalSetNIIPPBPLA(QByteArray)), RPC_SLOT_SET_NIIPP_BPLA);
+	m_clientPeer->attachSignal(this, SIGNAL(signalGetNIIPPStatus(QByteArray)), RPC_SLOT_GET_NIIPP_CONNECTION_STATUS);
 	m_clientPeer->attachSignal(this, SIGNAL(signalSetSolverData(QByteArray)), RPC_SLOT_SET_SOLVER_DATA);
 	m_clientPeer->attachSignal(this, SIGNAL(signalSetSolverDataClear(QByteArray)), RPC_SLOT_SET_SOLVER_CLEAR);
 
@@ -62,6 +63,7 @@ void RPCClient::startInternalSlot(quint16 port, QString ipAddress)
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_HYPERBOLA, this, SLOT(rpcSendHyperbola(QByteArray)));
 
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_NIIPP_DATA, this, SLOT(rpcSendNiippData(QByteArray)));
+	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_NIIPP_CONNECTION_STATUS, this, SLOT(rpcSendNiippConnectionStatus(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION, this, SLOT(rpcSlotServerSendAtlantDirection(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_ATLANT_POSITION, this, SLOT(rpcSlotServerSendAtlantPosition(QByteArray)));
 
@@ -79,7 +81,9 @@ void RPCClient::formCommand(IMessageOld *msg)
 	case COMMAND_SET_NIIPP_BPLA:
 		sendNiippBpla(data);
 		break;
-
+	case COMMAND_GET_NIIPP_CONNECTION_STATUS:
+		sendNiippConnectionStatus(data);
+		break;
 	case COMMAND_SET_SOLVER:
 		sendDataToSovler(data);
 		break;
@@ -168,6 +172,15 @@ void RPCClient::rpcSendNiippData(QByteArray data)
 	}
 }
 
+void RPCClient::rpcSendNiippConnectionStatus(QByteArray data)
+{
+	foreach (IRpcListener* reciever, m_receiversList) {
+		reciever->onMethodCalled(RPC_SLOT_SERVER_SEND_NIIPP_CONNECTION_STATUS, QVariant(data));
+	}
+}
+
+
+
 void RPCClient::rpcSlotServerSendAtlantDirection(QByteArray data)
 {
 	foreach (IRpcListener* reciever, m_receiversList) {
@@ -185,6 +198,11 @@ void RPCClient::rpcSlotServerSendAtlantPosition(QByteArray data)
 void RPCClient::sendNiippBpla(QByteArray data)
 {
 	emit signalSetNIIPPBPLA(data);
+}
+
+void RPCClient::sendNiippConnectionStatus(QByteArray data)
+{
+	emit signalGetNIIPPStatus(data);
 }
 
 void RPCClient::setSolverClear(QByteArray data)

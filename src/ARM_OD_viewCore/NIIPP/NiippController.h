@@ -70,6 +70,7 @@ private slots:
 	void slotStopClicked();
 	void slotStartClicked();
 	void slotOpenRDP();
+	void onGetConnectionStatus();
 
 public slots:
 	virtual void setPower(double value);

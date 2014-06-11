@@ -63,10 +63,12 @@
 
 /// NIIPP
 #define RPC_SLOT_SERVER_SEND_NIIPP_DATA                "rpc_slot_server_send_NIIPP_data"
+#define RPC_SLOT_SERVER_SEND_NIIPP_CONNECTION_STATUS   "rpc_slot_server_send_NIIPP_connection_status"
 
 /// to NIIPP
 #define RPC_SLOT_SET_NIIPP_BPLA                         "rpc_slot_set_niipp_data"
 #define RPC_SLOT_NIIPP_BPLA                             "rpc_slot_niipp_bpla"
+#define RPC_SLOT_GET_NIIPP_CONNECTION_STATUS                         "rpc_slot_get_niipp_connection_status"
 /// to SOLVER
 #define RPC_SLOT_SET_SOLVER_DATA    "rpc_slot_set_solver_data"
 #define RPC_SLOT_SET_SOLVER_CLEAR   "rpc_slot_set_solver_clear"

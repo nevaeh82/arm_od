@@ -210,5 +210,6 @@ void TabManager::changeTabSlot(int index)
 
 	m_currentWidget = controller;
 	m_currentWidget->start();
+
 }
 

@@ -30,6 +30,7 @@ public:
 	void setPoint(const QPointF& coord);
     void setPointBpla(const QPointF& coord);
 
+	void getStatusConnection();
 	void stopCommad();
 	void startCommand();
     void changeValuePower(int source, int value);

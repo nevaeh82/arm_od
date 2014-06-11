@@ -99,7 +99,6 @@ int MapTabWidgetController::init()
 int MapTabWidgetController::start()
 {
 	emit signalStartRPC();
-
 	return 0;
 }
 
@@ -213,11 +212,11 @@ void MapTabWidgetController::appendView(MapTabWidget *view)
 
 	m_niipp1->appendView(m_view->getNiippWidget(1));
 	m_niipp2->appendView(m_view->getNiippWidget(2));
+	connect(this, SIGNAL(signalStartRPC()), m_niipp1, SLOT(onGetConnectionStatus()));
+	connect(this, SIGNAL(signalStartRPC()), m_niipp2, SLOT(onGetConnectionStatus()));
 
 	m_uavDbManager->registerReceiver( m_niipp1 );
 	m_uavDbManager->registerReceiver( m_niipp2 );
-
-
 
 	init();
 }

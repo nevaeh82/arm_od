@@ -53,6 +53,7 @@ private:
 	void formCommand(IMessageOld *msg);
 	void setSolverAuto(QByteArray ba);
 	void sendNiippBpla(QByteArray data);
+	void sendNiippConnectionStatus(QByteArray data);
 	void sendDataToSovler(QByteArray data);
 	void setSolverClear(QByteArray data);
 
@@ -66,6 +67,7 @@ public slots:
 	void rpcSendHyperbola(QByteArray data);
 
 	void rpcSendNiippData(QByteArray data);
+	void rpcSendNiippConnectionStatus(QByteArray data);
 
 	void rpcSlotServerSendAtlantDirection(QByteArray data);
 	void rpcSlotServerSendAtlantPosition(QByteArray data);
@@ -82,6 +84,7 @@ signals:
 	///RPC signals
 	void signalSetClientId(int id);
 	void signalSetNIIPPBPLA(QByteArray data);
+	void signalGetNIIPPStatus(QByteArray data);
 	void signalSetSolverData(QByteArray data);
 	void signalSetSolverDataClear(QByteArray data);
 

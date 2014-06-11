@@ -29,9 +29,13 @@ public:
 	int getSbPowerValue();
 	void changeValuePower(int value, double radiusCircle, double radiusSector, int antennaType);
 	void setAntennaType(int value, Niipp::WorkMode workMode);
+	void setStatusConnection(int status);
 
 private:
 	Ui::NiippWidget *ui;
+
+	QPixmap* m_pmRoundRed;
+	QPixmap* m_pmRoundGreen;
 
 private slots:
 	void enableComplex(bool state);
@@ -42,12 +46,12 @@ private slots:
 signals:
 	void complexEnabled(bool);
 	void valuePowerChanged(int);
-    void stopClicked();
-    void startClicked();
+	void stopClicked();
+	void startClicked();
 	void antennaTypeChanged(int);
 	void modeChanged(int);
 	void cleared();
-    void signalOpenRDP();
+	void signalOpenRDP();
 };
 
 #endif // NIIPPCONTROLWIDGET_H

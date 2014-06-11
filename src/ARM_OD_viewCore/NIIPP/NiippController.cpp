@@ -211,6 +211,17 @@ void NiippController::onMethodCalled(const QString &method, const QVariant &argu
 {
 	QByteArray data = argument.toByteArray();
 
+	if( method == RPC_SLOT_SERVER_SEND_NIIPP_CONNECTION_STATUS ) {
+		int status;
+		int id;
+		QDataStream dataStream(&data, QIODevice::ReadOnly);
+		dataStream >> id;
+		dataStream >> status;
+		if(m_model->getId() != id)
+			return;
+		m_view->setStatusConnection(status);
+	}
+
 	if( method == RPC_SLOT_SERVER_SEND_NIIPP_DATA ) {
 		QDataStream ds(&data, QIODevice::ReadOnly);
 
@@ -288,4 +299,9 @@ void NiippController::appendView(NiippWidget *view)
 	connect(m_view, SIGNAL(modeChanged(int)), this, SLOT(changeMode(int)));
 	connect(m_view, SIGNAL(cleared()), this, SLOT(clear()));
 	connect(m_view, SIGNAL(signalOpenRDP()), this, SLOT(slotOpenRDP()));
+}
+
+void NiippController::onGetConnectionStatus()
+{
+	m_model->getStatusConnection();
 }

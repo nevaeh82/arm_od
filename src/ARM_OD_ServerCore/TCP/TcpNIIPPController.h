@@ -35,6 +35,7 @@ signals:
 
 private slots:
 	void createTcpNIIPPCoderInternalSlot();
+	void connectedToHostInternalSlot(int status);
 };
 
 #endif // TCPNIIPPCONTROLLER_H

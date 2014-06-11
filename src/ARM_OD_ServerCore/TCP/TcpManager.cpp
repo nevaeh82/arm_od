@@ -129,6 +129,9 @@ void TcpManager::onMessageReceived(const quint32 deviceType, const QString& devi
 			if (messageType == TCP_NIIPP_ANSWER) {
 				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_NIIPP_DATA, messageData);
 			}
+			else if(messageType == TCP_NIIPP_ANSWER_CONNECTION_STATUS) {
+				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_NIIPP_CONNECTION_STATUS, messageData);
+			}
 			break;
 		case DeviceTypes::KTR_TCP_DEVICE:
 			if (messageType == TCP_KTR_ANSWER_CONNECTION_STATUS) {
@@ -297,5 +300,32 @@ void TcpManager::onMethodCalledInternalSlot(const QString& method, const QVarian
 				return;
 			}
 			controller->sendData(MessageSP(new Message<QByteArray>(TCP_NIIPP_REQUEST_PBLA, argument.toByteArray())));
+	}
+	else if (method == RPC_SLOT_GET_NIIPP_CONNECTION_STATUS) {
+		QString name;
+		QDataStream ds(&argument.toByteArray(), QIODevice::ReadOnly);
+
+		int id = -1;
+		ds >> id;
+
+		switch (id) {
+			case 100:
+				name = "NIIPP_1";
+				break;
+
+			case 101:
+				name = "NIIPP_2";
+				break;
+
+			default:
+				log_info( QString( "Received unknown NIIPP ID from solver: %1" ).arg( id ) );
+				return;
+		}
+
+		BaseTcpDeviceController* controller = m_controllersMap.value(name, NULL);
+		if (controller == NULL) {
+			return;
+		}
+		controller->isConnected();
 	}
 }

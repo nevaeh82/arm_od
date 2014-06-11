@@ -19,6 +19,7 @@
 
 ///niipp
 #define COMMAND_SET_NIIPP_BPLA      401
+#define COMMAND_GET_NIIPP_CONNECTION_STATUS     402
 
 /// SOLVER
 #define COMMAND_SET_SOLVER          501

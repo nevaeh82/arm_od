@@ -20,6 +20,7 @@ void TcpNIIPPController::createTcpClient()
 {
 	BaseTcpDeviceController::createTcpClient();
 	m_tcpClient->setReconnectInterval(m_NIIPPSettingStruct.reconnectInterval);
+	connect(m_tcpClient, SIGNAL(signalConnectedToHost(int)), this, SLOT(connectedToHostInternalSlot(int)));
 }
 
 void TcpNIIPPController::createTcpNIIPPCoderInternalSlot()
@@ -27,6 +28,25 @@ void TcpNIIPPController::createTcpNIIPPCoderInternalSlot()
 	log_debug("Creating TcpNIIPPCoder...");
 	m_tcpDeviceCoder = new TcpNIIPPCoder(m_id, this);
 
+}
+
+void TcpNIIPPController::connectedToHostInternalSlot(int status)
+{
+	QByteArray dataToSend;
+	QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
+
+	dataStream << m_id;
+	dataStream << status;
+
+	MessageSP message(new Message<QByteArray>(TCP_NIIPP_ANSWER_CONNECTION_STATUS, dataToSend));
+
+	if (message == NULL) {
+		return;
+	}
+
+	foreach (ITcpListener* listener, m_receiversList) {
+		listener->onMessageReceived(m_deviceType, m_tcpDeviceName, message);
+	}
 }
 
 bool TcpNIIPPController::init()
