@@ -10,6 +10,8 @@ BplaAbstract::BplaAbstract(IObjectsFactory* factory, const QString& id, const Ua
 	, m_initialized( false )
 	, m_tailEnabled( true )
 	, m_autoTail( true )
+	, m_lattitudeStddev( 0 )
+	, m_longtitudeStddev( 0 )
 {
 	m_tail = factory->createPath();
 	m_slices = factory->createPath();
