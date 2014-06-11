@@ -8,7 +8,7 @@
 
 #include "PrmSimulator.h"
 
-#define UPDATE_INTERVAL 1000
+#define UPDATE_INTERVAL 500
 #define ANGLE_STEP		0.5
 
 PrmSimulator::PrmSimulator(const uint& port, QObject *parent )
@@ -104,7 +104,7 @@ void PrmSimulator::sendUavsData()
 		list << encodeBplaData(); // it's for UAV_SOLVER_SINGLE_1_SOURCE
 		list << encodeBplaData(); // it's for UAV_SOLVER_SINGLE_2_SOURCE
 	} else {
-		int tailLength = 20;
+		int tailLength = 100;
 
 		angle -= tailLength * ANGLE_STEP;
 		for ( int i = 0; i < tailLength; i++ ) {
