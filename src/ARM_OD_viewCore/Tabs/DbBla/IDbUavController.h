@@ -77,6 +77,9 @@ class IDbUavController
 		virtual UavRole getUavRole(const uint) = 0;
 		virtual UavRole getUavRoleByName(const QString&) = 0;
 		virtual UavRole getUavRoleByCode(const QString&) = 0;
+
+		virtual bool beginTransaction() = 0;
+		virtual bool commit() = 0;
 };
 
 #endif // IDBUAVCONTROLLER_H

@@ -90,11 +90,16 @@ int DbUavManager::addUavInfo(const UavInfo &uavInfo, bool actual,
 
 	// If current record is not actual information about BPLA
 	// we try just to insert/update uav info record
-	int recordIndex = m_dbController->addUavInfo(uavInfo);
+	/// todo: commented because of perfomance issue
+//	int recordIndex = m_dbController->addUavInfo(uavInfo);
+//
+//	if (!actual) {
+//		return recordIndex;
+//	}
 
-	if (!actual) {
-		return recordIndex;
-	}
+	/// todo: uncomment upper code and delete this after perfomance issue will be solved
+	if (!actual) return -1;
+	int recordIndex = m_dbController->addUavInfo(uavInfo);
 
 	QString uavRole = getUavRole(uav.roleId).code;
 	QString key = QString::number(uav.uavId);
@@ -519,6 +524,10 @@ void DbUavManager::sendEnemyUavPoints(const QByteArray& data, uint sourceType)
 	bool singleSourceType = sourceType == UAV_SOLVER_SINGLE_1_SOURCE
 			|| sourceType == UAV_SOLVER_SINGLE_2_SOURCE;
 
+	if ( !m_dbController->beginTransaction() ) {
+		log_warning( "Database transaction was not started!" );
+	}
+
 	for ( int i = 0; i < uavList.length(); i++ ) {
 		UAVPositionDataEnemy &uav = uavList[i];
 		uav.sourceType = sourceType == UAV_SOLVER_SINGLE_1_SOURCE && i % 2 == 1
@@ -537,6 +546,8 @@ void DbUavManager::sendEnemyUavPoints(const QByteArray& data, uint sourceType)
 						isActual && !singleSourceType ? tailStdDev : emptyVector );
 
 	}
+
+	m_dbController->commit();
 }
 
 void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy, const QString &role,

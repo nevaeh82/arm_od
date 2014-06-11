@@ -99,6 +99,9 @@ public:
 
 	void moveToThread(QThread *thread);
 
+	bool beginTransaction();
+	bool commit();
+
 private:
 	int addDictionaryRecord(const QString& dictionary, const QString& name);
 	int getDictionaryRecord(const QString& dictionary, const QString& name);

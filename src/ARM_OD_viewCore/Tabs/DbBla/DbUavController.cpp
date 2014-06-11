@@ -1227,6 +1227,24 @@ void DbUavController::moveToThread(QThread* thread)
 	DbControllerBase::moveToThread( thread );
 }
 
+bool DbUavController::beginTransaction()
+{
+	if ( m_db.transaction() ) return true;
+
+	QString er = m_db.lastError().text();
+	log_debug("SQL is wrong! " + er);
+	return false;
+}
+
+bool DbUavController::commit()
+{
+	if ( m_db.commit() ) return true;
+
+	QString er = m_db.lastError().text();
+	log_debug("SQL is wrong! " + er);
+	return false;
+}
+
 int DbUavController::addDictionaryRecord(const QString& dictionary, const QString& name)
 {
 	QMutexLocker locker(&m_addGetDictionaryMutex);
