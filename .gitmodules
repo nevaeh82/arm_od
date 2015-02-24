@@ -1,3 +1,6 @@
 [submodule "redist/QXT"]
 	path = redist/QXT
 	url = git@192.168.137.67:externals/qxt_bin.git
+[submodule "redist/pwgis"]
+	path = redist/pwgis
+	url = git@192.168.137.67:externals/pwgis_bin.git
