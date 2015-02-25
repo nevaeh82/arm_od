@@ -1,0 +1,6 @@
+#pragma once
+
+#define ARMVERSIONSTRING "@ARMVERSION@"
+
+const char * const ARMVERSION = "@ARMVERSION@";
+const char * const ARMVERSION_SFX = "@WC_REVISION@";
