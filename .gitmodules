@@ -7,8 +7,8 @@
 [submodule "redist/plugins"]
 	path = redist/plugins
 	url = git@192.168.137.67:externals/qt_plugins_bin.git
-[submodule "redist\\qtsingleapplication"]
-	path = redist\\qtsingleapplication
+[submodule "redist/qtsingleapplication"]
+	path = redist/qtsingleapplication
 	url = git@192.168.137.67:externals/qtsingleapplication.git
 [submodule "cmake"]
 	path = cmake
