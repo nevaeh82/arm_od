@@ -13,3 +13,6 @@
 [submodule "cmake"]
 	path = cmake
 	url = git@192.168.137.67:externals/cmake.git
+[submodule "src/CISCommonLib"]
+	path = src/CISCommonLib
+	url = git@192.168.137.67:externals/ciscommonlib.git
