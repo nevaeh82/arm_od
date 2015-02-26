@@ -66,13 +66,8 @@ find_package(Qxt REQUIRED)
 find_package(Protobuf REQUIRED)
 find_package(QtSingleApplication REQUIRED)
 
-if(NOT NO_PWGIS)
 find_package(Qt4 4.7.0 COMPONENTS QtCore QtNetwork QtSql QtGui QtOpenGl QtSvg QtWebkit REQUIRED)
 find_package(PwGis REQUIRED)
-endif()
-
-endif()
-
 
 configure_file(
 	"${PROJECT_SOURCE_DIR}/version.ini.in"
@@ -143,7 +138,6 @@ set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS
 !include ${uninst_nsis_kill_extra_path_out}
 ")
 endforeach()
-endif()
 
 if(INSTALL_RUNTIME_LIBS)
 	if(WIN32)
