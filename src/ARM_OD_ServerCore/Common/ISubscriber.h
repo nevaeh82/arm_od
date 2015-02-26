@@ -13,9 +13,9 @@
 //#define RCP_COMMAND_RECOGNIZE   104
 
 
-//#define FLAKON_FFT              1001
-//#define FLAKON_CORRELATION      1004
-//#define FLAKON_SIGNAL_TYPE      1005
+#define FLAKON_FFT              1001
+#define FLAKON_CORRELATION      1004
+#define FLAKON_SIGNAL_TYPE      1005
 
 /////PRM
 //#define PRM_SET_FREQ            200
@@ -25,7 +25,7 @@
 //#define PRM_SET_FILTER          204
 
 
-//#define PRM_STATUS              2000
+#define PRM_STATUS              2000
 
 #include "Defines.h"
 

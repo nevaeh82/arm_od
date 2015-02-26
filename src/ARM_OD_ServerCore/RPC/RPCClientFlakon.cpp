@@ -22,7 +22,7 @@ void RPCClientFlakon::set_id(int id)
     _id = id;
 }
 
-void RPCClientFlakon::send_data(QSharedPointer<IMessage> msg_ptr)
+void RPCClientFlakon::send_data(QSharedPointer<IMessageOld> msg_ptr)
 {
     _slotGetData(msg_ptr);
 //    emit signalReadyData(msg_ptr);
@@ -47,7 +47,7 @@ void RPCClientFlakon::_slotGetData(rpc_flakon_msg msg_ptr)
 {
     int type1 = 1;
     int id = 0;
-    IMessage *f = (msg_ptr.data());
+	IMessageOld *f = (msg_ptr.data());
     QByteArray* dd = f->get(id, type1);
     QDataStream ds(*dd);
 //    qDebug() << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!called this " << _id;

@@ -4,7 +4,7 @@ add_subdirectory(CISCommonLib)
 add_subdirectory(ARM_OD_Common)
 
 #add_subdirectory(ARM_OD_Server)
-#add_subdirectory(ARM_OD_ServerCore)
+add_subdirectory(ARM_OD_ServerCore)
 #add_subdirectory(ARM_OD_view)
 #add_subdirectory(ARM_OD_viewCore)
 
