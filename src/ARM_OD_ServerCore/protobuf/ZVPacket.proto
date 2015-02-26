@@ -1,0 +1,91 @@
+option optimize_for = LITE_RUNTIME;
+
+package Zaviruha;
+
+enum Actions
+{
+	unknownAction = 0;
+	sendAtlantDirection = 1;
+	sendAtlantPosition = 2;
+	sendBplaPoints = 3;
+	sendBplaPointsAuto = 4;
+	sendSolverData = 5;
+	sendSolverClear = 6;
+}
+
+message Packet
+{	
+	message ArgumentVariant
+	{	
+		message Header
+		{
+			required int32 requestId = 1;
+			required int32 sourceId = 2;
+			required uint64 dateTime = 3;
+		}
+		
+		message AtlantDirection
+		{
+			required Header header = 1;
+			
+			required string postName = 2;
+			required double postLatitude = 3;
+			required double postLongitude = 4; 
+			required double postHeight = 5; 
+			required double frequency = 6; //central frequency
+			required double width = 7; //peak width
+			required double direction = 8; //peleng
+			required double angle = 9;
+			required double level = 10;
+			required double quality = 11;
+			required int32 motionType = 12;
+			required double motionConfidence = 13;
+		}
+		
+		message AtlantPosition
+		{
+			required Header header = 1;
+			
+			required double longitude = 2;
+			required double latitude = 3;
+			required double quality = 4;
+		}
+		
+		message BplaPoints
+		{
+			message Point
+			{
+				required float x = 1;
+				required float y = 2;
+			}
+			
+			required uint64 time = 1;
+			required int32 state = 2;
+			required Point pointStdDev = 3;
+			repeated Point track = 4;
+			required double speed = 5;
+			required double altitude = 6;
+			required double course = 7;
+		}
+		
+		message SolverData
+		{
+			required int32 id = 1;
+			required double altitude = 2;
+			required int32 trackLength = 3;
+		}
+		
+		repeated AtlantDirection atlantDirection = 1;
+		repeated AtlantPosition atlantPosition = 2;
+		repeated BplaPoints bplaPoints = 3;
+		repeated SolverData solverData = 4;
+	}
+			
+	message Command
+	{
+		required Actions action = 1 [default = unknownAction];
+		optional ArgumentVariant arguments = 2;
+	}
+		
+	required Command command = 1;
+}

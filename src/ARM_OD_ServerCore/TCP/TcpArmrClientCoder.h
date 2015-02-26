@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include "Tcp/BaseTcpDeviceCoder.h"
-#include "Protobuf/ARMR_OD/ZVPacket.pb.h"
+#include "ZVPacket.pb.h"
 #include "UAVDefines.h"
 
 class TcpArmrClientCoder : public BaseTcpDeviceCoder
