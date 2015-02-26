@@ -12,7 +12,7 @@ endif()
 
 
 
-@#if(WIN32)
+#@if(WIN32)
 #set(WIN32_BT_LIBRARIES "-lbfd -lintl -liberty -limagehlp")
 #endif()
 
