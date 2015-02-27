@@ -86,6 +86,8 @@ endif()
 include_directories(${PROJECT_BINARY_DIR})
 
 install(FILES ${PROJECT_BINARY_DIR}/version.ini DESTINATION ${CLIENT_DATA_DIR})
+install(FILES ${PROJECT_SOURCE_DIR}/settings/Client.ini DESTINATION ${BINDIR})
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/settings/ DESTINATION ${BINDIR})
 
 set(NSIS_EXE_FOR_LINKS
 	""
