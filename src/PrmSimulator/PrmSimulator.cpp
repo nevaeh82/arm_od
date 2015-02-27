@@ -8,6 +8,9 @@
 
 #include "PrmSimulator.h"
 
+#define _USE_MATH_DEFINES
+#include "math.h"
+
 #define UPDATE_INTERVAL 500
 #define ANGLE_STEP		0.5
 

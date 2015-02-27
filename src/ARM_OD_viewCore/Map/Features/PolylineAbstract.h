@@ -24,7 +24,7 @@ class PolylineAbstract : public MapObjectAbstract
 
 protected:
 	IObjectsFactory* m_factory;
-	Path* m_path;
+	Pw::Gis::Path* m_path;
 
 	PolylineAbstract(IObjectsFactory* factory, const QString& id, const QString& name,
 					 const QVector<QPointF>& polyline, QObject* parent = 0);

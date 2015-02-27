@@ -31,7 +31,7 @@ private:
 	RpcConfigClient* m_rpcConfigClient;
 
 	SolverSettingsDialogController* solverSettingsController;
-	Pw::Common::ServiceControl::ServiceHandler* m_serverHandler;
+	SkyHobbit::Common::ServiceControl::ServiceHandler* m_serverHandler;
 
 	int m_uavLifeTime;
 

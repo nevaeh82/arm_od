@@ -14,7 +14,7 @@ class CheckPoint : public FeatureAbstract
 	friend class FeaturesFactory;
 
 protected:
-	Rectangle* m_rectangle;
+	Pw::Gis::Rectangle* m_rectangle;
 
 	CheckPoint(IObjectsFactory* factory, const QString& id, const QString& name,
 			   const QPointF& position);

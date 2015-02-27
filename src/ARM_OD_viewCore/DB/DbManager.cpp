@@ -9,7 +9,8 @@
 DbManager::DbManager(QObject *parent) :
 	QObject(parent)
 {
-	m_logger = Pw::Logger::PwLoggerFactory::Instance()->createLogger(LOGGERCLASSNAME(DbManager));
+	//! TODO RETurn logger! Comment to try build)
+	////m_logger = Pw::Logger::PwLoggerFactory::Instance()->createLogger(LOGGERCLASSNAME(DbManager));
 
 	QString dbPath = QString(DB_PATH) + QDir::separator() + QString(DB_NAME);
 	m_dbController = new DbController(dbPath, this);
@@ -156,7 +157,7 @@ Object DbManager::createStation(const QString &stationName)
 	uint recordId = m_dbController->addProperty(prop);
 
 	if (recordId == INVALID_INDEX) {
-		m_logger->debug("Failed to create freq property");
+		////m_logger->debug("Failed to create freq property");
 	}
 
 	prop.name = DB_SELECTED_PROPERTY;
@@ -167,7 +168,7 @@ Object DbManager::createStation(const QString &stationName)
 	recordId = m_dbController->addProperty(prop);
 
 	if (recordId == INVALID_INDEX) {
-		m_logger->debug("Failed to create selected property");
+		//m_logger->debug("Failed to create selected property");
 	}
 
 	prop.name = DB_CENTER_PROPERTY;
@@ -178,7 +179,7 @@ Object DbManager::createStation(const QString &stationName)
 	recordId = m_dbController->addProperty(prop);
 
 	if (recordId == INVALID_INDEX) {
-		m_logger->debug("Failed to create center property");
+		//m_logger->debug("Failed to create center property");
 	}
 
 	prop.name = DB_START_PROPERTY;
@@ -189,7 +190,7 @@ Object DbManager::createStation(const QString &stationName)
 	recordId = m_dbController->addProperty(prop);
 
 	if (recordId == INVALID_INDEX) {
-		m_logger->debug("Failed to create start property");
+		//m_logger->debug("Failed to create start property");
 	}
 
 	prop.name = DB_STOP_PROPERTY;
@@ -200,7 +201,7 @@ Object DbManager::createStation(const QString &stationName)
 	recordId = m_dbController->addProperty(prop);
 
 	if (recordId == INVALID_INDEX) {
-		m_logger->debug("Failed to create end property");
+		//m_logger->debug("Failed to create end property");
 	}
 
 	prop.name = DB_LEADING_OP_PROPERTY;
@@ -211,7 +212,7 @@ Object DbManager::createStation(const QString &stationName)
 	recordId = m_dbController->addProperty(prop);
 
 	if (recordId == INVALID_INDEX) {
-		m_logger->debug("Failed to create leading OP property");
+		//m_logger->debug("Failed to create leading OP property");
 	}
 
 	prop.name = DB_AVERAGING_PROPERTY;
@@ -222,7 +223,7 @@ Object DbManager::createStation(const QString &stationName)
 	recordId = m_dbController->addProperty(prop);
 
 	if (recordId == INVALID_INDEX) {
-		m_logger->debug("Failed to create averaging property");
+		//m_logger->debug("Failed to create averaging property");
 	}
 
 
@@ -234,7 +235,7 @@ Object DbManager::createStation(const QString &stationName)
 	recordId = m_dbController->addProperty(prop);
 
 	if (recordId == INVALID_INDEX) {
-		m_logger->debug("Failed to create panorama start property");
+		//m_logger->debug("Failed to create panorama start property");
 	}
 
 
@@ -246,7 +247,7 @@ Object DbManager::createStation(const QString &stationName)
 	recordId = m_dbController->addProperty(prop);
 
 	if (recordId == INVALID_INDEX) {
-		m_logger->debug("Failed to create panorama end property");
+		//m_logger->debug("Failed to create panorama end property");
 	}
 
 

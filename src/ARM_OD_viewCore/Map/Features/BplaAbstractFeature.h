@@ -15,8 +15,8 @@ class BplaAbstract : public Marker
 protected:
 	uint m_sourceId;
 
-	Path* m_tail;
-	Path* m_slices;
+	Pw::Gis::Path* m_tail;
+	Pw::Gis::Path* m_slices;
 
 	double m_altitude;
 	double m_speed;

@@ -5,6 +5,9 @@
 
 #include "KtrSimulator.h"
 
+#define _USE_MATH_DEFINES
+#include "math.h"
+
 #define  CMD_LIST_BPLA					1
 #define  CMD_REGISTER_LISTENER			2
 

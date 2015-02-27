@@ -1,0 +1,5 @@
+project(${PROJECT_NAME_GLOBAL}view)
+
+list(APPEND deps ${PROJECT_NAME_GLOBAL}CISCommonLib QXT PWGIS ${PROJECT_NAME_GLOBAL}Common ${PROJECT_NAME_GLOBAL}viewCore)
+
+add_service(${PROJECT_NAME} ${deps})

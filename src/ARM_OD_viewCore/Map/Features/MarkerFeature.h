@@ -13,7 +13,7 @@ class Marker : public FeatureAbstract
 //	friend class FeaturesFactory;
 
 protected:
-	::Marker* m_marker;
+	Pw::Gis::Marker* m_marker;
 
 	Marker(IObjectsFactory* factory , const QString& id, const QString& name,
 			 const QPointF& position);

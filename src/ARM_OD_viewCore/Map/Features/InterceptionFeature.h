@@ -15,7 +15,7 @@ class Interception : public FeatureAbstract
 	friend class FeaturesFactory;
 
 protected:
-	Circle* m_circle;
+	Pw::Gis::Circle* m_circle;
 
 	const int m_friendBplaId;
 	const int m_enemyBplaId;

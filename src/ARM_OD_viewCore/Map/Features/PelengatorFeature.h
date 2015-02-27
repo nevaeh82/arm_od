@@ -15,7 +15,7 @@ class Pelengator : public FeatureAbstract
 	friend class FeaturesFactory;
 
 protected:
-	Sector* m_sector;
+	Pw::Gis::Sector* m_sector;
 	int m_postId;
 	double m_angle;
 

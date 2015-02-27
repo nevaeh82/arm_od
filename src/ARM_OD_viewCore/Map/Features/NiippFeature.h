@@ -21,8 +21,8 @@ public:
 	enum Mode { Directed, NotDirected };
 
 protected:
-	Circle* m_circle;
-	Sector* m_sector;
+	Pw::Gis::Circle* m_circle;
+	Pw::Gis::Sector* m_sector;
 
 	int m_niippId;
 	Mode m_mode;

@@ -28,7 +28,7 @@ MainWindowController::MainWindowController(QObject *parent) :
 	#ifdef QT_DEBUG
 		serverName += "d";
 	#endif
-	m_serverHandler = new Pw::Common::ServiceControl::ServiceHandler(serverName, QStringList(), NULL, this);
+	m_serverHandler = new SkyHobbit::Common::ServiceControl::ServiceHandler(serverName, QStringList(), NULL, this);
 }
 
 MainWindowController::~MainWindowController()
@@ -114,11 +114,13 @@ void MainWindowController::resetServer()
 {
 	QStringList serverPIDList;
 	bool searchResult;
-	searchResult = m_serverHandler->isProcessExist( m_serverHandler->getServicePath(), serverPIDList );
 
-	if( searchResult ) {
-		m_serverHandler->killProcessExist( serverPIDList );
-	}
+	//! TODO Make other function to kill process
+//	searchResult = m_serverHandler->isProcessExist( m_serverHandler->getServicePath(), serverPIDList );
+
+//	if( searchResult ) {
+//		m_serverHandler->killProcessExist( serverPIDList );
+//	}
 }
 
 void MainWindowController::startTabManger()
