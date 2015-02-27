@@ -1,0 +1,11 @@
+		;Kill processes if srated
+		${nsProcess::KillProcess} @NSIS_EXE_FOR_LINK@.exe $R0
+
+		StrCmp $R0 "0" 0 +2 ;Goes to Abort when status of KillProccess is not '0'
+			Goto +4         ;if status 0 - continue
+			;or
+			StrCmp $R0 "603" 0 +2 ;If status 603 - app not loaded
+				Goto +2
+				;or
+				Abort "Ошибка завершения @NSIS_EXE_FOR_LINK@.exe"
+		;end of
