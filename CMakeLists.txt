@@ -32,7 +32,7 @@ include(UsefulMacros)
 
 option(MAKE_TESTS "Make Tests" ON)
 option(INSTALL_RUNTIME_PATH "Install rpath" OFF)
-option(INSTALL_RUNTIME_LIBS "Install runtime libs" OFF)
+option(INSTALL_RUNTIME_LIBS "Install runtime libs" ON)
 option(NO_PWGIS "Build without PwGis" OFF)
 option(USE_SYSLOG "Use syslog instead qxtlogger" OFF)
 option(USE_COVERAGE "Run coverage for statistics" OFF)
@@ -168,8 +168,18 @@ if(INSTALL_RUNTIME_LIBS)
 					endif()
 				endforeach()
 			endif()
-	endif()
 
+			#install mysql libs
+			message("Install sql libraries...")
+			install( DIRECTORY ${PROJECT_BASE_DIR}/redist/plugins/${FULL_QT_VERSION}/${SPEC}/sqldrivers/
+					 DESTINATION ${LIBDIR}
+					 FILES_MATCHING PATTERN "libmysql.*"
+					)
+			install( DIRECTORY ${PROJECT_BASE_DIR}/redist/plugins/${FULL_QT_VERSION}/${SPEC}/sqldrivers/
+					 DESTINATION ${LIBDIR}/sqldrivers
+					 FILES_MATCHING PATTERN "qsqlmysql${BICYCLE_DEBUG_POSTFIX}4.*"
+					)
+	endif()
 endif()
 
 include(CPack)

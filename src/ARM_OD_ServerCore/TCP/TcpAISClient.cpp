@@ -6,15 +6,15 @@ TcpAISClient::TcpAISClient(QObject* parent) :
 	connect(this, SIGNAL(connectToHostAISInternalSignal(QString,quint32)), this, SLOT(connectToHostAISInternalSlot(QString,quint32)));
 
 	/// Because they are instansed in BaseTcpClient
-	if (m_reconnectTimer != NULL) {
-		delete m_reconnectTimer;
-		m_tcpSocket = NULL;
-	}
+//	if (m_reconnectTimer != NULL) {
+//		delete m_reconnectTimer;
+//		m_tcpSocket = NULL;
+//	}
 
-	if (m_tcpSocket != NULL) {
-		delete m_tcpSocket;
-		m_tcpSocket = NULL;
-	}
+//	if (m_tcpSocket != NULL) {
+//		delete m_tcpSocket;
+//		m_tcpSocket = NULL;
+//	}
 
 	m_networkAccessManager = new QNetworkAccessManager(this);
 	connect(m_networkAccessManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onGetQuerySlot(QNetworkReply*)));
