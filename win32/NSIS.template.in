@@ -553,7 +553,6 @@ FunctionEnd
   ;!insertmacro MUI_PAGE_LICENSE "@CPACK_RESOURCE_FILE_LICENSE@"
   Page custom InstallOptionsPage
   !insertmacro MUI_PAGE_DIRECTORY
-  !insertmacro MUI_PAGE_COMPONENTS
 
   ;Start Menu Folder Page Configuration
   !define MUI_STARTMENUPAGE_REGISTRY_ROOT "SHCTX"
@@ -809,27 +808,7 @@ Function .onSelChange
 FunctionEnd
 
 ;--------------------------------------
-;--------Components Section-----------------
-; Optionally installing SkyHobbitService
-;-------------------------------------------
-Section "Установить сервис LandServer" SecService
-	ExecWait '$INSTDIR\installService.bat -rs'
-	ExecWait '$INSTDIR\installService.bat -is'
-SectionEnd
 
-;--------------------------------
-;Descriptions
-
-  ;Language strings
-  LangString DESC_SecService ${LANG_ENGLISH} "Setup service for SkyHobbitLandServer"
-  LangString DESC_SecService ${LANG_RUSSIAN} "Установка наземного сервера SkyHobbit, как системного сервиса"
-
-  ;Assign language strings to sections
-  !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-    !insertmacro MUI_DESCRIPTION_TEXT ${SecService} $(DESC_SecService)
-  !insertmacro MUI_FUNCTION_DESCRIPTION_END
-  
-;--------------------------------
 ;Uninstaller Section
 
 Section "Uninstall"
