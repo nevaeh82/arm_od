@@ -19,3 +19,12 @@
 [submodule "redist/protobuf"]
 	path = redist/protobuf
 	url = git@192.168.137.67:externals/protobuf_bin.git
+[submodule "redist/libmysql"]
+	path = redist/libmysql
+	url = git@192.168.137.67:externals/libmysql.git
+[submodule "tools/cxxmock"]
+	path = tools/cxxmock
+	url = git@192.168.137.67:externals/cxxmock.git
+[submodule "tools/cxxtest"]
+	path = tools/cxxtest
+	url = git@192.168.137.67:externals/cxxtest.git
