@@ -81,7 +81,6 @@ if(INSTALL_RUNTIME_LIBS OR USE_SHARED_OUTPUT)
 		endif()
 	endif()
 
-
 	# install runtime libs
 	if(INSTALL_RUNTIME_LIBS)
 		install(FILES ${runtime_libs} DESTINATION ${LIBDIR})
