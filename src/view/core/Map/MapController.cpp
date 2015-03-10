@@ -3,7 +3,7 @@
 #include <QLabel>
 #include <QCursor>
 
-#include <Logger.h>
+#include <Logger/Logger.h>
 
 #include <MapManagerEvents.h>
 

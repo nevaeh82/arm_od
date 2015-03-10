@@ -1,4 +1,4 @@
-#include <Logger.h>
+#include <Logger/Logger.h>
 
 #include "Map/IMapStyleManager.h"
 #include "Map/Features/NiippFeature.h"
@@ -111,7 +111,7 @@ void Niipp::update(const ::Niipp& niipp)
 
 void Niipp::updateMap()
 {
-    switch( m_mode ) {
+	switch( m_mode ) {
 		case Directed:
 			if( m_sector->radius() <= 0 ) return;
 			m_sector->updateMap();

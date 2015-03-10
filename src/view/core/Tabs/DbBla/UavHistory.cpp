@@ -4,7 +4,7 @@
 #include <QEventLoop>
 #include <QThread>
 
-#include <Logger.h>
+#include <Logger/Logger.h>
 
 #include "UavHistory.h"
 #include "Uav/UavModel.h"

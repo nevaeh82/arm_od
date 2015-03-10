@@ -1,6 +1,6 @@
 ﻿#include <QVariant>
 
-#include <Logger.h>
+#include <Logger/Logger.h>
 
 #include "Uav/UavModel.h"
 #include "Map/MapStyleManager.h"

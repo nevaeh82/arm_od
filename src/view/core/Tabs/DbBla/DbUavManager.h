@@ -11,12 +11,12 @@
 #include <QDir>
 
 #include <logManager/LogManager.h>
+#include <Templates/BaseSubject.h>
 
 #include "Tabs/DbBla/DbUavController.h"
 
 #include "Interfaces/IDbUavManager.h"
 #include "Interfaces/IUavDbChangedListener.h"
-#include "BaseSubject.h"
 
 #include "RPC/RpcDefines.h"
 #include "UAVDefines.h"

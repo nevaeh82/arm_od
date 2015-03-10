@@ -10,7 +10,7 @@
 #include "MainWindow.h"
 #include "MainWindowController.h"
 
-#include <Logger.h>
+#include <Logger/Logger.h>
 
 typedef QVector<QPointF>         rpc_send_points_vector;
 

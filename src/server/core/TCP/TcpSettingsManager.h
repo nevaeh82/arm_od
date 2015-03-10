@@ -7,9 +7,10 @@
 #include <QSettings>
 #include <QStringList>
 
+#include <Templates/SingletonTemplate.h>
+#include <Logger/Logger.h>
+
 #include "Interfaces/ITcpSettingsManager.h"
-#include <SingletonTemplate.h>
-#include <Logger.h>
 
 class TcpSettingsManager : public QObject, public ITcpSettingsManager, public SingletonTemplate<TcpSettingsManager, ITcpSettingsManager>
 {

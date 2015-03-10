@@ -7,7 +7,7 @@
 #include <QMutex>
 #include <QMutexLocker>
 
-#include <SingletonTemplate.h>
+#include <Templates/SingletonTemplate.h>
 
 #include "Interfaces/SettingsManager/IEnviromentSettingsManager.h"
 

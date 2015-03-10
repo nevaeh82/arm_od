@@ -8,7 +8,7 @@
 #include <Interfaces/IRpcListener.h>
 #include <Interfaces/Tcp/ITcpListener.h>
 #include <Interfaces/Tcp/ITcpManager.h>
-#include <Logger.h>
+#include <Logger/Logger.h>
 
 #include "Common/Defines.h"
 #include "Interfaces/Tcp/ITcpManager.h"

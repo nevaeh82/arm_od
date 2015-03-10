@@ -4,8 +4,9 @@
 #include <QObject>
 #include <QMutex>
 
+#include <Templates/SingletonTemplate.h>
+
 #include "Interfaces/SettingsManager/IDbBlaSettingsManager.h"
-#include "SingletonTemplate.h"
 
 class DbBlaSettingsManager : public QObject, public IDbBlaSettingsManager, public SingletonTemplate<DbBlaSettingsManager, IDbBlaSettingsManager>
 {

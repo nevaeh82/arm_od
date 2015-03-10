@@ -1,7 +1,7 @@
 #include "Tabs/DbBla/Defines.h"
 #include "NIIPPController.h"
 
-#include <Logger.h>
+#include <Logger/Logger.h>
 
 NiippController::NiippController(int id, QString name, QPointF latlon, IMapController* mapController,
 								 ITabManager* parentTab, QObject* parent)

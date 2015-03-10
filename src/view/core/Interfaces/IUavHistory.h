@@ -4,7 +4,7 @@
 #include <QDateTime>
 #include <QSqlDatabase>
 
-#include <BaseSubject.h>
+#include <Templates/BaseSubject.h>
 
 #include "Interfaces/IUavHistoryListener.h"
 

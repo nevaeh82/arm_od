@@ -5,9 +5,10 @@
 #include <QVariant>
 #include <QString>
 
+#include <Templates/BaseSubject.h>
+
 #include "Settings/SettingsNode.h"
 #include "Interfaces/IDbChangedListener.h"
-#include "BaseSubject.h"
 
 class IDbManager: public BaseSubject<IDbChangedListener>
 {

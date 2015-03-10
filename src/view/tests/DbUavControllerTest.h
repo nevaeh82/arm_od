@@ -10,7 +10,7 @@
 #include "Db/Defines.h"
 #include "Interfaces/IDbControllerBase.h"
 
-#include "Logger.h"
+#include <Logger/Logger.h>
 
 class testDbUav : public CxxTest::TestSuite
 {

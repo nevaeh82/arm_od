@@ -1,2 +1,2 @@
-start ARM_OD_view.exe
+start ZaviruhaODView.exe
 Server.bat

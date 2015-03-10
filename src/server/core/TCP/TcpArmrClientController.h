@@ -8,7 +8,7 @@
 #include "Info/BaseSettings.h"
 #include "Info/ArmrTcpClientSettings.h"
 
-#include "Logger.h"
+#include <Logger/Logger.h>
 
 #include "TcpDevicesDefines.h"
 

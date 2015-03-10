@@ -1,4 +1,4 @@
-#include <Logger.h>
+#include <Logger/Logger.h>
 #include <TreeModel/TreeItem.h>
 #include <Settings/SettingsNode.h>
 

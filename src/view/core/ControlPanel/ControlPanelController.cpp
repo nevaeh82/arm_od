@@ -1,7 +1,7 @@
 #include <QMessageBox>
 #include <QApplication>
 
-#include <Logger.h>
+#include <Logger/Logger.h>
 
 #include "ControlPanelController.h"
 #include "Tabs/DbBla/Defines.h"

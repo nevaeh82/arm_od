@@ -1,52 +1,37 @@
-project(ARM_OD)
+project(ZaviruhaOD)
 cmake_minimum_required(VERSION 2.6.3)
 
-set(PROJECT_NAME_GLOBAL ${PROJECT_NAME})
-
-set(PROJECT_NAME "ARM_OD")
-set(PROJECT_NAME_LOW "ARM_OD")
-
-if(NOT ARMVERSION)
-	set(ARMVERSION "1.0")
+if(NOT VERSION)
+	set(VERSION "1.5.0")
 endif()
 
-
-
-#@if(WIN32)
-#set(WIN32_BT_LIBRARIES "-lbfd -lintl -liberty -limagehlp")
-#endif()
-
-set(VERSION_SUFFIX "GIT")
-
-include(CheckIncludeFile)
-include(CheckIncludeFiles)
-include(CheckFunctionExists)
-include(FindPkgConfig)
-include(CheckCXXSourceCompiles)
-find_package(PkgConfig)
-find_package(Git)
-
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(UsefulMacros)
 
-option(MAKE_TESTS "Make Tests" ON)
+# project options
+option(MAKE_TESTS "Include tests in solution" ON)
 option(INSTALL_RUNTIME_PATH "Install rpath" OFF)
 option(INSTALL_RUNTIME_LIBS "Install runtime libs" ON)
-option(NO_PWGIS "Build without PwGis" OFF)
 option(USE_SYSLOG "Use syslog instead qxtlogger" OFF)
 option(USE_COVERAGE "Run coverage for statistics" OFF)
 option(CREATE_TR "Dynamical create qrc with qm files" ON)
-option(CREATE_BUNDLE "Create bundle on install" OFF)
-option(USE_SHARED_OUTPUT "Place all build binaries on one common direcotory bin" OFF)
-
+option(CREATE_BUNDLE "Create bundle on install" ON)
+option(USE_SHARED_OUTPUT "Place all build binaries on one common direcotory bin" ON)
 option(NO_BACKTRACE "Build without backtrace" OFF)
+
+# proccess options
 if(NO_BACKTRACE)
-add_definitions(-DNO_BACKTRACE)
+	add_definitions(-DNO_BACKTRACE)
 endif()
 
-include(CommonInit)
-find_package(Threads REQUIRED)
+if(USE_SYSLOG)
+	add_definitions(-DUSE_SYSLOG)
+endif()
+
+if(WIN32)
+	add_definitions(-DUNICODE)
+	add_definitions(-D_UNICODE)
+endif()
 
 if(USE_SHARED_OUTPUT)
 	set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )
@@ -54,132 +39,116 @@ if(USE_SHARED_OUTPUT)
 	set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )
 endif()
 
-if(USE_SYSLOG)
-add_definitions(-DUSE_SYSLOG)
-endif()
+# include qt package
+find_package(Qt4 4.8.0 COMPONENTS QtCore QtNetwork QtSql QtGui QtSvg QtWebKit REQUIRED)
 
-find_package(Qt4 4.7.0 COMPONENTS QtCore QtNetwork QtSql REQUIRED)
+include(CommonInit)
+include(CodeCoverage)
 
-set(FULL_QT_VERSION "${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}")
-
+# include thrid party packages
+find_package(Threads REQUIRED)
 find_package(Qxt REQUIRED)
 find_package(Protobuf REQUIRED)
 find_package(QtSingleApplication REQUIRED)
-
-find_package(Qt4 4.7.0 COMPONENTS QtCore QtNetwork QtSql QtGui QtOpenGl QtSvg QtWebkit REQUIRED)
 find_package(PwGis REQUIRED)
 
-configure_file(
-	"${PROJECT_SOURCE_DIR}/version.ini.in"
-	"${PROJECT_BINARY_DIR}/version.ini")
+# scripts for runtime libs installation and copying
+if(INSTALL_RUNTIME_LIBS OR USE_SHARED_OUTPUT)
+	set(runtime_libs)
 
-configure_file(
-	"${PROJECT_SOURCE_DIR}/Version.h.in"
-	"${PROJECT_BINARY_DIR}/VersionGlobal.h")
+	# collect runtime libs
+	# todo: maybe it will be better to move the same actions below in function
+	if(WIN32)
+		if(QXT_LIBRARIES)
+			foreach(lib ${QXT_LIBRARIES})
+				get_filename_component(lib_dir ${lib} PATH)
+				get_filename_component(lib_name ${lib} NAME_WE)
+				string(REPLACE lib "" lib_name ${lib_name})
+				file(GLOB libs ${lib_dir}/${lib_name}.dll)
+				list(APPEND runtime_libs ${libs})
+			endforeach()
+		endif()
 
-if( ARMVERSION )
-		string( REGEX REPLACE "\\..+" "" ARMVERSION_MAJOR ${ARMVERSION} )
-		string( REGEX REPLACE "^[^.]+\\.([^.]+).*" "\\1" ARMVERSION_MINOR ${ARMVERSION} )
-		string( REGEX REPLACE "^[^.]+\\.[^.]+\\.([^.]+).*" "\\1" ARMVERSION_PATCH ${ARMVERSION} )
+		if(PWGIS_LIBRARIES)
+			message("${PWGIS_LIBRARIES}")
+			foreach(lib ${PWGIS_LIBRARIES})
+				get_filename_component(lib_dir ${lib} PATH)
+				get_filename_component(lib_name ${lib} NAME_WE)
+				string(REPLACE lib "" lib_name ${lib_name})
+				file(GLOB libs ${lib_dir}/${lib_name}.dll)
+				list(APPEND runtime_libs "${libs}")
+			endforeach()
+		endif()
+	endif()
+
+
+	# install runtime libs
+	if(INSTALL_RUNTIME_LIBS)
+		install(FILES ${runtime_libs} DESTINATION ${LIBDIR})
+	endif()
+
+	# copy runtime libs to shared output directory for better debugging
+	if(USE_SHARED_OUTPUT)
+		add_custom_target(copy_runtime ALL COMMENT "Copy runtime libs to shared output directy")
+
+		foreach(lib ${runtime_libs})
+			get_filename_component(lib_name ${lib} NAME)
+			add_custom_command(
+				TARGET copy_runtime POST_BUILD
+				COMMAND ${CMAKE_COMMAND} -E copy_if_different ${lib} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${lib_name})
+		endforeach()
+	endif()
 endif()
 
-include_directories(${PROJECT_BINARY_DIR})
-
-install(FILES ${PROJECT_BINARY_DIR}/version.ini DESTINATION ${CLIENT_DATA_DIR})
-install(FILES ${PROJECT_SOURCE_DIR}/settings/Client.ini DESTINATION ${BINDIR})
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/settings/ DESTINATION ${BINDIR})
-
-set(NSIS_EXE_FOR_LINKS
-	""
-	CACHE STRING "" FORCE)
 
 add_subdirectory(src)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/win32/)
-set(CPACK_GENERATOR NSIS)
-set(CPACK_PACKAGE_VENDOR "STC")
-set(CPACK_PACKAGE_VERSION ${ARMVERSION})
-set(CPACK_NSIS_INSTALL_ROOT "C:")
+if(WIN32)
+	include(nsis.cmake)
 
-set(CPACK_PACKAGE_NAME "ARM_OD")
-set(CPACK_NSIS_INSTALLED_ICON_NAME "ARM_OD.exe")
-list(APPEND CPACK_NSIS_CREATE_ICONS_EXTRA "
-CreateShortCut '$DESKTOP\\\\ARM_OD-${ARMVERSION}.lnk' '$INSTDIR\\\\ARM_OD.exe'
-")
-list(APPEND CPACK_NSIS_DELETE_ICONS_EXTRA "
-Delete '$DESKTOP\\\\ARM_OD-${ARMVERSION}.lnk'
-")
+	set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/win32/)
+	set(CPACK_GENERATOR NSIS)
 
-set(CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_NAME} ${ARMVERSION}")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY ${CPACK_PACKAGE_NAME})
-set(CPACK_PACKAGE_INSTALL_DIRECTORY "${CPACK_PACKAGE_NAME}\\\\${CPACK_PACKAGE_NAME} ${ARMVERSION}")
-set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}Setup_${ARMVERSION}")
-set(CPACK_PACKAGE_INSTALL_REGISTRY_KEY ${CPACK_NSIS_DISPLAY_NAME})
+	set(CPACK_PACKAGE_NAME "ZaviruhaOD")
+	set(CPACK_PACKAGE_VENDOR "STC")
+	set(CPACK_PACKAGE_VERSION ${VERSION})
 
-unset(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS)
-unset(NSIS_MENU_LINKS)
+	# GUI output title
+	set(CPACK_NSIS_PACKAGE_NAME "${PROJECT_NAME_RUS} ${VERSION}")
 
-set(inst_nsis_extra_path "${CMAKE_CURRENT_SOURCE_DIR}/win32/inst_extra.nsh")
-string(REPLACE "/" "\\\\" inst_nsis_extra_path_out ${inst_nsis_extra_path})
+	# windows uninstaller display name
+	set(CPACK_NSIS_DISPLAY_NAME "${CPACK_NSIS_PACKAGE_NAME}")
 
-set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "!include ${inst_nsis_extra_path_out}")
+	# ???
+	set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${CPACK_NSIS_PACKAGE_NAME}")
 
-set(uninst_nsis_extra_path "${CMAKE_CURRENT_SOURCE_DIR}/win32/uninst_extra.nsh")
-string(REPLACE "/" "\\\\" uninst_nsis_extra_path_out ${uninst_nsis_extra_path})
+	# set different file and registry settings
+	set(CPACK_NSIS_INSTALL_ROOT "C:")
+	set(CPACK_PACKAGE_INSTALL_DIRECTORY "${CPACK_PACKAGE_VENDOR}\\\\${CPACK_PACKAGE_NAME}-${VERSION}")
+	set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${VERSION}_Setup")
+	set(CPACK_PACKAGE_INSTALL_REGISTRY_KEY "${CPACK_PACKAGE_NAME} ${VERSION_MAJOR}.${VERSION_MINOR}")
 
-set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS
-"!include ${uninst_nsis_extra_path_out}
-")
+	# enable uninstalling at first
+	set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL "ON")
 
-foreach(NSIS_EXE_FOR_LINK ${NSIS_EXE_FOR_LINKS})
-set(CPACK_NSIS_MENU_LINKS ${CPACK_NSIS_MENU_LINKS} "${NSIS_EXE_FOR_LINK}.exe" "${NSIS_EXE_FOR_LINK}")
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/win32/uninst_kill_process_extra.nsh.in ${PROJECT_BINARY_DIR}/uninst_kill_process_extra.nsh.${NSIS_EXE_FOR_LINK} @ONLY)
-string(REPLACE "/" "\\\\" uninst_nsis_kill_extra_path_out ${PROJECT_BINARY_DIR}/uninst_kill_process_extra.nsh.${NSIS_EXE_FOR_LINK})
-set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS
-"${CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS}
-!include ${uninst_nsis_kill_extra_path_out}
-")
-endforeach()
+	# enable full delete of installation directory
+	set(CPACK_NSIS_ENABLE_REMOVE_INSTDIR_RECURSIVE "ON")
 
-if(INSTALL_RUNTIME_LIBS)
-	if(WIN32)
-			if(QXT_LIBRARIES)
-			foreach(qxt_lib ${QXT_LIBRARIES})
-					get_filename_component(QXT_LIBRARY_DIR ${qxt_lib} PATH)
-					get_filename_component(QXT_LIBRARY_NAME ${qxt_lib} NAME_WE)
-					string(REPLACE lib "" QXT_LIBRARY_NAME_NEW ${QXT_LIBRARY_NAME})
-					file(GLOB qxt_libs ${QXT_LIBRARY_DIR}/${QXT_LIBRARY_NAME_NEW}.dll)
-					install(FILES ${qxt_libs} DESTINATION ${LIBDIR})
-			endforeach()
-			endif()
-			if(PWGIS_LIBRARIES)
-				foreach(pwgis_lib ${PWGIS_LIBRARIES})
-					get_filename_component(PWGIS_LIBRARY_DIR ${pwgis_lib} PATH)
-					get_filename_component(PWGIS_LIBRARY_NAME ${pwgis_lib} NAME_WE)
-					string(REPLACE lib "" PWGIS_LIBRARY_NAME_N ${PWGIS_LIBRARY_NAME})
+	# add link to ZaviruhaView in Windows menu
+	set(CPACK_NSIS_MENU_LINKS ${CPACK_NSIS_MENU_LINKS}
+		"ZaviruhaODView.exe" "${PROJECT_NAME_RUS} ${VERSION}")
 
-					file(GLOB pwgis_libs1 ${PWGIS_LIBRARY_DIR}/${PWGIS_LIBRARY_NAME_N}1.dll)
-					file(GLOB pwgis_libs2 ${PWGIS_LIBRARY_DIR}/${PWGIS_LIBRARY_NAME_N}.dll)
-					set(pwgis_libs "${pwgis_libs1};${pwgis_libs2}")
-					if( NOT ${pwgis_libs} STREQUAL "" )
-						install(FILES ${pwgis_libs} DESTINATION ${LIBDIR})
-					else()
-						install(FILES ${pwgis_lib} DESTINATION ${LIBDIR})
-					endif()
-				endforeach()
-			endif()
+	# set uninstall icon path
+	set(CPACK_NSIS_INSTALLED_ICON_NAME "ZaviruhaODView.exe")
 
-			#install mysql libs
-			message("Install sql libraries...")
-			install( DIRECTORY ${PROJECT_BASE_DIR}/redist/plugins/${FULL_QT_VERSION}/${SPEC}/sqldrivers/
-					 DESTINATION ${LIBDIR}
-					 FILES_MATCHING PATTERN "libmysql.*"
-					)
-			install( DIRECTORY ${PROJECT_BASE_DIR}/redist/plugins/${FULL_QT_VERSION}/${SPEC}/sqldrivers/
-					 DESTINATION ${LIBDIR}/sqldrivers
-					 FILES_MATCHING PATTERN "qsqlmysql${BICYCLE_DEBUG_POSTFIX}4.*"
-					)
-	endif()
+	# add create icon to ZaviruhaODView in Windows Desktop
+	set(CPACK_NSIS_CREATE_ICONS_EXTRA ${CPACK_NSIS_CREATE_ICONS_EXTRA}
+		"\nCreateShortCut '$DESKTOP\\\\${PROJECT_NAME_RUS} ${VERSION}.lnk' '$INSTDIR\\\\ZaviruhaODView.exe'\n")
+
+	# add delete icon to ZaviruhaODView in Windows Desktop
+	set(CPACK_NSIS_DELETE_ICONS_EXTRA ${CPACK_NSIS_DELETE_ICONS_EXTRA}
+		"\nDelete '$DESKTOP\\\\${PROJECT_NAME_RUS} ${VERSION}.lnk'\n")
 endif()
 
 include(CPack)

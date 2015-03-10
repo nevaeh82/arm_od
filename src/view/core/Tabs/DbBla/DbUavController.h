@@ -10,12 +10,13 @@
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlRecord>
 
+#include <Templates/BaseSubject.h>
+
 #include "Tabs/DbBla/IDbUavController.h"
 #include "Tabs/DbBla/UavHistory.h"
 
 #include "Db/DbControllerBase.h"
 #include "Defines.h"
-#include "BaseSubject.h"
 
 class DbUavController : public DbControllerBase, public IDbUavController
 {
