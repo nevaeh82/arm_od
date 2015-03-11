@@ -114,7 +114,7 @@ if(WIN32)
 	set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/win32/)
 	set(CPACK_GENERATOR NSIS)
 
-	set(CPACK_PACKAGE_NAME "ZaviruhaOD")
+	set(CPACK_PACKAGE_NAME "${PROJECT_NAME}")
 	set(CPACK_PACKAGE_VENDOR "STC")
 	set(CPACK_PACKAGE_VERSION ${VERSION})
 
@@ -139,18 +139,18 @@ if(WIN32)
 	# enable full delete of installation directory
 	set(CPACK_NSIS_ENABLE_REMOVE_INSTDIR_RECURSIVE "ON")
 
-	# add link to ZaviruhaView in Windows menu
+	# add link to view app in Windows menu
 	set(CPACK_NSIS_MENU_LINKS ${CPACK_NSIS_MENU_LINKS}
-		"ZaviruhaODView.exe" "${PROJECT_NAME_RUS} ${VERSION}")
+		"${PROJECT_NAME}View.exe" "${PROJECT_NAME_RUS} ${VERSION}")
 
 	# set uninstall icon path
-	set(CPACK_NSIS_INSTALLED_ICON_NAME "ZaviruhaODView.exe")
+	set(CPACK_NSIS_INSTALLED_ICON_NAME "${PROJECT_NAME}View.exe")
 
-	# add create icon to ZaviruhaODView in Windows Desktop
+	# add create icon to view app in Windows Desktop
 	set(CPACK_NSIS_CREATE_ICONS_EXTRA ${CPACK_NSIS_CREATE_ICONS_EXTRA}
-		"\nCreateShortCut '$DESKTOP\\\\${PROJECT_NAME_RUS} ${VERSION}.lnk' '$INSTDIR\\\\ZaviruhaODView.exe'\n")
+		"\nCreateShortCut '$DESKTOP\\\\${PROJECT_NAME_RUS} ${VERSION}.lnk' '$INSTDIR\\\\${PROJECT_NAME}View.exe'\n")
 
-	# add delete icon to ZaviruhaODView in Windows Desktop
+	# add delete icon to view app in Windows Desktop
 	set(CPACK_NSIS_DELETE_ICONS_EXTRA ${CPACK_NSIS_DELETE_ICONS_EXTRA}
 		"\nDelete '$DESKTOP\\\\${PROJECT_NAME_RUS} ${VERSION}.lnk'\n")
 endif()

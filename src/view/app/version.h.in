@@ -13,7 +13,7 @@
 #define VER_LEGALCOPYRIGHT_STR      "2013-2015 СТЦ"
 #define VER_LEGALTRADEMARKS1_STR    "Все права защищены"
 #define VER_LEGALTRADEMARKS2_STR    VER_LEGALTRADEMARKS1_STR
-#define VER_ORIGINALFILENAME_STR    "ZaviruhaODView.exe"
+#define VER_ORIGINALFILENAME_STR    "@PROJECT_NAME@.exe"
 #define VER_PRODUCTNAME_STR         "АРМ ОД комплекса «Завируха»"
 
 #define VER_COMPANYDOMAIN_STR       "http://www.stc-spb.ru/info.html"
