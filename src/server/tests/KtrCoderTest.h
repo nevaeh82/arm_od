@@ -6,7 +6,7 @@
 
 #include "TCP/TcpKTRCoder.h"
 
-class ktrCoderTest : public CxxTest::TestSuite
+class KtrCoderTest : public CxxTest::TestSuite
 {
 public:
 

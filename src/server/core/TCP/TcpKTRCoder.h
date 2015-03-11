@@ -19,7 +19,7 @@ class TcpKTRCoder : public BaseTcpDeviceCoder
 {
 	Q_OBJECT
 
-	friend class ktrCoderTest;
+	friend class KtrCoderTest;
 
 private:
 	double m_altitude;

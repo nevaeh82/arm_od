@@ -12,7 +12,7 @@
 
 #include <Logger/Logger.h>
 
-class testDbUav : public CxxTest::TestSuite
+class DbUavControllerTest : public CxxTest::TestSuite
 {
 	DbUavController* dbUavController;
 	bool isConnected;
