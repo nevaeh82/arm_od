@@ -23,6 +23,8 @@ class TcpKTRCoder : public BaseTcpDeviceCoder
 
 private:
 	double m_altitude;
+	double m_speed;
+
 	LogManager* m_logManager;
 
 public:

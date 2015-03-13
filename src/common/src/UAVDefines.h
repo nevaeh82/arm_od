@@ -57,10 +57,12 @@ typedef struct UAVPositionData {
 	quint32		device;
 	double		latitude;
 	double		longitude;
-	double		altitude;
+	double		altitude; //altitude from barometer
+	double		altitudeGPS; //altitude from GPS
 	double		latitudeStddev;
 	double		longitudeStddev;
-	double		speed;
+	double		speed; //ground speed
+	double		aSpeed; //air speed
 	double		course;
 	double		frequency;
 	quint32		state;
@@ -70,18 +72,22 @@ typedef struct UAVPositionData {
 
 inline QDataStream& operator<<(QDataStream& out, const UAVPositionData& object)
 {
-	return out << object.boardID << object.device << object.latitude
-			   << object.longitude << object.altitude
-			   << object.speed << object.course << object.frequency
+	return out << object.boardID << object.device
+			   << object.latitude << object.longitude
+			   << object.altitude << object.altitudeGPS
+			   << object.speed << object.aSpeed
+			   << object.course << object.frequency
 			   << object.state << object.dateTime << object.sourceType;
 }
 
 inline QDataStream& operator>>(QDataStream& in, UAVPositionData& object)
 {
-	in >> object.boardID >> object.device >> object.latitude
-	   >> object.longitude >> object.altitude
-	   >> object.speed >> object.course >> object.frequency
-	   >> object.state >> object.dateTime >> object.sourceType;
+	in >> object.boardID >> object.device
+			>> object.latitude >> object.longitude
+			>> object.altitude >> object.altitudeGPS
+			>> object.speed >> object.aSpeed
+			>> object.course >> object.frequency
+			>> object.state >> object.dateTime >> object.sourceType;
 
 	return in;
 }
