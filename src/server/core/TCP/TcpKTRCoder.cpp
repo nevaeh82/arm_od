@@ -4,6 +4,7 @@ TcpKTRCoder::TcpKTRCoder(QObject* parent) :
 	BaseTcpDeviceCoder(parent)
 {
 	m_altitude = 0;
+	m_speed = 0;
 
 	QDir dir;
 	dir.mkdir("./logs/SpecialLogs");
@@ -40,7 +41,18 @@ MessageSP TcpKTRCoder::encode(const QByteArray& data)
 		}
 	}
 
+	//parseBoardList
+
+	if (data.mid(0, 12) == "control link") {
+		//log_debug("CASE THREE");
+		return parseBoardList(data);
+	}
+
 	//parseLocationFromBoard
+
+	if (data.size() < 10) {
+		return MessageSP(new Message<QByteArray>(TCP_EMPTY_MESSAGE, QByteArray()));
+	}
 
 	char f1 = data.at(0);
 	char f2 = data.at(1);
@@ -48,19 +60,15 @@ MessageSP TcpKTRCoder::encode(const QByteArray& data)
 	QString r2 = "G";
 	QString r3 = "N";
 
-	if ((f1 == r1.toAscii().at(0) && f2 == r2.toAscii().at(0))) {
-		//log_debug("CASE TWO");
-		return parseLocationFromBoard(data);
-	}
-	else if (f2 == r3.toAscii().at(0)) {
-		m_altitude = (double)((((long)data.at(2+6)) << 8) | ((long)(data.at(2+7)) & 255));
-	}
-
-	//parseBoardList
-
-	if (data.mid(0, 12) == "control link") {
-		//log_debug("CASE THREE");
-		return parseBoardList(data);
+	if (data.size() >= 15) {
+		if ((f1 == r1.toAscii().at(0) && f2 == r2.toAscii().at(0))) {
+			//log_debug("CASE TWO");
+			return parseLocationFromBoard(data);
+		}
+		else if (f2 == r3.toAscii().at(0)) {
+			m_altitude = (double)((((long)data.at(2+6)) << 8) | ((long)(data.at(2+7)) & 255));
+			m_speed = (((long) data.at(10)) & 255);
+		}
 	}
 
 
@@ -172,10 +180,21 @@ MessageSP TcpKTRCoder::parseLocationFromBoard(const QByteArray& data)
 		m_logManager->writeToFile(dataString);
 	//}
 
+	double gSpeed = (((((long) data.at(8)) & 255) << 8) | ((((long) data.at(9)) & 255)));
+	gSpeed /= 10;
+	gSpeed *= 1.8;
+	double gCourse = (((((long) data.at(10)) & 255) << 8) | ((((long) data.at(11)) & 255)));
+	gCourse /= 10;
+	int gHeight = (((int) data.at(12)) << 8) | ((int) (data.at(13)) & 255);
+
 	UAVPositionData positionData;
 	positionData.latitude = latitude;
 	positionData.longitude = longitude;
 	positionData.altitude = m_altitude;
+	positionData.altitudeGPS = gHeight;
+	positionData.speed = gSpeed;
+	positionData.aSpeed = m_speed;
+	positionData.course = gCourse;
 	positionData.sourceType = UAV_AUTOPILOT_SOURCE;
 
 	QVector<UAVPositionData> positionDataVector;
