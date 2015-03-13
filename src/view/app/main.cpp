@@ -33,6 +33,14 @@ int main(int argc, char *argv[])
 	translator.load(":/ARM-OD_ru.qm");
 	a.installTranslator(&translator);
 
+	Q_INIT_RESOURCE(style);
+
+	QFile file(":/qdarkstyle/style.qss");
+	if(file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		a.setStyleSheet(file.readAll());
+		file.close();
+	}
+
 	MainWindow view;
 
 	MainWindowController controller;
