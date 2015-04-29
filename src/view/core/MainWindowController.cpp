@@ -121,6 +121,12 @@ void MainWindowController::resetServer()
 //	if( searchResult ) {
 //		m_serverHandler->killProcessExist( serverPIDList );
 //	}
+
+	QStringList param;
+	param.append("/F");
+	param.append("/IM");
+	param.append("ZaviruhaODServer.exe");
+	QProcess::execute("taskkill", param);
 }
 
 void MainWindowController::startTabManger()

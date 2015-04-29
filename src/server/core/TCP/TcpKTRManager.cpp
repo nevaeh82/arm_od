@@ -68,7 +68,10 @@ void TcpKTRManager::connectToBoard(const QString& hostPort, const quint16& board
 
 		controller->connectToHost(strList.at(0), strList.at(1).toUInt());
 
-		bool res = controller->isConnected();
+		QTime t = QTime::currentTime().addSecs(10);
+		while( !controller->isConnected() && QTime::currentTime() < t) {
+			qApp->processEvents();
+		}
 
 
 		lifeTimer = new QTimer();
