@@ -22,7 +22,11 @@ if %errorlevel% neq 0 goto error
 
 :do_build
 rem clean build folder
+cmake -E remove_directory build
+if %errorlevel% neq 0 goto error
 
+cmake -E make_directory build
+if %errorlevel% neq 0 goto error
 
 cd build
 if %errorlevel% neq 0 goto error
