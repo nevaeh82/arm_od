@@ -72,6 +72,7 @@ MessageSP TcpKTRCoder::encode(const QByteArray& data)
 	}
 
 
+	log_debug("Empty message from KTR >>> ");
 	return MessageSP(new Message<QByteArray>(TCP_EMPTY_MESSAGE, QByteArray()));
 
 }
@@ -118,6 +119,7 @@ QByteArray TcpKTRCoder::decode(const MessageSP message)
 
 MessageSP TcpKTRCoder::parseLocationFromBoard(const QByteArray& data)
 {
+	log_debug("we are parsing location from ktr!");
 	double latitude = 0;
 	double longitude = 0;
 

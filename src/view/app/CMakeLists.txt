@@ -40,6 +40,7 @@ if(WIN32)
 	if(INSTALL_RUNTIME_LIBS)
 		# install Qt plugins
 		install(DIRECTORY ${qt_plugins_dir}/sqldrivers DESTINATION ${BINDIR}/plugins)
+                install(DIRECTORY ${qt_plugins_dir}/sqldrivers DESTINATION ${BINDIR})
 		install(FILES ${libmysql_dll} DESTINATION ${BINDIR})
 
 		# install Qt libs
