@@ -14,6 +14,8 @@
 #include "Interfaces/ITcpKTRManager.h"
 #include "TcpKTRController.h"
 
+#include "QApplication"
+
 /// 5 minutes = 300000 msec
 #define MAX_LIFE_TIME			300000
 #define KTR_DEVICE_AUTOPILOT	1

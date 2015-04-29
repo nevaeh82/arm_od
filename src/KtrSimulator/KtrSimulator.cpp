@@ -123,6 +123,9 @@ void KtrSimulator::readyRead()
 	while (socket->bytesAvailable() > 0) {
 		buffer->append(socket->readAll());
 
+		qDebug() << "input: ";
+		qDebug() << buffer;
+
 		// while data length is enouth for read the shortest
 		// command ("user link command ctrl" - 22 bytes), let's do it
 		while (buffer->count() >= CMD_MIN_LENGTH) {

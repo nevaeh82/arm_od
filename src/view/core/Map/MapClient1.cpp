@@ -414,6 +414,10 @@ void MapClient1::addFriendBplaInternal(const UavInfo& uav)
 			// and UAV exists, update slice track
 			if( bpla != NULL ) {
 				bpla->setSlice( QPointF( uav.lon, uav.lat ) );
+			} else {
+				// else create new one
+				bpla = m_factory->createFriendBpla( uav );
+				m_friendBplaList.insert( id, bpla );
 			}
 
 			return;
