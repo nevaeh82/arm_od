@@ -1,5 +1,7 @@
 #include "Tabs/DbBla/DbUavController.h"
 
+#define DB_RECONNECT_TIMEOUT 10000
+
 DbUavController::DbUavController(QObject *parent)
 	: DbControllerBase("DBBLACONNECTION", "QMYSQL", parent)
 	, m_uavHistory( NULL )
@@ -11,7 +13,11 @@ DbUavController::DbUavController(QString connectionName, QString dbType, QObject
 	: DbControllerBase(connectionName, dbType, parent)
 	, m_uavHistory( NULL )
 {
+	m_reconnectTimer = new QTimer(0);
+	m_reconnectTimer->setInterval(DB_RECONNECT_TIMEOUT);
 
+	connect(m_reconnectTimer, SIGNAL(timeout()), this, SLOT(slotReconnectDb()));
+	connect(this, SIGNAL(startTimer()), m_reconnectTimer, SLOT(start()));
 }
 
 
@@ -26,7 +32,17 @@ DbUavController::~DbUavController()
 
 bool DbUavController::connectToDB(const DBConnectionStruct& parameters)
 {
+	m_connectionParams = parameters;
 	bool result = DbControllerBase::connectToDB( parameters );
+
+	sendLog(QString(tr("Connecting to DB %1 host:port %2:%3 ")).arg(parameters.dbName).arg(parameters.host).arg(parameters.port));
+
+	if(!result) {
+		emit startTimer();
+		sendLog(QString(tr("Error DB connecting! Try to check db started")));
+	}
+
+	sendLog(QString(tr("Ok DB connecting.")));
 
 	if( m_uavHistory != NULL ) {
 		m_uavHistory->setDatabase( m_db );
@@ -53,11 +69,16 @@ int DbUavController::addUav(const Uav& uav)
 	QSqlQuery query(m_db);
 	bool succeeded = query.prepare("INSERT INTO uav (uavId, ip, uavTypeId, roleId, name, freqId) VALUES(:uavId, :ip, :uavTypeId, :roleId, :name, :freqId);");
 
+	sendLog(QString(tr("Inserting UAV record to DB %1").arg(uav.id)));
+
 	if (!succeeded){
 		QString er = query.lastError().text();
 		log_debug("SQL is wrong! " + er);
 		return INVALID_INDEX;
+		sendLog(QString(tr("!Error! writing UAV record to DB %1").arg(uav.id)));
 	}
+
+	sendLog(QString(tr("Ok writing UAV record to DB.")));
 
 	QString uavRole = getUavRole(uav.roleId).code;
 
@@ -85,6 +106,7 @@ int DbUavController::addUav(const Uav& uav)
 		return query.lastInsertId().toUInt();
 	} else {
 		QString er = query.lastError().databaseText() + "\n" + query.lastError().driverText();
+		sendLog(QString(tr("Error writing to DB ") + er));
 		log_debug("SQL query is wrong! " + er);
 	}
 
@@ -130,6 +152,8 @@ Uav DbUavController::getUavByUavId(const uint uavId)
 		uav.roleId = query.record().value(4).toUInt();
 		uav.name = query.record().value(5).toString();
 		uav.freqId = query.record().value(6).toUInt();
+
+		sendLog(QString(tr("Ok selecting records from DB")));
 	}
 
 	return uav;
@@ -151,6 +175,7 @@ Uav DbUavController::getUav(const uint id)
 
 	if (!succeeded) {
 		QString er = query.lastError().text();
+		sendLog(QString(tr("Error reading to DB ") + er));
 		log_debug("SQL is wrong! " + er);
 		return uav;
 	}
@@ -172,6 +197,7 @@ Uav DbUavController::getUav(const uint id)
 		uav.roleId = query.record().value(4).toUInt();
 		uav.name = query.record().value(5).toString();
 		uav.freqId = query.record().value(6).toUInt();
+		sendLog(QString(tr("Ok reading DB  uav record")));
 	}
 
 	return uav;
@@ -199,6 +225,7 @@ bool DbUavController::getUavsByRole(const QString &role, QList<Uav> &uavs)
 
 	if (!succeeded) {
 		QString er = query.lastError().text();
+		sendLog(QString(tr("Error reading to DB ") + er));
 		log_debug("SQL is wrong! " + er);
 		return false;
 	}
@@ -221,6 +248,7 @@ bool DbUavController::getUavsByRole(const QString &role, QList<Uav> &uavs)
 		uav.name = query.record().value(5).toString();
 		uav.freqId = query.record().value(6).toUInt();
 		uavs.append(uav);
+		sendLog(QString(tr("Ok reading DB  uav record")));
 	}
 
 	return true;
@@ -323,9 +351,11 @@ int DbUavController::addUavInfo(const UavInfo& info)
 	succeeded = query.exec();
 
 	if (succeeded){
+		sendLog(QString(tr("Ok writing to DB ")));
 		return query.lastInsertId().toUInt();
 	} else {
 		QString er = query.lastError().databaseText() + "\n" + query.lastError().driverText();
+		sendLog(QString(tr("Error adding to DB ") + er));
 		log_debug("SQL query is wrong! " + er);
 	}
 
@@ -415,9 +445,11 @@ int DbUavController::addDevice(const Devices& device)
 	succeeded = query.exec();
 
 	if (succeeded){
+		sendLog(QString(tr("Ok writing to DB ")));
 		return query.lastInsertId().toUInt();
 	} else {
 		QString er = query.lastError().databaseText() + "\n" + query.lastError().driverText();
+		sendLog(QString(tr("Error reading to DB ") + er));
 		log_debug("SQL query is wrong! " + er);
 	}
 
@@ -485,9 +517,11 @@ int DbUavController::addSource(const Source& source)
 	succeeded = query.exec();
 
 	if (succeeded){
+		sendLog(QString(tr("Ok add source to DB ")));
 		return query.lastInsertId().toUInt();
 	} else {
 		QString er = query.lastError().databaseText() + "\n" + query.lastError().driverText();
+		sendLog(QString(tr("Error reading to DB ") + er));
 		log_debug("SQL query is wrong! " + er);
 	}
 
@@ -1306,4 +1340,20 @@ int DbUavController::getDictionaryRecord(const QString& dictionary, const QStrin
 	}
 
 	return INVALID_INDEX;
+}
+
+void DbUavController::sendLog(const QString& logTxt)
+{
+	QString resStr;
+	resStr.append(QTime::currentTime().toString() + " > " + logTxt);
+
+	emit dbOutLog(resStr);
+}
+
+void DbUavController::slotReconnectDb()
+{
+	m_reconnectTimer->stop();
+
+	disconnectFromDb();
+	connectToDB(m_connectionParams);
 }

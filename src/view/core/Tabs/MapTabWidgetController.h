@@ -102,6 +102,8 @@ signals:
 	void atlasOpened();
 	void cancelMapOpen();
 
+	void onDbOutLog(QString log);
+
 private slots:
 	void onBlaTreeItemDoubleClicked(QModelIndex index);
 

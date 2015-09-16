@@ -48,6 +48,8 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 	m_controlPanelController =  new ControlPanelController(this);
 	m_uavDbManager->getUavHistory()->registerReceiver( m_controlPanelController );
 
+	connect(this, SIGNAL(onDbOutLog(QString)), m_controlPanelController, SLOT(onDbLogReceive(QString)));
+
 	start();
 }
 

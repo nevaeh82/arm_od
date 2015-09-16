@@ -35,6 +35,14 @@ void TcpKTRManager::connectToBoard(const QString& hostPort, const quint16& board
 	controller = m_connectionMap.value(key, NULL);
 	lifeTimer = m_lifeTimerMap.value(key, NULL);
 
+	if(controller == NULL) {
+		log_debug("KTR kontroller NULL!");
+	}
+
+	if(lifeTimer == NULL) {
+		log_debug("lifetimer NULL!!");
+	}
+
 	if (controller == NULL && lifeTimer == NULL) {
 
 		controller = new TcpKTRController(key);

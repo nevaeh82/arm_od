@@ -9,9 +9,16 @@ ControlPanel::ControlPanel(QWidget *parent) :
 
 	connect(ui->startPB, SIGNAL(clicked()), this, SIGNAL(startPlayingHistorySignal()));
 	connect(ui->stopPB, SIGNAL(clicked()), this, SIGNAL(stopPlayingHistorySignal()));
+	connect(ui->pbExport, SIGNAL(clicked()), this, SIGNAL(startExportToXls()));
 
 	ui->timeLabel->hide();
 	ui->timeText->hide();
+
+	bool status = false;
+	status &= greenLbl.load(":/images/bullet_green.png");
+	status &= redLbl.load(":/images/bullet_red.png");
+
+	ui->dockWidget->hide();
 }
 
 ControlPanel::~ControlPanel()
@@ -67,4 +74,23 @@ void ControlPanel::setPlayingEnabled(bool enabled)
 void ControlPanel::setPause()
 {
 	ui->startPB->setText( tr( "Resume") );
+}
+
+void ControlPanel::setDataBaseStatus(bool isOpened)
+{
+	if(isOpened) {
+		ui->connectToDbLbl->setPixmap(greenLbl);
+	} else {
+		ui->connectToDbLbl->setPixmap(redLbl);
+	}
+}
+
+QDockWidget*ControlPanel::getDockWgt()
+{
+	return ui->dockWidget;
+}
+
+void ControlPanel::onSetDbLog(const QString& logTxt)
+{
+	ui->textEdit->append(logTxt);
 }

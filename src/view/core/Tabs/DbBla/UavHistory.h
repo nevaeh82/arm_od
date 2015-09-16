@@ -6,6 +6,8 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 
+#include <QFileDialog>
+
 #include "Interfaces/IUavHistory.h"
 
 class UavHistory : public QObject, public IUavHistory
@@ -25,13 +27,18 @@ private:
 	bool m_startResult;
 	bool m_isPaused;
 	int m_lifeTime;
+	QString m_pathToExport;
+
+	bool onSentToXl(QMap<QString, UavInfo>& infoCollection);
 
 public:
 	explicit UavHistory(QSqlDatabase database, QObject *parent = 0);
 	virtual ~UavHistory();
 
-	bool start(const QDateTime& startTime, const QDateTime& endTime);
+	void setPathToSaveExport(const QString& path);
+	bool start(const QDateTime& startTime, const QDateTime& endTime, int mode = 0);
 	void pause();
+	bool xlsExport();
 	void resume();
 	void stop();
 
@@ -43,7 +50,7 @@ public:
 	void moveToThread(QThread *thread);
 
 signals:
-	void started(const QDateTime& start, const QDateTime& end);
+	void started(const QDateTime& start, const QDateTime& end, int mode);
 	void stopped();
 	void paused();
 	void resumed();
@@ -52,7 +59,7 @@ signals:
 	void stopFinished();
 
 protected slots:
-	void startInternal(const QDateTime& start, const QDateTime& end);
+	void startInternal(const QDateTime& start, const QDateTime& end, int mode);
 	void stopInternal();
 	void pauseInternal();
 	void resumeInternal();

@@ -25,6 +25,7 @@ void ControlPanelController::appendView(ControlPanel *view)
 
 	connect(m_view, SIGNAL(startPlayingHistorySignal()), this, SLOT(onStartPlayingHistorySlot()));
 	connect(m_view, SIGNAL(stopPlayingHistorySignal()), this, SLOT(onStopPlayingHistorySlot()));
+	connect(m_view, SIGNAL(startExportToXls()), this, SLOT(onExportToXls()));
 }
 
 void ControlPanelController::setUavHistory(IUavHistory *history)
@@ -57,10 +58,12 @@ void ControlPanelController::changeViewStatus(IUavHistoryListener::Status status
 			QApplication::setOverrideCursor(Qt::BusyCursor);
 
 		case IUavHistoryListener::NotReady:
+			m_view->setDataBaseStatus( false );
 			m_view->setEnabled( false );
 			break;
 
 		case IUavHistoryListener::Ready:
+			m_view->setDataBaseStatus( true );
 			m_view->setEnabled( true );
 			m_view->setPlayingEnabled( false );
 			break;
@@ -106,7 +109,7 @@ void ControlPanelController::onStartPlayingHistorySlot()
 		return;
 	}
 
-	if( !m_uavHistory->start(m_view->getStartDateTime(), m_view->getEndDateTime()) ) {
+	if( !m_uavHistory->start(m_view->getStartDateTime(), m_view->getEndDateTime(), 0) ) {
 		QMessageBox::warning(m_view, tr("Unable to play history"), tr("Data for selected period do not exist."));
 		return;
 	}
@@ -120,4 +123,22 @@ void ControlPanelController::onStopPlayingHistorySlot()
 	}
 
 	m_uavHistory->stop();
+}
+
+void ControlPanelController::onExportToXls()
+{
+	QString path = QFileDialog::getSaveFileName(0, tr("Save xls export"), QDir::currentPath(), "*.xls");
+
+	if(path.isEmpty()) {
+		return;
+	}
+
+
+	m_uavHistory->setPathToSaveExport( path );
+	m_uavHistory->start(m_view->getStartDateTime(), m_view->getEndDateTime(), 1);
+}
+
+void ControlPanelController::onDbLogReceive(QString log)
+{
+	m_view->onSetDbLog(log);
 }

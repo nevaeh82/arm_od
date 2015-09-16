@@ -23,7 +23,7 @@
 
 /// 5 minutes	= 300000 msec
 /// 10 minutes	= 600000 msec
-#define MAX_LIFE_TIME	600000
+#define MAX_LIFE_TIME	30000
 
 class DbUavManager : public QObject, public IDbUavManager, public BaseSubject<IUavDbChangedListener>, public IRpcListener
 {

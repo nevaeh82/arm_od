@@ -10,42 +10,35 @@
     <x>0</x>
     <y>0</y>
     <width>879</width>
-    <height>41</height>
+    <height>158</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
-   <item>
-    <widget class="QLabel" name="label">
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="7">
+    <widget class="QPushButton" name="pbExport">
      <property name="text">
-      <string>From:</string>
+      <string>Export</string>
      </property>
     </widget>
    </item>
-   <item>
-    <widget class="QDateTimeEdit" name="startTE">
-     <property name="dateTime">
-      <datetime>
-       <hour>0</hour>
-       <minute>0</minute>
-       <second>0</second>
-       <year>2014</year>
-       <month>1</month>
-       <day>1</day>
-      </datetime>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="label_2">
+   <item row="0" column="6">
+    <widget class="QPushButton" name="stopPB">
      <property name="text">
-      <string>To:</string>
+      <string>Stop</string>
      </property>
     </widget>
    </item>
-   <item>
+   <item row="0" column="5">
+    <widget class="QPushButton" name="startPB">
+     <property name="text">
+      <string>Start</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="4">
     <widget class="QDateTimeEdit" name="stopTE">
      <property name="dateTime">
       <datetime>
@@ -59,34 +52,58 @@
      </property>
     </widget>
    </item>
-   <item>
-    <widget class="QPushButton" name="startPB">
+   <item row="0" column="11">
+    <widget class="QLabel" name="connectToDbLbl">
      <property name="text">
-      <string>Start</string>
+      <string/>
      </property>
     </widget>
    </item>
-   <item>
-    <widget class="QPushButton" name="stopPB">
+   <item row="0" column="9">
+    <widget class="QLabel" name="label_4">
      <property name="text">
-      <string>Stop</string>
+      <string>Connect to DB:</string>
      </property>
     </widget>
    </item>
-   <item>
-    <spacer name="spacer">
+   <item row="0" column="14">
+    <widget class="QLabel" name="timeText">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QDateTimeEdit" name="startTE">
+     <property name="dateTime">
+      <datetime>
+       <hour>0</hour>
+       <minute>0</minute>
+       <second>0</second>
+       <year>2014</year>
+       <month>1</month>
+       <day>1</day>
+      </datetime>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="8">
+    <spacer name="horizontalSpacer">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>544</width>
+       <width>40</width>
        <height>20</height>
       </size>
      </property>
     </spacer>
    </item>
-   <item>
+   <item row="0" column="13">
     <widget class="QLabel" name="timeLabel">
      <property name="text">
       <string>Current time:</string>
@@ -96,14 +113,48 @@
      </property>
     </widget>
    </item>
-   <item>
-    <widget class="QLabel" name="timeText">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
      <property name="text">
-      <string/>
+      <string>From:</string>
      </property>
-     <property name="textInteractionFlags">
-      <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>To:</string>
      </property>
+    </widget>
+   </item>
+   <item row="0" column="12">
+    <spacer name="horizontalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="0" colspan="15">
+    <widget class="QDockWidget" name="dockWidget">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="windowTitle">
+      <string>Лог Базы Данных</string>
+     </property>
+     <widget class="QWidget" name="dbContents">
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
+        <widget class="QTextEdit" name="textEdit"/>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>

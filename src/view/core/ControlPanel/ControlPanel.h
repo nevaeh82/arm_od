@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QDateTime>
+#include <QDockWidget>
 
 namespace Ui {
 class ControlPanel;
@@ -14,6 +15,9 @@ class ControlPanel : public QWidget
 
 private:
 	Ui::ControlPanel *ui;
+
+	QPixmap redLbl;
+	QPixmap greenLbl;
 
 public:
 	explicit ControlPanel(QWidget *parent = 0);
@@ -28,9 +32,16 @@ public:
 	void setPlayingEnabled(bool enabled);
 	void setPause();
 
+	void setDataBaseStatus(bool isOpened);
+
+	QDockWidget* getDockWgt();
+
+	void onSetDbLog(const QString& logTxt);
+
 signals:
 	void startPlayingHistorySignal();
 	void stopPlayingHistorySignal();
+	void startExportToXls();
 };
 
 #endif // CONTROLPANEL_H

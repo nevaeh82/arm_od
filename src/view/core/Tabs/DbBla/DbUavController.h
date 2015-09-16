@@ -39,6 +39,10 @@ private:
 
 	UavHistory* m_uavHistory;
 
+	QTimer* m_reconnectTimer;
+
+	DBConnectionStruct m_connectionParams;
+
 public:
 	explicit DbUavController(QObject *parent = 0);
 	explicit DbUavController(QString connectionName, QString dbType, QObject *parent = 0);
@@ -106,6 +110,16 @@ public:
 private:
 	int addDictionaryRecord(const QString& dictionary, const QString& name);
 	int getDictionaryRecord(const QString& dictionary, const QString& name);
+
+	void sendLog(const QString& logTxt);
+
+private slots:
+	void slotReconnectDb();
+
+signals:
+	void startTimer();
+
+	void dbOutLog(QString logTxt);
 
 };
 

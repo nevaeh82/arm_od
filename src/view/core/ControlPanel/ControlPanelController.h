@@ -2,6 +2,7 @@
 #define CONTROLPANELCONTROLLER_H
 
 #include <QObject>
+#include <QFileDialog>
 
 #include "ControlPanel.h"
 #include "Interfaces/IController.h"
@@ -40,6 +41,9 @@ private slots:
 
 	void onStartPlayingHistorySlot();
 	void onStopPlayingHistorySlot();
+	void onExportToXls();
+
+	void onDbLogReceive(QString);
 
 };
 

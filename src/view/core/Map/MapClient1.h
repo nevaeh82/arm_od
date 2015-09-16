@@ -69,6 +69,8 @@ private:
 	double m_circleRadius;
 	bool m_circleChanged;
 
+	QTimer* m_hyperboleTimer;
+
 public:
 	MapClient1( PwGisWidget* pwwidget, Station* station, QObject* parent = NULL );
 	virtual ~MapClient1();
@@ -131,6 +133,7 @@ private slots:
 								  float height, float radius, int time,
 								  float course, float speed );
 	void addHyperboleInternal( const QByteArray& data, const QColor color );
+	void removeAllHyperbole();
 
 	void redrawAllBpla();
 	void updateCircle();

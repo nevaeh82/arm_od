@@ -45,27 +45,46 @@
     </message>
     <message>
         <location filename="ControlPanel/ControlPanel.ui" line="23"/>
+        <source>Export</source>
+        <translation>Экспорт в XLS</translation>
+    </message>
+    <message>
+        <location filename="ControlPanel/ControlPanel.ui" line="65"/>
+        <source>Connect to DB:</source>
+        <translation>Подключение к БД: </translation>
+    </message>
+    <message>
+        <location filename="ControlPanel/ControlPanel.ui" line="119"/>
         <source>From:</source>
         <translation>От:</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="44"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="126"/>
         <source>To:</source>
         <translation>До:</translation>
     </message>
+    <message utf8="true">
+        <location filename="ControlPanel/ControlPanel.ui" line="149"/>
+        <source>Лог Базы Данных</source>
+        <translation></translation>
+    </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="65"/>
-        <location filename="ControlPanel/ControlPanel.cpp" line="64"/>
+        <source>DataBase log</source>
+        <translation type="obsolete">Лог Базы Данных</translation>
+    </message>
+    <message>
+        <location filename="ControlPanel/ControlPanel.ui" line="37"/>
+        <location filename="ControlPanel/ControlPanel.cpp" line="71"/>
         <source>Start</source>
         <translation>Пуск</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="72"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="30"/>
         <source>Stop</source>
         <translation>Остановить</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="92"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="109"/>
         <source>Current time:</source>
         <translation>Текущее время:</translation>
     </message>
@@ -87,12 +106,12 @@
         <translation type="obsolete">Текущее время: %1</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.cpp" line="64"/>
+        <location filename="ControlPanel/ControlPanel.cpp" line="71"/>
         <source>Pause</source>
         <translation>Пауза</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.cpp" line="69"/>
+        <location filename="ControlPanel/ControlPanel.cpp" line="76"/>
         <source>Resume</source>
         <translation>Продолжить</translation>
     </message>
@@ -100,20 +119,98 @@
 <context>
     <name>ControlPanelController</name>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="105"/>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="110"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="108"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="113"/>
         <source>Unable to play history</source>
         <translation>Невозможно воспроизвести запись</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="105"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="108"/>
         <source>End date should be greater than start date.</source>
         <translation>Конечная дата должна быть больше начальной</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="110"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="113"/>
         <source>Data for selected period do not exist.</source>
         <translation>Данные для выбранного периода отсутствуют.</translation>
+    </message>
+    <message>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="130"/>
+        <source>Save xls export</source>
+        <translation>Сохранить экспорт БД в XLS</translation>
+    </message>
+</context>
+<context>
+    <name>DbUavController</name>
+    <message>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="38"/>
+        <source>Connecting to DB %1 host:port %2:%3 </source>
+        <translation>Подключение к БД %1 хост:порт %2:%3</translation>
+    </message>
+    <message>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="42"/>
+        <source>Error DB connecting! Try to check db started</source>
+        <translation>Ошибка подключения!</translation>
+    </message>
+    <message>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="45"/>
+        <source>Ok DB connecting.</source>
+        <translation>Успешное подключение к бд</translation>
+    </message>
+    <message>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="72"/>
+        <source>Inserting UAV record to DB %1</source>
+        <translation>Запись позиции БЛА %1</translation>
+    </message>
+    <message>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="78"/>
+        <source>!Error! writing UAV record to DB %1</source>
+        <translation>!ошибка записи в БД!</translation>
+    </message>
+    <message>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="81"/>
+        <source>Ok writing UAV record to DB.</source>
+        <translation>Успешная запись в БД</translation>
+    </message>
+    <message>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="109"/>
+        <source>Error writing to DB </source>
+        <translation>Ошибка записи в БД</translation>
+    </message>
+    <message>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="156"/>
+        <source>Ok selecting records from DB</source>
+        <translation>Успешная выборка из БД</translation>
+    </message>
+    <message>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="178"/>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="228"/>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="452"/>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="524"/>
+        <source>Error reading to DB </source>
+        <translation>Ошибка чтения БД</translation>
+    </message>
+    <message>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="200"/>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="251"/>
+        <source>Ok reading DB  uav record</source>
+        <translation>Успешное чтение записи бла в БД</translation>
+    </message>
+    <message>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="354"/>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="448"/>
+        <source>Ok writing to DB </source>
+        <translation>Успешная запись в БД</translation>
+    </message>
+    <message>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="358"/>
+        <source>Error adding to DB </source>
+        <translation>Ошибка добавления в БД</translation>
+    </message>
+    <message>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="520"/>
+        <source>Ok add source to DB </source>
+        <translation>Успешное добавление записи в БД</translation>
     </message>
 </context>
 <context>
@@ -312,7 +409,7 @@
         <translation>История</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="553"/>
+        <location filename="Map/MapClient1.cpp" line="557"/>
         <source>Ingur</source>
         <translation>Ингур</translation>
     </message>
@@ -320,12 +417,12 @@
 <context>
     <name>MapController</name>
     <message>
-        <location filename="Map/MapController.cpp" line="48"/>
+        <location filename="Map/MapController.cpp" line="78"/>
         <source>Open map</source>
         <translation>Открыть карту</translation>
     </message>
     <message>
-        <location filename="Map/MapController.cpp" line="50"/>
+        <location filename="Map/MapController.cpp" line="80"/>
         <source>Map files (*.chart *.sxf *.sit *.map *.gc *.gst)</source>
         <translation>Формат цифровых карт (*.chart *.sxf *.sit *.map *.gc *.gst)</translation>
     </message>
@@ -374,12 +471,12 @@
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="205"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="208"/>
         <source>SPIP DD-1</source>
         <translation>СПИП ДД-1</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="211"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="214"/>
         <source>SPIP DD-2</source>
         <translation>СПИП ДД-2</translation>
     </message>
@@ -393,6 +490,64 @@
     </message>
 </context>
 <context>
+    <name>NiippControlWidget</name>
+    <message>
+        <location filename="NIIPP/NiippControlWidget.ui" line="14"/>
+        <source>Form</source>
+        <translation>Форма</translation>
+    </message>
+    <message utf8="true">
+        <location filename="NIIPP/NiippControlWidget.ui" line="26"/>
+        <source>Радиус</source>
+        <translation></translation>
+    </message>
+    <message utf8="true">
+        <location filename="NIIPP/NiippControlWidget.ui" line="33"/>
+        <source>Пуск</source>
+        <translation></translation>
+    </message>
+    <message utf8="true">
+        <location filename="NIIPP/NiippControlWidget.ui" line="42"/>
+        <source>Режим работы</source>
+        <translation></translation>
+    </message>
+    <message utf8="true">
+        <location filename="NIIPP/NiippControlWidget.ui" line="49"/>
+        <source>Выбор антенны</source>
+        <translation></translation>
+    </message>
+    <message utf8="true">
+        <location filename="NIIPP/NiippControlWidget.ui" line="82"/>
+        <source>Широта</source>
+        <translation></translation>
+    </message>
+    <message utf8="true">
+        <location filename="NIIPP/NiippControlWidget.ui" line="89"/>
+        <source>Долгота</source>
+        <translation></translation>
+    </message>
+    <message utf8="true">
+        <location filename="NIIPP/NiippControlWidget.ui" line="96"/>
+        <source>Очистить</source>
+        <translation></translation>
+    </message>
+    <message utf8="true">
+        <location filename="NIIPP/NiippControlWidget.ui" line="117"/>
+        <source>Зона</source>
+        <translation></translation>
+    </message>
+    <message utf8="true">
+        <location filename="NIIPP/NiippControlWidget.ui" line="124"/>
+        <source>Включить комплекс</source>
+        <translation></translation>
+    </message>
+    <message utf8="true">
+        <location filename="NIIPP/NiippControlWidget.ui" line="138"/>
+        <source>Статус</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
     <name>NiippWidget</name>
     <message>
         <location filename="NIIPP/NiippWidget.ui" line="14"/>
@@ -400,134 +555,134 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="63"/>
+        <location filename="NIIPP/NiippWidget.ui" line="61"/>
         <source>Radius</source>
         <translation>Радиус</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="96"/>
+        <location filename="NIIPP/NiippWidget.ui" line="94"/>
         <source>Start</source>
         <translation>Пуск</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="121"/>
+        <location filename="NIIPP/NiippWidget.ui" line="119"/>
         <source>Work mode</source>
         <translation>Режим работы</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="114"/>
+        <location filename="NIIPP/NiippWidget.ui" line="112"/>
         <source>Antenna type</source>
         <translation>Выбор антенны</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="129"/>
+        <location filename="NIIPP/NiippWidget.ui" line="127"/>
         <source>Directed</source>
         <translation>Направленная</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="134"/>
+        <location filename="NIIPP/NiippWidget.ui" line="132"/>
         <source>Undirected</source>
         <translation>Ненаправленная</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="143"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="144"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="158"/>
+        <location filename="NIIPP/NiippWidget.ui" line="141"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="151"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="165"/>
         <source>Radiation</source>
         <translation>Облучение</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="148"/>
+        <location filename="NIIPP/NiippWidget.ui" line="146"/>
         <source>Adduction</source>
         <translation>Приведение</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="153"/>
+        <location filename="NIIPP/NiippWidget.ui" line="151"/>
         <source>Round view</source>
         <translation>Круговой обзор</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="161"/>
+        <location filename="NIIPP/NiippWidget.ui" line="159"/>
         <source>Latitude</source>
         <translation>Широта</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="168"/>
+        <location filename="NIIPP/NiippWidget.ui" line="166"/>
         <source>Longitude</source>
         <translation>Долгота</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="181"/>
+        <location filename="NIIPP/NiippWidget.ui" line="179"/>
         <source>Clear</source>
         <translation>Очистить</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="200"/>
+        <location filename="NIIPP/NiippWidget.ui" line="198"/>
         <source>RDP</source>
         <translation>УРС</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="50"/>
+        <location filename="NIIPP/NiippWidget.ui" line="48"/>
         <source>Area</source>
         <translation>Зона</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="35"/>
+        <location filename="NIIPP/NiippWidget.ui" line="33"/>
         <source>Turn complex on</source>
         <translation>Включить комплекс</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="190"/>
+        <location filename="NIIPP/NiippWidget.ui" line="188"/>
         <source>Status</source>
         <translation>Статус</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="30"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="37"/>
         <source>0 km</source>
         <oldsource>0 ÐºÐ¼</oldsource>
         <translation>0 км</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="55"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="206"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="62"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="223"/>
         <source>Simple</source>
         <translation>Простой</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="88"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="94"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="95"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="101"/>
         <source>%1 km</source>
         <translation>%1 км</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="90"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="212"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="97"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="229"/>
         <source>Work with directional antenna</source>
         <translation>Работа на направленную антенну</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="96"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="209"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="103"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="226"/>
         <source>Work with undirectional antenna</source>
         <translation>Работа на ненаправленную антенну</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="215"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="232"/>
         <source>Accident</source>
         <translation>Авария</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="218"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="235"/>
         <source>No coordinates</source>
         <translation>Нет координат</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="221"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="238"/>
         <source>Service</source>
         <translation>Обслуживание</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="224"/>
+        <location filename="NIIPP/NiippWidget.cpp" line="241"/>
         <source>No data</source>
         <translation>Нет данных</translation>
     </message>
@@ -596,7 +751,7 @@
     </message>
     <message>
         <location filename="Map/Features/FriendBplaFeature.cpp" line="27"/>
-        <location filename="Tabs/DbBla/UavHistory.cpp" line="279"/>
+        <location filename="Tabs/DbBla/UavHistory.cpp" line="345"/>
         <source>%1-H</source>
         <translation>%1-И</translation>
     </message>

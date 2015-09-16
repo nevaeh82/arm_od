@@ -98,6 +98,8 @@ void TabManager::addStationTabs()
 	foreach (Station* station, m_stationsMap) {
 
 		MapTabWidgetController* tabWidgetController = new MapTabWidgetController(station, m_stationsMap, this, m_dbUavManager);
+		connect(m_dbUavController, SIGNAL(dbOutLog(QString)), tabWidgetController, SIGNAL(onDbOutLog(QString)));
+
 		connect( tabWidgetController, SIGNAL( mapOpened() ), SIGNAL( mapOpened() ) );
 		connect( tabWidgetController, SIGNAL( atlasOpened() ), SIGNAL( atlasOpened() ) );
 		connect( tabWidgetController, SIGNAL( cancelMapOpen() ), SIGNAL( cancelMapOpen() ) );
@@ -109,6 +111,7 @@ void TabManager::addStationTabs()
 		m_viewMenu->addAction(tabWidget->getBplaDockWidget()->toggleViewAction());
 		m_viewMenu->addAction(tabWidget->getNiipp1DockWidget()->toggleViewAction());
 		m_viewMenu->addAction(tabWidget->getNiipp2DockWidget()->toggleViewAction());
+		m_viewMenu->addAction(tabWidget->getControlPanelWidget()->getDockWgt()->toggleViewAction());
 
 		tabWidgetController->appendView(tabWidget);
 

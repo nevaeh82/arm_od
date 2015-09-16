@@ -8,6 +8,8 @@
 
 #define clearObjectsList(type, map) foreach( type* item, map ) { delete item; } map.clear();
 
+#define HYPERBOLE_LIFE_TIME 5000
+
 MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 	: QObject( parent )
 	, m_mux( QMutex::Recursive )
@@ -25,6 +27,9 @@ MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 	m_pwWidget = pwWidget;
 	m_bounds = m_pwWidget->mapProvider()->mapBounds();
 	m_station = station;
+
+	m_hyperboleTimer = new QTimer(this);
+	connect( m_hyperboleTimer, SIGNAL(timeout()), this, SLOT(removeAllHyperbole()) );
 
 	/// \todo I don't know what is there for these timers, maybe it was some code for demo?
 	m_uiTimer = new QTimer( this );
@@ -156,6 +161,8 @@ void MapClient1::addHyperboleInternal(const QByteArray& data, const QColor color
 {
 	QDataStream ds(data);
 
+	m_hyperboleTimer->start(HYPERBOLE_LIFE_TIME);
+
 	double frequency;
 	ds >> frequency;
 
@@ -167,7 +174,7 @@ void MapClient1::addHyperboleInternal(const QByteArray& data, const QColor color
 
 	// hide no needed hyporboles
 	if ( m_hyperboleList.count() > list.count() ) {
-		for ( int i = list.count(); i < m_hyperboleList.count(); ++i ) {
+		for ( int i = list.count(); i < m_hyperboleList.count(); i++ ) {
 			m_hyperboleList[i]->removeFromMap();
 		}
 	}
@@ -180,6 +187,13 @@ void MapClient1::addHyperboleInternal(const QByteArray& data, const QColor color
 			hyperbole = m_factory->createHyperbole( list[i], time, color );
 			m_hyperboleList << hyperbole;
 		}
+	}
+}
+
+void MapClient1::removeAllHyperbole()
+{
+	for ( int i = 0; i < m_hyperboleList.count(); i++ ) {
+		m_hyperboleList[i]->removeFromMap();
 	}
 }
 
