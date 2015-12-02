@@ -5,6 +5,7 @@
 #define IMAGE_POST_PLANE_BLACK		"/profiles/Zav/ais/images/AIS/PostPlaneBlack.png"
 #define IMAGE_UAV_BLA_48			"/profiles/Zav/UAV/images/UAV/BLA48.png"
 #define IMAGE_UAV_BPLA_48			"/profiles/Zav/UAV/images/UAV/BPLA48.png"
+#define IMAGE_ONE_POINT				"/profiles/Zav/UAV/images/UAV/cross.png"
 #define IMAGE_STATION_RED_128		"/profiles/Zav/tabs/images/Punkts/StationRed128.png"
 #define IMAGE_POINT_RED_48			"/profiles/Zav/Points/images/Points/redmark48.png"
 
@@ -83,17 +84,30 @@ PwGisStyle* MapStyleManager::createEnemyBplaStyle(const QString& layerId, uint s
 	PwGisStyle* style = createStyle( MapStyleManager::getEnemyBplaStyleName(source), &exists );
 
 	if( !exists ) {
-		style->setProperty( PwGisStyle::mapFontColor, "blue" );
-		style->setProperty( PwGisStyle::mapFontSize, "10pt");
-		style->setProperty( PwGisStyle::externalGraphic, IMAGE_UAV_BPLA_48 );
-		style->setProperty( PwGisStyle::fillColor, "blue" );
-		style->setProperty( PwGisStyle::graphicWidth, "40" );
-		style->setProperty( PwGisStyle::graphicHeight, "60" );
-		style->setProperty( PwGisStyle::layer, layerId );
+		if( source == 100 || source == 101 ) {
+			style->setProperty( PwGisStyle::mapFontColor, "blue" );
+			style->setProperty( PwGisStyle::mapFontSize, "10pt");
+			style->setProperty( PwGisStyle::externalGraphic, IMAGE_UAV_BPLA_48 );
+			style->setProperty( PwGisStyle::fillColor, "blue" );
+			style->setProperty( PwGisStyle::graphicWidth, "40" );
+			style->setProperty( PwGisStyle::graphicHeight, "60" );
+			style->setProperty( PwGisStyle::layer, layerId );
+		} else {
+			style->setProperty( PwGisStyle::mapFontColor, "red" );
+			style->setProperty( PwGisStyle::mapFontSize, "5pt");
+			style->setProperty( PwGisStyle::externalGraphic, IMAGE_ONE_POINT );
+			style->setProperty( PwGisStyle::fillColor, "blue" );
+			style->setProperty( PwGisStyle::fillOpacity, "50" );
+			style->setProperty( PwGisStyle::graphicWidth, "30" );
+			style->setProperty( PwGisStyle::graphicHeight, "30" );
+			style->setProperty( PwGisStyle::layer, layerId );
+		}
 	}
 
 	return style;
 }
+
+
 
 PwGisStyle* MapStyleManager::createEnemyBplaTrackStyle(const QString& layerId, uint source)
 {

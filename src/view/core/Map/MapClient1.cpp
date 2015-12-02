@@ -31,6 +31,10 @@ MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 	m_hyperboleTimer = new QTimer(this);
 	connect( m_hyperboleTimer, SIGNAL(timeout()), this, SLOT(removeAllHyperbole()) );
 
+	m_onePointTimer = new QTimer(this);
+	connect( m_onePointTimer, SIGNAL(timeout()), this, SLOT(removeAllonePointTimer()) );
+	m_onePointTimer->start(3000);
+
 	/// \todo I don't know what is there for these timers, maybe it was some code for demo?
 	m_uiTimer = new QTimer( this );
 	connect( m_uiTimer, SIGNAL( timeout() ), this, SLOT( updateCircle() ) );
@@ -195,6 +199,16 @@ void MapClient1::removeAllHyperbole()
 	for ( int i = 0; i < m_hyperboleList.count(); i++ ) {
 		m_hyperboleList[i]->removeFromMap();
 	}
+}
+
+void MapClient1::removeAllonePointTimer()
+{
+		foreach (MapFeature::EnemyBpla* bla, m_enemyBplaList) {
+			if( bla->getStyleName() == MapStyleManager::getEnemyBplaStyleName(104) ) {
+				bla->removeFromMap();
+				m_enemyBplaList.remove(m_enemyBplaList.key(bla));
+			}
+		}
 }
 
 void MapClient1::showLayer( int index, bool state )
@@ -469,6 +483,8 @@ void MapClient1::addEnemyBplaInternal(const UavInfo& uav,
 	if( !uav.historical ) {
 		bpla->setTail( tail, tailStdDev );
 	}
+
+	bpla->updateMap();
 }
 
 void MapClient1::removeBplaInternal(const Uav& uav)
@@ -640,7 +656,7 @@ void MapClient1::redrawAllBpla()
 		bpla->updateMap();
 	}
 
-	foreach( MapFeature::EnemyBpla* bpla, m_enemyBplaList ) {
-		bpla->updateMap();
-	}
+//	foreach( MapFeature::EnemyBpla* bpla, m_enemyBplaList ) {
+//			bpla->updateMap();
+//	}
 }

@@ -50,6 +50,7 @@ private:
 	MapFeature::NiippPoint* m_niippPoint;
 	QMap<QString, MapFeature::FriendBpla*> m_friendBplaList;
 	QMap<QString, MapFeature::EnemyBpla*> m_enemyBplaList;
+	QList<MapFeature::EnemyBpla*> m_onePointList;
 	QMap<int, MapFeature::Niipp*> m_niippList;
 	QMap<int, MapFeature::Pelengator*> m_pelengatorList;
 	QMap<int, MapFeature::PelengatorPoint*> m_pelengatorPointsList;
@@ -70,6 +71,7 @@ private:
 	bool m_circleChanged;
 
 	QTimer* m_hyperboleTimer;
+	QTimer* m_onePointTimer;
 
 public:
 	MapClient1( PwGisWidget* pwwidget, Station* station, QObject* parent = NULL );
@@ -134,6 +136,7 @@ private slots:
 								  float course, float speed );
 	void addHyperboleInternal( const QByteArray& data, const QColor color );
 	void removeAllHyperbole();
+	void removeAllonePointTimer();
 
 	void redrawAllBpla();
 	void updateCircle();

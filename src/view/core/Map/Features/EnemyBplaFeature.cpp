@@ -13,11 +13,20 @@ EnemyBpla::EnemyBpla(IObjectsFactory* factory, const QString& id, const UavInfo&
 	m_styleName = MapStyleManager::getEnemyBplaStyleName( uav.source );
 	m_trackStyleName = MapStyleManager::getEnemyBplaTrackStyleName( uav.source );
 
+	if(uav.source == 100 || uav.source == 101 ) {
+		lifetime = LIFETIME_1;
+	} else {
+		lifetime = LIFETIME_2;
+	}
+
 	if ( !uav.historical ) {
 		m_autoTail = false;
 	}
 
 	registerStyle();
+
+	timer = new QTimer(this);
+	connect(timer, SIGNAL(timeout()), this, SLOT(removeFromMap()));
 
 	// init source label
 	switch ( m_sourceId ) {
@@ -70,8 +79,8 @@ void EnemyBpla::update(const UavInfo& uav)
 {
 	// do not update from uav info with not origin source
 	if (m_sourceId != uav.source) return;
-
 	BplaAbstract::update( uav );
+	timer->start(lifetime);
 }
 
 } // namespace MapFeature

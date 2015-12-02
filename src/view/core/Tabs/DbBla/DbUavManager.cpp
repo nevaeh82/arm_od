@@ -2,6 +2,9 @@
 
 #include "DbUavManager.h"
 
+#define LIFETIME_1 20000
+#define LIFETIME_2 3000
+
 DbUavManager::DbUavManager(int lifeTime, QObject *parent) :
 	QObject(parent)
 {
@@ -122,7 +125,11 @@ int DbUavManager::addUavInfo(const UavInfo &uavInfo, bool actual,
 	if (lifeTimer == NULL) {
 		log_debug(QString("...Hmm... lifeTimer is NULL for %1...").arg(QString::number(uav.uavId)));
 	} else {
-		lifeTimer->start( m_lifeTime );
+		//if(uavInfo.source == 100 || uavInfo.source == 101 ) {
+		lifeTimer->start( LIFETIME_1 );
+		//} else {
+		//	lifeTimer->start( LIFETIME_2 );
+		//}
 	}
 
 	UavInfo uavInfoForListeners = uavInfo;

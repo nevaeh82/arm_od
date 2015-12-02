@@ -1,11 +1,17 @@
 #ifndef BPLAFEATURE_H
 #define BPLAFEATURE_H
 
+#include <QTimer>
+
 #include <PwGis/PwGisPointList.h>
 #include <PwGis/objects/Path.h>
 
 #include "Map/IMapStyleManager.h"
 #include "Map/Features/BplaAbstractFeature.h"
+
+
+#define LIFETIME_1 20000
+#define LIFETIME_2 3000
 
 namespace MapFeature {
 
@@ -24,12 +30,12 @@ protected:
 	QString m_trackStyleName;
 
 	inline void updateName() { setName( m_originName ); }
-	virtual inline QString getStyleName() const { return m_styleName; }
-	virtual inline QString getTrackStyleName() const { return m_trackStyleName; }
-	virtual inline QString getSliceStyleName() const { return m_trackStyleName; }
-
 
 	EnemyBpla(IObjectsFactory* factory, const QString& id, const UavInfo& uav);
+
+private:
+	QTimer* timer;
+	int lifetime;
 
 public:
 	virtual ~EnemyBpla() {}
@@ -37,6 +43,10 @@ public:
 	virtual void setName(const QString &name);
 
 	virtual void update(const UavInfo &uav);
+
+	virtual inline QString getStyleName() const { return m_styleName; }
+	virtual inline QString getTrackStyleName() const { return m_trackStyleName; }
+	virtual inline QString getSliceStyleName() const { return m_trackStyleName; }
 };
 
 } // namespace MapFeature

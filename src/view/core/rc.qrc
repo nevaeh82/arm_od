@@ -42,6 +42,7 @@
         <file>images/UAV/BPLA48.png</file>
         <file>images/UAV/BPLA64.png</file>
         <file>images/UAV/BPLA128.png</file>
+		<file>images/UAV/cross.png</file>
     </qresource>
     <qresource prefix="/images/map">
         <file>images/Tabs/bank_128.png</file>
