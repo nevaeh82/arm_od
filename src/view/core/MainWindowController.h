@@ -54,6 +54,8 @@ private slots:
 
 	void solverDialogSlot();
 
+	void enableAdsbClient(bool);
+
 private:
 
 	void init();

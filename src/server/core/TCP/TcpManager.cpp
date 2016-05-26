@@ -5,6 +5,7 @@ TcpManager::TcpManager(QObject* parent) :
 {
 	m_rpcServer = NULL;
 	m_tcpServer = NULL;
+	m_adsbController = NULL;
 
 	connect(this, SIGNAL(onMethodCalledInternalSignal(QString,QVariant)), this, SLOT(onMethodCalledInternalSlot(QString,QVariant)));
 
@@ -24,6 +25,11 @@ void TcpManager::setRpcClient(RpcClientRWrapper *rpcClient)
 void TcpManager::addTcpDevice(const QString& deviceName, const quint32& deviceType)
 {
 	log_debug(QString("Creating %1 with type %2").arg(QString(deviceName)).arg(QString::number(deviceType)));
+
+	if(deviceName == "ADSBClient") {
+		createAdsbDevice();
+		return;
+	}
 
 	BaseTcpDeviceController* controller = NULL;
 
@@ -234,6 +240,11 @@ void TcpManager::onMessageReceived(const quint32 deviceType, const QString& devi
 				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_HYPERBOLA, messageData);
 			}
 			break;
+		case DeviceTypes::ADSB_TCP_CLIENT:
+			if (messageType == TCP_ADSB_ANSWER_DATA) {
+				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_ADSB_DATA, messageData);
+			}
+			break;
 		default:
 			break;
 	}
@@ -249,6 +260,8 @@ QString TcpManager::getTcpClientName()
 	return ARMR_TCP_CLIENT_NAME;
 }
 
+
+//From RPC
 void TcpManager::onMethodCalledInternalSlot(const QString& method, const QVariant& argument)
 {
 	if (method == RPC_SLOT_SET_SOLVER_CLEAR) {
@@ -285,7 +298,6 @@ void TcpManager::onMethodCalledInternalSlot(const QString& method, const QVarian
 				case 100:
 					name = "NIIPP_1";
 					break;
-
 				case 101:
 					name = "NIIPP_2";
 					break;
@@ -328,4 +340,33 @@ void TcpManager::onMethodCalledInternalSlot(const QString& method, const QVarian
 		}
 		controller->isConnected();
 	}
+	else if(method == RPC_SLOT_SET_ADSB_ENABLE) {
+		QDataStream ds(&argument.toByteArray(), QIODevice::ReadOnly);
+
+		bool enable = true;
+		ds >> enable;
+
+		m_adsbController->enableAdsb(enable);
+	}
+}
+
+void TcpManager::createAdsbDevice()
+{
+	m_adsbController = new TcpADSBController("ADSBClient");
+
+	QThread* controllerThread = new QThread;
+	connect(m_adsbController->asQObject(), SIGNAL(destroyed()), controllerThread, SLOT(terminate()));
+	connect(this, SIGNAL(threadTerminateSignal()), controllerThread, SLOT(quit()));
+	connect(this, SIGNAL(threadTerminateSignal()), m_adsbController, SLOT(onStop()));
+	connect(this, SIGNAL(threadTerminateSignal()), m_adsbController->asQObject(), SLOT(deleteLater()));
+	connect(this, SIGNAL(threadTerminateSignal()), controllerThread, SLOT(deleteLater()));
+
+	connect(controllerThread, SIGNAL(started()), m_adsbController, SLOT(onInitPlanesClient()));
+
+	m_adsbController->asQObject()->moveToThread(controllerThread);
+	controllerThread->start();
+
+	m_adsbController->registerReceiver(this);
+
+	log_debug(QString("Added device connection for %1").arg("ADSBClient"));
 }

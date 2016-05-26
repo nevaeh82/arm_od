@@ -1,6 +1,7 @@
 ﻿#include <QVariant>
 
 #include <Logger/Logger.h>
+#include <math.h>
 
 #include "Uav/UavModel.h"
 #include "Map/MapStyleManager.h"
@@ -117,6 +118,9 @@ void MapClient1::init()
 	addMarkerLayer( 4, "UAV_track_autopilot", tr( "UAV_track_autopilot" ) );
 	addMarkerLayer( 3, "UAV", tr( "UAV" ) );
 
+	addMarkerLayer( 202, "ADSB", tr( "ADSB" ) );
+	addMarkerLayer( 203, "ADSBtrack", tr( "ADSBtrack" ) );
+
 	showLayer( 8, false );
 
 	// create styles for features
@@ -141,6 +145,8 @@ void MapClient1::init()
 	m_styleManager->createCheckPointStyle( m_mapLayers.value(9) )->apply();
 	m_styleManager->createInterceptionStyle( m_mapLayers.value(10) )->apply();
 	m_styleManager->createAisStyle( m_mapLayers.value(11) )->apply();
+	m_styleManager->createAdsbStyle( m_mapLayers.value(202) )->apply();
+	m_styleManager->createAdsbTrackStyle( m_mapLayers.value(203) )->apply();
 	m_styleManager->createNiippPointStyle( m_mapLayers.value(12) )->apply();
 	m_styleManager->createNiippStyle( m_mapLayers.value(13) )->apply();
 	m_styleManager->createHyperboleStyle( m_mapLayers.value(14) )->apply();
@@ -154,6 +160,8 @@ void MapClient1::init()
 
 	connect( this, SIGNAL( pelengUpdated( int, int, double, double, double ) ),
 			 this, SLOT( addPeleng( int, int, double, double, double ) ) );
+
+	connect( this, SIGNAL(adsbAdded(QByteArray)), this, SLOT(setAdsbData(QByteArray)) );
 }
 
 void MapClient1::addHyperboles(const QByteArray& data, const QColor color)
@@ -237,6 +245,11 @@ void MapClient1::removeBpla(const Uav& uav)
 void MapClient1::addAis( QMap<int, QVector<QString> > vec )
 {
 	emit aisAdded( vec );
+}
+
+void MapClient1::addAdsb(QByteArray data)
+{
+	emit adsbAdded(data);
 }
 
 void MapClient1::updatePeleng( int id, int idPost, double lat, double lon, double direction )
@@ -560,6 +573,67 @@ void MapClient1::setAisData( QMap<int, QVector<QString> > data )
 	clearObjectsList( MapFeature::Ais, m_aisList );
 
 	m_aisList = newAisList;
+}
+
+void MapClient1::setAdsbData(QByteArray data)
+{
+	QDataStream ds(&data, QIODevice::ReadOnly);
+	QString id;
+	double lon;
+	double lat;
+	ds >> id;
+	ds >> lon;
+	ds >> lat;
+
+	log_debug(QString("ADSB Data:!! %1 %2").arg(lon).arg(lat));
+
+	// add or update pelengator
+	MapFeature::ADSBPlaneFeature* p = m_adsbList.value( id, NULL );
+	if( p != NULL ) {
+		if(lon > 180 || lon < -180) {
+			return;
+		}
+		if(lat > 90 || lat < -90) {
+			return;
+		}
+
+
+		if( lat != lat || lon != lon) {
+			return;
+		}
+
+		p->update(QPointF(lon, lat));
+		p->updateMap();
+	} else {
+		if(lon > 180 || lon < -180) {
+			return;
+		}
+		if(lat > 90 || lat < -90) {
+			return;
+		}
+
+		if( lat != lat ||
+			lon != lon) {
+			return;
+		}
+
+		p = m_factory->createAdsbPlane( id, QPointF(lon, lat) );
+		p->updateMap();
+
+		m_adsbList.insert( id, p );
+
+		connect(p, SIGNAL(onFeatureRemove(QString)), this, SLOT(removeAdsb(QString)));
+	}
+}
+
+void MapClient1::removeAdsb(QString id)
+{
+	MapFeature::ADSBPlaneFeature* p = m_adsbList.value(id);
+
+	if(p) {
+		delete p;
+	}
+	m_adsbList.remove(id);
 }
 
 void MapClient1::readStationsFromFile(QString fileName)

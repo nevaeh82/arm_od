@@ -26,6 +26,9 @@
 #define COMMAND_SET_SOLVER_AUTO     502
 #define COMMAND_SET_SOLVER_CLEAR    503
 
+///ADSB
+#define COMMAND_SET_ADSB            601
+
 
 
 class CommandMessage : public IMessageOld

@@ -56,6 +56,7 @@ private:
 	QMap<int, MapFeature::PelengatorPoint*> m_pelengatorPointsList;
 	QMap<QString, MapFeature::Interception*> m_interceptionList;
 	QMap<QString, MapFeature::Ais*> m_aisList;
+	QMap<QString, MapFeature::ADSBPlaneFeature*> m_adsbList;
 	QMap<QString, MapFeature::Station*> m_stationList;
 	QList<MapFeature::CheckPoint*> m_checkPointsList;
 	QList<MapFeature::Hyperbole*> m_hyperboleList;
@@ -104,6 +105,8 @@ public slots:
 
 	virtual void addAis( QMap<int, QVector<QString> > vec );
 
+	virtual void addAdsb( QByteArray data );
+
 	virtual void addNiippPoint( const QPointF& point );
 
 	virtual void updateNiippPowerZone( const Niipp& niipp );
@@ -124,6 +127,7 @@ private slots:
 	void removeBplaInternal( const Uav& uav );
 
 	void setAisData(QMap<int, QVector<QString> > data );
+	void setAdsbData( QByteArray data );
 
 	void addPeleng( int id, int postId, double lat, double lon, double direction );
 
@@ -141,6 +145,8 @@ private slots:
 	void redrawAllBpla();
 	void updateCircle();
 
+	void removeAdsb(QString id);
+
 signals:
 	void friendBplaAdded( const UavInfo& uav );
 	void enemyBplaAdded( const UavInfo& uav,
@@ -149,6 +155,8 @@ signals:
 	void bplaRemoved( const Uav& uav );
 
 	void aisAdded( QMap<int, QVector<QString> > vec );
+
+	void adsbAdded(QByteArray);
 
 	void niippPowerZoneUpdated( const Niipp& );
 

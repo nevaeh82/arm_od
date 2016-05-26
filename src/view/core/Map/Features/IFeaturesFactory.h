@@ -22,6 +22,7 @@
 #include "Map/Features/StationFeature.h"
 #include "Map/Features/CheckPointFeature.h"
 #include "Map/Features/HyperboleFeature.h"
+#include "Map/Features/ADSBPlaneFeature.h"
 
 
 namespace MapFeature {
@@ -42,6 +43,8 @@ public:
 	virtual PelengatorPoint* createPelengatorPoint( const QString& name, const QPointF& position ) = 0;
 	virtual CheckPoint*   createCheckPoint( const QString& name, const QPointF& position ) = 0;
 	virtual Hyperbole*    createHyperbole( const QVector<QPointF>& polyline, const QTime time, const QColor color = QColor::Invalid ) = 0;
+
+	virtual ADSBPlaneFeature* createAdsbPlane( const QString& name, const QPointF& pos ) = 0;
 };
 
 } // namespace MapFeature

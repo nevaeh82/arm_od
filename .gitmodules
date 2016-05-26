@@ -28,3 +28,6 @@
 [submodule "tools/cxxtest"]
 	path = tools/cxxtest
 	url = git@192.168.137.67:externals/cxxtest.git
+[submodule "src/ADSBReceiver"]
+	path = src/ADSBReceiver
+	url = git@192.168.137.67:pyarovoy/adsbreceiver.git

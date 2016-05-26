@@ -2,12 +2,13 @@
 
 #include "Map/MapStyleManager.h"
 
-#define IMAGE_POST_PLANE_BLACK		"/profiles/Zav/ais/images/AIS/PostPlaneBlack.png"
-#define IMAGE_UAV_BLA_48			"/profiles/Zav/UAV/images/UAV/BLA48.png"
-#define IMAGE_UAV_BPLA_48			"/profiles/Zav/UAV/images/UAV/BPLA48.png"
-#define IMAGE_ONE_POINT				"/profiles/Zav/UAV/images/UAV/cross.png"
-#define IMAGE_STATION_RED_128		"/profiles/Zav/tabs/images/Punkts/StationRed128.png"
-#define IMAGE_POINT_RED_48			"/profiles/Zav/Points/images/Points/redmark48.png"
+#define IMAGE_POST_PLANE_BLACK		"/profiles/Zav/AIS/PostPlaneBlack.png"
+#define IMAGE_UAV_BLA_48			"/profiles/Zav/UAV/BLA48.png"
+#define IMAGE_UAV_BPLA_48			"/profiles/Zav/UAV/BPLA48.png"
+#define IMAGE_ONE_POINT				"/profiles/Zav/UAV/cross.png"
+#define IMAGE_STATION_RED_128		"/profiles/Zav/Punkts/StationRed128.png"
+#define IMAGE_POINT_RED_48			"/profiles/Zav/Points/redmark48.png"
+#define IMAGE_ADSB_PLANE			"/profiles/Zav/AIS/PostPlaneYellow.png"
 
 MapStyleManager::MapStyleManager(IStyleFactory* factory)
 	: m_factory( factory )
@@ -72,6 +73,38 @@ PwGisStyle* MapStyleManager::createFriendBplaSliceStyle(const QString& layerId)
 	if( !exists ) {
 		style->setProperty( PwGisStyle::strokeColor, "red" );
 		style->setProperty( PwGisStyle::strokeOpacity, "0.3" );
+		style->setProperty( PwGisStyle::layer, layerId );
+	}
+
+	return style;
+}
+
+PwGisStyle*MapStyleManager::createAdsbStyle(const QString& layerId)
+{
+	bool exists;
+	PwGisStyle* style = createStyle( MAP_STYLE_NAME_ADSB, &exists );
+
+	if( !exists ) {
+		style->setProperty( PwGisStyle::strokeColor, "gray" );
+		//style->setProperty( PwGisStyle::strokeOpacity, "0.3" );
+		style->setProperty( PwGisStyle::layer, layerId );
+		style->setProperty( PwGisStyle::externalGraphic, IMAGE_ADSB_PLANE );
+		style->setProperty( PwGisStyle::fillColor, "yellow" );
+		style->setProperty( PwGisStyle::graphicWidth, "20" );
+		style->setProperty( PwGisStyle::graphicHeight, "20" );
+	}
+
+	return style;
+}
+
+PwGisStyle*MapStyleManager::createAdsbTrackStyle(const QString& layerId)
+{
+	bool exists;
+	PwGisStyle* style = createStyle( MAP_STYLE_NAME_ADSB_TRACK, &exists );
+
+	if( !exists ) {
+		style->setProperty( PwGisStyle::strokeColor, "gray" );
+		//style->setProperty( PwGisStyle::strokeOpacity, "0.3" );
 		style->setProperty( PwGisStyle::layer, layerId );
 	}
 

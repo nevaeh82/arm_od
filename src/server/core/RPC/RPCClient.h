@@ -41,6 +41,7 @@ signals:
 	/// RPC signals
 	void signalSendToRPCBLAPoints(quint64,int,rpc_QPointF,double,double,double,int);
 	void signalSendToRPCAISData(quint64,QByteArray*);
+	void signalSendToRPCADSBData(quint64,QByteArray*);
 
 	/// from ARM_R
 	void signalSendToRPCBPLAPoints(quint64, QByteArray*);

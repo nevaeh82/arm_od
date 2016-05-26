@@ -12,7 +12,8 @@ typedef enum DeviceTypesEnum
 	NIIPP_TCP_DEVICE = 1,
 	KTR_TCP_DEVICE = 2,
 	AIS_TCP_DEVICE = 3,
-	ARMR_TCP_CLIENT = 4
+	ARMR_TCP_CLIENT = 4,
+	ADSB_TCP_CLIENT = 5
 } DeviceTypesEnum;
 }
 

@@ -58,6 +58,8 @@ void MainWindow::init()
 	connect(ui->actionKoordinatometriyaParameters, SIGNAL(triggered()), this, SIGNAL(setupKoordinatometriyaSignal()));
 
 	connect(ui->actionRestartServer, SIGNAL(triggered()), this, SIGNAL(signalResetServer()));
+
+	connect( ui->actionListen_to_ADSB, SIGNAL(triggered(bool)), this, SIGNAL(signalEnableAdsb(bool)) );
 }
 
 void MainWindow::setStateMapAction( bool value )

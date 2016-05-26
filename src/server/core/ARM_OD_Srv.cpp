@@ -1,5 +1,6 @@
 #include "ARM_OD_Srv.h"
 
+
 ARM_OD_Srv::ARM_OD_Srv()
 {
 
@@ -40,6 +41,7 @@ ARM_OD_Srv::ARM_OD_Srv()
 	QThread* tcpManagerThread = new QThread;
 	connect(tcpManagerThread, SIGNAL(finished()), m_tcpManager, SLOT(deleteLater()));
 	connect(tcpManagerThread, SIGNAL(finished()), tcpManagerThread, SLOT(deleteLater()));
+	connect(this, SIGNAL(closeALL()), tcpManagerThread, SLOT(quit()));
 	m_tcpManager->moveToThread(tcpManagerThread);
 	tcpManagerThread->start();
 
@@ -71,6 +73,8 @@ ARM_OD_Srv::ARM_OD_Srv()
 		default:
 			break;
 	}
+
+	//m_flyController = new TcpFlyRadarController(this);
 
 	emit signalStartRPC();
 }

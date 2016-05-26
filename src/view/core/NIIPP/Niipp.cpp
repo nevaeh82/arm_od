@@ -108,6 +108,7 @@ void Niipp::enableComplex(bool state)
 	}
 
 	QDateTime dt = QDateTime::currentDateTime();
+	dt.toTime_t();
 	QDate date = dt.date();
 	ds << m_id;
 	ds << date;

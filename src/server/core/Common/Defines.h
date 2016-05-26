@@ -15,6 +15,8 @@
 
 /// AIS
 #define AIS_DATA                801
+/// ADSB
+#define ADSB_DATA                802
 
 
 /// COORDINATES

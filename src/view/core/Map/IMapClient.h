@@ -47,6 +47,8 @@ public:
 
 	virtual void addAis( QMap<int, QVector<QString> > vec ) = 0;
 
+	virtual void addAdsb( QByteArray data ) = 0;
+
 	virtual void addNiippPoint( const QPointF& point ) = 0;
 	virtual void removeNiippPoint() = 0;
 

@@ -50,6 +50,7 @@ void RPCClient::startInternalSlot(quint16 port, QString ipAddress)
 	m_clientPeer->attachSignal(this, SIGNAL(signalGetNIIPPStatus(QByteArray)), RPC_SLOT_GET_NIIPP_CONNECTION_STATUS);
 	m_clientPeer->attachSignal(this, SIGNAL(signalSetSolverData(QByteArray)), RPC_SLOT_SET_SOLVER_DATA);
 	m_clientPeer->attachSignal(this, SIGNAL(signalSetSolverDataClear(QByteArray)), RPC_SLOT_SET_SOLVER_CLEAR);
+	m_clientPeer->attachSignal(this, SIGNAL(signalSetAdsb(QByteArray)), RPC_SLOT_SET_ADSB_ENABLE);
 
 	connect(this, SIGNAL(signalReconnection()), this, SLOT(_slotReconnection()));
 	connect(m_clientPeer, SIGNAL(disconnectedFromServer()), this, SLOT(_slotRPCDisconnection()));
@@ -66,6 +67,8 @@ void RPCClient::startInternalSlot(quint16 port, QString ipAddress)
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_NIIPP_CONNECTION_STATUS, this, SLOT(rpcSendNiippConnectionStatus(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION, this, SLOT(rpcSlotServerSendAtlantDirection(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_ATLANT_POSITION, this, SLOT(rpcSlotServerSendAtlantPosition(QByteArray)));
+
+	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_ADSB_DATA, this, SLOT(rpcSlotServerSendAdbsData(QByteArray)));
 
 	log_debug("Start RPCClient");
 	RpcClientBase::start(port, QHostAddress(ipAddress));
@@ -93,6 +96,9 @@ void RPCClient::formCommand(IMessageOld *msg)
 
 	case COMMAND_SET_SOLVER_CLEAR:
 		setSolverClear(data);
+		break;
+	case COMMAND_SET_ADSB:
+		setAdsb(data);
 		break;
 
 	default:
@@ -195,6 +201,13 @@ void RPCClient::rpcSlotServerSendAtlantPosition(QByteArray data)
 	}
 }
 
+void RPCClient::rpcSlotServerSendAdbsData(QByteArray data)
+{
+	foreach (IRpcListener* reciever, m_receiversList) {
+		reciever->onMethodCalled(RPC_SLOT_SERVER_SEND_ADSB_DATA, QVariant(data));
+	}
+}
+
 void RPCClient::sendNiippBpla(QByteArray data)
 {
 	emit signalSetNIIPPBPLA(data);
@@ -208,6 +221,11 @@ void RPCClient::sendNiippConnectionStatus(QByteArray data)
 void RPCClient::setSolverClear(QByteArray data)
 {
 	emit signalSetSolverDataClear(data);
+}
+
+void RPCClient::setAdsb(QByteArray data)
+{
+	emit signalSetAdsb( data );
 }
 
 void RPCClient::sendDataToSovler(QByteArray data)

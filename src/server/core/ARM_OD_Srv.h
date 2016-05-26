@@ -26,6 +26,8 @@
 #include "TCP/TcpSettingsManager.h"
 #include "SettingsManager/EnviromentSettingsManager.h"
 
+#include "Tcp/TcpFlyRadarController.h"
+
 typedef QSharedPointer<IMessageOld> rpc_msg;
 typedef QVector<QPointF>         rpc_send_points_vector;
 typedef QPointF                  rpc_QPointF;
@@ -51,6 +53,8 @@ private:
 	RpcClientRWrapper*    m_rpcClientR;
 	RpcConfigReader* m_rpcConfigReader;
 	IRpcSettingsManager* m_rpcSettingsManager;
+
+	TcpFlyRadarController* m_flyController;
 
 private:
 	void addTcpArmrConnection();

@@ -4,7 +4,7 @@
 
 #include "Interfaces/IUavHistoryListener.h"
 
-#define SERVER_NAME "ARM_OD_Server"
+#define SERVER_NAME "ZaviruhaODServer"
 
 MainWindowController::MainWindowController(QObject *parent) :
 	QObject(parent)
@@ -25,14 +25,14 @@ MainWindowController::MainWindowController(QObject *parent) :
 	qRegisterMetaType<IUavHistoryListener::Status>( "Status" );
 
 	QString serverName = "./" + QString(SERVER_NAME);
-	#ifdef QT_DEBUG
-		serverName += "d";
-	#endif
 	m_serverHandler = new SkyHobbit::Common::ServiceControl::ServiceHandler(serverName, QStringList(), NULL, this);
+
+	m_serverHandler->start(true);
 }
 
 MainWindowController::~MainWindowController()
 {
+	m_serverHandler->terminate();
 }
 
 void MainWindowController::appendView(MainWindow *view)
@@ -69,6 +69,7 @@ void MainWindowController::init()
 	connect(m_tabManager, SIGNAL( cancelMapOpen() ), m_view, SLOT( cancelMapOpen() ));
 	connect(m_view, SIGNAL(setupKoordinatometriyaSignal()), this, SLOT(solverDialogSlot()));
 	connect(m_view, SIGNAL(signalResetServer()), this, SLOT(resetServer()));
+	connect(m_view, SIGNAL(signalEnableAdsb(bool)), this, SLOT(enableAdsbClient(bool)));
 
 	m_rpcConfigClient = new RpcConfigClient(this);
 	m_rpcConfigClient->registerReceiver(this);
@@ -186,6 +187,20 @@ void MainWindowController::solverDialogSlot()
 	if (NULL == msg){
 		return;
 	}
+
+	m_tabManager->send_data(0, msg);
+}
+
+void MainWindowController::enableAdsbClient(bool status)
+{
+	CommandMessage* msg = NULL;
+
+
+	QByteArray ba;
+	QDataStream ds(&ba, QIODevice::ReadWrite);
+	ds << status;
+
+	msg = new CommandMessage(COMMAND_SET_ADSB, ba);
 
 	m_tabManager->send_data(0, msg);
 }

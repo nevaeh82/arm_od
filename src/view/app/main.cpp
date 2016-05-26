@@ -5,8 +5,6 @@
 #include <QGraphicsObject>
 #include <QMetaType>
 
-#include <PwLogger/PwLogger.h>
-
 #include "MainWindow.h"
 #include "MainWindowController.h"
 

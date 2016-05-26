@@ -56,6 +56,7 @@ private:
 	void sendNiippConnectionStatus(QByteArray data);
 	void sendDataToSovler(QByteArray data);
 	void setSolverClear(QByteArray data);
+	void setAdsb(QByteArray data);
 
 public slots:
 	///rpc_server
@@ -72,6 +73,8 @@ public slots:
 	void rpcSlotServerSendAtlantDirection(QByteArray data);
 	void rpcSlotServerSendAtlantPosition(QByteArray data);
 
+	void rpcSlotServerSendAdbsData(QByteArray data);
+
 private slots:
 	void slotRCPConnetion();
 	void slotSetCommand(IMessageOld* msg);
@@ -87,6 +90,7 @@ signals:
 	void signalGetNIIPPStatus(QByteArray data);
 	void signalSetSolverData(QByteArray data);
 	void signalSetSolverDataClear(QByteArray data);
+	void signalSetAdsb(QByteArray data);
 
 	void startInternalSignal(quint16 port, QString ipAddress);
 

@@ -10,8 +10,8 @@ namespace MapFeature {
 /// Represends simple marker without style on the map
 class Marker : public FeatureAbstract
 {
+	Q_OBJECT
 //	friend class FeaturesFactory;
-
 protected:
 	Pw::Gis::Marker* m_marker;
 

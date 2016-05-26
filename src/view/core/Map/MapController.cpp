@@ -242,7 +242,10 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 		ds >> map;
 
 		client->addAis(map);
-	} else if( method == RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION ) {
+	} else if( method == RPC_SLOT_SERVER_SEND_ADSB_DATA ) {
+		client->addAdsb( data );
+	}
+	else if( method == RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION ) {
 
 		QDataStream ds(&data, QIODevice::ReadWrite);
 		A_Dir_Ans_msg msg;

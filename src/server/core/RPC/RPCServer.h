@@ -65,6 +65,8 @@ public slots:
 	void rpc_slot_set_solver_data(quint64 client, QByteArray data);
 	void rpc_slot_set_solver_clear(quint64 client, QByteArray data);
 
+	void rpc_slot_set_adsb_enable(quint64 client, QByteArray data);
+
 	/// BLA
 	void rpc_slot_send_bla_points(quint64 client, int id, rpc_QPointF points, double alt, double speed, double course, int state);
 
@@ -107,6 +109,8 @@ signals:
 	void signalSendToRPCAISData(QByteArray);
 	void signalSendToRPCNIIPPData(QByteArray);
 	void signalSendToRPCNIIPPConnectionStatus(QByteArray);
+
+	void signalSendToRPCADSBData(QByteArray);
 
 	void sendDataByRpcSignal(QString signalType, QByteArray data);
 

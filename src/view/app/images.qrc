@@ -2,6 +2,15 @@
   <qresource prefix="/">
     <file>images/bullet_green.png</file>
 	<file>images/bullet_red.png</file>
+	<file>images/Points/redmark16.png</file>
+	<file>images/Points/redmark24.png</file>
+	<file>images/Points/redmark32.png</file>
+	<file>images/Points/redmark48.png</file>
+	<file>images/Punkts/StationRed128.png</file>
+	<file>images/UAV/BLA48.png</file>
+	<file>images/UAV/BPLA48.png</file>
+	<file>images/AIS/PostPlaneBlack.png</file>
+	<file>images/AIS/PostPlaneYellow.png</file>	
   </qresource>
 </RCC>
 

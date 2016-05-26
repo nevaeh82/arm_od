@@ -55,6 +55,12 @@
 /// AIS
 #define RPC_SLOT_SERVER_SEND_AIS_DATA                 "rpc_slot_server_send_ais_data"
 
+/// ADSB
+#define RPC_SLOT_SERVER_SEND_ADSB_DATA                 "rpc_slot_server_send_adsb_data"
+
+///TO Adsb
+#define RPC_SLOT_SET_ADSB_ENABLE						"rpc_slot_set_adsb_enable"
+
 /// from ARM_R
 #define RPC_SLOT_SERVER_SEND_BPLA_POINTS              "rpc_slot_server_send_bpla_point_from_arm_r"
 #define RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO         "rpc_slot_server_send_bpla_point_from_arm_r_auto"

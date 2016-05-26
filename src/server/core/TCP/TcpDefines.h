@@ -29,6 +29,11 @@
 #define TCP_AIS_ANSWER_DATA					"tcpAisAnswerData"
 #define TCP_AIS_REQUEST_GET_DATA			"tcpAisRequestGetData"
 
+/// ADSB device internal
+#define TCP_ADSB_ANSWER_DATA				"tcpADSBAnswerData"
+#define TCP_ADSB_REQUEST_ON					"tcpADSBRequestON"
+#define TCP_ADSB_REQUEST_OFF				"tcpADSBRequestOFF"
+
 #define TCP_AIS_URL_STANDART				"http://bma.fr24.com/zones/"
 #define TCP_AIS_URL_FULL_MAP				"full_all.js"
 #define TCP_AIS_URL_EUROPE					"europe_all.js"

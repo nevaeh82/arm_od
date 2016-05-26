@@ -22,6 +22,8 @@ public:
 	virtual PwGisStyle* createFriendBplaStyle(const QString& layerId);
 	virtual PwGisStyle* createFriendBplaTrackStyle(const QString& layerId);
 	virtual PwGisStyle* createFriendBplaSliceStyle(const QString& layerId);
+	virtual PwGisStyle* createAdsbStyle(const QString& layerId);
+	virtual PwGisStyle* createAdsbTrackStyle(const QString& layerId);
 	virtual PwGisStyle* createEnemyBplaStyle(const QString& layerId, uint source);
 	virtual PwGisStyle* createEnemyBplaTrackStyle(const QString& layerId, uint source);
 	virtual PwGisStyle* createInterceptionStyle(const QString& layerId);
@@ -41,6 +43,8 @@ public:
 	inline virtual PwGisStyle* getFriendBplaSliceStyle() { return getStyle( MAP_STYLE_NAME_FRIEND_BPLA_SLICE ); }
 	inline virtual PwGisStyle* getEnemyBplaStyle(uint source) { return getStyle( MapStyleManager::getEnemyBplaStyleName(source) ); }
 	inline virtual PwGisStyle* getEnemyBplaTrackStyle(uint source) { return getStyle( MapStyleManager::getEnemyBplaTrackStyleName(source) ); }
+	inline virtual PwGisStyle* getAdsbStyle() { return getStyle( MAP_STYLE_NAME_ADSB ); }
+	inline virtual PwGisStyle* getAdsbTrackStyle() { return getStyle( MAP_STYLE_NAME_ADSB_TRACK ); }
 	inline virtual PwGisStyle* getInterceptionStyle() { return getStyle( MAP_STYLE_NAME_INTERCEPTION ); }
 	inline virtual PwGisStyle* getNiippStyle() { return getStyle( MAP_STYLE_NAME_NIIPP ); }
 	inline virtual PwGisStyle* getNiippPointStyle() { return getStyle( MAP_STYLE_NAME_NIIPP_POINT ); }
@@ -54,6 +58,9 @@ public:
 
 	static inline QString getEnemyBplaStyleName(uint source) { return QString(MAP_STYLE_NAME_ENEMY_BPLA).arg(source); }
 	static inline QString getEnemyBplaTrackStyleName(uint source) { return QString(MAP_STYLE_NAME_ENEMY_BPLA_TRACK).arg(source); }
+
+	static inline QString getADSBStyleName() { return QString(MAP_STYLE_NAME_ADSB); }
+	static inline QString getADSBTrackStyleName() { return QString(MAP_STYLE_NAME_ADSB); }
 
 protected:
 	/// Creates style with \a name

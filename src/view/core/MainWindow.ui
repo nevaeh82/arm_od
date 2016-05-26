@@ -15,7 +15,16 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <property name="margin">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
      <number>0</number>
     </property>
     <item row="0" column="0">
@@ -31,7 +40,16 @@
         </sizepolicy>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
@@ -41,7 +59,16 @@
       </widget>
       <widget class="QWidget" name="initializationPage">
        <layout class="QVBoxLayout" name="verticalLayout_2">
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
@@ -93,6 +120,7 @@
     </property>
     <addaction name="actionOpen_Atlas"/>
     <addaction name="actionOpen_from_file"/>
+    <addaction name="actionListen_to_ADSB"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
@@ -149,6 +177,14 @@
   <action name="actionRestartServer">
    <property name="text">
     <string>Restart Server</string>
+   </property>
+  </action>
+  <action name="actionListen_to_ADSB">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Listen to ADSB</string>
    </property>
   </action>
  </widget>

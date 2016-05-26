@@ -18,6 +18,7 @@
 #include "TcpNIIPPController.h"
 #include "TcpKTRController.h"
 #include "TcpAISController.h"
+#include "TcpADSBController.h"
 #include "TcpKTRManager.h"
 
 #include "TcpArmrClientController.h"
@@ -32,7 +33,6 @@ class TcpManager : public QObject, public ITcpManager, public ITcpListener, publ
 	Q_OBJECT
 
 private:
-
 	/// TODO
 	IRPC* m_rpcServer;
 	ITcpServer* m_tcpServer;
@@ -41,6 +41,8 @@ private:
 	RpcClientRWrapper* m_rpcClient;
 
 	QMap< QString, BaseTcpDeviceController* > m_controllersMap;
+
+	TcpADSBController* m_adsbController;
 	/**
 	 * key = deviceType
 	 * Define own deviceType in TcpDevicesDefines
@@ -80,6 +82,7 @@ signals:
 private slots:
 	void onMethodCalledInternalSlot(const QString &method, const QVariant &argument);
 
+	void createAdsbDevice();
 
 	// ITcpManager interface
 };

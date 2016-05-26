@@ -49,6 +49,7 @@ signals:
 	void openMapSignal();
 	void setupKoordinatometriyaSignal();
 	void signalResetServer();
+	void signalEnableAdsb(bool);
 
 private slots:
 	void openAtlasAction();
