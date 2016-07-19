@@ -27,6 +27,8 @@
 
 #include "DbBla/DbUavManager.h"
 
+#include "Solver/SolverSetupWidgetController.h"
+
 #include "ControlPanel/ControlPanelController.h"
 
 #define DEFAULT_RPC_PORT		24500
@@ -39,7 +41,9 @@ class MapTabWidgetController: public QObject, public IController<MapTabWidget>, 
 {
 	Q_OBJECT
 public:
-	explicit MapTabWidgetController(Station* station, QMap<int, Station*> map_settings, ITabManager* tabManager, DbUavManager* db_bla, QObject* parent = NULL);
+	explicit MapTabWidgetController(Station* station, QMap<int, Station*> map_settings, ITabManager* tabManager,
+									DbUavManager* db_bla, SolverSetupWidgetController* solverSetup,
+									QObject* parent = NULL);
 	virtual ~MapTabWidgetController();
 
 private:
@@ -53,6 +57,7 @@ private:
 
 	UavTreeModel*		m_allyUavTreeModel;
 	UavTreeModel*		m_enemyUavTreeModel;
+	SolverSetupWidgetController* m_solverSetup;
 
 	RpcClientWrapper*	m_rpcClient;
 

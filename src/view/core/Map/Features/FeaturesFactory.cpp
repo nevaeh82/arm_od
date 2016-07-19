@@ -2,11 +2,12 @@
 
 namespace MapFeature {
 
-FeaturesFactory::FeaturesFactory(IMapProvider* provider, IMapStyleManager* styleManager,
+FeaturesFactory::FeaturesFactory(MapWidget* view, IMapProvider* provider, IMapStyleManager* styleManager,
 								 QObject* parent)
 	: QObject( parent )
 	, m_provider( provider )
 	, m_styleManager( styleManager )
+	, m_view(view)
 {
 }
 
@@ -83,7 +84,7 @@ Hyperbole* FeaturesFactory::createHyperbole(const QVector<QPointF>& polyline, co
 
 ADSBPlaneFeature*FeaturesFactory::createAdsbPlane(const QString& name, const QPointF& pos)
 {
-	return new ADSBPlaneFeature( m_provider->objectsFactory(), name, pos );
+	return new ADSBPlaneFeature(m_view, m_provider->objectsFactory(), name, pos );
 }
 
 } // namespace MapFeature

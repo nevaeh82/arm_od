@@ -3,7 +3,7 @@
 #include <QSettings>
 
 TcpADSBController::TcpADSBController(const QString& tcpDeviceName, QObject* parent) :
-	BaseTcpDeviceController(tcpDeviceName, parent),
+	BaseADSBController(tcpDeviceName, parent),
 	m_client(NULL)
 {
 	connect(this, SIGNAL(signalStart()), this, SLOT(onStart()), Qt::QueuedConnection);
@@ -61,22 +61,40 @@ void TcpADSBController::onInitPlanesClient()
 {
 	m_client = new PlanesClient();
 	connect(m_client, SIGNAL(signal_PlaneDataChanged(QByteArray)), this, SLOT(onPlanesDataReceived(QByteArray)));
-	onStart();
+	//onStart();
 }
 
 void TcpADSBController::onPlanesDataReceived(QByteArray info)
 {
-//	QByteArray dataToSend;
-//	QDataStream ds(&dataToSend, QIODevice::WriteOnly);
+	QDataStream ds(&info, QIODevice::ReadOnly);
 
-//	ds << info.id_;
-//	ds << info.lon_;
-//	ds << info.lat_;
-//	ds << info.alt_;
-//	ds << info.speed_;
+	QList<ADSBData::Packet_Board> packetList;
+	ADSBData::Packet_Board packet;
+
+	QString id;
+	double lon;
+	double lat;
+	quint32 speed;
+	quint32 alt;
+
+	ds >> id;
+	ds >> lon;
+	ds >> lat;
+	ds >> alt;
+	ds >> speed;
+
+	packet.set_id(id.toAscii().data(), id.size());
+	packet.set_lon(lon);
+	packet.set_lat(lat);
+	packet.set_alt(alt);
+	packet.set_speed(speed);
+
+	packetList.append(packet);
+
+	QByteArray outArray = pack(packetList);;
 
 	foreach (auto receiver, m_receiversList) {
 		receiver->onMessageReceived(DeviceTypes::ADSB_TCP_CLIENT, m_tcpDeviceName,
-									MessageSP(new Message<QByteArray>(TCP_ADSB_ANSWER_DATA, info)) );
+									MessageSP(new Message<QByteArray>(TCP_ADSB_ANSWER_DATA, outArray)) );
 	}
 }

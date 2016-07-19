@@ -70,12 +70,21 @@ void MainWindowController::init()
 	connect(m_view, SIGNAL(setupKoordinatometriyaSignal()), this, SLOT(solverDialogSlot()));
 	connect(m_view, SIGNAL(signalResetServer()), this, SLOT(resetServer()));
 	connect(m_view, SIGNAL(signalEnableAdsb(bool)), this, SLOT(enableAdsbClient(bool)));
+	connect(m_view, SIGNAL(signalEnableOnlineAdsb(bool)), this, SLOT(enableAdsbOnlineClient(bool)));
 
 	m_rpcConfigClient = new RpcConfigClient(this);
 	m_rpcConfigClient->registerReceiver(this);
 
 	// create solver settings dialog controller
 	solverSettingsController = new SolverSettingsDialogController(701, m_tabManager, this);
+
+	m_solverSetupWidgetController = new SolverSetupWidgetController(m_tabManager, this);
+	m_solverSetupWgt = new SolverSetupWidget(m_view);
+	m_solverSetupWidgetController->appendView( m_solverSetupWgt );
+
+	m_tabManager->addSolverSetupController( m_solverSetupWidgetController );
+
+	connect(m_view, SIGNAL(signalSolverCommandsDialog()), m_solverSetupWgt, SLOT(show()));
 
 	serverStartedSlot();
 }
@@ -194,10 +203,26 @@ void MainWindowController::solverDialogSlot()
 void MainWindowController::enableAdsbClient(bool status)
 {
 	CommandMessage* msg = NULL;
-
+	quint8 type = (quint8)hwAdsb;
 
 	QByteArray ba;
 	QDataStream ds(&ba, QIODevice::ReadWrite);
+	ds << type;
+	ds << status;
+
+	msg = new CommandMessage(COMMAND_SET_ADSB, ba);
+
+	m_tabManager->send_data(0, msg);
+}
+
+void MainWindowController::enableAdsbOnlineClient(bool status)
+{
+	CommandMessage* msg = NULL;
+	quint8 type = (quint8)onlineAdsb;
+
+	QByteArray ba;
+	QDataStream ds(&ba, QIODevice::ReadWrite);
+	ds << type;
 	ds << status;
 
 	msg = new CommandMessage(COMMAND_SET_ADSB, ba);

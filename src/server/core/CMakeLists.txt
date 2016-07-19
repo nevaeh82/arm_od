@@ -3,7 +3,6 @@ project(${PROJECT_NAME_GLOBAL}ServerCore)
 list(APPEND deps
 	${PROJECT_NAME_GLOBAL}Common
 	${PROJECT_NAME_GLOBAL}ADSBReceiver
-	Protobuf
 	QtSingleApplication)
 
 file(GLOB protofiles protobuf/*.proto)

@@ -17,6 +17,9 @@ MapController::MapController(QObject *parent):
 	m_view = NULL;
 	m_mapModel = new Map(this);
 	m_pelengEvilIds = 0;
+
+	m_initJsTimer = new QTimer(this);
+	m_initJsTimer->setInterval( MAP_INITJS_TIMEOUT );
 }
 
 MapController::~MapController()
@@ -58,12 +61,15 @@ void MapController::init(QMap<int, Station*> stations)
 {
 	m_mapModel->setMapManager( m_view->getPwGis()->mapProvider()->mapManager() );
 	m_mapModel->setProfileManager( m_view->getPwGis()->mapProvider()->profileManager() );
-	m_mapModel->init( stations, m_view->getPwGis() );
+	m_mapModel->init( stations, m_view );
 
 	m_view->getPwGis()->enableDebugger(false);
 
 	connect( m_mapModel, SIGNAL(modelMapReady()), this, SLOT(onMapReady()) );
 	connect( m_view->getPwGis(), SIGNAL(mapClicked(double,double)), this, SLOT(onMapClicked(double,double)) );
+
+	connect(&m_view->getPwGis()->mapProvider()->mapManager()->events(),
+			SIGNAL(mapReady()), this, SLOT(mapOpenFinished()));
 }
 
 void MapController::openMapFromAtlas()
@@ -106,20 +112,27 @@ void MapController::onMapClicked(double lon, double lat)
 
 	QPointF point( lon, lat );
 
-	client->addNiippPoint( point );
+//	client->addNiippPoint( point );
 
-	if( m_niippControllers.contains( 100 ) ) {
-		m_niippControllers.value( 100 )->setPoint( point );
-	}
+//	if( m_niippControllers.contains( 100 ) ) {
+//		m_niippControllers.value( 100 )->setPoint( point );
+//	}
 
-	if( m_niippControllers.contains( 101 ) ) {
-		m_niippControllers.value( 101 )->setPoint( point );
-	}
+//	if( m_niippControllers.contains( 101 ) ) {
+//		m_niippControllers.value( 101 )->setPoint( point );
+//	}
 }
 
 void MapController::setStationVisible(bool state)
 {
 	m_mapModel->setStationVisible(state);
+}
+
+void MapController::mapOpenFinished()
+{
+	if( !m_view->getPwGis()->executeScript("SkyHobbitCheckReady()").toBool() ) {
+		m_initJsTimer->singleShot(MAP_INITJS_TIMEOUT, this, SLOT(mapOpenFinished()));
+	}
 }
 
 IMapClient *MapController::getMapClient(int id)

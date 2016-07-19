@@ -75,6 +75,7 @@ public slots:
 
 	/// ARM_R_Server
 	void rpc_slot_send_bpla_points(quint64 client, QByteArray* data);
+	void rpc_slot_send_bpla_points_1(quint64 client, QByteArray* data);
 	void rpc_slot_send_bpla_points_auto(quint64 client, QByteArray* data);
 	void rpc_slot_send_bpla_points_single(quint64 client, QByteArray* data);
 	void rpc_slot_send_hyperbola(quint64 client, QByteArray* data);
@@ -99,6 +100,7 @@ signals:
 	void finished();
 
 	void signalSendToRPCBPLAPoints(QByteArray);
+	void signalSendToRPCBPLAPoints1(QByteArray);
 	void signalSendToRPCBPLAPointsAuto(QByteArray);
 	void signalSendToRPCBPLAPointsSingle(QByteArray);
 	void signalSendToRPCHyperbola(QByteArray);

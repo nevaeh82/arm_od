@@ -7,7 +7,9 @@
 
 #define TREE_KEYS_COLUMN_MIN_WIDTH 170
 
-MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Station *> map_settings, ITabManager* tabManager, DbUavManager* db_bla, QObject* parent) :
+MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Station *> map_settings, ITabManager* tabManager,
+											   DbUavManager* db_bla, SolverSetupWidgetController* solverSetup,
+											   QObject* parent) :
 	QObject(parent)
 {
 	m_view = NULL;
@@ -16,6 +18,8 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 	m_rpcClient = NULL;
 	m_station = station;
 	m_tabManager = tabManager;
+
+	m_solverSetup = solverSetup;
 
 	/// TODO: refactor
 	m_uavDbManager = db_bla;
@@ -59,6 +63,8 @@ MapTabWidgetController::~MapTabWidgetController()
 	m_rpcClient->deregisterReceiver(m_mapController);
 	m_rpcClient->deregisterReceiver(m_niipp1);
 	m_rpcClient->deregisterReceiver(m_niipp2);
+	m_rpcClient->deregisterReceiver( m_solverSetup );
+
 	m_rpcClient->stop();
 
 	m_mapController->closeAtlas();
@@ -148,6 +154,8 @@ int MapTabWidgetController::createRPC()
 
 	m_rpcClient->registerReceiver(m_niipp1);
 	m_rpcClient->registerReceiver(m_niipp2);
+
+	m_rpcClient->registerReceiver( m_solverSetup );
 
 	return 0;
 }

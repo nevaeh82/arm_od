@@ -18,7 +18,7 @@ public:
 	Map(QObject* parent = NULL);
 	~Map();
 
-	void init(QMap<int, Station *> map_settings, PwGisWidget* pwwidget);
+	void init(QMap<int, Station *> map_settings, MapWidget* pwwidget);
 
 	void setMapManager(Pw::Gis::IMapManager* mapManager);
 	void setProfileManager(Pw::Gis::IProfileManager* profileManager);

@@ -35,6 +35,7 @@
 
 /// BPLA
 #define RPC_SLOT_SERVER_SEND_BPLA_DEF               "rpc_slot_server_send_bpla_def"
+#define RPC_SLOT_SERVER_SEND_BPLA_DEF_1               "rpc_slot_server_send_bpla_def_1"
 #define RPC_SLOT_SERVER_SEND_BPLA_DEF_AUTO          "rpc_slot_server_send_bpla_def_auto"
 #define RPC_SLOT_SERVER_SEND_BPLA_DEF_SINGLE        "rpc_slot_server_send_bpla_def_single"
 
@@ -63,6 +64,7 @@
 
 /// from ARM_R
 #define RPC_SLOT_SERVER_SEND_BPLA_POINTS              "rpc_slot_server_send_bpla_point_from_arm_r"
+#define RPC_SLOT_SERVER_SEND_BPLA_POINTS_1              "rpc_slot_server_send_bpla_point_from_arm_r_1"
 #define RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO         "rpc_slot_server_send_bpla_point_from_arm_r_auto"
 #define RPC_SLOT_SERVER_SEND_BPLA_POINTS_SINGLE       "rpc_slot_server_send_bpla_point_from_arm_r_single"
 #define RPC_SLOT_SERVER_SEND_HYPERBOLA                "rpc_slot_server_send_hyperbola"

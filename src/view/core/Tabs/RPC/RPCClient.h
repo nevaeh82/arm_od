@@ -63,6 +63,7 @@ public slots:
 	void rpcSendBlaPoints(QByteArray data);
 	void rpcSlotServerSendAisData(QByteArray data);
 	void rpcSendBplaPoints(QByteArray data);
+	void rpcSendBplaPoints1(QByteArray data);
 	void rpcSendBplaPointsAuto(QByteArray data);
 	void rpcSendBplaPointsSingle(QByteArray data);
 	void rpcSendHyperbola(QByteArray data);

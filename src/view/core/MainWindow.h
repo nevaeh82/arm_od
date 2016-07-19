@@ -50,6 +50,9 @@ signals:
 	void setupKoordinatometriyaSignal();
 	void signalResetServer();
 	void signalEnableAdsb(bool);
+	void signalEnableOnlineAdsb(bool);
+
+	void signalSolverCommandsDialog();
 
 private slots:
 	void openAtlasAction();

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Tcp/BaseADSBController.h"
 #include <Tcp/BaseTcpDeviceController.h>
 
 #include <QSettings>
@@ -13,7 +14,7 @@
 
 #include "PlanesClient.h"
 
-class TcpADSBController : public BaseTcpDeviceController
+class TcpADSBController : public BaseADSBController
 {
 	Q_OBJECT
 

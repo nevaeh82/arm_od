@@ -33,6 +33,8 @@
 
 #include "RPC/RpcDefines.h"
 
+#define MAP_INITJS_TIMEOUT 1000
+
 class MapController : public QObject, public IMapController, public IController<MapWidget>,
 		public IRpcListener, public IUavHistoryListener
 {
@@ -83,6 +85,8 @@ private:
 
 	void setViewport(QString viewport);
 
+	QTimer* m_initJsTimer;
+
 public slots:
 	void openMapFromAtlas();
 	void openMapFromLocalFile();
@@ -91,6 +95,9 @@ public slots:
 
 	void loadMapSettings();
 	void setStationVisible(bool state);
+
+private slots:
+	void mapOpenFinished();
 
 signals:
 	void mapOpened();

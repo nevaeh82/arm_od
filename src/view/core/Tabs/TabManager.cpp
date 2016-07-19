@@ -97,7 +97,8 @@ void TabManager::addStationTabs()
 {
 	foreach (Station* station, m_stationsMap) {
 
-		MapTabWidgetController* tabWidgetController = new MapTabWidgetController(station, m_stationsMap, this, m_dbUavManager);
+		MapTabWidgetController* tabWidgetController = new MapTabWidgetController(station, m_stationsMap, this,
+																				 m_dbUavManager, m_solverSetup);
 		connect(m_dbUavController, SIGNAL(dbOutLog(QString)), tabWidgetController, SIGNAL(onDbOutLog(QString)));
 
 		connect( tabWidgetController, SIGNAL( mapOpened() ), SIGNAL( mapOpened() ) );
@@ -109,8 +110,8 @@ void TabManager::addStationTabs()
 
 		m_viewMenu->addAction(tabWidget->getBlaDockWidget()->toggleViewAction());
 		m_viewMenu->addAction(tabWidget->getBplaDockWidget()->toggleViewAction());
-		m_viewMenu->addAction(tabWidget->getNiipp1DockWidget()->toggleViewAction());
-		m_viewMenu->addAction(tabWidget->getNiipp2DockWidget()->toggleViewAction());
+		//m_viewMenu->addAction(tabWidget->getNiipp1DockWidget()->toggleViewAction());
+		//m_viewMenu->addAction(tabWidget->getNiipp2DockWidget()->toggleViewAction());
 		m_viewMenu->addAction(tabWidget->getControlPanelWidget()->getDockWgt()->toggleViewAction());
 
 		tabWidgetController->appendView(tabWidget);
@@ -169,6 +170,11 @@ void TabManager::clearAllInformation()
 	m_stationsMap.clear();
 
 	m_dbUavManager->deleteAllUav();
+}
+
+void TabManager::addSolverSetupController(SolverSetupWidgetController *controller)
+{
+	m_solverSetup = controller;
 }
 
 void TabManager::setUavLifeTime(int msecs)

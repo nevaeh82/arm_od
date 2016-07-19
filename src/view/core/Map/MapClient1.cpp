@@ -11,21 +11,24 @@
 
 #define HYPERBOLE_LIFE_TIME 5000
 
-MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
+MapClient1::MapClient1(MapWidget* pwWidget, Station* station, QObject* parent)
 	: QObject( parent )
 	, m_mux( QMutex::Recursive )
 	, m_niippPoint( 0 )
 {
-	m_styleManager = new MapStyleManager( pwWidget->mapProvider()->styleFactory() );
+	m_view = pwWidget;
+	m_pwWidget = pwWidget->getPwGis();
 
-	m_factory = new MapFeature::FeaturesFactory( pwWidget->mapProvider(), m_styleManager );
+	m_styleManager = new MapStyleManager( m_pwWidget->mapProvider()->styleFactory() );
+	m_objectsManager = m_pwWidget->mapProvider()->objectsManager();
+
+	m_factory = new MapFeature::FeaturesFactory(m_view, m_pwWidget->mapProvider(), m_styleManager );
 
 	m_niippPoint = m_factory->createNiippPoint();
 
 	m_circleRadius = 0;
 	m_circleChanged = false;
 
-	m_pwWidget = pwWidget;
 	m_bounds = m_pwWidget->mapProvider()->mapBounds();
 	m_station = station;
 
@@ -76,6 +79,8 @@ MapClient1::MapClient1(PwGisWidget* pwWidget, Station* station, QObject* parent)
 
 	connect( this, SIGNAL(interceptionPointAdded(int, int, QPointF, float, float, int, float, float)),
 			 this, SLOT(addInterceptionPointData(int, int, QPointF, float, float, int, float, float)) );
+
+	connect(&m_objectsManager->events(), SIGNAL(featureClicked(QString,QString)), SLOT(onFeatureClicked(QString,QString)));
 }
 
 MapClient1::~MapClient1()
@@ -577,52 +582,67 @@ void MapClient1::setAisData( QMap<int, QVector<QString> > data )
 
 void MapClient1::setAdsbData(QByteArray data)
 {
-	QDataStream ds(&data, QIODevice::ReadOnly);
-	QString id;
-	double lon;
-	double lat;
-	ds >> id;
-	ds >> lon;
-	ds >> lat;
+	ADSBData::Packet packet;
+	packet.ParseFromArray( data.data(), data.size() );
 
-	log_debug(QString("ADSB Data:!! %1 %2").arg(lon).arg(lat));
+	if(packet.board_size() <= 0) {
+		return;
+	}
 
-	// add or update pelengator
-	MapFeature::ADSBPlaneFeature* p = m_adsbList.value( id, NULL );
-	if( p != NULL ) {
-		if(lon > 180 || lon < -180) {
-			return;
-		}
-		if(lat > 90 || lat < -90) {
-			return;
-		}
+	foreach (ADSBData::Packet_Board var, packet.board()) {
 
+		QString id;
+		double lon;
+		double lat;
+		double yaw = 0;
 
-		if( lat != lat || lon != lon) {
-			return;
+		id = QString::fromStdString(var.id());
+		lon = var.lon();
+		lat = var.lat();
+
+		if(var.has_yaw()) {
+			yaw = var.yaw();
 		}
 
-		p->update(QPointF(lon, lat));
-		p->updateMap();
-	} else {
-		if(lon > 180 || lon < -180) {
-			return;
+
+		// add or update pelengator
+		MapFeature::ADSBPlaneFeature* p = m_adsbList.value( id, NULL );
+		if( p != NULL ) {
+			if(lon > 180 || lon < -180) {
+				return;
+			}
+			if(lat > 90 || lat < -90) {
+				return;
+			}
+
+
+			if( lat != lat || lon != lon) {
+				return;
+			}
+
+			p->update(QPointF(lon, lat), yaw);
+			p->updateMap();
+		} else {
+			if(lon > 180 || lon < -180) {
+				return;
+			}
+			if(lat > 90 || lat < -90) {
+				return;
+			}
+
+			if( lat != lat ||
+					lon != lon) {
+				return;
+			}
+
+			p = m_factory->createAdsbPlane( id, QPointF(lon, lat) );
+			p->updateMap();
+
+			m_adsbList.insert( id, p );
+
+			connect(p, SIGNAL(onFeatureRemove(QString)), this, SLOT(removeAdsb(QString)));
 		}
-		if(lat > 90 || lat < -90) {
-			return;
-		}
 
-		if( lat != lat ||
-			lon != lon) {
-			return;
-		}
-
-		p = m_factory->createAdsbPlane( id, QPointF(lon, lat) );
-		p->updateMap();
-
-		m_adsbList.insert( id, p );
-
-		connect(p, SIGNAL(onFeatureRemove(QString)), this, SLOT(removeAdsb(QString)));
 	}
 }
 
@@ -634,6 +654,17 @@ void MapClient1::removeAdsb(QString id)
 		delete p;
 	}
 	m_adsbList.remove(id);
+}
+
+void MapClient1::onFeatureClicked(QString id, QString type)
+{
+	foreach (MapFeature::ADSBPlaneFeature* feature, m_adsbList) {
+		QString tt = feature->getMapId();
+		if(feature->getMapId() == id) {
+			feature->onClicked();
+			break;
+		}
+	}
 }
 
 void MapClient1::readStationsFromFile(QString fileName)

@@ -21,6 +21,8 @@
 #include "RPC/RpcDefines.h"
 #include "UAVDefines.h"
 
+#include "SolverPacket1.pb.h"
+
 /// 5 minutes	= 300000 msec
 /// 10 minutes	= 600000 msec
 #define MAX_LIFE_TIME	30000
@@ -115,6 +117,8 @@ public:
 
 private:
 	void sendEnemyUavPoints(const QByteArray& data, uint sourceType);
+	void sendEnemyUavPoints(const QList<UAVPositionDataEnemy>& list, uint sourceType);
+
 	void addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy, const QString &role,
 						const QString &uavType, const QString &status,
 						const QString &deviceType, const QString &sourceType,

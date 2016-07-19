@@ -11,6 +11,13 @@
 	<file>images/UAV/BPLA48.png</file>
 	<file>images/AIS/PostPlaneBlack.png</file>
 	<file>images/AIS/PostPlaneYellow.png</file>	
+	<file>images/cloud-popup-relative.png</file>
+	<file>images/popupClose.png</file>
+	<file>images/customActivateEdit.js</file>
+	<file>images/init.js</file>
+	<file>images/main.js</file>
+	<file>images/require.js</file>
+	<file>images/popupStyle.css</file>
   </qresource>
 </RCC>
 

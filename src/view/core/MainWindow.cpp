@@ -60,6 +60,9 @@ void MainWindow::init()
 	connect(ui->actionRestartServer, SIGNAL(triggered()), this, SIGNAL(signalResetServer()));
 
 	connect( ui->actionListen_to_ADSB, SIGNAL(triggered(bool)), this, SIGNAL(signalEnableAdsb(bool)) );
+	connect( ui->actionListen_to_online_ADSB, SIGNAL(triggered(bool)), this, SIGNAL(signalEnableOnlineAdsb(bool)) );
+
+	connect( ui->actionSolver_Commands, SIGNAL(triggered(bool)), this, SIGNAL(signalSolverCommandsDialog()) );
 }
 
 void MainWindow::setStateMapAction( bool value )

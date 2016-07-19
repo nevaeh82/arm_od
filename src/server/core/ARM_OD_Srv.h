@@ -54,8 +54,6 @@ private:
 	RpcConfigReader* m_rpcConfigReader;
 	IRpcSettingsManager* m_rpcSettingsManager;
 
-	TcpFlyRadarController* m_flyController;
-
 private:
 	void addTcpArmrConnection();
 	void addRpcArmrConnection();

@@ -15,6 +15,9 @@
 #include "Tabs/Solver/SolverSettingsDialogController.h"
 #include "Tabs/Solver/SolverSettingsDialog.h"
 
+#include "Tabs/Solver/SolverSetupWidget.h"
+#include "Tabs/Solver/SolverSetupWidgetController.h"
+
 #include "Tabs/RPC/RpcConfigClient.h"
 #include "Rpc/RpcDefines.h"
 
@@ -32,6 +35,9 @@ private:
 
 	SolverSettingsDialogController* solverSettingsController;
 	SkyHobbit::Common::ServiceControl::ServiceHandler* m_serverHandler;
+
+	SolverSetupWidget* m_solverSetupWgt;
+	SolverSetupWidgetController* m_solverSetupWidgetController;
 
 	int m_uavLifeTime;
 
@@ -55,6 +61,7 @@ private slots:
 	void solverDialogSlot();
 
 	void enableAdsbClient(bool);
+	void enableAdsbOnlineClient(bool);
 
 private:
 

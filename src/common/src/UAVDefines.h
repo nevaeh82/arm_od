@@ -15,6 +15,8 @@
 #define UAV_SOLVER_SINGLE_1_SOURCE	102
 #define UAV_SOLVER_SINGLE_2_SOURCE	103
 
+#define UAV_SOLVER_SOURCE_1			104
+
 #define UAV_SLICES_SOURCE			622
 
 typedef struct UAVPositionData {
@@ -150,5 +152,10 @@ inline QDataStream& operator>>(QDataStream& in, UAVPositionDataEnemy& object)
 	   >> object.latLon;
 	return in;
 }
+
+typedef enum ADSBType {
+	hwAdsb = 0,
+	onlineAdsb = 1
+} ADSBType;
 
 #endif // UAVDEFINES_H

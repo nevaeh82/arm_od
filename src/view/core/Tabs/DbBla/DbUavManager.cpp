@@ -83,8 +83,22 @@ int DbUavManager::addUavInfo(const UavInfo &uavInfo, bool actual,
 
 	Uav uav = getUav(uavInfo.uavId);
 
-	if (uav.id < 0) {
-		return -1;
+//return if db fail
+//	if (uav.id < 0) {
+//		return -1;
+//	}
+
+
+	if(uav.id < 0) {
+		uav.id = uavInfo.id;
+		uav.uavId = uavInfo.uavId;
+		uav.ip = "";
+		uav.uavTypeId = 0;
+		uav.roleId = 0;
+		uav.name = ";";
+		uav.freqId = 0;
+		uav.historical = false;
+
 	}
 
 	if (uav.name.isEmpty()) {
@@ -106,6 +120,9 @@ int DbUavManager::addUavInfo(const UavInfo &uavInfo, bool actual,
 
 	QString uavRole = getUavRole(uav.roleId).code;
 	QString key = QString::number(uav.uavId);
+	if(uavRole.isEmpty()) {
+		uavRole = ENEMY_UAV_ROLE;
+	}
 
 	if (!m_knownUavsList.contains(uav.uavId) && !m_lifeTimerMap.contains(key)) {
 		m_knownUavsList.insert(uav.uavId, uav);
@@ -137,11 +154,11 @@ int DbUavManager::addUavInfo(const UavInfo &uavInfo, bool actual,
 
 	uavInfoForListeners.source = getSource(uavInfo.source).sourceId;
 
-	if (recordIndex != INVALID_INDEX){
+	//if (recordIndex != INVALID_INDEX){
 		foreach (IUavDbChangedListener* receiver, m_receiversList){
 			receiver->onUavInfoChanged(uavInfoForListeners, uavRole, tail, tailStdDev);
 		}
-	}
+	//}
 
 	return recordIndex;
 }
@@ -358,7 +375,18 @@ void DbUavManager::onMethodCalled(const QString& method, const QVariant& argumen
 		addUavInfoToDb(positionData, OUR_UAV_ROLE, "UnknownUavType", "UnknownStatus", "UnknownDeviceType", "UnknownSourceType");
 	} else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS) {
 		sendEnemyUavPoints(data, UAV_SOLVER_MANUAL_SOURCE);
-	} else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO) {
+	} else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_1) {
+		//debug
+		int i = 0;
+
+		SolverProtocol::Packet pkt;
+		pkt.ParseFromArray( data.data(), data.size() );
+
+//		sendEnemyUavPoints(data, UAV_SOLVER_SOURCE_1);
+		// Read Protobuf, revreate data from new protobuf to
+		// OD uav struct.
+	}
+	else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO) {
 		sendEnemyUavPoints(data, UAV_SOLVER_AUTO_SOURCE);
 	} else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_SINGLE) {
 		sendEnemyUavPoints(data, UAV_SOLVER_SINGLE_1_SOURCE);
@@ -522,6 +550,12 @@ void DbUavManager::sendEnemyUavPoints(const QByteArray& data, uint sourceType)
 	QList<UAVPositionDataEnemy> uavList;
 	ds >> uavList;
 
+	sendEnemyUavPoints(uavList, sourceType);
+}
+
+void DbUavManager::sendEnemyUavPoints( const QList<UAVPositionDataEnemy>& list, uint sourceType ) {
+
+	QList<UAVPositionDataEnemy> uavList = list;
 	QVector<QPointF> tail;
 	QVector<QPointF> tailStdDev;
 

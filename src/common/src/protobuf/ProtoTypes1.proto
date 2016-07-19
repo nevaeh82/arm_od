@@ -1,0 +1,191 @@
+option optimize_for = LITE_RUNTIME;
+package SolverProtocol;
+
+//качество оценки
+enum EstimateQuality {
+    GOOD_QUALITY = 1;
+    BAD_QUALITY = 2;
+    UNKNOWN_QUALITY =3;
+}
+
+//состояние движения цели
+enum StateOfMotion {
+    MOVING = 1;
+    STANDING = 2;
+    UNKNOWN_STATE = 3;
+}
+
+// тип времени, привязываемый, пакетам с данными
+enum TimeType {
+    server_time = 1; //время сервера
+    client_time = 2; //вермя клиента
+}
+
+//тип обновления расчетной информации
+enum UpdateModeType {
+    update_by_timer = 1;    //автоматическое обновление по таймеру
+    update_by_changing = 2; //обновлять информацию при изменениях
+}
+
+//Тип клиента
+//все типы клиентов имеют доступ к get-запросам и имеют возможность смотреть результтаты расчетов
+enum ClientType {
+    administrator = 1; //администратор - может все, что предусмотрено протоколом обмена
+    operator_     = 2; //оператор карты - может изменять настройки, связанные с
+                       //координатометрией, а также отправлять данные на расчет
+    data_sender   = 3; //посылатель данных - может только отправлять данные на расчет
+}
+
+//Тип решения
+enum SolutionType {
+    linesOfPosition = 1; //линии положения целей
+    singleMarks = 2;     //одиночные отметки
+    particles = 3;       //облака "частиц", характеризующих цель
+    trajectories = 4;    //траектории
+}
+
+//Тип определения высоты
+enum AltitudeType {
+    manual_altitude = 1;    //ручное задание высоты
+    automatic_altitude = 2; //автоматическое определение высоты
+}
+
+//Тип сообщения, посылаемого решателем
+enum MessageType {
+    message = 1;
+    warning = 2;
+    error = 3;
+}
+
+//координаты точки в географических координатах
+message Coordinates {
+    required double lat = 1; //широта, градусы в десятичном формате
+    required double lon = 2; //долгота, градусы в десятичном формате
+    required double alt = 3; //высота, м.
+}
+
+//координаты, заданные в определенное время
+message CoordinatesInTime {
+    required Coordinates coords = 1;
+    required int64 setting_date_time = 2; //время, к которому привязаны координаты
+}
+
+//координаты датчика, заданные в определенное время
+message DetectorCoordinates {
+    required CoordinatesInTime coords_in_time = 1; //координаты датчика во времени
+    required int32 detector_index = 2;         //индекс датчика в массиве датчиков
+}
+
+//точность определения координат
+message CoordinatesAccuracy {
+    required double lat_acc = 1; //точность по широте в метрах
+    required double lon_acc = 2; //точность по долготе в метрах
+    required double alt_acc = 3; //точность по высоте в метрах
+}
+
+//Массив датчиков
+message Detectors {
+    //статичные координаты датчика
+    message Detector {
+        required string detector_name = 1; //название датчика
+        required Coordinates coords = 2;   //координаты датчика
+    }
+    repeated Detector detector = 1; //вектор координат датчиков
+}
+
+//Матрица поправок к задержкам
+message Corrections {
+    message Correction {
+        //индекс первого датчика в паре, формирующей временную задержку
+        required int32 first_detector_index  = 1;
+        //индекс второго датчика в паре, формирующей временную задержку
+        required int32 second_detector_index = 2;
+        //корректировка к разностям расстояний
+        required double correction = 3;
+    }
+    repeated Correction correction = 1;
+}
+
+//зона поиска решения
+message AreaOfResponsibility {
+    required Coordinates minCoordinates = 1; //минимальные координаты
+    required Coordinates maxCoordinates = 2; //максимальные координаты
+}
+
+//!конфигурация типов решения солвера
+message SolutionConfiguration {
+    repeated AltitudeType altitude_type = 1; //тип определения высоты
+    repeated SolutionType solution_type = 2; //типы решений
+}
+
+//настройки процесса корректировки разностей
+message SettingsOfCorrectionsCalculation {
+    message PairOfDetectorsIndexes {
+        required int32 first  = 1; //индекс первого датчика
+        required int32 second = 2; //индекс второго датчика
+    }
+    //частота данных, используемых для корректировки
+    optional int32 frequency_for_correction = 1;
+    //пары датчиков, данные от которых которые не надо корректировать
+    repeated PairOfDetectorsIndexes uncorrectable_delay = 2;
+}
+
+//высота полета цели, установленная для определенной цели
+message ManualAltitudeOfTarget {
+    required string targetID = 1; //айдишник цели
+    required double altitude = 2; //высота в метрах
+}
+
+//состояние движения полета цели, установленная для определенной цели
+message ManualStateOfMotion {
+    required string targetID = 1;               //айдишник цели
+    required StateOfMotion state_of_motion = 2; //состояние движения
+}
+
+//данные измерений, поступают на вход решателя
+message MeasurementsData {
+
+    //пакет данных с разностью задержек времени
+    message DataPacket {
+        required int32 first_detector_index  = 1; //индекс первого датчика
+        required int32 second_detector_index = 2; //индекс второго датчика
+        required double time_delay = 3; //задержка времени м/у приходами сигналов на датчики
+        required double time_delay_sdv = 4; //СКО случайной ошибки определения задержки
+        optional double dopler = 5;         //доплеровский сдвиг
+        optional double dopler_sdv = 6;     //СКО случайной ошибки определения доплера
+    }
+
+    required double central_frequency = 1;  //центральная частота сигнала
+    required int64 datetime = 2;            //время получения измерений
+    repeated DataPacket data_packet = 3;    //массив пактов с измерениями
+}
+
+//Настройки алгоритмов трекинга для нескольких целей
+message MultitargetTrackingSettings {
+    required int32 particlesCount = 1;     //количество частиц в "RBMCDA"-фильтре
+    //количество видимых частиц, выдаваемых решателем в решении
+    required int32  visibleParticlesCount = 2;
+    required int32  alpha = 3;             //параметры гамма-распределения,
+    required int32  beta = 4;              //моделирующего процесс смерти целей
+    required double clutterDencity = 5;    //плотность вероятности зашумленных измерений
+    required double clutterPrior = 6;      //априорная вероятность появления зашумленных измерений
+    required double probabilityOfBirth= 7; //вероятность рождения цели
+}
+
+//Настройки записи в базу данных
+message DataBaseRecordingSettings {
+    required bool writeToDataBase   = 1;
+    required bool writeMeasurements = 2;
+    required bool writeSingleMarks  = 3;
+    required bool writeTrajectories = 4;
+}
+
+
+//эллипс ошибок определения координат цели
+message ErrorEllips {
+    message LatLon {
+        required double lat = 1; //широта, град.
+        required double lon = 2; //долгота, град.
+    }
+    repeated LatLon point = 1; //линия из точек, образующая эллипс
+}

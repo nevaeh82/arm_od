@@ -19,6 +19,7 @@
 #include "TcpKTRController.h"
 #include "TcpAISController.h"
 #include "TcpADSBController.h"
+#include "TcpFlyRadarController.h"
 #include "TcpKTRManager.h"
 
 #include "TcpArmrClientController.h"
@@ -42,7 +43,7 @@ private:
 
 	QMap< QString, BaseTcpDeviceController* > m_controllersMap;
 
-	TcpADSBController* m_adsbController;
+	QMap<ADSBType,BaseADSBController*> m_adsbController;
 	/**
 	 * key = deviceType
 	 * Define own deviceType in TcpDevicesDefines
@@ -83,6 +84,7 @@ private slots:
 	void onMethodCalledInternalSlot(const QString &method, const QVariant &argument);
 
 	void createAdsbDevice();
+	void createwwwAdsbDevice();
 
 	// ITcpManager interface
 };

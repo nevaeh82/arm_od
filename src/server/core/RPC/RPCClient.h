@@ -45,6 +45,7 @@ signals:
 
 	/// from ARM_R
 	void signalSendToRPCBPLAPoints(quint64, QByteArray*);
+	void signalSendToRPCBPLAPoints1(quint64, QByteArray*);
 	void signalSendToRPCBPLAPointsAuto(quint64, QByteArray*);
 	void signalSendToRPCBPLAPointsSingle(quint64, QByteArray*);
 	void signalSendToRPCHyperbola(quint64, QByteArray*);

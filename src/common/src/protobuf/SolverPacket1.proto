@@ -1,0 +1,323 @@
+option optimize_for = LITE_RUNTIME;
+import "ProtoTypes1.proto";
+package SolverProtocol;
+
+//Пакет, с помощью которого происходит олбмен м/у сервером и клиентами
+message Packet {
+
+    //Возможные запросы решателю, посылаемые клиентом
+    message DataFromClient  {
+
+        //команды, отправляемые решателю
+        enum CommandToSolver {
+            stopServer = 1;                   //остановить сервер
+            restartServer = 2;                //перезапустить сервер
+            clearSolver = 3;                  //очистить решатель
+            startCalculationOfCorrections= 4; //начать процедуру вычисления поправок
+            stopCalculationOfCorrections = 5; //остановить процедуру вычисления поправок
+            resetCalculatedCorrections   = 6; //сбросить расчетные поправки
+            saveCalculatedCorrections    = 7; //сохранить расчетные поправки в качестве основных
+        }
+
+        //запросы на получение данных у решателя
+        enum GetRequest {
+            getSolverVersion = 1;              //получить версию решателя
+            getClientType = 2;                 //получить тип клиента
+            getSolutionConfiguration = 3;      //получить конфигурацию решений
+            getTrajectoriesMaxLength = 4;      //получить макс. длину траекторий
+            getTrajectoriesMaxTimeLength = 5;  //получить макс. длину траекторий во времени [c]
+            getDetectors = 6;                  //получить координаты датчиков
+            getCorrections = 7;                //получить поправки к разностям
+            getAreaOfResponsibility = 8;       //получить зону поиска решения
+            getManualStatesOfMotion = 9;       //получить типы движения объекта, заданные вручную для конкретных целей
+            getDefaultManualAltitude = 10;     //получить высоту, установленную вручную по-умолчанию
+            getManualAltitudesOfTargets = 11;  //получить высоты, установленные вручную для конкретных целей
+            getMaxAllowableLocationError = 12; //получить макс. допустимую ошибку местоопределения
+            getMaxAllowableVelocity = 13;      //получить макс. допустимую скорость [км/ч]
+            getMaxAllowableRangesSdv = 14;     //получить макс. допустимое СКО разностей расстояний [м]
+            getUpdateMode = 15;                //получить тип обновления расчетной информации
+            getTimeType = 16;                  //получить тип времени
+            getSolution = 17;                  //получить текущее решение
+            getDataAssociations = 18;          //получить ассоциированные данные
+            getSourceCoordsForCorrecting = 19; //получить координаты источника для вычисления поправок
+            getSettingsOfCorrectionsCalculation = 20; //получить настройки вычисления поправок
+            getCalculatedCorrections     = 21; //получить рассчитанные, с помощью процедуры, поправки
+            areCorrectionsBeingCalculated= 22; //включена ли сейчас процедура вычисления поправок
+            getMultitargetTrackingSettings= 23;//получить настройки алгоритмов трекинга
+            getAllSettingsFromSolver = 24;     //получить все настройки у решателя
+            getDataBaseRecordingSettings = 25; //получить настройки записи в базу данных
+        }
+
+        //запросы на задание каких-либо данных решателю
+        message SetRequest {
+
+            //задать тип клиента
+            message SetClientType{
+                required ClientType clientType = 1; //тип клиента
+                optional string password = 2;       //пароль доступа
+            }
+
+            //задать конфигурацию решений
+            message SetSolutionConfiguration{
+                required SolutionConfiguration solutionConfiguration = 1;
+            }
+
+            //задать макс. длину траекторий
+            message SetTrajectoriesMaxLength{
+                required double trajectoriesMaxLength = 1;
+            }
+
+            //задать макс. длину траекторий во времени [c]
+            message SetTrajectoriesMaxTimeLength{
+                required double trajectoriesMaxTimeLength = 1;
+            }
+
+            //задать координаты датчиков
+            message SetDetectors{
+                required Detectors detectors = 1;
+            }
+
+            //задать координаты датчика во времени
+            message SetDetectorCoordinates{
+                required DetectorCoordinates detector_coordinates = 1;
+            }
+
+            //задать поправки к разностям
+            message SetCorrections{
+                required Corrections coorrections = 1;
+            }
+
+            //задать зону поиска решения
+            message SetAreaOfResponsibility{
+                required AreaOfResponsibility areaOfResponsibility = 1;
+            }
+
+            //задать вручную объекту тип движения
+            message SetManualStateOfMotion{
+                required ManualStateOfMotion manualStateOfMotion = 1;
+            }
+
+            //задать высоту, установленную вручную по-умолчанию
+            message SetDefaultManualAltitude{
+                required double defaultManualAltitude = 1;
+            }
+
+            //задать высоты, установленные вручную для конкретной цели
+            message SetManualAltitudeOfTarget{
+                required ManualAltitudeOfTarget manualAltitudeOfTarget = 1;
+            }
+
+            //задать макс. допустимую ошибку местоопределения
+            message SetMaxAllowableLocationError{
+                required double maxAllowableLocationError = 1;
+            }
+
+            //задать макс. допустимую скорость [км/ч]
+            message SetMaxAllowableVelocity {
+                required double maxAllowableVelocity = 1;
+            }
+
+            //задать макс. допустимое СКО разностей расстояний [м]
+            message SetMaxAllowableRangesSdv {
+                required double maxAllowableRangesSdv = 1;
+            }
+
+            //задать тип обновления расчетной информации
+            message SetUpdateModeType {
+                required UpdateModeType updateMode = 1;
+            }
+
+            //задать тип времени
+            message SetTimeType {
+                required TimeType timeType = 1;
+            }
+
+            //задать координаты источника для вычисления поправок
+            message SetSourceCoordinates {
+                required CoordinatesInTime sourceCoordsForCorrecting = 1;
+            }
+
+            //задать настройки вычисления поправок
+            message SetSettingsOfCorrectionsCalculation{
+                required SettingsOfCorrectionsCalculation settingsOfCorrectionsCalculation = 1;
+            }
+
+            //задать настройки алгоритмов трекинга
+            message SetMultitargetTrackingSettings{
+                required MultitargetTrackingSettings multitargetTrackingSettings = 1;
+            }
+
+            //задать настройки алгоритмов трекинга
+            message SetDataBaseRecordingSettings{
+                required DataBaseRecordingSettings dataBaseRecordingSettings = 1;
+            }
+            optional SetClientType setClientType = 1;
+            optional SetSolutionConfiguration setSolutionConfiguration = 2;
+            optional SetTrajectoriesMaxLength setTrajectoriesMaxLength = 3;
+            optional SetTrajectoriesMaxTimeLength setTrajectoriesMaxTimeLength = 4;
+            optional SetDetectors setDetectors = 5;
+            optional SetDetectorCoordinates setDetectorCoordinates = 6;
+            optional SetCorrections setCorrections = 7;
+            optional SetAreaOfResponsibility setAreaOfResponsibility = 8;
+            optional SetManualStateOfMotion setManualStateOfMotion = 9;
+            optional SetDefaultManualAltitude setDefaultManualAltitude = 10;
+            optional SetManualAltitudeOfTarget setManualAltitudeOfTarget = 11;
+            optional SetMaxAllowableLocationError setMaxAllowableLocationError = 12;
+            optional SetMaxAllowableVelocity setMaxAllowableVelocity = 13;
+            optional SetMaxAllowableRangesSdv setMaxAllowableRangesSdv = 14;
+            optional SetUpdateModeType setUpdateModeType = 15;
+            optional SetTimeType setTimeType = 16;
+            optional SetSourceCoordinates setSourceCoordinates = 17;
+            optional SetSettingsOfCorrectionsCalculation setSettingsOfCorrectionsCalculation = 18;
+            optional SetMultitargetTrackingSettings setMultitargetTrackingSettings = 19;
+            optional SetDataBaseRecordingSettings setDataBaseRecordingSettings = 20;
+        }
+
+        optional MeasurementsData measurementsData = 1; //могут быть входные данные
+        optional CommandToSolver commandToSolver = 2;   //или какая-то команда решателю
+        repeated GetRequest getRequest = 3;             //или запросы на получение данных
+        optional SetRequest setRequest= 4;              //или запросы на задание данных
+    }
+
+    //Возможные данные, посылаемые солвером
+    message DataFromSolver  {
+
+        message SolverSolution {
+
+            message Trajectory {
+
+                //оценка параметров состояния движения цели
+                message MotionEstimate {
+                    required int64 datetime = 1;            //дата и время, привязанное к оценке
+                    required Coordinates coordinates = 2;   //координаты
+                    required CoordinatesAccuracy coordinates_acc = 3; //точность координат
+                    required double targetSpeed = 4;        //скорость движения цели, км/ч
+                    required double targetSpeed_acc = 5;    //точность скорости движения, км/ч
+                    required double relativeBearing = 6;    //курсовой угол, град.
+                    required EstimateQuality quality = 7;   //качество оценки
+                    required StateOfMotion state = 8;       //состояние движения
+                }
+
+                required string targetID = 1;               //айдишник цели
+                repeated MotionEstimate motionEstimate = 2; //последовательность оценок параметров движения
+                required ErrorEllips error_ellips = 3;  //эллипс ошибок, построенный для последней оценки координат цели
+            }
+
+            //одиночные отметки от целей
+            message SingleMarks {
+
+                //одиночная отметка
+                message SingleMark {
+                    required Coordinates coordinates = 1;   // координаты одиночной отметки
+                    required CoordinatesAccuracy coordinates_acc = 2; // точность координат
+                    required ErrorEllips error_ellips = 3;  //эллипс ошибок определения координат
+                }
+                required int64 datetime = 1;          // время привязки данных
+                repeated SingleMark singleMark = 2;   // массив одиночных отметок
+            }
+
+            //облака частиц, характеризующих цель
+            message Particles {
+
+                message ParticlesCloud {
+                    required string targetID = 1;         //!идентификатор цели
+                    repeated Coordinates coordinates = 2; // массив координат частиц
+                }
+
+                required int64 datetime = 1;                //время привязки данных
+                repeated ParticlesCloud particlesCloud = 2; //последовательность облаков частиц для целей
+            }
+
+            //линии положения целей
+            message PositionLines {
+
+                message PositionLine {
+                    required string targetID = 1;         //идентификатор цели, которой соответствует линия
+                    required double lineAccuracy = 2;     //точность линии положения (м.)
+                    repeated Coordinates lineCoordinates = 3; //последовательность координат, образующая линию
+                    repeated Coordinates lineAreaCoordinates = 4; //последовательность координат, образующая
+                                                                  //область ответственности линии
+                }
+
+                required int64 datetime = 1;            //время привязки данных
+                repeated PositionLine positionLine = 2; //последовательность линий положения
+            }
+
+
+            repeated Trajectory    trajectory    = 1; //последовательность траекторий движения целей
+            optional SingleMarks   singleMarks   = 2; //одиночные отметки
+            optional Particles     particles     = 3; //облака частиц
+            optional PositionLines positionLines = 4; //линии положения
+        }
+
+        //список последовательностей измерений, ассоциированных с целями
+        message DataAssociations {
+
+            //пакет ассоциаций измерений для цели с идентификатором targetID
+            message AssociatedData {
+                required string targetID = 1;  //!ID цели
+                //последовательность измерений, соответствующих данной цели
+                repeated MeasurementsData measurementsData = 2;
+            }
+            repeated AssociatedData associatedData = 1;
+        }
+
+        //возможные ответы решателя, поступающие клиентам
+        message SolverResponse {
+            optional string solverVersion = 1;
+            optional ClientType clientType = 2;
+            optional SolutionConfiguration solutionConfiguration = 3;
+            optional int32 trajectoriesMaxLength = 4;
+            optional int32 trajectoriesMaxTimeLength = 5;
+            optional Detectors detectors = 6;
+            optional DetectorCoordinates detector_coordinates = 7;
+            optional Corrections coorrections = 8;
+            optional AreaOfResponsibility areaOfResponsibility = 9;
+            repeated ManualStateOfMotion manualStateOfMotion = 10;
+            optional double defaultManualAltitude = 11;
+            repeated ManualAltitudeOfTarget manualAltitudeOfTarget = 12;
+            optional double maxAllowableLocationError = 13;
+            optional double maxAllowableVelocity = 14;
+            optional double maxAllowableRangesSdv = 15;
+            optional TimeType timeType = 16;
+            optional UpdateModeType updateMode = 17;
+            optional bool correctionsAreBeingCalculated = 18;
+            optional CoordinatesInTime sourceCoordsForCorrecting = 19;
+            optional Corrections calculatedCoorrections = 20;
+            optional SettingsOfCorrectionsCalculation settingsOfCorrectionsCalculation = 21;
+            optional string messageOfCorrectingProcess = 22; //!сообщение о ходе вычисления поправок
+            optional MultitargetTrackingSettings multitargetTrackingSettings = 23;
+            optional DataBaseRecordingSettings dataBaseRecordingSettings = 24;
+        }
+
+        //сообщение, от решателя клиенту(клиентам)
+        message SolverMessage {
+            required MessageType messageType = 1; //тип сообщения
+            required string message = 2;          //само сообщение
+        }
+
+        //решение с ручным заданием высоты
+        optional SolverSolution solution_manual_altitude = 1;
+
+        //решение с автоматическим определением высоты
+        optional SolverSolution solution_automatic_altitude = 2;
+
+        //массив ассоциаций измерений для решения с ручным заданием высоты
+        optional DataAssociations data_associations_manual_altitude = 3;
+
+        //массив ассоциаций измерений для решения с автоматическим определениемвысоты
+        optional DataAssociations data_associations_automatic_altitude = 4;
+
+        //ответ сервера на какой-либо запрос
+        optional SolverResponse solverResponse = 5;
+
+        //сообщение решателя
+        optional SolverMessage message = 6;
+    }
+
+    //содержимое пакета - одно из двух
+    oneof Data {
+        DataFromSolver dataFromSolver = 1; //либо данные от решателя
+        DataFromClient dataFromClient = 2; //либо данные от клиента
+    }
+}

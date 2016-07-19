@@ -1,0 +1,19 @@
+option optimize_for = LITE_RUNTIME;
+
+package ADSBData;
+
+message Packet
+{	
+	message Board
+	{
+		required string id = 1;
+		required double lon = 2;
+		required double lat = 3;
+		optional uint32 alt = 4;
+		optional uint32 speed = 5;
+		optional string model = 6;
+		optional double yaw = 7;
+	}
+	
+	repeated Board board = 1;
+}

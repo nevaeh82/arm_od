@@ -18,7 +18,7 @@ Map::~Map()
 	m_mapManager->closeAtlas();
 }
 
-void Map::init(QMap<int, Station*> map_settings, PwGisWidget* pwwidget)
+void Map::init(QMap<int, Station*> map_settings, MapWidget* pwwidget)
 {
 	m_mapSettings = map_settings;
 

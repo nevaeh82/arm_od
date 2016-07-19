@@ -25,6 +25,8 @@
 #include "SettingsManager/DbBlaSettingsManager.h"
 #include "Info/StationConfiguration.h"
 
+#include "Solver/SolverSetupWidgetController.h"
+
 class TabManager: public QObject, public ITabManager
 {
 	Q_OBJECT
@@ -38,6 +40,7 @@ private:
 
 	DbUavController* m_dbUavController;
 	DbUavManager* m_dbUavManager;
+	SolverSetupWidgetController* m_solverSetup;
 
 	MapTabWidgetController* m_currentWidget;
 
@@ -64,6 +67,8 @@ public:
 	void setStationsConfiguration(const QList<StationConfiguration>& stationList);
 	void addStationTabs();
 	void clearAllInformation();
+
+	void addSolverSetupController(SolverSetupWidgetController* controller);
 
 	void setUavLifeTime(int msecs);
 

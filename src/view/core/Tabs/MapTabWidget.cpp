@@ -7,6 +7,9 @@ MapTabWidget::MapTabWidget(QWidget* parent) :
 	ui(new Ui::MapTabWidget)
 {
 	ui->setupUi(this);
+
+	ui->spipDD1DockWidget->close();
+	ui->spipDD2DockWidget->close();
 }
 
 MapTabWidget::~MapTabWidget()

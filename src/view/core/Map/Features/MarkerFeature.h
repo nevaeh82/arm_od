@@ -23,6 +23,9 @@ public:
 
 	virtual void setName(const QString& name);
 	virtual void setPosition(const QPointF& position);
+	virtual void setRotate(const double& angle);
+
+	QString mapId() const;
 
 public slots:
 	virtual void updateMap();

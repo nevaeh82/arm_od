@@ -5,7 +5,6 @@ TcpManager::TcpManager(QObject* parent) :
 {
 	m_rpcServer = NULL;
 	m_tcpServer = NULL;
-	m_adsbController = NULL;
 
 	connect(this, SIGNAL(onMethodCalledInternalSignal(QString,QVariant)), this, SLOT(onMethodCalledInternalSlot(QString,QVariant)));
 
@@ -28,6 +27,11 @@ void TcpManager::addTcpDevice(const QString& deviceName, const quint32& deviceTy
 
 	if(deviceName == "ADSBClient") {
 		createAdsbDevice();
+		return;
+	}
+
+	if(deviceName == "wwwADSBClient") {
+		createwwwAdsbDevice();
 		return;
 	}
 
@@ -234,7 +238,10 @@ void TcpManager::onMessageReceived(const quint32 deviceType, const QString& devi
 				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_ATLANT_POSITION, messageData);
 			} else if (messageType == QString(ARM_R_SERVER_BPLA_COORDS)){
 				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_BPLA_POINTS, messageData);
-			} else if (messageType == QString(ARM_R_SERVER_BPLA_COORDS_AUTO)){
+			} else if (messageType == QString(ARM_R_SERVER_BPLA_COORDS_1)){
+				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_BPLA_POINTS_1, messageData);
+			}
+			else if (messageType == QString(ARM_R_SERVER_BPLA_COORDS_AUTO)){
 				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO, messageData);
 			} else if (messageType == QString(ARM_R_SERVER_HYPERBOLA)) {
 				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_HYPERBOLA, messageData);
@@ -344,29 +351,61 @@ void TcpManager::onMethodCalledInternalSlot(const QString& method, const QVarian
 		QDataStream ds(&argument.toByteArray(), QIODevice::ReadOnly);
 
 		bool enable = true;
+		quint8 type;
+
+		ds >> type;
 		ds >> enable;
 
-		m_adsbController->enableAdsb(enable);
+		if( m_adsbController.value(ADSBType(type), NULL) ) {
+			m_adsbController.value(ADSBType(type))->enableAdsb(enable);
+		}
 	}
 }
 
 void TcpManager::createAdsbDevice()
 {
-	m_adsbController = new TcpADSBController("ADSBClient");
+	TcpADSBController* adsbController = new TcpADSBController("ADSBClient");
 
 	QThread* controllerThread = new QThread;
-	connect(m_adsbController->asQObject(), SIGNAL(destroyed()), controllerThread, SLOT(terminate()));
+	connect(adsbController->asQObject(), SIGNAL(destroyed()), controllerThread, SLOT(terminate()));
 	connect(this, SIGNAL(threadTerminateSignal()), controllerThread, SLOT(quit()));
-	connect(this, SIGNAL(threadTerminateSignal()), m_adsbController, SLOT(onStop()));
-	connect(this, SIGNAL(threadTerminateSignal()), m_adsbController->asQObject(), SLOT(deleteLater()));
+	connect(this, SIGNAL(threadTerminateSignal()), adsbController, SLOT(onStop()));
+	connect(this, SIGNAL(threadTerminateSignal()), adsbController->asQObject(), SLOT(deleteLater()));
 	connect(this, SIGNAL(threadTerminateSignal()), controllerThread, SLOT(deleteLater()));
 
-	connect(controllerThread, SIGNAL(started()), m_adsbController, SLOT(onInitPlanesClient()));
+	connect(controllerThread, SIGNAL(started()), adsbController, SLOT(onInitPlanesClient()));
 
-	m_adsbController->asQObject()->moveToThread(controllerThread);
+	adsbController->asQObject()->moveToThread(controllerThread);
 	controllerThread->start();
 
-	m_adsbController->registerReceiver(this);
+	adsbController->registerReceiver(this);
 
 	log_debug(QString("Added device connection for %1").arg("ADSBClient"));
+
+	m_adsbController.insert(hwAdsb, adsbController);
+}
+
+void TcpManager::createwwwAdsbDevice()
+{
+	TcpFlyRadarController* adsbController = new TcpFlyRadarController("ADSBClient");
+
+	QThread* controllerThread = new QThread;
+	connect(adsbController->asQObject(), SIGNAL(destroyed()), controllerThread, SLOT(terminate()));
+	connect(this, SIGNAL(threadTerminateSignal()), controllerThread, SLOT(quit()));
+	connect(this, SIGNAL(threadTerminateSignal()), adsbController, SLOT(onStop()));
+	connect(this, SIGNAL(threadTerminateSignal()), adsbController->asQObject(), SLOT(deleteLater()));
+	connect(this, SIGNAL(threadTerminateSignal()), controllerThread, SLOT(deleteLater()));
+
+	connect(controllerThread, SIGNAL(started()), adsbController, SLOT(onInit()));
+
+	adsbController->asQObject()->moveToThread(controllerThread);
+	controllerThread->start();
+
+	//adsbController->onInit();
+
+	adsbController->registerReceiver(this);
+
+	log_debug(QString("Added device connection for %1").arg("ADSBClient"));
+
+	m_adsbController.insert(onlineAdsb, adsbController);
 }

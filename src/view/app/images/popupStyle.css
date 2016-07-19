@@ -1,0 +1,49 @@
+.olPopupCloseBox {
+    background: url("/profiles/Zav/popupClose.png");
+}
+
+.olControlPanel {
+    position: inherit;
+    text-align: center;
+    right: 305px;
+    top: 55px;
+    font-size: small;
+    cursor: pointer;
+}
+
+.olControlPanel div {
+    text-align: center;
+}
+
+.toolButtonBlaItemInactive {
+    background-image: url("/profiles/Zav/plane_pos.png") !important;
+    width: 36px !important;
+    height: 36px !important;
+    background-size: 36 !important;
+    margin-top: 0px !important;
+}
+
+.toolButtonBlaItemInactive:hover {
+    transform: rotate(45deg);
+	opacity: 0.8;
+	background-color: #FFFE89 !important;
+}
+
+.olControlDrawFeatureDownloadSelectionItemInactive {
+    background-image: url("/profiles/Zav/selection.png") !important;
+    background-size: 36px 36px !important;
+    width: 36px !important;
+    height: 36px !important;
+    margin-top: 0px !important;
+}
+
+.olControlDrawFeatureDownloadSelectionItemActive {
+	background-image: url("/profiles/Zav/selection.png") !important;
+    background-size: 36px 36px !important;
+    width: 36px !important;
+    height: 36px !important;
+    margin-top: 0px !important;
+
+	opacity: 0.8;
+	background-color: #FFFE89 !important;
+}

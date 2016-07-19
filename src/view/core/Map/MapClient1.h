@@ -28,6 +28,8 @@
 #include "Map/IMapStyleManager.h"
 #include "Map/Features/FeaturesFactory.h"
 
+#include "ADSBPacket.pb.h"
+
 
 class MapClient1 : public QObject, public IMapClient
 {
@@ -37,7 +39,9 @@ private:
 	IMapStyleManager* m_styleManager;
 	MapFeature::IFeaturesFactory* m_factory;
 	Pw::Gis::IMapBounds* m_bounds;
+	Pw::Gis::IObjectsManager* m_objectsManager;
 	PwGisWidget* m_pwWidget;
+	MapWidget* m_view;
 
 	Station* m_station;
 	ZInterception* m_interception;
@@ -75,7 +79,7 @@ private:
 	QTimer* m_onePointTimer;
 
 public:
-	MapClient1( PwGisWidget* pwwidget, Station* station, QObject* parent = NULL );
+	MapClient1( MapWidget* pwwidget, Station* station, QObject* parent = NULL );
 	virtual ~MapClient1();
 
 	virtual void showLayer( int index, bool state );
@@ -146,6 +150,8 @@ private slots:
 	void updateCircle();
 
 	void removeAdsb(QString id);
+
+	void onFeatureClicked(QString id, QString type);
 
 signals:
 	void friendBplaAdded( const UavInfo& uav );

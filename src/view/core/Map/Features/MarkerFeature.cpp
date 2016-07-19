@@ -30,6 +30,16 @@ void Marker::setPosition(const QPointF& position)
 	m_marker->setPosition( &m_position );
 }
 
+void Marker::setRotate(const double& angle)
+{
+	m_marker->setRotate( angle );
+}
+
+QString Marker::mapId() const
+{
+	return m_marker->id();
+}
+
 void Marker::updateMap()
 {
 	m_marker->updateMap();

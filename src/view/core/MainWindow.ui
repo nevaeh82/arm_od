@@ -121,12 +121,14 @@
     <addaction name="actionOpen_Atlas"/>
     <addaction name="actionOpen_from_file"/>
     <addaction name="actionListen_to_ADSB"/>
+    <addaction name="actionListen_to_online_ADSB"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
      <string>Settings</string>
     </property>
     <addaction name="actionKoordinatometriyaParameters"/>
+    <addaction name="actionSolver_Commands"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -185,6 +187,19 @@
    </property>
    <property name="text">
     <string>Listen to ADSB</string>
+   </property>
+  </action>
+  <action name="actionListen_to_online_ADSB">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Listen to online ADSB</string>
+   </property>
+  </action>
+  <action name="actionSolver_Commands">
+   <property name="text">
+    <string>SolverCommands</string>
    </property>
   </action>
  </widget>

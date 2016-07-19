@@ -59,6 +59,7 @@ void RPCClient::startInternalSlot(quint16 port, QString ipAddress)
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BLA_POINTS, this, SLOT(rpcSendBlaPoints(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_AIS_DATA, this, SLOT(rpcSlotServerSendAisData(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_POINTS, this, SLOT(rpcSendBplaPoints(QByteArray)));
+	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_POINTS_1, this, SLOT(rpcSendBplaPoints1(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO, this, SLOT(rpcSendBplaPointsAuto(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_POINTS_SINGLE, this, SLOT(rpcSendBplaPointsSingle(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_HYPERBOLA, this, SLOT(rpcSendHyperbola(QByteArray)));
@@ -138,8 +139,18 @@ void RPCClient::rpcSendBplaPoints(QByteArray data)
 {
 	//DISABLE auto mode for receiving points
 	//if(m_solverAuto == false) {
+//		foreach (IRpcListener* reciever, m_receiversList) {
+//			reciever->onMethodCalled(RPC_SLOT_SERVER_SEND_BPLA_POINTS, QVariant(data));
+//		}
+	//}
+}
+
+void RPCClient::rpcSendBplaPoints1(QByteArray data)
+{
+	//DISABLE auto mode for receiving points
+	//if(m_solverAuto == false) {
 		foreach (IRpcListener* reciever, m_receiversList) {
-			reciever->onMethodCalled(RPC_SLOT_SERVER_SEND_BPLA_POINTS, QVariant(data));
+			reciever->onMethodCalled(RPC_SLOT_SERVER_SEND_BPLA_POINTS_1, QVariant(data));
 		}
 	//}
 }

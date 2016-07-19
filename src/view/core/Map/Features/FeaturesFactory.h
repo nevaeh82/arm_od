@@ -18,9 +18,10 @@ class FeaturesFactory : public QObject, public IFeaturesFactory
 protected:
 	IMapProvider* m_provider;
 	IMapStyleManager* m_styleManager;
+	MapWidget* m_view;
 
 public:
-	FeaturesFactory(IMapProvider* provider, IMapStyleManager* styleManager,
+	FeaturesFactory(MapWidget* view, IMapProvider* provider, IMapStyleManager* styleManager,
 					QObject* parent = NULL);
 
 	virtual Ais*          createAis( const QString& name, const QPointF& position, double course );
