@@ -36,6 +36,8 @@ public:
 	virtual PwGisStyle* createCheckPointStyle(const QString& layerId);
 	virtual PwGisStyle* createHistoryStyle(const QString& layerId);
 	virtual PwGisStyle* createHyperboleStyle(const QString& layerId);
+    virtual PwGisStyle* createKKpointStyle(const QString& layerId, const double& opacity);
+    virtual PwGisStyle* createWorkAreaStyle(const QString& layerId);
 
 	inline virtual PwGisStyle* getAisStyle() { return getStyle( MAP_STYLE_NAME_AIS ); }
 	inline virtual PwGisStyle* getFriendBplaStyle() { return getStyle( MAP_STYLE_NAME_FRIEND_BPLA ); }

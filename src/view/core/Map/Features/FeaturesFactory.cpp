@@ -78,8 +78,18 @@ Hyperbole* FeaturesFactory::createHyperbole(const QVector<QPointF>& polyline, co
 		m_provider->objectsFactory(),
 		m_provider->idGenerator()->GetNewID(),
 		polyline,
-		time,
-				color );
+        time, color );
+}
+
+Hyperbole *FeaturesFactory::createHyperbole(const QVector<QPointF> &polyline, const QVector<QPointF> &polyZone, const QTime time, const QColor color)
+{
+    return new Hyperbole(
+        m_provider->styleFactory(),
+        m_provider->objectsFactory(),
+        m_provider->idGenerator()->GetNewID(),
+        polyline,
+        polyZone,
+        time, color );
 }
 
 ADSBPlaneFeature*FeaturesFactory::createAdsbPlane(const QString& name, const QPointF& pos)

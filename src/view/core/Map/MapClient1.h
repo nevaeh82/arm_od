@@ -78,6 +78,9 @@ private:
 	QTimer* m_hyperboleTimer;
 	QTimer* m_onePointTimer;
 
+    uint m_pointKKlastInd;
+    uint m_ellipseCounter;
+
 public:
 	MapClient1( MapWidget* pwwidget, Station* station, QObject* parent = NULL );
 	virtual ~MapClient1();
@@ -95,6 +98,10 @@ private:
 	void readStationsFromFile(QString fileName);
 	void readCheckPointsFromFile(QString fileName);
 
+    //Strange name, hard work in DZankoi
+    void DrawHyerboles(QList<QVector<QPointF>> list, QTime time, const QColor color);
+    void DrawHyerboles(QList<QVector<QPointF> > list,
+                       QList<QVector<QPointF> > zone, QTime time, const QColor color);
 public slots:
 	virtual void init();
 	virtual void setPoint();
@@ -102,10 +109,17 @@ public slots:
 	virtual void justifyMap();
 
 	virtual void addFriendBpla( const UavInfo& uav );
-	virtual void addEnemyBpla( const UavInfo& uav,
-							   const QVector<QPointF> &tail = QVector<QPointF>(),
-							   const QVector<QPointF> &tailStdDev = QVector<QPointF>() );
-	virtual void removeBpla( const Uav &uav );
+    virtual void addEnemyBpla( const UavInfo& uav,
+                               const QVector<QPointF> &tail = QVector<QPointF>(),
+                               const QVector<QPointF> &tailStdDev = QVector<QPointF>() );
+
+    virtual void addSingleMark( const QByteArray& uav );
+    virtual void addTrajectoryKK( const QByteArray& uav );
+
+    virtual void addStation( const QString& name, const QPointF& pos );
+    virtual void addWorkArea( const QPointF& point1, const QPointF& point2 );
+
+    virtual void removeBpla( const Uav &uav );
 
 	virtual void addAis( QMap<int, QVector<QString> > vec );
 
@@ -119,7 +133,7 @@ public slots:
 
 	virtual void removeNiippPoint();
 
-	virtual void addHyperboles( const QByteArray& data, const QColor color  = QColor::Invalid );
+    virtual void addHyperboles( const QByteArray& data, int version = 0, const QColor color  = QColor::Invalid );
 
 	virtual void removeAll();
 
@@ -128,6 +142,9 @@ private slots:
 	void addEnemyBplaInternal( const UavInfo& uav,
 							   const QVector<QPointF> &tail = QVector<QPointF>(),
 							   const QVector<QPointF> &tailStdDev = QVector<QPointF>() );
+
+    void addSingleMarkInternal(QByteArray data);
+
 	void removeBplaInternal( const Uav& uav );
 
 	void setAisData(QMap<int, QVector<QString> > data );
@@ -142,7 +159,11 @@ private slots:
 	void addInterceptionPointData(int friendBplaId, int enemyBplaId, QPointF position,
 								  float height, float radius, int time,
 								  float course, float speed );
-	void addHyperboleInternal( const QByteArray& data, const QColor color );
+    void addHyperboleInternal(const QByteArray& data, int version, const QColor color );
+
+    void addStationInternal(QString name, QPointF pos);
+    void addAreaInternal(QPointF point1, QPointF point2);
+
 	void removeAllHyperbole();
 	void removeAllonePointTimer();
 
@@ -153,11 +174,16 @@ private slots:
 
 	void onFeatureClicked(QString id, QString type);
 
+    void addTrajectoryKKInternal(QByteArray data);
 signals:
 	void friendBplaAdded( const UavInfo& uav );
 	void enemyBplaAdded( const UavInfo& uav,
 						 const QVector<QPointF> &tail = QVector<QPointF>(),
 						 const QVector<QPointF> &tailStdDev = QVector<QPointF>() );
+
+    void singleMarkAdded( QByteArray data );
+    void trajectoryKKAdded( QByteArray data );
+
 	void bplaRemoved( const Uav& uav );
 
 	void aisAdded( QMap<int, QVector<QString> > vec );
@@ -174,7 +200,10 @@ signals:
 	void interceptionPointAdded( int bla_id, int bpla_id, QPointF aCoord,
 		float aHgt, float aRadius, int aTime, float aIntcCourse, float aIntcSpeed );
 
-	void hyperboleAdded(const QByteArray& data, const QColor color);
+    void hyperboleAdded(const QByteArray& data, int version, const QColor color);
+
+    void signalAddStation(QString, QPointF);
+    void signalAddArea(QPointF, QPointF);
 };
 
 #endif // MAPCLIENT1_H

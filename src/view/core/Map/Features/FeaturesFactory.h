@@ -35,6 +35,9 @@ public:
 	virtual PelengatorPoint* createPelengatorPoint( const QString& name, const QPointF& position );
 	virtual CheckPoint*   createCheckPoint( const QString& name, const QPointF& position );
 	virtual Hyperbole*    createHyperbole( const QVector<QPointF>& polyline, const QTime time, const QColor color = QColor::Invalid );
+    virtual Hyperbole*    createHyperbole( const QVector<QPointF>& polyline,
+                                           const QVector<QPointF>& polyZone,
+                                           const QTime time, const QColor color = QColor::Invalid );
 	virtual ADSBPlaneFeature* createAdsbPlane(const QString& name, const QPointF& pos);
 };
 

@@ -28,6 +28,8 @@ void Map::init(QMap<int, Station*> map_settings, MapWidget* pwwidget)
 		MapClient1* client = new MapClient1(pwwidget, it.value(), this);
 		m_mapClients[(it.value())->id] = client;
 
+        m_firstClient = client;
+
 		connect( this, SIGNAL(modelMapReady()), client, SLOT(init()) );
 	}
 }
@@ -92,4 +94,9 @@ void Map::onMapReady()
 IMapClient* Map::getMapClient(int id)
 {
 	return m_mapClients[id];
+}
+
+IMapClient* Map::getFirstMapClient()
+{
+    return m_firstClient;
 }

@@ -3,6 +3,8 @@
 #include "TCP/TcpArmrClientCoder.h"
 #include "RPCClient_R.h"
 
+#include "SolverPacket1.pb.h"
+
 RPCClient_R::RPCClient_R(IRouter* router, QObject *parent):
 	RpcRoutedClient( RPC_METHOD_REGISTER_CLIENT, RPC_METHOD_DEREGISTER_CLIENT, parent )
 {

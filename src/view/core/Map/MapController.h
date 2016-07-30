@@ -33,6 +33,8 @@
 
 #include "RPC/RpcDefines.h"
 
+#include "SolverPacket1.pb.h"
+
 #define MAP_INITJS_TIMEOUT 1000
 
 class MapController : public QObject, public IMapController, public IController<MapWidget>,

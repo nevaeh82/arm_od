@@ -134,6 +134,9 @@ private:
 
 	QString getEnemySourceTypeName(uint sourceType);
 
+    QList<UAVPositionDataEnemy> getUavListSingleFromProto(SolverProtocol::Packet pkt);
+    QList<UAVPositionDataEnemy> getUavListTrajectoryFromProto(SolverProtocol::Packet_DataFromSolver_SolverSolution_Trajectory pktTrajectory);
+
 private slots:
 	void timeoutSlot(const QString& key);
 };

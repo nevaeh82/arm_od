@@ -322,10 +322,48 @@ PwGisStyle* MapStyleManager::createHyperboleStyle( const QString& layerId )
 		style->setProperty( PwGisStyle::mapFontColor, "black" );
 		style->setProperty( PwGisStyle::mapFontSize, "10pt" );
 		style->setProperty( PwGisStyle::strokeColor, "green" );
+        style->setProperty( PwGisStyle::fillColor, "green" );
+        style->setProperty( PwGisStyle::fillOpacity, "0.5" );
 		style->setProperty( PwGisStyle::layer, layerId );
 	}
 
 	return style;
+}
+
+PwGisStyle* MapStyleManager::createKKpointStyle(const QString& layerId,
+                                                 const double& opacity)
+{
+    bool exists;
+
+    double val = opacity;
+    QString opacitySt = QString::number( opacity, 'g', 1 );
+    PwGisStyle* style = createStyle( MAP_STYLE_NAME_POINTKK/*.arg(opacitySt)*/,
+                                     &exists );
+
+    if( !exists ) {
+        style->setProperty( PwGisStyle::strokeColor, "red" );
+        style->setProperty( PwGisStyle::fillColor, "red" );
+        style->setProperty( PwGisStyle::fillOpacity, "0.5" );
+        style->setProperty( PwGisStyle::strokeOpacity, "0.5" );
+        style->setProperty( PwGisStyle::pointRadius, "3" );
+        style->setProperty( PwGisStyle::layer, layerId );
+    }
+
+    return style;
+}
+
+PwGisStyle* MapStyleManager::createWorkAreaStyle(const QString& layerId)
+{
+    bool exists;
+    PwGisStyle* style = createStyle( MAP_STYLE_NAME_WORK_AREA, &exists );
+
+    if( !exists ) {
+        style->setProperty( PwGisStyle::strokeColor, "red" );
+        style->setProperty( PwGisStyle::fillOpacity, "0" );
+        style->setProperty( PwGisStyle::layer, layerId );
+    }
+
+    return style;
 }
 
 PwGisStyle* MapStyleManager::createStyle(const QString& name, bool* exists)

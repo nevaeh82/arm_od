@@ -1,6 +1,8 @@
 #include <QDebug>
 
 #include "DbUavManager.h"
+#include "SolverExchange.h"
+//#include "SolverPacket1.pb.h"
 
 #define LIFETIME_1 20000
 #define LIFETIME_2 3000
@@ -381,16 +383,121 @@ void DbUavManager::onMethodCalled(const QString& method, const QVariant& argumen
 
 		SolverProtocol::Packet pkt;
 		pkt.ParseFromArray( data.data(), data.size() );
+        {
+            QList<UAVPositionDataEnemy> uavList = getUavListSingleFromProto(pkt);
+
+            if(uavList.isEmpty()) {
+                return;
+            }
+
+            sendEnemyUavPoints(uavList, UAV_SOLVER_SINGLE_1_SOURCE);
+        }
+
+        {
+            pkt.has_datafromsolver();
+            if(!isSolverMessageHasTrajectoryManual(pkt)) {
+                return;
+            }
+
+            for(int i = 0; i < pkt.datafromsolver().solution_manual_altitude().trajectory_size(); i++) {
+                QList<UAVPositionDataEnemy> uavList = getUavListTrajectoryFromProto(
+                            pkt.datafromsolver().solution_manual_altitude().trajectory(i));
+
+                if(uavList.isEmpty()) {
+                    continue;
+                }
+
+                sendEnemyUavPoints(uavList, UAV_SOLVER_MANUAL_SOURCE);
+            }
+        }
+
 
 //		sendEnemyUavPoints(data, UAV_SOLVER_SOURCE_1);
 		// Read Protobuf, revreate data from new protobuf to
 		// OD uav struct.
+        //Write to database, and do not send on map
 	}
 	else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO) {
 		sendEnemyUavPoints(data, UAV_SOLVER_AUTO_SOURCE);
 	} else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_SINGLE) {
 		sendEnemyUavPoints(data, UAV_SOLVER_SINGLE_1_SOURCE);
 	}
+}
+
+QList<UAVPositionDataEnemy> DbUavManager::getUavListSingleFromProto(SolverProtocol::Packet pkt)
+{
+    QList<UAVPositionDataEnemy> retList = QList<UAVPositionDataEnemy>();
+
+    pkt.has_datafromsolver();
+    if(!isSolverMessageHasSingleMarksManual(pkt)) {
+        return retList;
+    }
+
+    SolverProtocol::Packet_DataFromSolver_SolverSolution_SingleMarks pktSingleMark =  pkt.datafromsolver().solution_manual_altitude().singlemarks();
+
+    for(int i = 0; i < pktSingleMark.singlemark_size(); i++ ) {
+        SolverProtocol::Packet_DataFromSolver_SolverSolution_SingleMarks_SingleMark pktSingle =  pktSingleMark.singlemark( i );
+
+        UAVPositionDataEnemy dataStruct;
+
+//        altitude	= object.altitude;
+//        altitudeStdDev = object.altitudeStdDev;
+//        speed		= object.speed;
+//        course		= object.course;
+//        state		= object.state;
+//        frequency	= object.frequency;
+//        time		= object.time;
+//        latLonStdDev	= object.latLonStdDev;
+//        latLon		= object.latLon;
+//        sourceType  = object.sourceType;
+
+        dataStruct.altitude = pktSingle.coordinates().alt();
+        dataStruct.altitudeStdDev = pktSingle.coordinates_acc().alt_acc();
+        dataStruct.speed = 0;
+        dataStruct.course = 0;
+        dataStruct.state = 0;
+        dataStruct.frequency = pktSingleMark.central_frequency();
+        dataStruct.time = QDateTime::fromMSecsSinceEpoch(pktSingleMark.datetime()).time();
+        dataStruct.latLon = QPointF( pktSingle.coordinates().lat(), pktSingle.coordinates().lon() );
+        dataStruct.latLonStdDev = QPointF( pktSingle.coordinates_acc().lat_acc(),
+                                           pktSingle.coordinates_acc().lon_acc() );
+        dataStruct.sourceType = 0;
+
+        dataStruct.course = 0;
+
+        retList.append(dataStruct);
+    }
+
+    return retList;
+
+}
+
+QList<UAVPositionDataEnemy> DbUavManager::getUavListTrajectoryFromProto(SolverProtocol::
+                             Packet_DataFromSolver_SolverSolution_Trajectory pktTrajectory)
+{
+    QList<UAVPositionDataEnemy> retList = QList<UAVPositionDataEnemy>();
+
+    for(int i = 0; i < pktTrajectory.motionestimate_size(); i++ ) {
+
+        UAVPositionDataEnemy dataStruct;
+        SolverProtocol::Packet_DataFromSolver_SolverSolution_Trajectory_MotionEstimate pktSingle = pktTrajectory.motionestimate(i);
+
+        dataStruct.altitude = pktSingle.coordinates().alt();
+        dataStruct.altitudeStdDev = pktSingle.coordinates_acc().alt_acc();
+        dataStruct.speed = pktSingle.targetspeed();
+        dataStruct.course = pktSingle.relativebearing();
+        dataStruct.state = (int)pktSingle.state();
+        dataStruct.frequency = pktTrajectory.central_frequency();
+        dataStruct.time = QDateTime::fromMSecsSinceEpoch(pktSingle.datetime()).time();
+        dataStruct.latLon = QPointF( pktSingle.coordinates().lat(), pktSingle.coordinates().lon() );
+        dataStruct.latLonStdDev = QPointF( pktSingle.coordinates_acc().lat_acc(),
+                                           pktSingle.coordinates_acc().lon_acc() );
+        dataStruct.sourceType = 0;
+
+        retList.append(dataStruct);
+    }
+
+    return retList;
 }
 
 void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QString& role,

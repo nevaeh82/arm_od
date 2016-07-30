@@ -46,6 +46,8 @@ message Packet {
             getMultitargetTrackingSettings= 23;//получить настройки алгоритмов трекинга
             getAllSettingsFromSolver = 24;     //получить все настройки у решателя
             getDataBaseRecordingSettings = 25; //получить настройки записи в базу данных
+            getMinDelaysCountForSingleMarks = 26; //получить минимальное количество задержек,
+                                                  //необходимое для расчета одиночных отметок
         }
 
         //запросы на задание каких-либо данных решателю
@@ -151,6 +153,12 @@ message Packet {
             message SetDataBaseRecordingSettings{
                 required DataBaseRecordingSettings dataBaseRecordingSettings = 1;
             }
+
+            //задать минимальное количество задержек, необходимое для расчета одиночных отметок
+            message SetMinDelaysCountForSingleMarks{
+                required int32 minDelaysCountForSingleMarks = 1;
+            }
+
             optional SetClientType setClientType = 1;
             optional SetSolutionConfiguration setSolutionConfiguration = 2;
             optional SetTrajectoriesMaxLength setTrajectoriesMaxLength = 3;
@@ -171,6 +179,7 @@ message Packet {
             optional SetSettingsOfCorrectionsCalculation setSettingsOfCorrectionsCalculation = 18;
             optional SetMultitargetTrackingSettings setMultitargetTrackingSettings = 19;
             optional SetDataBaseRecordingSettings setDataBaseRecordingSettings = 20;
+            optional SetMinDelaysCountForSingleMarks setMinDelaysCountForSingleMarks = 21;
         }
 
         optional MeasurementsData measurementsData = 1; //могут быть входные данные
@@ -199,8 +208,9 @@ message Packet {
                 }
 
                 required string targetID = 1;               //айдишник цели
-                repeated MotionEstimate motionEstimate = 2; //последовательность оценок параметров движения
-                required ErrorEllips error_ellips = 3;  //эллипс ошибок, построенный для последней оценки координат цели
+                required double central_frequency = 2;      //частота сигнала цели
+                repeated MotionEstimate motionEstimate = 3; //последовательность оценок параметров движения
+                required ErrorEllips error_ellips = 4;  //эллипс ошибок, построенный для последней оценки координат цели
             }
 
             //одиночные отметки от целей
@@ -212,8 +222,9 @@ message Packet {
                     required CoordinatesAccuracy coordinates_acc = 2; // точность координат
                     required ErrorEllips error_ellips = 3;  //эллипс ошибок определения координат
                 }
-                required int64 datetime = 1;          // время привязки данных
-                repeated SingleMark singleMark = 2;   // массив одиночных отметок
+                required int64 datetime = 1;           // время привязки данных
+                required double central_frequency = 2; //центральная частота сигнала
+                repeated SingleMark singleMark = 3;    // массив одиночных отметок
             }
 
             //облака частиц, характеризующих цель
@@ -232,10 +243,12 @@ message Packet {
             message PositionLines {
 
                 message PositionLine {
-                    required string targetID = 1;         //идентификатор цели, которой соответствует линия
-                    required double lineAccuracy = 2;     //точность линии положения (м.)
-                    repeated Coordinates lineCoordinates = 3; //последовательность координат, образующая линию
-                    repeated Coordinates lineAreaCoordinates = 4; //последовательность координат, образующая
+                    required int32 first_detector_index  = 1; //!индекс первого датчика
+                    required int32 second_detector_index = 2; //!индекс второго датчика
+                    required string targetID = 3;             //идентификатор цели, которой соответствует линия
+                    required double lineAccuracy = 4;         //точность линии положения (м.)
+                    repeated Coordinates lineCoordinates = 5; //последовательность координат, образующая линию
+                    repeated Coordinates lineAreaCoordinates = 6; //последовательность координат, образующая
                                                                   //область ответственности линии
                 }
 
@@ -288,6 +301,7 @@ message Packet {
             optional string messageOfCorrectingProcess = 22; //!сообщение о ходе вычисления поправок
             optional MultitargetTrackingSettings multitargetTrackingSettings = 23;
             optional DataBaseRecordingSettings dataBaseRecordingSettings = 24;
+            optional int32 minDelaysCountForSingleMarks = 25;
         }
 
         //сообщение, от решателя клиенту(клиентам)

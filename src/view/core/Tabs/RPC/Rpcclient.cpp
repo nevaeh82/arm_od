@@ -1,6 +1,8 @@
 #include "RPCClient.h"
 #include "Tabs/DbBla/Defines.h"
 
+#include "SolverPacket1.pb.h"
+
 RPCClient::RPCClient(QObject* parent) :
 	RpcClientBase(parent)
 {
@@ -152,6 +154,8 @@ void RPCClient::rpcSendBplaPoints1(QByteArray data)
 		foreach (IRpcListener* reciever, m_receiversList) {
 			reciever->onMethodCalled(RPC_SLOT_SERVER_SEND_BPLA_POINTS_1, QVariant(data));
 		}
+
+
 	//}
 }
 

@@ -1,6 +1,8 @@
 #include "RPCClient.h"
 #include <QDebug>
 
+#include "SolverPacket1.pb.h"
+
 RPCClient::RPCClient(IRouter* router, IRPC* server):
 	_id(0),
 	_type(0)
@@ -64,9 +66,11 @@ void RPCClient::_slotGetData(rpc_msg msg_ptr)
 		emit signalSendToRPCBPLAPoints(cid, dd);
 		break;
 	case ARM_R_SERVER_BPLA_COORDS_1:
+    {
 		//        ds >> id_temp;
 		emit signalSendToRPCBPLAPoints1(cid, dd);
 		break;
+    }
 	case ARM_R_SERVER_BPLA_COORDS_AUTO:
 		emit signalSendToRPCBPLAPointsAuto(cid, dd);
 		break;

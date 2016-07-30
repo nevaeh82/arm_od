@@ -23,6 +23,8 @@
 #define MAP_STYLE_NAME_CHECK_POINTS			"Control_points"
 #define MAP_STYLE_NAME_HISTORY				"History"
 #define MAP_STYLE_NAME_HYPERBOLE			"Hyperbole"
+#define MAP_STYLE_NAME_POINTKK  			"PointKK"
+#define MAP_STYLE_NAME_WORK_AREA         	"WorkAresStyle"
 
 
 class IMapStyleManager
@@ -48,6 +50,8 @@ public:
 	virtual PwGisStyle* createCheckPointStyle(const QString& layerId) = 0;
 	virtual PwGisStyle* createHistoryStyle(const QString& layerId) = 0;
 	virtual PwGisStyle* createHyperboleStyle(const QString& layerId) = 0;
+    virtual PwGisStyle* createKKpointStyle(const QString& layerId, const double& opacity) = 0;
+    virtual PwGisStyle* createWorkAreaStyle(const QString& layerId) = 0;
 
 	virtual PwGisStyle* getAisStyle() = 0;
 	virtual PwGisStyle* getFriendBplaStyle() = 0;

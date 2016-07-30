@@ -43,6 +43,13 @@ public:
 	virtual void addEnemyBpla( const UavInfo& uav,
 							   const QVector<QPointF> &tail = QVector<QPointF>(),
 							   const QVector<QPointF> &tailStdDev = QVector<QPointF>() ) = 0;
+    virtual void addSingleMark( const QByteArray& uav ) = 0;
+    virtual void addTrajectoryKK( const QByteArray& uav ) = 0;
+
+    virtual void addStation( const QString& name, const QPointF& pos ) = 0;
+
+    virtual void addWorkArea( const QPointF& point1, const QPointF& point2 ) = 0;
+
 	virtual void removeBpla( const Uav& uav ) = 0;
 
 	virtual void addAis( QMap<int, QVector<QString> > vec ) = 0;
@@ -61,7 +68,8 @@ public:
 
 	virtual void addPerehvatPoint( int blaId, int bplaId, QPointF coord, float hgt, float radius, int time, float intcCourse, float intcSpeed ) = 0;
 
-	virtual void addHyperboles( const QByteArray& data, const QColor color = QColor::Invalid ) = 0;
+    virtual void addHyperboles( const QByteArray& data, int version = 0,
+                                const QColor color = QColor::Invalid) = 0;
 
 	virtual void removeAll() = 0;
 };

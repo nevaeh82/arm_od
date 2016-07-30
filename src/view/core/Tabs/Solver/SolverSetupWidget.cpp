@@ -98,9 +98,9 @@ void SolverSetupWidget::setSolverSettings(SolverProtocol::Packet_DataFromSolver_
 		for(int i = 0; i < data.detectors().detector_size(); i++) {
 			addTableItem(ui->twStations, i, 0, QString::fromStdString(data.detectors().detector(i).detector_name()), false);
 
-			addTableItem(ui->twStations, i, 1, QString::number(data.detectors().detector(i).coords().lon()), true);
-			addTableItem(ui->twStations, i, 2, QString::number(data.detectors().detector(i).coords().lat()), true);
-			addTableItem(ui->twStations, i, 3, QString::number(data.detectors().detector(i).coords().alt()), true);
+            addTableItem(ui->twStations, i, 1, (data.detectors().detector(i).coords().lon()), true);
+            addTableItem(ui->twStations, i, 2, (data.detectors().detector(i).coords().lat()), true);
+            addTableItem(ui->twStations, i, 3, (data.detectors().detector(i).coords().alt()), true);
 		}
 	}
 }
@@ -152,6 +152,8 @@ void SolverSetupWidget::addTableItem(QTableWidget* widget, int r, int c, QVarian
 {
 	if(isNum) {
 		QDoubleSpinBox* sb = new QDoubleSpinBox(widget);
+        sb->setMinimum(-1000);
+        sb->setMaximum(1000);
 		sb->setValue( value.toDouble() );
 		widget->setCellWidget( r, c, sb );
 	} else {

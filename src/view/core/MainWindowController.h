@@ -63,6 +63,8 @@ private slots:
 	void enableAdsbClient(bool);
 	void enableAdsbOnlineClient(bool);
 
+    void mapOpened();
+
 private:
 
 	void init();

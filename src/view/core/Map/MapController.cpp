@@ -11,6 +11,9 @@
 #include "UAV/ZInterception.h"
 #include "Tabs/DbBla/Defines.h"
 
+#include "SolverExchange.h"
+//#include "SolverPacket1.pb.h"
+
 MapController::MapController(QObject *parent):
 	QObject(parent)
 {
@@ -137,7 +140,7 @@ void MapController::mapOpenFinished()
 
 IMapClient *MapController::getMapClient(int id)
 {
-	return m_mapModel->getMapClient(id);
+    return m_mapModel->getMapClient(id);
 }
 
 void MapController::setNiippController(INiippController* controller)
@@ -310,4 +313,65 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 	else if( method == RPC_SLOT_SERVER_SEND_HYPERBOLA ) {
 		client->addHyperboles(data);
 	}
+    else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_1) {
+        SolverProtocol::Packet pkt;
+        pkt.ParseFromArray( data.data(), data.size() );
+
+        if( pkt.has_datafromsolver() &&
+            pkt.datafromsolver().has_solution_manual_altitude() &&
+            pkt.datafromsolver().solution_manual_altitude().has_positionlines() ) {
+
+            client->addHyperboles(data, 1);
+        }
+
+        if(pkt.has_datafromsolver() && pkt.datafromsolver().has_solution_manual_altitude() &&
+           pkt.datafromsolver().solution_manual_altitude().has_singlemarks()) {
+
+            SolverProtocol::Packet_DataFromSolver_SolverSolution_SingleMarks sMsg =              pkt.datafromsolver().solution_manual_altitude().singlemarks();
+
+            QByteArray msg;
+            msg.resize(sMsg.ByteSize());
+            sMsg.SerializeToArray(msg.data(), msg.size());
+            //Draw it from trajectories temrorally too. - next if
+            //here draw only ellipse
+            client->addSingleMark(msg);
+        }
+
+        if( isSolverMessageHasTrajectoryManual(pkt) ) {
+
+            for(int i = 0; i<pkt.datafromsolver().solution_manual_altitude().trajectory_size(); i++) {
+                SolverProtocol::Packet_DataFromSolver_SolverSolution_Trajectory sMsg =
+                        pkt.datafromsolver().solution_manual_altitude().trajectory(i);
+
+                QByteArray msg;
+                msg.resize(sMsg.ByteSize());
+                sMsg.SerializeToArray(msg.data(), msg.size());
+
+                client->addTrajectoryKK( msg );
+            }
+        }
+
+        //Draw stations and area from settings Solver responce
+        if( isSolverMessageSolverResponse( pkt ) ) {
+            SolverProtocol::Packet_DataFromSolver_SolverResponse response = pkt.datafromsolver().solverresponse();
+
+            if( response.has_detectors() ) {
+                for(int i = 0; i<response.detectors().detector_size(); i++ ) {
+                    QString name = QString::fromStdString(  response.detectors().detector(i).detector_name() );
+                    client->addStation( name,
+                                        QPointF(response.detectors().detector(i).coords().lon(),
+                                                response.detectors().detector(i).coords().lat())
+                                        );
+                }
+            }
+
+            if(response.has_areaofresponsibility()) {
+                QPointF point1(response.areaofresponsibility().mincoordinates().lon(),
+                               response.areaofresponsibility().mincoordinates().lat());
+                QPointF point2(response.areaofresponsibility().maxcoordinates().lon(),
+                               response.areaofresponsibility().maxcoordinates().lat());
+                client->addWorkArea( point1, point2 );
+            }
+        }
+    }
 }

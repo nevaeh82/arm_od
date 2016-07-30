@@ -31,11 +31,15 @@ public:
 	void setStationVisible(bool state);
 	IMapClient*getMapClient(int id);
 
+    IMapClient *getFirstMapClient();
 private:
 	Pw::Gis::IMapManager        *m_mapManager;
 	Pw::Gis::IProfileManager    *m_profileManager;
 
 	QMap<int, IMapClient *>     m_mapClients;
+
+    IMapClient*     m_firstClient;
+
 	QMap<int, Station*>   m_mapSettings;
 
 	QMap<int, QString>          _map_layers;

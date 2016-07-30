@@ -7,7 +7,8 @@
 #define SERVER_NAME "ZaviruhaODServer"
 
 MainWindowController::MainWindowController(QObject *parent) :
-	QObject(parent)
+    QObject(parent),
+    m_solverSetupWidgetController(NULL)
 {
 	m_view = NULL;
 	m_tabManager = NULL;
@@ -24,10 +25,12 @@ MainWindowController::MainWindowController(QObject *parent) :
 
 	qRegisterMetaType<IUavHistoryListener::Status>( "Status" );
 
+    resetServer();
+
 	QString serverName = "./" + QString(SERVER_NAME);
 	m_serverHandler = new SkyHobbit::Common::ServiceControl::ServiceHandler(serverName, QStringList(), NULL, this);
 
-	m_serverHandler->start(true);
+    m_serverHandler->start(true);
 }
 
 MainWindowController::~MainWindowController()
@@ -66,6 +69,8 @@ void MainWindowController::init()
 	connect(m_view, SIGNAL(openMapSignal()), m_tabManager, SIGNAL(openMapSignal()));
 	connect(m_tabManager, SIGNAL( mapOpened() ), m_view, SLOT( mapOpened() ));
 	connect(m_tabManager, SIGNAL( atlasOpened() ), m_view, SLOT( mapOpened() ));
+    connect(m_tabManager, SIGNAL( mapOpened() ), this, SLOT( mapOpened() ));
+    connect(m_tabManager, SIGNAL( atlasOpened() ), this, SLOT( mapOpened() ));
 	connect(m_tabManager, SIGNAL( cancelMapOpen() ), m_view, SLOT( cancelMapOpen() ));
 	connect(m_view, SIGNAL(setupKoordinatometriyaSignal()), this, SLOT(solverDialogSlot()));
 	connect(m_view, SIGNAL(signalResetServer()), this, SLOT(resetServer()));
@@ -137,6 +142,12 @@ void MainWindowController::resetServer()
 	param.append("/IM");
 	param.append("ZaviruhaODServer.exe");
 	QProcess::execute("taskkill", param);
+
+    QStringList paramAtlas;
+    paramAtlas.append("/F");
+    paramAtlas.append("/IM");
+    paramAtlas.append("PwGisAtlas.exe");
+    QProcess::execute("taskkill", paramAtlas);
 }
 
 void MainWindowController::startTabManger()
@@ -227,7 +238,12 @@ void MainWindowController::enableAdsbOnlineClient(bool status)
 
 	msg = new CommandMessage(COMMAND_SET_ADSB, ba);
 
-	m_tabManager->send_data(0, msg);
+    m_tabManager->send_data(0, msg);
+}
+
+void MainWindowController::mapOpened()
+{
+    m_solverSetupWidgetController->setMapFlag();
 }
 
 void MainWindowController::onMethodCalled(const QString& method, const QVariant& argument)

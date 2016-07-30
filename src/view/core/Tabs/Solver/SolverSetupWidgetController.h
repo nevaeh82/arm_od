@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <QVariant>
+#include <QTimer>
 
 #include <Rpc/RpcDefines.h>
 
@@ -32,10 +33,15 @@ private:
 	void sendSolverCommand(const SolverProtocol::Packet& data);
 
 	bool m_isSend;
+    bool m_isReceivedConfig;
+
+    QTimer m_startTimer;
 public:
 	void appendView(SolverSetupWidget* view);
 	virtual void onMethodCalled(const QString& method, const QVariant& argument);
 	SolverSetupWidget* getView();
+
+    void setMapFlag();
 
 public slots:
 	void slotShowWidget();
@@ -61,5 +67,7 @@ private slots:
 	void slotSendCommandSaveCor();
 	void slotSendUserData();
 	void slotGetAll();
+
+    void slotRequestConfig();
 };
 

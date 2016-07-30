@@ -18,6 +18,7 @@
 	<file>images/main.js</file>
 	<file>images/require.js</file>
 	<file>images/popupStyle.css</file>
+	<file>images/UAV/cross.png</file>
   </qresource>
 </RCC>
 

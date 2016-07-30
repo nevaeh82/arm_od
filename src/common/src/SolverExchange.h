@@ -73,3 +73,23 @@ inline bool isSolverMessageSolverResponse( SolverProtocol::Packet& pkt )
 
 	return true;
 }
+
+inline bool isSolverMessageHasSingleMarksManual( SolverProtocol::Packet& pkt )
+{
+    if( pkt.has_datafromsolver() && pkt.datafromsolver().has_solution_manual_altitude() &&
+        pkt.datafromsolver().solution_manual_altitude().has_singlemarks() ) {
+        return true;
+    }
+
+    return false;
+}
+
+inline bool isSolverMessageHasTrajectoryManual( SolverProtocol::Packet& pkt )
+{
+    if( pkt.has_datafromsolver() && pkt.datafromsolver().has_solution_manual_altitude() &&
+        (pkt.datafromsolver().solution_manual_altitude().trajectory_size() > 0) ) {
+        return true;
+    }
+
+    return false;
+}
