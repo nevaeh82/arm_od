@@ -48,6 +48,7 @@ message Packet {
             getDataBaseRecordingSettings = 25; //получить настройки записи в базу данных
             getMinDelaysCountForSingleMarks = 26; //получить минимальное количество задержек,
                                                   //необходимое для расчета одиночных отметок
+            getSettingsOfMergingMeasurements = 27; //!получить натройки объединения измерений
         }
 
         //запросы на задание каких-либо данных решателю
@@ -159,6 +160,11 @@ message Packet {
                 required int32 minDelaysCountForSingleMarks = 1;
             }
 
+            //задать минимальное количество задержек, необходимое для расчета одиночных отметок
+            message SetSettingsOfMergingMeasurements {
+                required SettingsOfMergingMeasurements settingsOfMergingMeasurements = 1;
+            }
+
             optional SetClientType setClientType = 1;
             optional SetSolutionConfiguration setSolutionConfiguration = 2;
             optional SetTrajectoriesMaxLength setTrajectoriesMaxLength = 3;
@@ -180,6 +186,7 @@ message Packet {
             optional SetMultitargetTrackingSettings setMultitargetTrackingSettings = 19;
             optional SetDataBaseRecordingSettings setDataBaseRecordingSettings = 20;
             optional SetMinDelaysCountForSingleMarks setMinDelaysCountForSingleMarks = 21;
+            optional SetSettingsOfMergingMeasurements setSettingsOfMergingMeasurements = 22;
         }
 
         optional MeasurementsData measurementsData = 1; //могут быть входные данные
@@ -302,6 +309,7 @@ message Packet {
             optional MultitargetTrackingSettings multitargetTrackingSettings = 23;
             optional DataBaseRecordingSettings dataBaseRecordingSettings = 24;
             optional int32 minDelaysCountForSingleMarks = 25;
+            optional SettingsOfMergingMeasurements settingsOfMergingMeasurements = 26;
         }
 
         //сообщение, от решателя клиенту(клиентам)

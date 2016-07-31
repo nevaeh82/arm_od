@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>557</width>
-    <height>534</height>
+    <height>562</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -184,47 +184,10 @@
           <string>Solver Params</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
-          <item row="1" column="0" colspan="3">
-           <widget class="QGroupBox" name="groupBox_3">
-            <property name="title">
-             <string>SolveTypes</string>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_5">
-             <item row="0" column="0">
-              <widget class="QCheckBox" name="cbTrajectories">
-               <property name="text">
-                <string>Trajectories</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QCheckBox" name="cbOneMarks">
-               <property name="text">
-                <string>One Marks</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QCheckBox" name="cbParticles">
-               <property name="text">
-                <string>Particles</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QCheckBox" name="cbPositionLines">
-               <property name="text">
-                <string>Position lines</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label">
+          <item row="7" column="0">
+           <widget class="QLabel" name="label_7">
             <property name="text">
-             <string>Version:</string>
+             <string>Max. SKO</string>
             </property>
            </widget>
           </item>
@@ -235,80 +198,14 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="label_7">
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_5">
             <property name="text">
-             <string>Max. SKO</string>
+             <string>Trajectory length:</string>
             </property>
            </widget>
           </item>
-          <item row="7" column="1" colspan="2">
-           <widget class="QSpinBox" name="sbSKO">
-            <property name="suffix">
-             <string> m</string>
-            </property>
-            <property name="minimum">
-             <number>100</number>
-            </property>
-            <property name="maximum">
-             <number>10000</number>
-            </property>
-            <property name="singleStep">
-             <number>100</number>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1" colspan="2">
-           <widget class="QLabel" name="lblSolverVersion">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="1" colspan="2">
-           <widget class="QSpinBox" name="sbPositionError">
-            <property name="suffix">
-             <string> m</string>
-            </property>
-            <property name="minimum">
-             <number>500</number>
-            </property>
-            <property name="maximum">
-             <number>15000</number>
-            </property>
-            <property name="singleStep">
-             <number>100</number>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0">
-           <widget class="QLabel" name="label_8">
-            <property name="text">
-             <string>Max. speed</string>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="0">
-           <widget class="QLabel" name="label_9">
-            <property name="text">
-             <string>Solver Area</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="1" colspan="2">
-           <widget class="QSpinBox" name="sbSpeed">
-            <property name="suffix">
-             <string> km/h</string>
-            </property>
-            <property name="minimum">
-             <number>100</number>
-            </property>
-            <property name="maximum">
-             <number>2000</number>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="1" rowspan="3" colspan="2">
+          <item row="11" column="1" rowspan="3" colspan="2">
            <widget class="QTableWidget" name="twWorkRect">
             <property name="enabled">
              <bool>true</bool>
@@ -378,22 +275,6 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="1" colspan="2">
-           <widget class="QSpinBox" name="sbAimHeight">
-            <property name="suffix">
-             <string> m</string>
-            </property>
-            <property name="prefix">
-             <string/>
-            </property>
-            <property name="maximum">
-             <number>10000</number>
-            </property>
-            <property name="singleStep">
-             <number>100</number>
-            </property>
-           </widget>
-          </item>
           <item row="2" column="1">
            <widget class="QCheckBox" name="cbAuto">
             <property name="text">
@@ -401,10 +282,67 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="2">
-           <widget class="QCheckBox" name="cbManual">
+          <item row="1" column="0" colspan="3">
+           <widget class="QGroupBox" name="groupBox_3">
+            <property name="title">
+             <string>SolveTypes</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_5">
+             <item row="0" column="0">
+              <widget class="QCheckBox" name="cbTrajectories">
+               <property name="text">
+                <string>Trajectories</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QCheckBox" name="cbOneMarks">
+               <property name="text">
+                <string>One Marks</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QCheckBox" name="cbParticles">
+               <property name="text">
+                <string>Particles</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QCheckBox" name="cbPositionLines">
+               <property name="text">
+                <string>Position lines</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="8" column="0">
+           <widget class="QLabel" name="label_8">
             <property name="text">
-             <string>Manual</string>
+             <string>Max. speed</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1" colspan="2">
+           <widget class="QSpinBox" name="sbTrajectoryLen">
+            <property name="suffix">
+             <string> sec</string>
+            </property>
+            <property name="minimum">
+             <number>10</number>
+            </property>
+            <property name="maximum">
+             <number>60000</number>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="0">
+           <widget class="QCheckBox" name="checkBox">
+            <property name="text">
+             <string>From map</string>
             </property>
            </widget>
           </item>
@@ -428,30 +366,69 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="1" colspan="2">
-           <widget class="QSpinBox" name="sbTrajectoryLen">
+          <item row="6" column="1" colspan="2">
+           <widget class="QSpinBox" name="sbPositionError">
             <property name="suffix">
-             <string> sec</string>
+             <string> m</string>
             </property>
             <property name="minimum">
-             <number>10</number>
+             <number>500</number>
             </property>
             <property name="maximum">
-             <number>60000</number>
+             <number>15000</number>
             </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_5">
-            <property name="text">
-             <string>Trajectory length:</string>
+            <property name="singleStep">
+             <number>100</number>
             </property>
            </widget>
           </item>
           <item row="11" column="0">
-           <widget class="QCheckBox" name="checkBox">
+           <widget class="QLabel" name="label_9">
             <property name="text">
-             <string>From map</string>
+             <string>Solver Area</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Version:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1" colspan="2">
+           <widget class="QSpinBox" name="sbAimHeight">
+            <property name="suffix">
+             <string> m</string>
+            </property>
+            <property name="prefix">
+             <string/>
+            </property>
+            <property name="maximum">
+             <number>10000</number>
+            </property>
+            <property name="singleStep">
+             <number>100</number>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="1" colspan="2">
+           <widget class="QSpinBox" name="sbSpeed">
+            <property name="suffix">
+             <string> km/h</string>
+            </property>
+            <property name="minimum">
+             <number>100</number>
+            </property>
+            <property name="maximum">
+             <number>2000</number>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1" colspan="2">
+           <widget class="QLabel" name="lblSolverVersion">
+            <property name="text">
+             <string/>
             </property>
            </widget>
           </item>
@@ -462,8 +439,62 @@
             </property>
            </widget>
           </item>
+          <item row="7" column="1" colspan="2">
+           <widget class="QSpinBox" name="sbSKO">
+            <property name="suffix">
+             <string> m</string>
+            </property>
+            <property name="minimum">
+             <number>100</number>
+            </property>
+            <property name="maximum">
+             <number>10000</number>
+            </property>
+            <property name="singleStep">
+             <number>100</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QCheckBox" name="cbManual">
+            <property name="text">
+             <string>Manual</string>
+            </property>
+           </widget>
+          </item>
           <item row="9" column="1" colspan="2">
-           <widget class="QSpinBox" name="sbMinDelays"/>
+           <widget class="QSpinBox" name="sbMinDelays">
+            <property name="value">
+             <number>2</number>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="0">
+           <widget class="QLabel" name="label_14">
+            <property name="text">
+             <string>Merge</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="1">
+           <widget class="QCheckBox" name="cbIsMerge">
+            <property name="text">
+             <string>isMerge</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="2">
+           <widget class="QDoubleSpinBox" name="sbMergeTime">
+            <property name="suffix">
+             <string> sec</string>
+            </property>
+            <property name="minimum">
+             <double>0.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>10.000000000000000</double>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>

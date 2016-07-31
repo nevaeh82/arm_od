@@ -16,6 +16,7 @@ SolverSetupWidgetController::SolverSetupWidgetController(ITabManager* tabManager
 	m_tabManager = tabManager;
 
 	connect(this, SIGNAL(onMethodCalledSignal(QString,QVariant)), this, SLOT(onMethodCalledSlot(QString,QVariant)));
+
 }
 
 SolverSetupWidgetController::~SolverSetupWidgetController()
@@ -43,6 +44,8 @@ void SolverSetupWidgetController::appendView(SolverSetupWidget *view)
 
 	connect(m_view, SIGNAL(signalSetUser()), this, SLOT(slotSendUserData()));
 	connect(m_view, SIGNAL(signalGetAll()), this, SLOT(slotGetAll()));
+
+    connect(m_view, SIGNAL(signalSetParams()), this, SLOT(slotSetParams()));
 }
 
 void SolverSetupWidgetController::onMethodCalled(const QString &method, const QVariant &argument)
@@ -191,6 +194,14 @@ void SolverSetupWidgetController::slotGetAll()
 {
 	SolverProtocol::Packet pkt;
 	createCommandSolverGetAll( pkt );
+
+    sendSolverCommand(pkt);
+}
+
+void SolverSetupWidgetController::slotSetParams()
+{
+    SolverProtocol::Packet pkt;
+    pkt = m_view->getSolverParams();
 
     sendSolverCommand(pkt);
 }

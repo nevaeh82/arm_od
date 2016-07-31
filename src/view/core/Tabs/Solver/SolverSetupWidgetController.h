@@ -68,6 +68,9 @@ private slots:
 	void slotSendUserData();
 	void slotGetAll();
 
+
+    void slotSetParams();
+
     void slotRequestConfig();
 };
 

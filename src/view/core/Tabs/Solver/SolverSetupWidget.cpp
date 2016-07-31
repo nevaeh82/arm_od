@@ -29,6 +29,8 @@ SolverSetupWidget::SolverSetupWidget(QWidget *parent) :
 
 	connect(ui->pbSetUser, SIGNAL(clicked(bool)), this, SIGNAL(signalSetUser()));
 	connect(ui->pbGetAll, SIGNAL(clicked(bool)), this, SIGNAL(signalGetAll()));
+
+    connect(ui->pbSetAll, SIGNAL(clicked(bool)), this, SIGNAL(signalSetParams()));
 }
 
 SolverSetupWidget::~SolverSetupWidget()
@@ -102,18 +104,49 @@ void SolverSetupWidget::setSolverSettings(SolverProtocol::Packet_DataFromSolver_
             addTableItem(ui->twStations, i, 2, (data.detectors().detector(i).coords().lat()), true);
             addTableItem(ui->twStations, i, 3, (data.detectors().detector(i).coords().alt()), true);
 		}
-	}
+    }
+
+    if(data.has_mindelayscountforsinglemarks()) {
+        ui->sbMinDelays->setValue(data.mindelayscountforsinglemarks());
+    }
+
+    if(data.has_settingsofmergingmeasurements()) {
+        ui->sbMergeTime->setValue(data.settingsofmergingmeasurements().time_window());
+        ui->cbIsMerge->setChecked( data.settingsofmergingmeasurements().mergemeasurements() );
+    }
 }
 
-SolverProtocol::Packet_DataFromClient_SetRequest SolverSetupWidget::getSolverSettings()
+SolverProtocol::Packet SolverSetupWidget::getSolverParams()
 {
-	SolverProtocol::Packet_DataFromClient_SetRequest data;
+    SolverProtocol::Packet pkt;
 
-	//fill all settings without client type
+    SolverProtocol::Packet_DataFromClient_SetRequest* sPkt = pkt.mutable_datafromclient()->mutable_setrequest();
 
+    sPkt->mutable_setdefaultmanualaltitude()->set_defaultmanualaltitude( ui->sbAimHeight->value() );
+
+    sPkt->mutable_setmindelayscountforsinglemarks()->set_mindelayscountforsinglemarks( ui->sbMinDelays->value() );
+
+    sPkt->mutable_settrajectoriesmaxlength()->set_trajectoriesmaxlength(ui->sbTrajectoryPoints->value());
+
+    sPkt->mutable_settrajectoriesmaxtimelength()->set_trajectoriesmaxtimelength(ui->sbTrajectoryLen->value());
+
+
+    sPkt->mutable_setmindelayscountforsinglemarks()->set_mindelayscountforsinglemarks(ui->sbMinDelays->value());
+
+    sPkt->mutable_setsettingsofmergingmeasurements()->mutable_settingsofmergingmeasurements()->set_time_window(ui->sbMergeTime->value());
+
+    sPkt->mutable_setsettingsofmergingmeasurements()->mutable_settingsofmergingmeasurements()->set_mergemeasurements(ui->cbIsMerge->isChecked());
+
+    setSolutionConfiguration(sPkt);
+
+    return pkt;
+}
+
+void SolverSetupWidget::setSolutionConfiguration(SolverProtocol::Packet_DataFromClient_SetRequest* sPkt)
+{
 	//setting solution configuration
 	{
-		SolverProtocol::SolutionConfiguration* conf = data.mutable_setsolutionconfiguration()->mutable_solutionconfiguration();
+        SolverProtocol::SolutionConfiguration* conf = sPkt->mutable_setsolutionconfiguration()->mutable_solutionconfiguration();
 		if(ui->cbAuto->isChecked()) {
 			conf->add_altitude_type(SolverProtocol::automatic_altitude);
 		}
@@ -133,8 +166,6 @@ SolverProtocol::Packet_DataFromClient_SetRequest SolverSetupWidget::getSolverSet
 			conf->add_solution_type( SolverProtocol::trajectories );
 		}
 	}
-
-	return data;
 }
 
 SolverProtocol::Packet_DataFromClient_SetRequest_SetClientType SolverSetupWidget::getClientParams()

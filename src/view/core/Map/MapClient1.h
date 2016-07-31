@@ -102,6 +102,10 @@ private:
     void DrawHyerboles(QList<QVector<QPointF>> list, QTime time, const QColor color);
     void DrawHyerboles(QList<QVector<QPointF> > list,
                        QList<QVector<QPointF> > zone, QTime time, const QColor color);
+
+    void clearEllipse();
+    void clearHyperbole();
+    void clearKKPoint();
 public slots:
 	virtual void init();
 	virtual void setPoint();
@@ -118,6 +122,8 @@ public slots:
 
     virtual void addStation( const QString& name, const QPointF& pos );
     virtual void addWorkArea( const QPointF& point1, const QPointF& point2 );
+
+    virtual void clearSolver1();
 
     virtual void removeBpla( const Uav &uav );
 
@@ -175,6 +181,8 @@ private slots:
 	void onFeatureClicked(QString id, QString type);
 
     void addTrajectoryKKInternal(QByteArray data);
+
+    void slotSolverClear();
 signals:
 	void friendBplaAdded( const UavInfo& uav );
 	void enemyBplaAdded( const UavInfo& uav,
@@ -204,6 +212,8 @@ signals:
 
     void signalAddStation(QString, QPointF);
     void signalAddArea(QPointF, QPointF);
+
+    void onSolverClear();
 };
 
 #endif // MAPCLIENT1_H

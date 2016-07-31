@@ -23,6 +23,8 @@ public:
 	void setSolverVersion(const QString &version);
 	void setSolverSettings(SolverProtocol::Packet_DataFromSolver_SolverResponse &data);
 
+    SolverProtocol::Packet getSolverParams();
+
 private:
 	Ui::SolverSetupWidget *ui;
 
@@ -32,7 +34,7 @@ public:
 	void appendSolverResult(const QString& log);
 
 	SolverProtocol::Packet_DataFromClient_SetRequest_SetClientType getClientParams();
-	SolverProtocol::Packet_DataFromClient_SetRequest getSolverSettings();
+    void setSolutionConfiguration(SolverProtocol::Packet_DataFromClient_SetRequest *sPkt);
 
 signals:
 	void onSendSignal();
@@ -48,4 +50,6 @@ signals:
 
 	void signalSetUser();
 	void signalGetAll();
+
+    void signalSetParams();
 };

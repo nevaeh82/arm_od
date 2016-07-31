@@ -74,6 +74,19 @@ inline bool isSolverMessageSolverResponse( SolverProtocol::Packet& pkt )
 	return true;
 }
 
+inline bool isSolverMessageSolverMessage( SolverProtocol::Packet& pkt )
+{
+    if( !pkt.has_datafromsolver() ) {
+        return false;
+    }
+
+    if( !pkt.datafromsolver().has_message() ) {
+        return false;
+    }
+
+    return true;
+}
+
 inline bool isSolverMessageHasSingleMarksManual( SolverProtocol::Packet& pkt )
 {
     if( pkt.has_datafromsolver() && pkt.datafromsolver().has_solution_manual_altitude() &&

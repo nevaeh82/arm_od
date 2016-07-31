@@ -189,3 +189,9 @@ message ErrorEllips {
     }
     repeated LatLon point = 1; //линия из точек, образующая эллипс
 }
+
+//настройки объединения пакетов измерений от западной и восточной систем в один
+message SettingsOfMergingMeasurements {
+    required bool mergeMeasurements = 1; //объединять пакеты или нет?
+    required double time_window = 2;    //временное окно объединения (в секундах)
+}

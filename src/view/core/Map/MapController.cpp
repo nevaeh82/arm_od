@@ -373,5 +373,14 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
                 client->addWorkArea( point1, point2 );
             }
         }
+
+        //get messages
+        if( isSolverMessageSolverMessage(pkt) ) {
+            QString msg = QString::fromStdString(pkt.datafromsolver().message().message());
+
+            if(msg.contains(QString::fromLocal8Bit("очищен"), Qt::CaseInsensitive)) {
+                client->clearSolver1();
+            }
+        }
     }
 }

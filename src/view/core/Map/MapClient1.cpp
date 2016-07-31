@@ -98,6 +98,8 @@ MapClient1::MapClient1(MapWidget* pwWidget, Station* station, QObject* parent)
 			 this, SLOT(addInterceptionPointData(int, int, QPointF, float, float, int, float, float)) );
 
 	connect(&m_objectsManager->events(), SIGNAL(featureClicked(QString,QString)), SLOT(onFeatureClicked(QString,QString)));
+
+    connect(this, SIGNAL(onSolverClear()), this, SLOT(slotSolverClear()));
 }
 
 MapClient1::~MapClient1()
@@ -236,24 +238,13 @@ void MapClient1::DrawHyerboles(QList<QVector<QPointF>> list,
 //            m_hyperboleList[i]->removeFromMap();
 //        }
 //    }
-    if ( m_hyperboleList.count() > 0 ) {
-        for ( int i = 0; i < m_hyperboleList.count(); i++ ) {
-            m_hyperboleList[i]->removeFromMap();
-            delete m_hyperboleList.at(i);
-        }
-    }
-
-    m_hyperboleList.clear();
+        clearHyperbole();
 
 
     for ( int i = 0; i < list.count(); ++i ) {
-        if( i < m_hyperboleList.count() ) {
-            m_hyperboleList[i]->updatePath( list[i], zone[i], time );
-        } else {
             MapFeature::Hyperbole* hyperbole;
             hyperbole = m_factory->createHyperbole( list[i], zone[i], time, color );
             m_hyperboleList << hyperbole;
-        }
     }
 }
 
@@ -352,6 +343,11 @@ void MapClient1::addStation(const QString &name, const QPointF &pos)
 void MapClient1::addWorkArea(const QPointF &point1, const QPointF &point2)
 {
     emit signalAddArea(point1, point2);
+}
+
+void MapClient1::clearSolver1()
+{
+    emit onSolverClear();
 }
 
 void MapClient1::removeAllHyperbole()
@@ -670,11 +666,7 @@ void MapClient1::addSingleMarkInternal(QByteArray data)
     UavInfo uav;
     uav.dateTime = QDateTime::fromMSecsSinceEpoch( sMsg.datetime() );
 
-    for(int k = 0; k < m_ellipseCounter; k++) {
-        m_pwWidget->removeObject(QString("ERR_Ellipse_%1").arg(k));
-    }
-
-    m_ellipseCounter = 0;
+    clearEllipse();
 
     for(int i = 0; i<sMsg.singlemark_size(); i++) {
         uav.id = i;
@@ -697,7 +689,7 @@ void MapClient1::addSingleMarkInternal(QByteArray data)
         }
 
         m_pwWidget->addPolygon( QString("ERR_Ellipse_%1").arg(m_ellipseCounter),
-                                &list, "", "",  MAP_STYLE_NAME_WORK_AREA);
+                                &list, "", "",  MAP_STYLE_NAME_WORK_AREA );
 
         m_ellipseCounter++;
     }
@@ -712,18 +704,9 @@ void MapClient1::addTrajectoryKKInternal(QByteArray data)
         return;
     }
 
-    quint64 dt = 0;
+    clearKKPoint();
 
-    for(int k = 0; k < m_pointKKlastInd; k++) {
-        m_pwWidget->removeObject(QString("KKpoint_%1").arg(k));
-    }
-
-    m_pointKKlastInd = 0;
     for(int i = 0; i < sMsg.motionestimate_size(); i++) {
-
-//        if(m_pointKKlastInd > 100) {
-//            m_pointKKlastInd = 0;
-//        }
 
         double lon = sMsg.motionestimate(i).coordinates().lon();
         double lat = sMsg.motionestimate(i).coordinates().lat();
@@ -741,6 +724,43 @@ void MapClient1::addTrajectoryKKInternal(QByteArray data)
 
         m_pointKKlastInd++;
     }
+}
+
+void MapClient1::clearKKPoint()
+{
+    for(int k = 0; k < m_pointKKlastInd; k++) {
+        m_pwWidget->removeObject(QString("KKpoint_%1").arg(k));
+    }
+
+    m_pointKKlastInd = 0;
+}
+
+void MapClient1::clearEllipse()
+{
+    for(int k = 0; k < m_ellipseCounter; k++) {
+        m_pwWidget->removeObject(QString("ERR_Ellipse_%1").arg(k));
+    }
+
+    m_ellipseCounter = 0;
+}
+
+void MapClient1::clearHyperbole()
+{
+    if ( m_hyperboleList.count() > 0 ) {
+        for ( int i = 0; i < m_hyperboleList.count(); i++ ) {
+            m_hyperboleList[i]->removeFromMap();
+            delete m_hyperboleList.at(i);
+        }
+    }
+
+    m_hyperboleList.clear();
+}
+
+void MapClient1::slotSolverClear()
+{
+    clearEllipse();
+    clearKKPoint();
+    clearHyperbole();
 }
 
 void MapClient1::removeBplaInternal(const Uav& uav)
