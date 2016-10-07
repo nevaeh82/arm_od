@@ -35,7 +35,7 @@ private:
 	double angle;
 	double frequency;
 
-	UAVPositionDataEnemy encodeBplaData(const QTime& time = QTime::currentTime());
+    UAVPositionDataEnemy encodeBplaData(const QDateTime &time = QDateTime::currentDateTime());
 
 	void sendUavsData();
 	void sendHyperbolas();

@@ -94,7 +94,12 @@ Hyperbole *FeaturesFactory::createHyperbole(const QVector<QPointF> &polyline, co
 
 ADSBPlaneFeature*FeaturesFactory::createAdsbPlane(const QString& name, const QPointF& pos)
 {
-	return new ADSBPlaneFeature(m_view, m_provider->objectsFactory(), name, pos );
+    return new ADSBPlaneFeature(m_view, m_provider->objectsFactory(), name, pos );
+}
+
+PointKK *FeaturesFactory::createKKpoint(PwGisWidget *wgt, const QPointF &point, const QDateTime &dt)
+{
+    return new PointKK(wgt, point, dt, this);
 }
 
 } // namespace MapFeature

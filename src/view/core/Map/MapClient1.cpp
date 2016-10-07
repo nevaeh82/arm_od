@@ -180,10 +180,10 @@ void MapClient1::init()
 	m_styleManager->createHyperboleStyle( m_mapLayers.value(14) )->apply();
 	m_styleManager->createHistoryStyle( m_mapLayers.value(15) )->apply();
     m_styleManager->createHistoryStyle( m_mapLayers.value(15) )->apply();
-    for(int i = 1; i<2; i++) {
+    for(int i = 1; i<11; i++) {
         m_styleManager->createKKpointStyle( m_mapLayers.value(16), double((double)i/(double)10) )->apply();
     }
-    m_styleManager->createWorkAreaStyle( m_mapLayers.value(16) )->apply();
+    m_styleManager->createWorkAreaStyle( m_mapLayers.value(17) )->apply();
 
 	//addNiippLayer
 	m_pwWidget->mapProvider()->layerManager()->addVectorLayer( "NIIPP", tr("NIIPP") );
@@ -667,6 +667,9 @@ void MapClient1::addSingleMarkInternal(QByteArray data)
     uav.dateTime = QDateTime::fromMSecsSinceEpoch( sMsg.datetime() );
 
     clearEllipse();
+//    if(m_pointKKlastInd > 300) {
+//        clearKKPoint();
+//    }
 
     for(int i = 0; i<sMsg.singlemark_size(); i++) {
         uav.id = i;
@@ -675,9 +678,10 @@ void MapClient1::addSingleMarkInternal(QByteArray data)
         uav.lon = sMsg.singlemark(i).coordinates().lon();
         //addEnemyBpla(uav);
 
-        //draw points from trajectoy temporally
 //        m_pwWidget->addPoint(QString("KKpoint_%1").arg(m_pointKKlastInd),
 //                             uav.lon, uav.lat, "", "", MAP_STYLE_NAME_POINTKK);
+
+        m_factory->createKKpoint(m_pwWidget, QPointF(uav.lon, uav.lat), QDateTime::currentDateTime());
 
         PwGisPointList list;
         for(int k=0; k < sMsg.singlemark(i).error_ellips().point_size(); k++ ) {
@@ -692,38 +696,46 @@ void MapClient1::addSingleMarkInternal(QByteArray data)
                                 &list, "", "",  MAP_STYLE_NAME_WORK_AREA );
 
         m_ellipseCounter++;
+        //m_pointKKlastInd++;
     }
 }
 
 void MapClient1::addTrajectoryKKInternal(QByteArray data)
 {
-    SolverProtocol::Packet_DataFromSolver_SolverSolution_Trajectory sMsg;
-    bool res = sMsg.ParseFromArray(data.data(), data.size());
 
-    if(!res) {
-        return;
-    }
+    //No kk points from trajectory
+//    SolverProtocol::Packet_DataFromSolver_SolverSolution slMsg;
+//    bool res = slMsg.ParseFromArray(data.data(), data.size());
 
-    clearKKPoint();
+//    if(!res) {
+//        return;
+//    }
 
-    for(int i = 0; i < sMsg.motionestimate_size(); i++) {
+//    clearKKPoint();
 
-        double lon = sMsg.motionestimate(i).coordinates().lon();
-        double lat = sMsg.motionestimate(i).coordinates().lat();
+//    for(int t = 0; t<slMsg.trajectory_size(); t++) {
+//        SolverProtocol::Packet_DataFromSolver_SolverSolution_Trajectory sMsg =
+//                slMsg.trajectory(t);
 
-        quint64 dtmax = sMsg.motionestimate(sMsg.motionestimate_size()-1).datetime();
-        quint64 dtmin = sMsg.motionestimate(0).datetime();
+//        for(int i = 0; i < sMsg.motionestimate_size(); i++) {
 
-        quint64 dtarea = qAbs(dtmax - dtmin);//-100
-        quint64 dto = qAbs(dtmax - sMsg.motionestimate(i).datetime());//x
+//            double lon = sMsg.motionestimate(i).coordinates().lon();
+//            double lat = sMsg.motionestimate(i).coordinates().lat();
 
-        QString opacity = QString::number( double( (double)dto / (double)dtarea ), 'g', 1 );
+//            quint64 dtmax = sMsg.motionestimate(sMsg.motionestimate_size()-1).datetime();
+//            quint64 dtmin = sMsg.motionestimate(0).datetime();
 
-        m_pwWidget->addPoint(QString("KKpoint_%1").arg(m_pointKKlastInd),
-                             lon, lat, "", "", MAP_STYLE_NAME_POINTKK/*.arg(opacity)*/);
+//            quint64 dtarea = qAbs(dtmax - dtmin);//-100
+//            quint64 dto = qAbs(dtmax - sMsg.motionestimate(i).datetime());//x
 
-        m_pointKKlastInd++;
-    }
+//            QString opacity = QString::number( double( (double)dto / (double)dtarea ), 'g', 1 );
+
+//            m_pwWidget->addPoint(QString("KKpoint_%1").arg(m_pointKKlastInd),
+//                                 lon, lat, "", "", MAP_STYLE_NAME_POINTKK/*.arg(opacity)*/);
+
+//            m_pointKKlastInd++;
+//        }
+//    }
 }
 
 void MapClient1::clearKKPoint()

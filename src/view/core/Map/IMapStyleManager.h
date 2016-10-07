@@ -23,7 +23,7 @@
 #define MAP_STYLE_NAME_CHECK_POINTS			"Control_points"
 #define MAP_STYLE_NAME_HISTORY				"History"
 #define MAP_STYLE_NAME_HYPERBOLE			"Hyperbole"
-#define MAP_STYLE_NAME_POINTKK  			"PointKK"
+#define MAP_STYLE_NAME_POINTKK  			"PointKK_%1"
 #define MAP_STYLE_NAME_WORK_AREA         	"WorkAresStyle"
 
 

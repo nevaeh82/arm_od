@@ -85,7 +85,7 @@ void SolverSetupWidgetController::onMethodCalledSlot(QString method, QVariant ar
 		if( isSolverMessageCommandSolver(pkt) && m_isSend) {
 			m_isSend = false;
 			QString msg = QString::fromStdString(pkt.datafromsolver().message().message());
-			QMessageBox::information( m_view, tr("SolverMessage"), msg, QMessageBox::Yes );
+            //QMessageBox::information( m_view, tr("SolverMessage"), msg, QMessageBox::Yes );
 		}
 
 		if( isSolverMessageSolverResponse( pkt ) ) {

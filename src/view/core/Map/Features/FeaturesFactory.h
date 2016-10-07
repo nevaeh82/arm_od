@@ -39,6 +39,8 @@ public:
                                            const QVector<QPointF>& polyZone,
                                            const QTime time, const QColor color = QColor::Invalid );
 	virtual ADSBPlaneFeature* createAdsbPlane(const QString& name, const QPointF& pos);
+
+    virtual PointKK* createKKpoint(PwGisWidget* wgt, const QPointF& point, const QDateTime& dt);
 };
 
 } // namespace MapFeature

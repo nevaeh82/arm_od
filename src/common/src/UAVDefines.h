@@ -104,7 +104,7 @@ typedef struct UAVPositionDataEnemy
 		course		= 0.0;
 		state		= 0;
 		frequency	= -1;
-		time		= QTime::currentTime();
+        time		= QDateTime::currentDateTime();
 		latLonStdDev	= QPointF(0.0, 0.0);
 		sourceType  = 0;
 	}
@@ -129,7 +129,7 @@ typedef struct UAVPositionDataEnemy
 	double		course;
 	int			state;
 	double		frequency;
-	QTime		time;
+    QDateTime	time;
 	QPointF		latLonStdDev;
 	QPointF		latLon;
 	uint		sourceType;

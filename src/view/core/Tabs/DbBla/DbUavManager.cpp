@@ -110,7 +110,7 @@ int DbUavManager::addUavInfo(const UavInfo &uavInfo, bool actual,
 	// If current record is not actual information about BPLA
 	// we try just to insert/update uav info record
 	/// todo: commented because of perfomance issue
-//	int recordIndex = m_dbController->addUavInfo(uavInfo);
+    m_dbController->addUavInfo(uavInfo);
 //
 //	if (!actual) {
 //		return recordIndex;
@@ -386,11 +386,11 @@ void DbUavManager::onMethodCalled(const QString& method, const QVariant& argumen
         {
             QList<UAVPositionDataEnemy> uavList = getUavListSingleFromProto(pkt);
 
-            if(uavList.isEmpty()) {
-                return;
+            if(!uavList.isEmpty()) {
+                sendEnemyUavPoints(uavList, UAV_SOLVER_SINGLE_1_SOURCE);
             }
 
-            sendEnemyUavPoints(uavList, UAV_SOLVER_SINGLE_1_SOURCE);
+
         }
 
         {
@@ -457,7 +457,7 @@ QList<UAVPositionDataEnemy> DbUavManager::getUavListSingleFromProto(SolverProtoc
         dataStruct.course = 0;
         dataStruct.state = 0;
         dataStruct.frequency = pktSingleMark.central_frequency();
-        dataStruct.time = QDateTime::fromMSecsSinceEpoch(pktSingleMark.datetime()).time();
+        dataStruct.time = QDateTime::fromMSecsSinceEpoch(pktSingleMark.datetime());
         dataStruct.latLon = QPointF( pktSingle.coordinates().lat(), pktSingle.coordinates().lon() );
         dataStruct.latLonStdDev = QPointF( pktSingle.coordinates_acc().lat_acc(),
                                            pktSingle.coordinates_acc().lon_acc() );
@@ -488,7 +488,10 @@ QList<UAVPositionDataEnemy> DbUavManager::getUavListTrajectoryFromProto(SolverPr
         dataStruct.course = pktSingle.relativebearing();
         dataStruct.state = (int)pktSingle.state();
         dataStruct.frequency = pktTrajectory.central_frequency();
-        dataStruct.time = QDateTime::fromMSecsSinceEpoch(pktSingle.datetime()).time();
+        QString test = QString::fromStdString(pktTrajectory.targetid());
+        Q_UNUSED(test);
+        quint64 t = pktSingle.datetime();
+        dataStruct.time = QDateTime::fromMSecsSinceEpoch(t);
         dataStruct.latLon = QPointF( pktSingle.coordinates().lat(), pktSingle.coordinates().lon() );
         dataStruct.latLonStdDev = QPointF( pktSingle.coordinates_acc().lat_acc(),
                                            pktSingle.coordinates_acc().lon_acc() );
@@ -729,15 +732,8 @@ void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy,
 	positionData.sourceType = positionDataEnemy.sourceType;
 
 	// transform time to dateTime
-	QTime time = positionDataEnemy.time;
-	positionData.dateTime.setTime( time );
-
-	// workaround if dateTime is greather then current system dateTime
-	// we should reduce a day
-	/// \todo we sould pass data from ARM R in DateTime format
-	if ( positionData.dateTime > QDateTime::currentDateTime() ) {
-		positionData.dateTime = positionData.dateTime.addDays( -1 );
-	}
+    QDateTime time = positionDataEnemy.time;
+    positionData.dateTime = time;
 
 	addUavInfoToDb(positionData, role, uavType, status, deviceType, sourceType, actual, tail, tailStdDev);
 }

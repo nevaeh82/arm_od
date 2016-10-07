@@ -52,7 +52,7 @@ bool PrmSimulator::start( quint16 port, QHostAddress ipAddress )
 	return RpcServerBase::start( m_port );
 }
 
-UAVPositionDataEnemy PrmSimulator::encodeBplaData(const QTime& time)
+UAVPositionDataEnemy PrmSimulator::encodeBplaData(const QDateTime& time)
 {
 	double radius = 0.005 + (double)qrand() / RAND_MAX * 0.0001;
 	double lon = cos((180 - angle) * M_PI / 180) * radius + centerLon;
@@ -101,7 +101,7 @@ void PrmSimulator::sendUavsData()
 	// encode BPLA data
 	QList<UAVPositionDataEnemy> list;
 
-	QTime time = QTime::currentTime();
+    QDateTime time = QDateTime::currentDateTime();
 
 	if (functionRand == 2) {
 		list << encodeBplaData(); // it's for UAV_SOLVER_SINGLE_1_SOURCE

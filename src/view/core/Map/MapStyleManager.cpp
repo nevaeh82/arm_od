@@ -337,14 +337,14 @@ PwGisStyle* MapStyleManager::createKKpointStyle(const QString& layerId,
 
     double val = opacity;
     QString opacitySt = QString::number( opacity, 'g', 1 );
-    PwGisStyle* style = createStyle( MAP_STYLE_NAME_POINTKK/*.arg(opacitySt)*/,
+    PwGisStyle* style = createStyle( QString(MAP_STYLE_NAME_POINTKK).arg(opacitySt),
                                      &exists );
 
     if( !exists ) {
         style->setProperty( PwGisStyle::strokeColor, "red" );
         style->setProperty( PwGisStyle::fillColor, "red" );
-        style->setProperty( PwGisStyle::fillOpacity, "0.5" );
-        style->setProperty( PwGisStyle::strokeOpacity, "0.5" );
+        style->setProperty( PwGisStyle::fillOpacity, opacitySt );
+        style->setProperty( PwGisStyle::strokeOpacity, opacitySt );
         style->setProperty( PwGisStyle::pointRadius, "3" );
         style->setProperty( PwGisStyle::layer, layerId );
     }

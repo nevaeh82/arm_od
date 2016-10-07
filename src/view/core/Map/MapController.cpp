@@ -338,17 +338,12 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
         }
 
         if( isSolverMessageHasTrajectoryManual(pkt) ) {
-
-            for(int i = 0; i<pkt.datafromsolver().solution_manual_altitude().trajectory_size(); i++) {
-                SolverProtocol::Packet_DataFromSolver_SolverSolution_Trajectory sMsg =
-                        pkt.datafromsolver().solution_manual_altitude().trajectory(i);
-
-                QByteArray msg;
-                msg.resize(sMsg.ByteSize());
-                sMsg.SerializeToArray(msg.data(), msg.size());
-
-                client->addTrajectoryKK( msg );
-            }
+            //Trajectory from db. No kk here
+//            QByteArray msg;
+//            SolverProtocol::Packet_DataFromSolver_SolverSolution sol = pkt.datafromsolver().solution_manual_altitude();
+//            msg.resize(sol.ByteSize());
+//            sol.SerializeToArray(msg.data(), msg.size());
+//            client->addTrajectoryKK( msg );
         }
 
         //Draw stations and area from settings Solver responce

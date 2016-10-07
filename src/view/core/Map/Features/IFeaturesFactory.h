@@ -23,6 +23,7 @@
 #include "Map/Features/CheckPointFeature.h"
 #include "Map/Features/HyperboleFeature.h"
 #include "Map/Features/ADSBPlaneFeature.h"
+#include "Map/Features/PointKKFeature.h"
 
 
 namespace MapFeature {
@@ -48,6 +49,8 @@ public:
                                            const QTime time, const QColor color = QColor::Invalid ) = 0;
 
 	virtual ADSBPlaneFeature* createAdsbPlane( const QString& name, const QPointF& pos ) = 0;
+
+    virtual PointKK* createKKpoint(PwGisWidget* wgt, const QPointF& point, const QDateTime& dt) = 0;
 };
 
 } // namespace MapFeature
