@@ -36,6 +36,7 @@ protected:
 private:
 	QTimer* timer;
 	int lifetime;
+    int m_state;
 
 public:
 	virtual ~EnemyBpla() {}

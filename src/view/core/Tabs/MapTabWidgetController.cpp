@@ -187,7 +187,7 @@ int MapTabWidgetController::createTree()
 	tree->header()->resizeSection(0, qMax( TREE_KEYS_COLUMN_MIN_WIDTH, tree->header()->width() / 2 ) );
 	tree->header()->resizeSection(1, tree->header()->width() - tree->header()->sectionSize(0) );
 
-	connect(m_enemyUavTreeModel, SIGNAL(onItemAddedSignal()), tree, SLOT(expandAll()));
+    //connect(m_enemyUavTreeModel, SIGNAL(onItemAddedSignal()), tree, SLOT(expandAll()));
 
 	return 0;
 }
@@ -229,6 +229,8 @@ void MapTabWidgetController::appendView(MapTabWidget *view)
 
 	m_uavDbManager->registerReceiver( m_niipp1 );
 	m_uavDbManager->registerReceiver( m_niipp2 );
+
+    connect(m_uavDbManager, SIGNAL(protoToNiipp(QByteArray)), m_niipp1, SLOT());
 
 	init();
 

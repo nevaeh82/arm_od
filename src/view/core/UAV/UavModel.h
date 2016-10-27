@@ -11,7 +11,8 @@ public:
 	UavModel();
 
 	static QString getExtendedId(const Uav& uav, uint source);
-	static QString getExtendedId(const UavInfo& uav);
+    static QString getExtendedId(const UavInfo& uav);
+    static QString getExtendedIdHist(const UavInfo &uav);
 };
 
 #endif // UAV_H

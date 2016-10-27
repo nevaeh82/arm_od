@@ -143,10 +143,10 @@ void NiippController::setPoint(QPointF coord)
 
 void NiippController::sendEnemyBpla(QPointF point, QPointF point_uvoda, double alt, double bearing)
 {
-	if(!m_view->getStartState())
-	{
-		return;
-	}
+    if(!m_view->getStartState())
+    {
+        return;
+    }
 
 	m_model->setAntenaIndex(m_view->getAntenaIndex());
 	m_model->setSBpowerValue(m_view->getSbPowerValue());
@@ -303,5 +303,10 @@ void NiippController::appendView(NiippWidget *view)
 
 void NiippController::onGetConnectionStatus()
 {
-	m_model->getStatusConnection();
+    m_model->getStatusConnection();
+}
+
+void NiippController::onReceiveSolverProto(QByteArray data)
+{
+    m_model->sendProtoEvil(data);
 }

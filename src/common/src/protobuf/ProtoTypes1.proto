@@ -170,16 +170,19 @@ message MultitargetTrackingSettings {
     required double clutterDencity = 5;    //плотность вероятности зашумленных измерений
     required double clutterPrior = 6;      //априорная вероятность появления зашумленных измерений
     required double probabilityOfBirth= 7; //вероятность рождения цели
+    required bool correctAltitudeInManualMode = 8; //!надо ли корректировать высоту в ручном режиме
+    required bool manyTargetsAtOneFrequency = 9;   //!может ли на одной частоте находиться несколько целей
+    required bool manyFrequenciesAtOneTarget = 10; //!может ли одна цель излучать сигналы на разных частотах
 }
 
 //Настройки записи в базу данных
 message DataBaseRecordingSettings {
-    required bool writeToDataBase   = 1;
-    required bool writeMeasurements = 2;
-    required bool writeSingleMarks  = 3;
-    required bool writeTrajectories = 4;
+    required bool writeToDataBase   = 1; //! писать ли вообще в базу данных
+    required bool writeMeasurements = 2; //! записывать ли входные данные
+    required bool writeSingleMarks  = 3; //! записывать ли одиноыне отметки
+    required bool writeTrajectories = 4; //! записывать ли траектории
+    required bool writeDronesCoordinates = 5; //! записывать ли координаты БПЛА
 }
-
 
 //эллипс ошибок определения координат цели
 message ErrorEllips {
@@ -195,3 +198,17 @@ message SettingsOfMergingMeasurements {
     required bool mergeMeasurements = 1; //объединять пакеты или нет?
     required double time_window = 2;    //временное окно объединения (в секундах)
 }
+
+//!Настройки режима "летающие датчики", в котором датчики установлены на БПЛА
+message DetectorsFlyingModeSettings {
+    //! Ассоциация идентификатора БПЛА какому-то номеру датчика
+    message DetectorOnDrone {
+        required string drone_id = 1; //Идентификатор БПЛА
+        required int32 number_of_detector = 2; //номер датчика
+    }
+    repeated DetectorOnDrone detectors_on_drones = 1;   //!массив ассоциаций
+    required CoordinatesInTime npu_coordinates = 2;     //!координаты пункта ретрансляции
+    required bool detectors_flying_mode_is_enabled = 3; //!включен ли режим "летающие датчики"
+}
+
+

@@ -3,6 +3,8 @@
 
 #include <QRegExp>
 
+#include <stdio.h>
+
 #include "KtrSimulator.h"
 
 #define _USE_MATH_DEFINES
@@ -13,8 +15,8 @@
 
 #define  CMD_MIN_LENGTH					22
 
-KtrSimulator::KtrSimulator(const uint& port, const uint& bplaCount,
-						   QObject *parent )
+KtrSimulator::KtrSimulator(const uint& port, const uint &delay, const uint& bplaCount,
+                           QObject *parent )
 	: QObject( parent )
 	, m_port( port )
 	, m_server( NULL )
@@ -29,9 +31,9 @@ KtrSimulator::KtrSimulator(const uint& port, const uint& bplaCount,
 	for (uint i=1; i <= bplaCount; i++) {
 		uint device = 1;
 		uint angle = qrand() % 360;
-		double lat = 60 + (double)qrand() / RAND_MAX * 0.2;
-		double lon = 30 + (double)qrand() / RAND_MAX;
-		double alt = 1500 + qrand() % 1000;
+        double lat = 46 + (double)qrand() / RAND_MAX * 0.2;
+        double lon = 34 + (double)qrand() / RAND_MAX;
+        double alt = 1500 /*+ qrand() % 1000*/;
 		double radiusX = 0.005 + (double)qrand() / RAND_MAX * 0.01;
 		double radiusY = 0.005 + (double)qrand() / RAND_MAX * 0.01;
 
@@ -41,7 +43,7 @@ KtrSimulator::KtrSimulator(const uint& port, const uint& bplaCount,
 
 	// start update timer
 	connect( &m_updateTimer, SIGNAL(timeout()), SLOT(update()) );
-	m_updateTimer.start( 100 );
+    m_updateTimer.start( delay );
 
 	connect(&m_uavListUpdateTimer, SIGNAL(timeout()), SLOT(updateUavList()));
 	m_uavListUpdateTimer.start(1000);
@@ -241,8 +243,8 @@ QByteArray KtrSimulator::encodeAutopilotPosition(const uint& id )
 
 	BplaSimulatorNode node = m_bplaList.value( id );
 
-	double radiusX = node.radiusX - 0.00005 + (double)qrand() / RAND_MAX * 0.0001;
-	double radiusY = node.radiusY - 0.00005 + (double)qrand() / RAND_MAX * 0.0001;
+    double radiusX = node.radiusX - 0.00005 + (double)/*qrand()*/10 / RAND_MAX * 0.0001;
+    double radiusY = node.radiusY - 0.00005 + (double)/*qrand()*/10 / RAND_MAX * 0.0001;
 
 	double lon = cos((180 - m_baseAngle) * M_PI / 180) * radiusX + node.centerLon;
 	double lat = sin((180 - m_baseAngle) * M_PI / 180) * radiusY + node.centerLat;
@@ -284,11 +286,14 @@ QByteArray KtrSimulator::encodeAtitude(const uint& id)
 void KtrSimulator::update()
 {
 	// increase base angle
-	m_baseAngle += 0.25;
+    m_baseAngle += 0.01;
 
 	if (m_baseAngle > 360) {
 		m_baseAngle -= 360;
 	}
+
+//    qDebug() << "Press";
+//    getchar();
 
 	// send updated coordinates to each client
 	foreach (QTcpSocket *socket, m_bplaConnections) {
@@ -305,21 +310,27 @@ void KtrSimulator::update()
 
 		BplaSimulatorNode node = m_bplaList[ id.toInt() ];
 
-		if (device.toInt() != node.device) {
-			continue;
-		}
+//		if (device.toInt() != node.device) {
+//			continue;
+//		}
 
-//		if (node.device == 622) {
-			QByteArray data;
+        QByteArray data;
+        if (device == 622) {
+
 
 			data = encodeKtrPosition( id.toInt() );
-			writeAndFlush( socket, data );
+            //socket->write(data);
+            writeAndFlush( socket, data );
+        } else {
+
 
 			data = encodeAutopilotPosition( id.toInt() );
-			writeAndFlush( socket, data );
+            //socket->write(data);
+            writeAndFlush( socket, data );
+        }
 
-			data = encodeAtitude( id.toInt() );
-			writeAndFlush( socket, data );
+            //data = encodeAtitude( id.toInt() );
+            //writeAndFlush( socket, data );
 //		}
 	}
 }

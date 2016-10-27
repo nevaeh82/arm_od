@@ -181,7 +181,7 @@ void Niipp::sendEvil(const QPointF& point, const QPointF& point_uvoda, double al
 
 	if( m_parentTab == NULL ) return;
 
-    if(m_enable == false) return;
+    //if(m_enable == false) return;
 
 	QByteArray ba;
 	QDataStream ds(&ba, QIODevice::ReadWrite);
@@ -244,7 +244,13 @@ void Niipp::sendEvil(const QPointF& point, const QPointF& point_uvoda, double al
 	ds << EW2;
 
 	CommandMessage* msg = new CommandMessage(COMMAND_SET_NIIPP_BPLA, ba);
-	m_parentTab->send_data(0, msg);
+    m_parentTab->send_data(0, msg);
+}
+
+void Niipp::sendProtoEvil(const QByteArray &proto)
+{
+    CommandMessage* msg = new CommandMessage(COMMAND_SET_NIIPP_BPLA, proto);
+    m_parentTab->send_data(0, msg);
 }
 
 double Niipp::getRadius() const

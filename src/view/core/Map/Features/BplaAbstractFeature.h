@@ -3,6 +3,7 @@
 
 #include <PwGis/PwGisPointList.h>
 #include <PwGis/objects/Path.h>
+#include <PwGis/objects/Polygon.h>
 
 #include "Tabs/DbBla/Defines.h"
 #include "Map/Features/MarkerFeature.h"
@@ -17,6 +18,7 @@ protected:
 
 	Pw::Gis::Path* m_tail;
 	Pw::Gis::Path* m_slices;
+    Pw::Gis::Polygon* m_ellipse;
 
 	double m_altitude;
 	double m_speed;
@@ -58,6 +60,7 @@ public:
 	inline double longtitudeStddev() { return m_longtitudeStddev; }
 
 	void setSlice(const QPointF &slice);
+    void setEllipse(PwGisPointList list);
 
 
 	void update(const UavInfo& uav);

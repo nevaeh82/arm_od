@@ -339,11 +339,14 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 
         if( isSolverMessageHasTrajectoryManual(pkt) ) {
             //Trajectory from db. No kk here
-//            QByteArray msg;
-//            SolverProtocol::Packet_DataFromSolver_SolverSolution sol = pkt.datafromsolver().solution_manual_altitude();
-//            msg.resize(sol.ByteSize());
-//            sol.SerializeToArray(msg.data(), msg.size());
-//            client->addTrajectoryKK( msg );
+            QByteArray msg;
+            int size = pkt.datafromsolver().solution_manual_altitude().trajectory_size();
+            for(int i = 0; i<size; i++) {
+                SolverProtocol::Packet_DataFromSolver_SolverSolution_Trajectory sol = pkt.datafromsolver().solution_manual_altitude().trajectory(i);
+                msg.resize(sol.ByteSize());
+                sol.SerializeToArray(msg.data(), msg.size());
+                client->addTrajectoryKK( msg );
+            }
         }
 
         //Draw stations and area from settings Solver responce
@@ -351,13 +354,12 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
             SolverProtocol::Packet_DataFromSolver_SolverResponse response = pkt.datafromsolver().solverresponse();
 
             if( response.has_detectors() ) {
-                for(int i = 0; i<response.detectors().detector_size(); i++ ) {
-                    QString name = QString::fromStdString(  response.detectors().detector(i).detector_name() );
-                    client->addStation( name,
-                                        QPointF(response.detectors().detector(i).coords().lon(),
-                                                response.detectors().detector(i).coords().lat())
-                                        );
-                }
+
+                QByteArray dataToSend;
+                dataToSend.resize( response.detectors().ByteSize() );
+                response.detectors().SerializeToArray(dataToSend.data(), dataToSend.size());
+
+                client->addStation( dataToSend );
             }
 
             if(response.has_areaofresponsibility()) {

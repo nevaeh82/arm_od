@@ -88,8 +88,8 @@ MapClient1::MapClient1(MapWidget* pwWidget, Station* station, QObject* parent)
     connect( this, SIGNAL(hyperboleAdded(QByteArray,int, QColor)),
              this, SLOT(addHyperboleInternal(QByteArray,int, QColor)) );
 
-    connect( this, SIGNAL(signalAddStation(QString,QPointF)),
-             this, SLOT(addStationInternal(QString,QPointF)) );
+    connect( this, SIGNAL(signalAddStation(QByteArray)),
+             this, SLOT(addStationInternal(QByteArray)) );
 
     connect( this, SIGNAL(signalAddArea(QPointF,QPointF)),
              this, SLOT(addAreaInternal(QPointF,QPointF)) );
@@ -128,9 +128,10 @@ void MapClient1::init()
 	addMarkerLayer( 12, "Diversion_points", tr( "Diversion points" ) );
 	addMarkerLayer( 13, "SPIP_DD", tr( "SPIP DD" ) );
 	addMarkerLayer( 14, "Hyperbole", tr( "Hyperbole" ) );
-	addMarkerLayer( 15, "History", tr( "History" ) );
-    addMarkerLayer( 16, "PointKK", tr( "Point" ) );
-    addMarkerLayer( 17, "WorkArea", tr( "workArea" ) );
+    addMarkerLayer( 15, "HyperboleZone", tr( "Hyperbole-Zone" ) );
+    addMarkerLayer( 16, "History", tr( "History" ) );
+    addMarkerLayer( 17, "PointKK", tr( "Point" ) );
+    addMarkerLayer( 18, "WorkArea", tr( "workArea" ) );
 
 	addMarkerLayer( 101, "UAV_enemy_track_manual", tr( "UAV_enemy_track_manual" ) );
 	addMarkerLayer( 100, "UAV_enemy_manual", tr( "UAV_enemy_manual" ) );
@@ -154,14 +155,16 @@ void MapClient1::init()
 	// create styles for features
 	m_styleManager->createStationStyle( m_mapLayers.value(0) )->apply();
 
-	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(100), UAV_SOLVER_MANUAL_SOURCE )->apply();
-	m_styleManager->createEnemyBplaTrackStyle( m_mapLayers.value(101), UAV_SOLVER_MANUAL_SOURCE )->apply();
+    m_styleManager->createEnemyBplaStyle( m_mapLayers.value(100), UAV_SOLVER_MANUAL_SOURCE, 1 )->apply();
+    m_styleManager->createEnemyBplaStyle( m_mapLayers.value(101), UAV_SOLVER_MANUAL_SOURCE, 2 )->apply();
+    m_styleManager->createEnemyBplaStyle( m_mapLayers.value(101), UAV_SOLVER_MANUAL_SOURCE, 3 )->apply();
+    m_styleManager->createEnemyBplaTrackStyle( m_mapLayers.value(101), UAV_SOLVER_MANUAL_SOURCE )->apply();
 
-	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(102), UAV_SOLVER_AUTO_SOURCE )->apply();
+    m_styleManager->createEnemyBplaStyle( m_mapLayers.value(102), UAV_SOLVER_AUTO_SOURCE, 1 )->apply();
 	m_styleManager->createEnemyBplaTrackStyle( m_mapLayers.value(103), UAV_SOLVER_AUTO_SOURCE )->apply();
 
-	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(104), UAV_SOLVER_SINGLE_1_SOURCE )->apply();
-	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(104), UAV_SOLVER_SINGLE_2_SOURCE )->apply();
+    m_styleManager->createEnemyBplaStyle( m_mapLayers.value(104), UAV_SOLVER_SINGLE_1_SOURCE, 1 )->apply();
+    m_styleManager->createEnemyBplaStyle( m_mapLayers.value(104), UAV_SOLVER_SINGLE_2_SOURCE, 1 )->apply();
 
 	m_styleManager->createFriendBplaStyle( m_mapLayers.value(3) )->apply();
 	m_styleManager->createFriendBplaTrackStyle( m_mapLayers.value(4) )->apply();
@@ -178,12 +181,17 @@ void MapClient1::init()
 	m_styleManager->createNiippPointStyle( m_mapLayers.value(12) )->apply();
 	m_styleManager->createNiippStyle( m_mapLayers.value(13) )->apply();
 	m_styleManager->createHyperboleStyle( m_mapLayers.value(14) )->apply();
-	m_styleManager->createHistoryStyle( m_mapLayers.value(15) )->apply();
-    m_styleManager->createHistoryStyle( m_mapLayers.value(15) )->apply();
+    m_styleManager->createHistoryStyle( m_mapLayers.value(16) )->apply();
+    //m_styleManager->createHistoryStyle( m_mapLayers.value(16) )->apply();
+
     for(int i = 1; i<11; i++) {
-        m_styleManager->createKKpointStyle( m_mapLayers.value(16), double((double)i/(double)10) )->apply();
+        m_styleManager->createHyperboleZoneStyle( m_mapLayers.value(15), i )->apply();
     }
-    m_styleManager->createWorkAreaStyle( m_mapLayers.value(17) )->apply();
+
+    for(int i = 1; i<11; i++) {
+        m_styleManager->createKKpointStyle( m_mapLayers.value(17), double((double)i/(double)10) )->apply();
+    }
+    m_styleManager->createWorkAreaStyle( m_mapLayers.value(18) )->apply();
 
 	//addNiippLayer
 	m_pwWidget->mapProvider()->layerManager()->addVectorLayer( "NIIPP", tr("NIIPP") );
@@ -250,10 +258,10 @@ void MapClient1::DrawHyerboles(QList<QVector<QPointF>> list,
 
 void MapClient1::addHyperboleInternal(const QByteArray& data, int version, const QColor color )
 {
+    m_hyperboleTimer->start(HYPERBOLE_LIFE_TIME);
+
     if(version == 0) {
         QDataStream ds(data);
-
-        m_hyperboleTimer->start(HYPERBOLE_LIFE_TIME);
 
         double frequency;
         ds >> frequency;
@@ -295,6 +303,10 @@ void MapClient1::addHyperboleInternal(const QByteArray& data, int version, const
 
                 zone.append(pointZone);
             }
+            //Aded accurancy
+            zone.append(QPointF( linesArray.positionline(linesArray.positionline_size()-1).lineaccuracy(),
+                                 -10000));
+            //===================
             list.append(hyperbole);
             zoneList.append(zone);
         }
@@ -304,18 +316,32 @@ void MapClient1::addHyperboleInternal(const QByteArray& data, int version, const
     }
 }
 
-void MapClient1::addStationInternal(QString name, QPointF pos)
+void MapClient1::addStationInternal(QByteArray data)
 {
-    MapFeature::Station* station = m_stationList.value( name, NULL );
-
-    if( station = NULL ) {
-        station->setPosition( pos );
-    } else {
-        station = m_factory->createStation( name, pos );
-        m_stationList.insert( name, station );
+    SolverProtocol::Detectors pkt;
+    if( !pkt.ParseFromArray( data.data(), data.size() ) ) {
+        return;
     }
 
-    station->updateMap();
+    foreach (MapFeature::Station* station, m_stationList.values()) {
+         station->removeFromMap();
+         delete station;
+    }
+
+    m_stationList.clear();
+
+    for(int i = 0; i<pkt.detector_size(); i++ ) {
+        MapFeature::Station* station;
+        QString name = QString::fromStdString(  pkt.detector(i).detector_name() );
+        QPointF pos(pkt.detector(i).coords().lon(),
+                    pkt.detector(i).coords().lat());
+
+
+        station = m_factory->createStation( name, pos );
+        m_stationList.insert( name, station );
+
+        station->updateMap();
+    }
 }
 
 void MapClient1::addAreaInternal(QPointF point1, QPointF point2)
@@ -335,9 +361,9 @@ void MapClient1::addAreaInternal(QPointF point1, QPointF point2)
 
 }
 
-void MapClient1::addStation(const QString &name, const QPointF &pos)
+void MapClient1::addStation(const QByteArray& data)
 {
-    emit signalAddStation(name, pos);
+    emit signalAddStation(data);
 }
 
 void MapClient1::addWorkArea(const QPointF &point1, const QPointF &point2)
@@ -360,10 +386,12 @@ void MapClient1::removeAllHyperbole()
 void MapClient1::removeAllonePointTimer()
 {
 		foreach (MapFeature::EnemyBpla* bla, m_enemyBplaList) {
-			if( bla->getStyleName() == MapStyleManager::getEnemyBplaStyleName(104) ) {
+            if( bla->getStyleName() == MapStyleManager::getEnemyBplaStyleName(104, 1) ) {
 				bla->removeFromMap();
+                //delete bla;
 				m_enemyBplaList.remove(m_enemyBplaList.key(bla));
-			}
+                //m_enemyBplaList.clear();
+            }
 		}
 }
 
@@ -639,7 +667,12 @@ void MapClient1::addEnemyBplaInternal(const UavInfo& uav,
 									  const QVector<QPointF>& tail,
 									  const QVector<QPointF>& tailStdDev)
 {
-	QString id = UavModel::getExtendedId( uav );
+    QString id;
+    if(uav.historical) {
+        id = UavModel::getExtendedIdHist( uav );
+    } else {
+        id = UavModel::getExtendedId( uav );
+    }
 	MapFeature::EnemyBpla* bpla = m_enemyBplaList.value( id, NULL );
 
 	m_uavKnownSources << uav.source;
@@ -703,39 +736,32 @@ void MapClient1::addSingleMarkInternal(QByteArray data)
 void MapClient1::addTrajectoryKKInternal(QByteArray data)
 {
 
-    //No kk points from trajectory
-//    SolverProtocol::Packet_DataFromSolver_SolverSolution slMsg;
-//    bool res = slMsg.ParseFromArray(data.data(), data.size());
+    SolverProtocol::Packet_DataFromSolver_SolverSolution_Trajectory sol;
+    sol.ParseFromArray( data.data(), data.size() );
 
-//    if(!res) {
-//        return;
-//    }
+    QString targetId = QString::fromStdString(sol.targetid());
 
-//    clearKKPoint();
+    //clearTrajEllipse(targetId);
 
-//    for(int t = 0; t<slMsg.trajectory_size(); t++) {
-//        SolverProtocol::Packet_DataFromSolver_SolverSolution_Trajectory sMsg =
-//                slMsg.trajectory(t);
+    //m_trajEllipseCounter.append(targetId);
+    PwGisPointList list;
+    for(int i = 0; i<sol.error_ellips().point_size(); i++ ) {
+        SolverProtocol::ErrorEllips_LatLon pp = sol.error_ellips().point(i);
 
-//        for(int i = 0; i < sMsg.motionestimate_size(); i++) {
+        PwGisLonLat *ll = new PwGisLonLat(pp.lon(), pp.lat());
 
-//            double lon = sMsg.motionestimate(i).coordinates().lon();
-//            double lat = sMsg.motionestimate(i).coordinates().lat();
+        list.addLonLat(ll);
+    }
 
-//            quint64 dtmax = sMsg.motionestimate(sMsg.motionestimate_size()-1).datetime();
-//            quint64 dtmin = sMsg.motionestimate(0).datetime();
+    if( m_enemyBplaList.contains( targetId ) ) {
+        //clearTrajEllipse( id );
+        m_enemyBplaList.value(targetId)->setEllipse(list);
+    }
 
-//            quint64 dtarea = qAbs(dtmax - dtmin);//-100
-//            quint64 dto = qAbs(dtmax - sMsg.motionestimate(i).datetime());//x
+    //m_pwWidget->addPolygon( QString("ERR_trajectory_Ellipse_%1").arg(targetId),
+    //                        &list, "", "",  MAP_STYLE_NAME_ENEMY_BPLA_TRACK );
+//     sol.error_ellips().point_size()
 
-//            QString opacity = QString::number( double( (double)dto / (double)dtarea ), 'g', 1 );
-
-//            m_pwWidget->addPoint(QString("KKpoint_%1").arg(m_pointKKlastInd),
-//                                 lon, lat, "", "", MAP_STYLE_NAME_POINTKK/*.arg(opacity)*/);
-
-//            m_pointKKlastInd++;
-//        }
-//    }
 }
 
 void MapClient1::clearKKPoint()
@@ -749,11 +775,17 @@ void MapClient1::clearKKPoint()
 
 void MapClient1::clearEllipse()
 {
-    for(int k = 0; k < m_ellipseCounter; k++) {
+    for(int k = 0; k < m_ellipseCounter+1; k++) {
         m_pwWidget->removeObject(QString("ERR_Ellipse_%1").arg(k));
     }
 
     m_ellipseCounter = 0;
+}
+
+void MapClient1::clearTrajEllipse(QString id)
+{
+    m_trajEllipseCounter.removeOne(id);
+    m_pwWidget->removeObject(QString("ERR_trajectory_Ellipse_%1").arg(id));
 }
 
 void MapClient1::clearHyperbole()
@@ -785,6 +817,7 @@ void MapClient1::removeBplaInternal(const Uav& uav)
 		}
 
 		if( m_enemyBplaList.contains( id ) ) {
+            //clearTrajEllipse( id );
 			delete m_enemyBplaList.take( id );
 		}
 	}

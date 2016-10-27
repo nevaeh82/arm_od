@@ -1,0 +1,13 @@
+option optimize_for = LITE_RUNTIME;
+
+option java_package = "taip.comm.ktp.kernel.protos";
+option java_outer_classname = "ByteArrayDataProto";
+
+message ByteArrayDataPacket {
+    //
+    required int32 id = 1;
+    //
+    required int32 port = 2;
+    //
+    required bytes data = 3; 
+}

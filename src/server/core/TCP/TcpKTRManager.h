@@ -17,7 +17,7 @@
 #include "QApplication"
 
 /// 5 minutes = 300000 msec
-#define MAX_LIFE_TIME			300000
+#define MAX_LIFE_TIME			100000
 #define KTR_DEVICE_AUTOPILOT	1
 #define KTR_DEVICE_KTRGA622		622
 #define KTR_DEVICE_KTRGA623		623

@@ -52,7 +52,7 @@ Hyperbole::Hyperbole(IStyleFactory *styleFactory,
 {
     m_path->addStyleByName( MAP_STYLE_NAME_HYPERBOLE );
     m_zone = m_factory->createPolygon();
-    m_zone->addStyleByName( MAP_STYLE_NAME_HYPERBOLE );
+    m_zone->addStyleByName( QString(MAP_STYLE_NAME_HYPERBOLE_ZONE).arg(10) );
 
     // adds custom color
     if ( color.isValid() ) {
@@ -80,7 +80,7 @@ Hyperbole::~Hyperbole()
 void Hyperbole::updatePath(const QVector<QPointF>& polyline, const QTime timeMeasure )
 {
     setPolyline( polyline );
-    log_debug(QString("HYPERBOLE size:: %1").arg(polyline.size()));
+    //log_debug(QString("HYPERBOLE size:: %1").arg(polyline.size()));
 
 	m_path->setToolTip( timeMeasure.toString( Qt::SystemLocaleShortDate ) );
 
@@ -91,7 +91,7 @@ void Hyperbole::updatePath(const QVector<QPointF> &polyline,
                            const QVector<QPointF> &polyZone, const QTime timeMeasure)
 {
     setPolyline( polyline );
-    log_debug(QString("HYPERBOLE size:: %1").arg(polyline.size()));
+    //log_debug(QString("HYPERBOLE size:: %1").arg(polyline.size()));
 
     //-----
     if(m_zone) {
@@ -99,8 +99,15 @@ void Hyperbole::updatePath(const QVector<QPointF> &polyline,
         points->clear();
 
         foreach( QPointF point, polyZone ) {
+            if( point.y() < -180 || point.y() > 180 || point.x() > 180 || point.y() < -180 ) {
+                continue;
+            }
             points->append( new PwGisLonLat( point.y(), point.x() ) );
         }
+
+        QPointF accur = polyZone.last();
+        int wholeacc = (1000 / accur.x())*10;
+        m_zone->addStyleByName( QString(MAP_STYLE_NAME_HYPERBOLE_ZONE).arg(3) );
 
         m_zone->updateMap();
     }
@@ -109,6 +116,17 @@ void Hyperbole::updatePath(const QVector<QPointF> &polyline,
     m_path->setToolTip( timeMeasure.toString( Qt::SystemLocaleShortDate ) );
 
     updateMap();
+}
+
+void Hyperbole::removeFromMap()
+{
+    if(m_zone) {
+        m_zone->removeFromMap();
+        delete m_zone;
+        m_zone = 0;
+    }
+
+    PolylineAbstract::removeFromMap();
 }
 
 } // namespace MapFeature

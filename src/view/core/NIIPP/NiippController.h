@@ -72,6 +72,8 @@ private slots:
 	void slotOpenRDP();
 	void onGetConnectionStatus();
 
+    void onReceiveSolverProto(QByteArray data);
+
 public slots:
 	virtual void setPower(double value);
 	virtual void setSwitchOn(bool state);

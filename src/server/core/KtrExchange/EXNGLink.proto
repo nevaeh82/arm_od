@@ -1,0 +1,19 @@
+option optimize_for = LITE_RUNTIME;
+
+option java_package = "taip.comm.ktp.kernel.protos";
+option java_outer_classname = "EXNGLinkProto";
+
+message EXNGLinkPacket {
+    //
+    required bool clientsListLink = 1;
+    //
+    required bool allRxTryLink = 2;
+    //
+    required bool allTxTryLink = 3;
+    //
+    required bool allDataPackagesLink = 4;    
+    //
+    required bool serversStateLink = 5;    
+    //
+    required bool gpsLink = 6;    
+}

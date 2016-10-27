@@ -47,7 +47,7 @@ public:
     virtual void addTrajectoryKK( const QByteArray& uav ) = 0;
     virtual void clearSolver1() = 0;
 
-    virtual void addStation( const QString& name, const QPointF& pos ) = 0;
+    virtual void addStation( const QByteArray& data ) = 0;
 
     virtual void addWorkArea( const QPointF& point1, const QPointF& point2 ) = 0;
 

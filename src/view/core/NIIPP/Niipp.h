@@ -37,6 +37,7 @@ public:
 	void enableComplex(bool state);
 	void clear();
 	void sendEvil(const QPointF& point, const QPointF& point_uvoda, double alt, double bearing);
+    void sendProtoEvil(const QByteArray& proto);
 	QByteArray encode(QStringList list);
 	void changeMode(int value);
 

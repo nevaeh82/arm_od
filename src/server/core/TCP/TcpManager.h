@@ -27,6 +27,8 @@
 #include "Rpc/RPCServer.h"
 #include "Rpc/RpcDefines.h"
 
+#include "KtrExchange/KTPSendNMEA.h"
+
 #include "RPC/Client/RpcClientRWrapper.h"
 
 class TcpManager : public QObject, public ITcpManager, public ITcpListener, public IRpcListener
@@ -51,6 +53,7 @@ private:
 	 **/
 
 	ITcpKTRManager* m_ktrManager; //UAV connections
+
 public:
 	explicit TcpManager(QObject* parent = NULL);
 	virtual ~TcpManager();
@@ -85,6 +88,8 @@ private slots:
 
 	void createAdsbDevice();
 	void createwwwAdsbDevice();
+
+    void slotGpsData(QByteArray data);
 
 	// ITcpManager interface
 };

@@ -3,12 +3,15 @@
 #include "Map/MapStyleManager.h"
 
 #define IMAGE_POST_PLANE_BLACK		"/profiles/Zav/AIS/PostPlaneBlack.png"
-#define IMAGE_UAV_BLA_48			"/profiles/Zav/UAV/BLA48.png"
+#define IMAGE_UAV_BLA_48			"/profiles/Zav/UAV/BPLAB.png"
 #define IMAGE_UAV_BPLA_48			"/profiles/Zav/UAV/BPLA48.png"
+#define IMAGE_UAV_BPLA_BLUE			"/profiles/Zav/UAV/BPLABU.png"
+#define IMAGE_UAV_BPLA_BLACK_ANT			"/profiles/Zav/UAV/BPLAA.png"
+#define IMAGE_UAV_BPLA_BLACK_UNKNOWN			"/profiles/Zav/UAV/BPLAU.png"
 #define IMAGE_ONE_POINT				"/profiles/Zav/UAV/cross.png"
 #define IMAGE_STATION_RED_128		"/profiles/Zav/Punkts/StationRed128.png"
 #define IMAGE_POINT_RED_48			"/profiles/Zav/Points/redmark48.png"
-#define IMAGE_ADSB_PLANE			"/profiles/Zav/AIS/PostPlaneYellow.png"
+#define IMAGE_ADSB_PLANE			"/profiles/Zav/AIS/PostPlaneBlack.png"
 
 MapStyleManager::MapStyleManager(IStyleFactory* factory)
 	: m_factory( factory )
@@ -44,8 +47,8 @@ PwGisStyle* MapStyleManager::createFriendBplaStyle(const QString& layerId)
 		style->setProperty( PwGisStyle::mapFontSize, "10pt");
 		style->setProperty( PwGisStyle::externalGraphic, IMAGE_UAV_BLA_48 );
 		style->setProperty( PwGisStyle::fillColor, "red" );
-		style->setProperty( PwGisStyle::graphicWidth, "40" );
-		style->setProperty( PwGisStyle::graphicHeight, "60" );
+        style->setProperty( PwGisStyle::graphicWidth, "25" );
+        style->setProperty( PwGisStyle::graphicHeight, "25" );
 		style->setProperty( PwGisStyle::layer, layerId );
 	}
 
@@ -111,19 +114,25 @@ PwGisStyle*MapStyleManager::createAdsbTrackStyle(const QString& layerId)
 	return style;
 }
 
-PwGisStyle* MapStyleManager::createEnemyBplaStyle(const QString& layerId, uint source)
+PwGisStyle* MapStyleManager::createEnemyBplaStyle(const QString& layerId, uint source, uint state)
 {
 	bool exists;
-	PwGisStyle* style = createStyle( MapStyleManager::getEnemyBplaStyleName(source), &exists );
+    PwGisStyle* style = createStyle( MapStyleManager::getEnemyBplaStyleName(source, state), &exists );
 
 	if( !exists ) {
 		if( source == 100 || source == 101 ) {
 			style->setProperty( PwGisStyle::mapFontColor, "blue" );
 			style->setProperty( PwGisStyle::mapFontSize, "10pt");
-			style->setProperty( PwGisStyle::externalGraphic, IMAGE_UAV_BPLA_48 );
+            if(state == 2) {
+                style->setProperty( PwGisStyle::externalGraphic, IMAGE_UAV_BPLA_BLACK_ANT );
+            } else if(state == 3) {
+                style->setProperty( PwGisStyle::externalGraphic, IMAGE_UAV_BPLA_BLACK_UNKNOWN );
+            } else {
+                style->setProperty( PwGisStyle::externalGraphic, IMAGE_UAV_BPLA_BLUE );
+            }
 			style->setProperty( PwGisStyle::fillColor, "blue" );
 			style->setProperty( PwGisStyle::graphicWidth, "40" );
-			style->setProperty( PwGisStyle::graphicHeight, "60" );
+            style->setProperty( PwGisStyle::graphicHeight, "40" );
 			style->setProperty( PwGisStyle::layer, layerId );
 		} else {
 			style->setProperty( PwGisStyle::mapFontColor, "red" );
@@ -150,6 +159,8 @@ PwGisStyle* MapStyleManager::createEnemyBplaTrackStyle(const QString& layerId, u
 	if( !exists ) {
 		style->setProperty( PwGisStyle::strokeColor, "blue" );
 		style->setProperty( PwGisStyle::layer, layerId );
+        style->setProperty( PwGisStyle::fillColor, "blue" );
+        style->setProperty( PwGisStyle::fillOpacity, "20" );
 	}
 
 	return style;
@@ -328,6 +339,27 @@ PwGisStyle* MapStyleManager::createHyperboleStyle( const QString& layerId )
 	}
 
 	return style;
+}
+
+PwGisStyle* MapStyleManager::createHyperboleZoneStyle( const QString& layerId, int accur )
+{
+    bool exists;
+    PwGisStyle* style = createStyle( QString(MAP_STYLE_NAME_HYPERBOLE_ZONE).arg(accur), &exists );
+
+    QString opacitySt = QString::number( double(accur)/10, 'g', 1 );
+
+    if( !exists ) {
+        style->setProperty( PwGisStyle::mapFontColor, "black" );
+        style->setProperty( PwGisStyle::mapFontSize, "10pt" );
+        style->setProperty( PwGisStyle::strokeColor, "green" );
+        style->setProperty( PwGisStyle::strokeWidth, "1" );
+        style->setProperty( PwGisStyle::strokeOpacity, opacitySt );
+        style->setProperty( PwGisStyle::fillColor, "green" );
+        style->setProperty( PwGisStyle::fillOpacity, opacitySt );
+        style->setProperty( PwGisStyle::layer, layerId );
+    }
+
+    return style;
 }
 
 PwGisStyle* MapStyleManager::createKKpointStyle(const QString& layerId,

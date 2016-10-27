@@ -58,10 +58,10 @@ void BLAPerehvatDialog::init(int id, IDbUavManager* dbUav)
 
 	QList<QTreeWidgetItem *> items;
 
-	QMap<uint, Uav> knownUavList = dbUav->getKnownUavList();
+    QMap<QString, Uav> knownUavList = dbUav->getKnownUavList();
 
-	foreach (Uav enemyUav, enemyUavs){
-		if(!knownUavList.contains(enemyUav.uavId)) {
+    foreach (Uav enemyUav, enemyUavs) {
+        if(!knownUavList.contains(enemyUav.name)) {
 			continue;
 		}
 		QTreeWidgetItem *it = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString(tr("UAV_enemy: #%1")).arg(enemyUav.uavId)));

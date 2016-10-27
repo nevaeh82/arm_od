@@ -13,7 +13,7 @@ TcpADSBController::TcpADSBController(const QString& tcpDeviceName, QObject* pare
 	m_processPath = settings.value("ADSB/processPath", "dump1090").toString();
 	m_processName = settings.value("ADSB/processName", "dump1090.exe").toString();
 
-	m_adsbHost = settings.value("ADSB/adsbHost", "192.168.24.29").toString();
+    m_adsbHost = settings.value("ADSB/adsbHost", "192.168.55.48").toString();
 	m_adsbPort = settings.value("ADSB/adsbPort", 30005).toUInt();
 	m_riPort = settings.value("ADSB/riPort", 30001).toUInt();
 	m_sbsPort = settings.value("ADSB/sbsPort", 30003).toUInt();

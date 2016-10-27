@@ -15,6 +15,7 @@ BplaAbstract::BplaAbstract(IObjectsFactory* factory, const QString& id, const Ua
 {
 	m_tail = factory->createPath();
 	m_slices = factory->createPath();
+    m_ellipse = factory->createPolygon();
 
 	setPosition( position() );
 	setAltitude( uav.alt );
@@ -30,8 +31,10 @@ BplaAbstract::~BplaAbstract()
 {
 	m_tail->removeFromMap();
 	m_slices->removeFromMap();
+    m_ellipse->removeFromMap();
 	delete m_tail;
 	delete m_slices;
+    delete m_ellipse;
 }
 
 void BplaAbstract::setPosition(const QPointF& position)
@@ -83,7 +86,7 @@ void BplaAbstract::setSpeed(double speed)
 void BplaAbstract::setAngle(double angle)
 {
 	/// \todo: Uncomment, when we going to support BPLA rotation
-//	m_marker->setRotate( angle );
+    m_marker->setRotate( angle );
 	m_angle = angle;
 }
 
@@ -109,7 +112,17 @@ void BplaAbstract::setSlice(const QPointF& slice)
 		PwGisLonLat* point = points->first();
 		points->removeFirst();
 		delete point;
-	}
+    }
+}
+
+void BplaAbstract::setEllipse(PwGisPointList list)
+{
+    PwGisPointList* points = m_ellipse->corners();
+    points->clear();
+
+    for(int i = 0; i<list.getCount(); i++) {
+        points->addLonLat(list.getLonLat(i));
+    }
 }
 
 void BplaAbstract::update(const UavInfo& uav)
@@ -122,6 +135,11 @@ void BplaAbstract::update(const UavInfo& uav)
 		setPosition( point );
 		changed = true;
 	}
+
+    if( uav.yaw != m_angle ) {
+        setAngle(uav.yaw);
+        changed = true;
+    }
 
 	if( uav.alt != m_altitude ) {
 		m_altitude = uav.alt;
@@ -158,6 +176,7 @@ void BplaAbstract::updateMap()
 	if( !m_initialized ) return;
 
 	Marker::updateMap();
+    m_ellipse->updateMap();
 	m_tail->updateMap();
 	m_slices->updateMap();
 }
@@ -166,6 +185,7 @@ void BplaAbstract::removeFromMap()
 {
 	m_tail->removeFromMap();
 	m_slices->removeFromMap();
+    m_ellipse->removeFromMap();
 	Marker::removeFromMap();
 }
 
@@ -180,6 +200,7 @@ void BplaAbstract::registerStyle()
 	m_marker->addStyleByName( getStyleName() );
 	m_tail->addStyleByName( getTrackStyleName() );
 	m_slices->addStyleByName( getSliceStyleName() );
+
 }
 
 } // namespace MapFeature

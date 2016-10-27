@@ -127,6 +127,7 @@ CREATE TABLE IF NOT EXISTS `UAV`.`Info` (
   `uavID` INT NULL,
   `device` INT NULL,
   `source` INT NULL,
+  `uavName` TEXT NULL,
   `latitude` DOUBLE NOT NULL,
   `longitude` DOUBLE NOT NULL,
   `altitude` DOUBLE NULL,

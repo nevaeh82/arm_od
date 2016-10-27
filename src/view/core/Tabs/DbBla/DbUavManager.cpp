@@ -32,7 +32,7 @@ DbUavManager::~DbUavManager()
 	delete m_logManager;
 }
 
-QMap<uint, Uav> DbUavManager::getKnownUavList()
+QMap<QString, Uav> DbUavManager::getKnownUavList()
 {
 	return m_knownUavsList;
 }
@@ -104,30 +104,31 @@ int DbUavManager::addUavInfo(const UavInfo &uavInfo, bool actual,
 	}
 
 	if (uav.name.isEmpty()) {
-		uav.name = QString::number(uav.uavId);
+        uav.name = uavInfo.name;
 	}
 
 	// If current record is not actual information about BPLA
 	// we try just to insert/update uav info record
 	/// todo: commented because of perfomance issue
-    m_dbController->addUavInfo(uavInfo);
+    int recordIndex = 0;// m_dbController->addUavInfo(uavInfo);
 //
-//	if (!actual) {
-//		return recordIndex;
-//	}
+    if (!actual) {
+        return recordIndex;
+    }
+
+    m_dbController->addUavInfo(uavInfo);
 
 	/// todo: uncomment upper code and delete this after perfomance issue will be solved
 	if (!actual) return -1;
-	int recordIndex = m_dbController->addUavInfo(uavInfo);
 
 	QString uavRole = getUavRole(uav.roleId).code;
-	QString key = QString::number(uav.uavId);
+    QString key = uav.name;
 	if(uavRole.isEmpty()) {
 		uavRole = ENEMY_UAV_ROLE;
 	}
 
-	if (!m_knownUavsList.contains(uav.uavId) && !m_lifeTimerMap.contains(key)) {
-		m_knownUavsList.insert(uav.uavId, uav);
+    if (!m_knownUavsList.contains(key) && !m_lifeTimerMap.contains(key)) {
+        m_knownUavsList.insert(key, uav);
 
 		QTimer* lifeTimer = new QTimer();
 		connect(lifeTimer, SIGNAL(timeout()), m_timeoutSignalMapper, SLOT(map()));
@@ -374,7 +375,9 @@ void DbUavManager::onMethodCalled(const QString& method, const QVariant& argumen
 
 		/// Now we take first point, but we need to take more than 1 point
 		UAVPositionData positionData = positionDataVector.at(0);
-		addUavInfoToDb(positionData, OUR_UAV_ROLE, "UnknownUavType", "UnknownStatus", "UnknownDeviceType", "UnknownSourceType");
+        positionData.name = QString::number(positionData.boardID);
+        positionData.state = 1;
+        addUavInfoToDb(positionData, OUR_UAV_ROLE, "UnknownUavType", "1", "UnknownDeviceType", "UnknownSourceType");
 	} else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS) {
 		sendEnemyUavPoints(data, UAV_SOLVER_MANUAL_SOURCE);
 	} else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_1) {
@@ -389,8 +392,6 @@ void DbUavManager::onMethodCalled(const QString& method, const QVariant& argumen
             if(!uavList.isEmpty()) {
                 sendEnemyUavPoints(uavList, UAV_SOLVER_SINGLE_1_SOURCE);
             }
-
-
         }
 
         {
@@ -398,6 +399,8 @@ void DbUavManager::onMethodCalled(const QString& method, const QVariant& argumen
             if(!isSolverMessageHasTrajectoryManual(pkt)) {
                 return;
             }
+
+            emit protoToNiipp(data);
 
             for(int i = 0; i < pkt.datafromsolver().solution_manual_altitude().trajectory_size(); i++) {
                 QList<UAVPositionDataEnemy> uavList = getUavListTrajectoryFromProto(
@@ -451,6 +454,7 @@ QList<UAVPositionDataEnemy> DbUavManager::getUavListSingleFromProto(SolverProtoc
 //        latLon		= object.latLon;
 //        sourceType  = object.sourceType;
 
+        dataStruct.name = tr("%1_single").arg( (int)pktSingleMark.central_frequency() );
         dataStruct.altitude = pktSingle.coordinates().alt();
         dataStruct.altitudeStdDev = pktSingle.coordinates_acc().alt_acc();
         dataStruct.speed = 0;
@@ -482,6 +486,7 @@ QList<UAVPositionDataEnemy> DbUavManager::getUavListTrajectoryFromProto(SolverPr
         UAVPositionDataEnemy dataStruct;
         SolverProtocol::Packet_DataFromSolver_SolverSolution_Trajectory_MotionEstimate pktSingle = pktTrajectory.motionestimate(i);
 
+        dataStruct.name = QString::fromStdString(pktTrajectory.targetid());
         dataStruct.altitude = pktSingle.coordinates().alt();
         dataStruct.altitudeStdDev = pktSingle.coordinates_acc().alt_acc();
         dataStruct.speed = pktSingle.targetspeed();
@@ -588,6 +593,7 @@ void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QSt
 	}
 
 	UavInfo uavInfo;
+    uavInfo.name = positionData.name;
 	uavInfo.uavId = uavId; // FK
 	uavInfo.device = deviceUnknownId; // FK
 	uavInfo.lat = positionData.latitude;
@@ -618,7 +624,7 @@ void DbUavManager::addUavInfoToDb(const UAVPositionData& positionData, const QSt
 		uavInfo.yaw = positionData.course;
 	}
 	uavInfo.restTime = QTime(1, 0);
-	uavInfo.statusId = statusUnknownId; // FK
+    uavInfo.statusId = status.toUInt(); // FK
 	uavInfo.dateTime = positionData.dateTime;
 	uavInfo.source = sourceId;
 
@@ -690,7 +696,7 @@ void DbUavManager::sendEnemyUavPoints( const QList<UAVPositionDataEnemy>& list, 
 		isActual = i + 1 == uavList.length() || singleSourceType;
 
 		addUavInfoToDb( uav, ENEMY_UAV_ROLE,
-						"UnknownUavType", "UnknownStatus", "UnknownDeviceType",
+                        "UnknownUavType", QString::number(uav.state), "UnknownDeviceType",
 						getEnemySourceTypeName(uav.sourceType),
 						isActual,
 						isActual && !singleSourceType ? tail : emptyVector,
@@ -730,6 +736,7 @@ void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy,
 
 	positionData.frequency = positionDataEnemy.frequency;
 	positionData.sourceType = positionDataEnemy.sourceType;
+    positionData.name = positionDataEnemy.name;
 
 	// transform time to dateTime
     QDateTime time = positionDataEnemy.time;
@@ -742,7 +749,7 @@ void DbUavManager::timeoutSlot(const QString& key)
 {
 	QMutexLocker deleteLocker(&m_deleteMutex);
 
-	Uav uav = m_knownUavsList.take(key.toUInt());
+    Uav uav = m_knownUavsList.take(key);
 	QTimer* lifeTimer = m_lifeTimerMap.take(key);
 
 	log_debug(QString("DELETING UAV BY ID = %1...").arg(QString::number(uav.uavId)));

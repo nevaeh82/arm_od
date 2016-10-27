@@ -1,0 +1,19 @@
+option optimize_for = LITE_RUNTIME;
+
+package KTP_3_Proto;
+
+option java_package = "taip.comm.ktp.kernel.protos";
+option java_outer_classname = "GPSProto";
+
+message GPSPacket {
+    //
+    required int32 id = 1;
+    //
+    required double latitude = 2;
+    //
+    required double longitude = 3;
+    //
+    required int32 height = 4;
+    //
+    required int32 course = 5;
+}

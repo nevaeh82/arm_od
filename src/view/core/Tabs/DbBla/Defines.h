@@ -42,6 +42,7 @@ typedef struct UavRole
 
 typedef struct UavInfo
 {
+    QString name;
 	int id; // PK
 	uint uavId; // FK
 	uint device; // FK

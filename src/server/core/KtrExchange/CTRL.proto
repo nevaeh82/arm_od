@@ -1,0 +1,86 @@
+//package KTP_3_Proto;
+option optimize_for = LITE_RUNTIME;
+
+option java_package = "taip.comm.ktp.kernel.protos";
+option java_outer_classname = "CtrlLineProto";
+
+message CtrlLinePacket {
+    
+    ///
+    enum PacketType {
+        
+        RF_PARAMETERS_SET_OR_GET = 1;//from client to KTP-3 kernel module
+        RF_PARAMETERS_REPLY = 2;//from KTP-3 kernel module to client
+        
+        TOPOLOGY_SET_OR_GET = 3;//from client to KTP-3 kernel module
+        TOPOLOGY_REPLY = 4;//from KTP-3 kernel module to client
+        
+        GROUND_MODEM_LOCATION_SET_OR_GET = 5;//from client to KTP-3 kernel module
+        GROUND_MODEM_LOCATION_REPLY = 6;//from KTP-3 kernel module to client
+        
+        RF_CLIENTS_LIST_REPLY = 11;//from KTP-3 kernel module to client        
+
+        RX_TRY_REPLY = 12;//from KTP-3 kernel module to client        
+        
+        TX_TRY_REPLY = 13;//from KTP-3 kernel module to client        
+        
+        GROUND_MODEM_INFO_REPLY = 14;//from KTP-3 kernel module to client    
+
+        EEPROM_SET_OR_GET = 15;//from client to KTP-3 kernel module
+        EEPROM_REPLY = 16;//from KTP-3 kernel module to client
+
+        RES_SET_OR_GET = 17;//from client to KTP-3 kernel module
+        RES_REPLY = 18;//from KTP-3 kernel module to client
+
+        BOOTLOADER_SET_OR_GET = 19;//from client to KTP-3 kernel module
+        BOOTLOADER_REPLY = 20;//from KTP-3 kernel module to client
+
+        EXNG_LINK_SET_OR_GET = 21;//from client to KTP-3 kernel module
+        EXNG_LINK_REPLY = 22;//from KTP-3 kernel module to client
+
+        SERVERS_STATE_REPLY = 23;//from KTP-3 kernel module to client
+        
+        KERNEL_PARAMETERS_SET_OR_GET = 24;//from client to KTP-3 kernel module
+        KERNEL_PARAMETERS_REPLY = 25;//from KTP-3 kernel module to client
+
+        SUITE_VERSION_SET_OR_GET = 26;//from client to KTP-3 kernel module
+        SUITE_VERSION_REPLY = 27;//from KTP-3 kernel module to client
+
+        GPS_SET_OR_GET = 28;//from client to KTP-3 kernel module
+        GPS_REPLY = 29;//from KTP-3 kernel module to client
+
+        INDI_ANTENNA_SET_OR_GET = 30;//from client to KTP-3 kernel module
+
+        SPECIAL_CHANNEL_SET_OR_GET = 31;//from client to KTP-3 kernel module
+
+        ANTENNAS_MAP_SET_OR_GET = 32;//from client to KTP-3 kernel module
+        
+        BYTE_ARRAY_DATA_SET_OR_GET = 33;//from client to KTP-3 kernel module
+        BYTE_ARRAY_DATA_REPLY = 34;//from KTP-3 kernel module to client
+
+        CALIBRATION_SET_OR_GET = 35;//from client to KTP-3 kernel module
+
+        TX_RX_GROUND_MODEM_REPLY = 36;//from KTP-3 kernel module to client	       
+        
+        TEST_PARAMETERS_REPLY=37; //from KTP-3 kernel module to client	    
+        TEST_PARAMETERS_SET_OR_GET=38;//from client to KTP-3 kernel module
+
+        GROUND_MODEM_GPS_MODULE_REPLY=39; //from KTP-3 kernel module to client	    
+
+        RETRANSLATE_THREW_SET_OR_GET=40; //from client to KTP-3 kernel module
+        
+        ROTATOR_STATE_REPLY=41; //from KTP-3 kernel module to client	    
+        ROTATOR_STATE_SET_OR_GET=42;//from client to KTP-3 kernel module
+        
+        MODEM_AND_KTP_BUFFERS_STATE_REPLY=43; //from KTP-3 kernel module to client	    
+        
+        LOCATOR_REPLY=44; //from KTP-3 kernel module to client	    
+    }
+    
+    ///package type variable
+    required PacketType type = 1;
+    ///packet data
+    optional bytes data = 2;
+    ///modemName, from version 3.9.0 for multi-modem controlling
+    optional string modemName = 3;
+}

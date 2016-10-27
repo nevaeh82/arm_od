@@ -4,9 +4,13 @@ TcpKTRController::TcpKTRController(const QString& tcpDeviceName, QObject* parent
 	BaseTcpDeviceController(tcpDeviceName, parent)
 {
 	m_deviceType = TypeKTR;
-	init();
+
+    m_ktrNmea = new KTPSendNMEA(this);
+    connect(m_ktrNmea, SIGNAL(onGpsDataReceived(QByteArray)), this, SIGNAL(onGpsData(QByteArray)));
+
 	connect(this, SIGNAL(createTcpKTRCoderInternalSignal()), this, SLOT(createTcpKTRCoderInternalSlot()));
 
+    init();
 }
 
 TcpKTRController::~TcpKTRController()
@@ -58,7 +62,7 @@ bool TcpKTRController::init()
 	{
 		settings.beginGroup(childKey);
 		QString name = settings.value("name", "Unknown").toString();
-		if(name == m_tcpDeviceName)
+        if(name == m_tcpDeviceName || name.contains("KTR"))
 		{
 			m_KTRSettingStruct.host = settings.value("ip", "127.0.0.1").toString();
 			m_KTRSettingStruct.port = settings.value("port", 2323).toInt();
@@ -75,10 +79,14 @@ bool TcpKTRController::init()
 
 
 			settings.endGroup();
+
+           // m_ktrNmea->onConnect(m_KTRSettingStruct.host);
+
 			return true;
 		}
 		settings.endGroup();
-	}
+    }
+
 	return false;
 }
 

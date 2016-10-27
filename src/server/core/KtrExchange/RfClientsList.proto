@@ -1,0 +1,19 @@
+option optimize_for = LITE_RUNTIME;
+
+option java_package = "taip.comm.ktp.kernel.protos";
+option java_outer_classname = "RfClientsListProto";
+
+message RfClientsListPacket {
+    
+    message RfClient {
+        required int32 zone = 1 [default = 1]; //zone in communication table
+        required int32 antenna = 2; //antenna number on ground modem
+        required int32 id = 3; //id of rf client
+        required int32 idR1 = 4; //id of retranslator 1
+        required int32 idR2 = 5; //id of retranslator 2
+        required int32 hamByte = 6; //ctrl field
+    }
+
+    //Rf clients list
+    repeated RfClient rfList = 1;
+}

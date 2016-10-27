@@ -20,9 +20,9 @@ private:
 	QSqlDatabase m_database;
 	QSqlQuery m_query;
 
-	QMap<uint, QDateTime> m_uavLastDate;
-	QMap<uint, QString> m_uavRoles;
-	QMap<uint, Uav> m_knownUavsList;
+    QMap<QString, QDateTime> m_uavLastDate;
+    QMap<QString, QString> m_uavRoles;
+    QMap<QString, Uav> m_knownUavsList;
 
 	bool m_startResult;
 	bool m_isPaused;

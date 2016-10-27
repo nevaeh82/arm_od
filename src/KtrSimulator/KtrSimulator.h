@@ -25,7 +25,7 @@ struct BplaSimulatorNode {
 	}
 
 	// device number, which should emulate for current BPLA
-	uint device;
+    uint device;
 
 	// center of ellipsiod track of BPLA
 	double centerLat;
@@ -85,7 +85,7 @@ private:
 					  const double& angle, double& x, double& y );
 
 public:
-	explicit KtrSimulator( const uint& port, const uint& bplaCount = 5,
+    explicit KtrSimulator( const uint& port, const uint& delay, const uint& bplaCount = 5,
 						   QObject *parent = 0 );
 	~KtrSimulator();
 

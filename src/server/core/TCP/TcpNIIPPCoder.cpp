@@ -1,5 +1,7 @@
 #include "TcpNIIPPCoder.h"
 
+#include "SolverPacket1.pb.h"
+
 TcpNIIPPCoder::TcpNIIPPCoder(int id, QObject* parent) :
 	BaseTcpDeviceCoder(parent)
 {
@@ -104,210 +106,64 @@ QByteArray TcpNIIPPCoder::decode(const MessageSP message)
 		return QByteArray();
 	}
 
-	QByteArray inputData = message->data();
-	QDataStream inputDataStream(&inputData, QIODevice::ReadOnly);
+    QByteArray data = message->data();
 
-	QDate date;
-	QTime time;
-	int id;
+    SolverProtocol::Packet solutionPacket;
 
-	inputDataStream >> id;
-	inputDataStream >> date;
-	inputDataStream >> time;
+    if( !solutionPacket.ParseFromArray(data.data(), data.size()) ) {
+        return QByteArray();
+    }
 
-	QString comm;
-	inputDataStream >> comm;
+    SolverProtocol::Packet_DataFromSolver_SolverSolution dPkt;
+    if(solutionPacket.datafromsolver().has_solution_automatic_altitude()) {
+        dPkt = solutionPacket.datafromsolver().solution_automatic_altitude();
+    } else if(solutionPacket.datafromsolver().has_solution_manual_altitude()) {
+        dPkt = solutionPacket.datafromsolver().solution_manual_altitude();
+    } else {
+        return QByteArray();
+    }
 
-	QPointF point;
-	inputDataStream >> point;
-	QString NS;
-	inputDataStream >> NS;
+    QString all;
+    for(int i = 0; i<dPkt.trajectory_size(); i++) {
+        QString message;
 
-	QString EW;
+        SolverProtocol::Packet_DataFromSolver_SolverSolution_Trajectory tPkt =  dPkt.trajectory( i );
 
-	inputDataStream >> EW;
-	int alt;
-	inputDataStream >> alt;
+        SolverProtocol::Packet_DataFromSolver_SolverSolution_Trajectory_MotionEstimate mPkt =
+                tPkt.motionestimate(tPkt.motionestimate_size()-1);
 
-	int velocity_direction = 0;
-	inputDataStream >> velocity_direction;
-	int zone;
-	inputDataStream >> zone;
+        QStringList niippLst;
+        niippLst.append("BPLA");
+        niippLst.append(QString::fromStdString(tPkt.targetid()));
 
-	QPointF point2;
-	inputDataStream >> point2;
-	QString NS2;
-	inputDataStream >> NS2;
-	QString EW2;
-	inputDataStream >> EW2;
+        quint64 t = mPkt.datetime();
+        QDateTime dt = QDateTime::fromMSecsSinceEpoch(t);
 
-	QStringList list;
-	list.append(date.toString("ddMMyy"));
-	list.append(time.toString("HHmmss"));
-	list.append(comm);
+        niippLst.append( dt.date().toString("ddMMyy") );
+        niippLst.append( dt.time().toString("hhmmss") );
 
-	QString lat1;
-	if(point.x() == 0)
-	{
-		lat1 = "000000";
-	}
-	else
-	{
-		QString lat = QString::number(point.x(), 'f', 6);
-		QStringList list_lat1 = lat.split('.');
+        niippLst.append( QString::number(mPkt.coordinates().alt()) );
+        niippLst.append( QString::number(mPkt.targetspeed()) );
+        niippLst.append( QString::number(mPkt.relativebearing()) );
+        niippLst.append( QString("+") + QString::number(mPkt.coordinates().lat()) );
+        niippLst.append( QString("+") + QString::number(mPkt.coordinates().lon()) );
 
-		QString lat_deg = list_lat1[0];//lat.left(2);
-		double lat_min1 = lat.toDouble();
-		double lat_min2 = lat_deg.toDouble();
-		lat_min1 = lat_min1 - lat_min2;
-		double lat_min_final = lat_min1 * 60;
-		int lat_min_final1 = (int)lat_min_final;
-		QString lat_min = QString::number(lat_min_final1);
-		if(lat_min.length() < 2)
-		{
-			lat_min.insert(0, "0");
-		}
+        double acc = sqrt( mPkt.coordinates_acc().lon_acc()*mPkt.coordinates_acc().lon_acc() +
+                           mPkt.coordinates_acc().lat_acc()*mPkt.coordinates_acc().lat_acc() );
 
-		double lat_sec1 = lat_min_final - (double)lat_min_final1;
-		lat_sec1 = lat_sec1 * 60;
-		int lat_sec2 = lat_sec1;
+        niippLst.append( QString::number(acc) );
+        message = niippLst.join(",");
 
-		QString lat_sec = QString::number(lat_sec2);
-		if(lat_sec.length() < 2)
-		{
-			lat_sec.insert(0, "0");
-		}
+        quint8 n =  crc( message.toLocal8Bit() );
 
-		lat1 = lat_deg + lat_min + lat_sec;
-	}
+        niippLst.append( "*" );
+        message.append(QString::number(n));
 
-	list.append(lat1);
-	list.append(NS);
+        message.append("\\r\\n");
+        all.append( message );
+    }
 
-
-	QString lon1;
-	if(point.y() == 0)
-	{
-		lon1 = "000000";
-	}
-	else
-	{
-		QString lon = QString::number(point.y(), 'f', 6);
-		QStringList list_lon1 = lon.split('.');
-
-		QString lon_deg = list_lon1[0];//lat.left(2);
-		double lon_min1 = lon.toDouble();
-		double lon_min2 = lon_deg.toDouble();
-		lon_min1 = lon_min1 - lon_min2;
-		double lon_min_final = lon_min1 * 60;
-		int lon_min_final1 = (int)lon_min_final;
-		QString lon_min = QString::number(lon_min_final1);
-		if(lon_min.length() < 2)
-		{
-			lon_min.insert(0, "0");
-		}
-
-		double lon_sec1 = lon_min_final - (double)lon_min_final1;
-		lon_sec1 = lon_sec1 * 60;
-		int lon_sec2 = lon_sec1;
-
-		QString lon_sec = QString::number(lon_sec2);
-		if(lon_sec.length() < 2)
-		{
-			lon_sec.insert(0, "0");
-		}
-
-		lon1 = lon_deg + lon_min + lon_sec;
-	}
-
-	list.append(lon1);
-	list.append(EW);
-
-	int alt1 = (int)alt;
-	int bear = (int)velocity_direction;
-
-	list.append(QString::number(alt1));
-	list.append(QString::number(bear));
-	list.append(QString::number(zone));
-
-	QString lat1_point2;
-	if(point2.x() == 0)
-	{
-		lat1_point2 = "000000";
-	}
-	else
-	{
-        QString lat_point2 = QString::number(point2.x(), 'f', 6);
-		QStringList list_lat1_point2 = lat_point2.split('.');
-
-		QString lat_deg_point2 = list_lat1_point2[0];//lat.left(2);
-		double lat_min1_point2 = lat_point2.toDouble();
-		double lat_min2_point2 = lat_deg_point2.toDouble();
-		lat_min1_point2 = lat_min1_point2 - lat_min2_point2;
-		double lat_min_final_point2 = lat_min1_point2 * 60;
-		int lat_min_final1_point2 = (int)lat_min_final_point2;
-		QString lat_min_point2 = QString::number(lat_min_final1_point2);
-		if(lat_min_point2.length() < 2)
-		{
-			lat_min_point2.insert(0, "0");
-		}
-
-		double lat_sec1_point2 = lat_min_final_point2 - (double)lat_min_final1_point2;
-		lat_sec1_point2 = lat_sec1_point2 * 60;
-		int lat_sec2_point2 = lat_sec1_point2;
-
-		QString lat_sec_point2 = QString::number(lat_sec2_point2);
-		if(lat_sec_point2.length() < 2)
-		{
-			lat_sec_point2.insert(0, "0");
-		}
-
-		lat1_point2 = lat_deg_point2 + lat_min_point2 + lat_sec_point2;
-	}
-
-	list.append(lat1_point2);
-	list.append(NS2);
-
-	QString lon1_point2;
-	if(point2.y() == 0)
-	{
-		lon1_point2 = "000000";
-
-	}
-	else
-	{
-        QString lon_point2 = QString::number(point2.y(), 'f', 6);
-		QStringList list_lon1_point2 = lon_point2.split('.');
-
-		QString lon_deg_point2 = list_lon1_point2[0];//lat.left(2);
-		double lon_min1_point2 = lon_point2.toDouble();
-		double lon_min2_point2 = lon_deg_point2.toDouble();
-		lon_min1_point2 = lon_min1_point2 - lon_min2_point2;
-		double lon_min_final_point2 = lon_min1_point2 * 60;
-		int lon_min_final1_point2 = (int)lon_min_final_point2;
-		QString lon_min_point2 = QString::number(lon_min_final1_point2);
-		if(lon_min_point2.length() < 2)
-		{
-			lon_min_point2.insert(0, "0");
-		}
-
-		double lon_sec1_point2 = lon_min_final_point2 - (double)lon_min_final1_point2;
-		lon_sec1_point2 = lon_sec1_point2 * 60;
-		int lon_sec2_point2 = lon_sec1_point2;
-
-		QString lon_sec_point2 = QString::number(lon_sec2_point2);
-		if(lon_sec_point2.length() < 2)
-		{
-			lon_sec_point2.insert(0, "0");
-		}
-
-		lon1_point2 = lon_deg_point2 + lon_min_point2 + lon_sec_point2;
-	}
-
-	list.append(lon1_point2);
-	list.append(EW2);
-
-	return prepareDataToSend(list);
+    return all.toLocal8Bit();
 }
 
 QByteArray TcpNIIPPCoder::prepareDataToSend(const QStringList& list)

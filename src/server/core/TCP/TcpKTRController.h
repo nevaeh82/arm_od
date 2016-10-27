@@ -12,6 +12,8 @@
 #include "Info/BaseSettings.h"
 #include "Info/KTRSettings.h"
 
+#include "KtrExchange/KTPSendNMEA.h"
+
 class TcpKTRController : public BaseTcpDeviceController
 {
 	Q_OBJECT
@@ -30,12 +32,16 @@ public:
 	virtual bool init();
 	virtual QByteArray getFullInfo();
 
+    KTPSendNMEA* m_ktrNmea;
+
 signals:
 	void createTcpKTRCoderInternalSignal();
+    void onGpsData(QByteArray data);
 
 private slots:
 	void createTcpKTRCoderInternalSlot();
 	void tcpConnectionStatusInternalSlot(int status);
+
 };
 
 #endif // TCPKTRCONTROLLER_H

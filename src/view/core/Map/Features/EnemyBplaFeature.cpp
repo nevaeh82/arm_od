@@ -10,8 +10,10 @@ namespace MapFeature {
 EnemyBpla::EnemyBpla(IObjectsFactory* factory, const QString& id, const UavInfo& uav)
 	: BplaAbstract( factory, id, uav )
 {
-	m_styleName = MapStyleManager::getEnemyBplaStyleName( uav.source );
+    m_styleName = MapStyleManager::getEnemyBplaStyleName( uav.source, uav.statusId );
 	m_trackStyleName = MapStyleManager::getEnemyBplaTrackStyleName( uav.source );
+
+    m_state = uav.statusId;
 
 	if(uav.source == 100 || uav.source == 101 ) {
 		lifetime = LIFETIME_1;
@@ -57,7 +59,7 @@ EnemyBpla::EnemyBpla(IObjectsFactory* factory, const QString& id, const UavInfo&
 //			.arg( m_isHistorical ? QObject::tr( "BPLA_HISTORICAL_SUFFIX" ) : "" )
 //			.replace( "%2", "%1" ) + "\\n%2\\n%3\\n%4";
 
-    setName( QString::number( uav.uavId ) );
+    setName( uav.name );
 }
 
 void EnemyBpla::setName(const QString& name)
@@ -81,8 +83,21 @@ void EnemyBpla::update(const UavInfo& uav)
 {
 	// do not update from uav info with not origin source
 	if (m_sourceId != uav.source) return;
+
+    if(uav.statusId != m_state) {
+        m_styleName = MapStyleManager::getEnemyBplaStyleName( uav.source, m_state );
+        m_marker->removeStyleByName(m_styleName);
+
+        m_state = uav.statusId;
+        m_styleName = MapStyleManager::getEnemyBplaStyleName( uav.source, m_state );
+        m_marker->addStyleByName(m_styleName);
+
+        registerStyle();
+    }
+
 	BplaAbstract::update( uav );
 	timer->start(lifetime);
+
 }
 
 } // namespace MapFeature

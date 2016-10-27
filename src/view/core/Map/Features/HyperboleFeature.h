@@ -47,6 +47,8 @@ public:
                      const QVector<QPointF>& polyZone,
                      const QTime timeMeasure );
 
+    void removeFromMap();
+
 private:
     IObjectsFactory* m_currentFactory;
     Pw::Gis::Polygon* m_zone;

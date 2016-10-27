@@ -22,16 +22,23 @@ int main(int argc, char *argv[])
 		return 2;
 	}
 
+    int delay = 1000;
+    if (a.arguments().length() > 2) {
+        int number = a.arguments().at(2).toInt( &intOK );
+
+        if (intOK) delay = number;
+    }
+
 	// check if count of BPLA specified in arguments
 	int bplaCount = 5;
-	if (a.arguments().length() > 2) {
-		int number = a.arguments().at(2).toInt( &intOK );
+    if (a.arguments().length() > 3) {
+        int number = a.arguments().at(3).toInt( &intOK );
 
 		if (intOK) bplaCount = number;
 	}
 
 	// create simulator object
-	KtrSimulator simulator( port, bplaCount );
+    KtrSimulator simulator( port, delay, bplaCount );
 	if (!simulator.start()) {
 		qCritical() << "Can't start simulator";
 		return 3;

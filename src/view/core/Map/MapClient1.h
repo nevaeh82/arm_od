@@ -80,6 +80,7 @@ private:
 
     uint m_pointKKlastInd;
     uint m_ellipseCounter;
+    QList<QString> m_trajEllipseCounter;
 
 public:
 	MapClient1( MapWidget* pwwidget, Station* station, QObject* parent = NULL );
@@ -106,6 +107,7 @@ private:
     void clearEllipse();
     void clearHyperbole();
     void clearKKPoint();
+    void clearTrajEllipse(QString id);
 public slots:
 	virtual void init();
 	virtual void setPoint();
@@ -120,7 +122,7 @@ public slots:
     virtual void addSingleMark( const QByteArray& uav );
     virtual void addTrajectoryKK( const QByteArray& uav );
 
-    virtual void addStation( const QString& name, const QPointF& pos );
+    virtual void addStation( const QByteArray& data );
     virtual void addWorkArea( const QPointF& point1, const QPointF& point2 );
 
     virtual void clearSolver1();
@@ -167,7 +169,7 @@ private slots:
 								  float course, float speed );
     void addHyperboleInternal(const QByteArray& data, int version, const QColor color );
 
-    void addStationInternal(QString name, QPointF pos);
+    void addStationInternal(QByteArray data);
     void addAreaInternal(QPointF point1, QPointF point2);
 
 	void removeAllHyperbole();
@@ -210,7 +212,7 @@ signals:
 
     void hyperboleAdded(const QByteArray& data, int version, const QColor color);
 
-    void signalAddStation(QString, QPointF);
+    void signalAddStation(QByteArray);
     void signalAddArea(QPointF, QPointF);
 
     void onSolverClear();

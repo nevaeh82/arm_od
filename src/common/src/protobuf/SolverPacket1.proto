@@ -49,6 +49,7 @@ message Packet {
             getMinDelaysCountForSingleMarks = 26; //получить минимальное количество задержек,
                                                   //необходимое для расчета одиночных отметок
             getSettingsOfMergingMeasurements = 27; //!получить натройки объединения измерений
+            getDetectorsFlyingModeSettings = 28;   //!получить настройки режима "летающие датчики"
         }
 
         //запросы на задание каких-либо данных решателю
@@ -165,6 +166,11 @@ message Packet {
                 required SettingsOfMergingMeasurements settingsOfMergingMeasurements = 1;
             }
 
+            //задать настройки режима "летающие датчики"
+            message SetDetectorsFlyingModeSettings {
+                required DetectorsFlyingModeSettings detectorsFlyingModeSettings = 1;
+            }
+
             optional SetClientType setClientType = 1;
             optional SetSolutionConfiguration setSolutionConfiguration = 2;
             optional SetTrajectoriesMaxLength setTrajectoriesMaxLength = 3;
@@ -187,12 +193,31 @@ message Packet {
             optional SetDataBaseRecordingSettings setDataBaseRecordingSettings = 20;
             optional SetMinDelaysCountForSingleMarks setMinDelaysCountForSingleMarks = 21;
             optional SetSettingsOfMergingMeasurements setSettingsOfMergingMeasurements = 22;
+            optional SetDetectorsFlyingModeSettings setDetectorsFlyingModeSettings = 23;
+        }
+        //удалить существующую цель с идентификатором target_id
+        message ClearTarget {
+            required string target_id = 1;
         }
 
-        optional MeasurementsData measurementsData = 1; //могут быть входные данные
-        optional CommandToSolver commandToSolver = 2;   //или какая-то команда решателю
-        repeated GetRequest getRequest = 3;             //или запросы на получение данных
-        optional SetRequest setRequest= 4;              //или запросы на задание данных
+        //!Сообщение с полетной информацией БПЛА
+        message DroneFlightPosition {
+            //!полетная информация
+            message FlightPosition {
+                required CoordinatesInTime coordinates = 1; //! текущие координаты БПЛА во вемени
+                required double speed = 2;                  //! секущая скорость (км/ч)
+                required double course = 3;                 //! текущий курс (град.)
+            }
+            required string droneID = 1;                 //!уникальный идентификатор БПЛА
+            required FlightPosition flightPosition = 2;  //!полетная информация
+        }
+
+        optional MeasurementsData measurementsData = 1;      //могут быть входные данные
+        optional CommandToSolver commandToSolver = 2;        //или какая-то команда решателю
+        repeated GetRequest getRequest = 3;                  //или запросы на получение данных
+        optional SetRequest setRequest= 4;                   //или запросы на задание данных
+        optional DroneFlightPosition droneFlightPosition= 5; //или данные о БПЛА
+        optional ClearTarget clearTarget = 6;           //или команда на очистку цели
     }
 
     //Возможные данные, посылаемые солвером
@@ -310,6 +335,8 @@ message Packet {
             optional DataBaseRecordingSettings dataBaseRecordingSettings = 24;
             optional int32 minDelaysCountForSingleMarks = 25;
             optional SettingsOfMergingMeasurements settingsOfMergingMeasurements = 26;
+            optional DetectorsFlyingModeSettings detectorsFlyingModeSettings = 27;
+            optional Corrections retranslationRoutes = 28;
         }
 
         //сообщение, от решателя клиенту(клиентам)

@@ -106,7 +106,7 @@ void UavTreeModel::addSourceNode(TreeItem* item, uint sourceType, QString name, 
 	if ( sourceType != UAV_SLICES_SOURCE ) {
 		inProperty.id = ALT_PROPERTY_ID;
 		inProperty.name = tr("alt");
-		inProperty.value = 0;
+        inProperty.value = 10;
 		nodeSolverAuto.properties.append(inProperty);
 	}
 
@@ -150,10 +150,10 @@ void UavTreeModel::onUavAdded(const Uav &uav, const QString& uavRole)
 		addSourceNode( item, UAV_SLICES_SOURCE, tr("KTR"), uav.uavId );
 	} else
 	if ( uavRole == ENEMY_UAV_ROLE ) {
-		addSourceNode( item, UAV_SOLVER_AUTO_SOURCE, tr("Auto mode"), uav.uavId );
+        //addSourceNode( item, UAV_SOLVER_AUTO_SOURCE, tr("Auto mode"), uav.uavId );
 		addSourceNode( item, UAV_SOLVER_MANUAL_SOURCE, tr("Manual mode"), uav.uavId );
-		addSourceNode( item, UAV_SOLVER_SINGLE_1_SOURCE, tr("Single mode: Point 1"), uav.uavId );
-		addSourceNode( item, UAV_SOLVER_SINGLE_2_SOURCE, tr("Single mode: Point 2"), uav.uavId );
+        //addSourceNode( item, UAV_SOLVER_SINGLE_1_SOURCE, tr("Single mode: Point 1"), uav.uavId );
+        //addSourceNode( item, UAV_SOLVER_SINGLE_2_SOURCE, tr("Single mode: Point 2"), uav.uavId );
 	}
 
 	emit layoutChanged();
@@ -179,7 +179,7 @@ void UavTreeModel::onUavRemoved(const Uav &uav, const QString& uavRole)
 		bool isReal;
 		childItem->data().name.toInt( &isReal );
 
-		if (uav.historical == isReal) continue;
+        //if (uav.historical == isReal) continue;
 
 		emit layoutAboutToBeChanged();
 		m_rootItem->removeChild(childItem);
@@ -253,7 +253,7 @@ void UavTreeModel::onPropertyChanged(const UavInfo &uavInfo, const uint propId, 
 		bool isReal;
 		stationItem->data().name.toInt( &isReal );
 
-		if (uavInfo.historical == isReal) continue;
+        //if (uavInfo.historical == isReal) continue;
 
 		int sourceState = isInFlight ? 1 : 0;;
 		int stationState = sourceState;

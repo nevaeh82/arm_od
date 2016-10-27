@@ -7,7 +7,7 @@ else()
 endif()
 
 if(NOT VERSION)
-	set(VERSION "4.0.0")
+	set(VERSION "3.0.2")
 endif()
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
@@ -59,6 +59,8 @@ find_package(PwGis REQUIRED)
 
 # add settings to installation
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/settings/ DESTINATION ${BINDIR})
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/sql/ DESTINATION ${BINDIR}/sql)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/sql2/ DESTINATION ${BINDIR}/sql2)
 
 # scripts for runtime libs installation and copying
 if(INSTALL_RUNTIME_LIBS OR USE_SHARED_OUTPUT)
@@ -120,7 +122,7 @@ if(WIN32)
 	set(CPACK_GENERATOR NSIS)
 
 	set(CPACK_PACKAGE_NAME "${PROJECT_NAME}")
-	set(CPACK_PACKAGE_VENDOR "STC")
+	set(CPACK_PACKAGE_VENDOR "NPP_NTT")
 	set(CPACK_PACKAGE_VERSION ${VERSION})
 
 	# GUI output title
@@ -137,6 +139,19 @@ if(WIN32)
 	set(CPACK_PACKAGE_INSTALL_DIRECTORY "${CPACK_PACKAGE_VENDOR}\\\\${CPACK_PACKAGE_NAME}-${VERSION}")
 	set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${VERSION}_Setup")
 	set(CPACK_PACKAGE_INSTALL_REGISTRY_KEY "${CPACK_PACKAGE_NAME} ${VERSION_MAJOR}.${VERSION_MINOR}")
+
+	#DERMO
+
+	set(my_internal_path "${CMAKE_CURRENT_SOURCE_DIR}/win32/my_internal.nsh")
+	string(REPLACE "/" "\\\\" my_internal_path_out ${my_internal_path})
+
+	message(${my_internal_path_out})
+
+	set(CPACK_NSIS_EXTRA_SECTIONS_WITH_DESC "!include ${my_internal_path_out}")
+	set(CPACK_NSIS_EXTRA_SECTIONS "!insertmacro MUI_PAGE_COMPONENTS")
+
+	#NODERMO
+
 
 	# enable uninstalling at first
 	set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL "ON")

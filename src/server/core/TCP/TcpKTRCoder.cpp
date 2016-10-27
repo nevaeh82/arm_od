@@ -29,7 +29,7 @@ MessageSP TcpKTRCoder::encode(const QByteArray& data)
 
 	//$KTPGA,OBJ_ID=1044,2X,P0={42*38'32.14"|41*38'7.81"},P1={42*35'1.21"|41*50'53.51"},END
 
-	QString inputDataAsString(data.constData());
+    QString inputDataAsString(data);
 
 	QStringList dl1 = inputDataAsString.split("$KTPGA,");
 	if (dl1.size() > 1) {
@@ -45,6 +45,9 @@ MessageSP TcpKTRCoder::encode(const QByteArray& data)
 
 	if (data.mid(0, 12) == "control link") {
 		//log_debug("CASE THREE");
+        if( data.size() <=14 ) {
+            return MessageSP(new Message<QByteArray>(TCP_EMPTY_MESSAGE, QByteArray()));
+        }
 		return parseBoardList(data);
 	}
 
@@ -119,7 +122,7 @@ QByteArray TcpKTRCoder::decode(const MessageSP message)
 
 MessageSP TcpKTRCoder::parseLocationFromBoard(const QByteArray& data)
 {
-	log_debug("we are parsing location from ktr!");
+    //log_debug("we are parsing location from ktr!");
 	double latitude = 0;
 	double longitude = 0;
 

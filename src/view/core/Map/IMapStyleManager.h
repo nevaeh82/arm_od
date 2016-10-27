@@ -9,7 +9,7 @@
 #define MAP_STYLE_NAME_FRIEND_BPLA			"FriendBPLA"
 #define MAP_STYLE_NAME_FRIEND_BPLA_TRACK	"FriendBPLA_Track"
 #define MAP_STYLE_NAME_FRIEND_BPLA_SLICE	"FriendBPLA_Slice"
-#define MAP_STYLE_NAME_ENEMY_BPLA			"EmenyBPLA_%1"
+#define MAP_STYLE_NAME_ENEMY_BPLA			"EmenyBPLA_%1_%2"
 #define MAP_STYLE_NAME_ENEMY_BPLA_TRACK		"EmenyBPLA_Track_%1"
 #define MAP_STYLE_NAME_ADSB					"ADSB"
 #define MAP_STYLE_NAME_ADSB_TRACK			"ADSB_TRACK"
@@ -23,6 +23,7 @@
 #define MAP_STYLE_NAME_CHECK_POINTS			"Control_points"
 #define MAP_STYLE_NAME_HISTORY				"History"
 #define MAP_STYLE_NAME_HYPERBOLE			"Hyperbole"
+#define MAP_STYLE_NAME_HYPERBOLE_ZONE		"HyperboleZone_%1"
 #define MAP_STYLE_NAME_POINTKK  			"PointKK_%1"
 #define MAP_STYLE_NAME_WORK_AREA         	"WorkAresStyle"
 
@@ -38,7 +39,7 @@ public:
 	virtual PwGisStyle* createFriendBplaSliceStyle(const QString& layerId) = 0;
 	virtual PwGisStyle* createAdsbStyle(const QString& layerId) = 0;
 	virtual PwGisStyle* createAdsbTrackStyle(const QString& layerId) = 0;
-	virtual PwGisStyle* createEnemyBplaStyle(const QString& layerId, uint source) = 0;
+    virtual PwGisStyle* createEnemyBplaStyle(const QString& layerId, uint source, uint state) = 0;
 	virtual PwGisStyle* createEnemyBplaTrackStyle(const QString& layerId, uint source) = 0;
 	virtual PwGisStyle* createInterceptionStyle(const QString& layerId) = 0;
 	virtual PwGisStyle* createNiippStyle(const QString& layerId) = 0;
@@ -50,6 +51,7 @@ public:
 	virtual PwGisStyle* createCheckPointStyle(const QString& layerId) = 0;
 	virtual PwGisStyle* createHistoryStyle(const QString& layerId) = 0;
 	virtual PwGisStyle* createHyperboleStyle(const QString& layerId) = 0;
+    virtual PwGisStyle* createHyperboleZoneStyle(const QString& layerId, int accur) = 0;
     virtual PwGisStyle* createKKpointStyle(const QString& layerId, const double& opacity) = 0;
     virtual PwGisStyle* createWorkAreaStyle(const QString& layerId) = 0;
 
@@ -57,7 +59,7 @@ public:
 	virtual PwGisStyle* getFriendBplaStyle() = 0;
 	virtual PwGisStyle* getFriendBplaTrackStyle() = 0;
 	virtual PwGisStyle* getFriendBplaSliceStyle() = 0;
-	virtual PwGisStyle* getEnemyBplaStyle(uint source) = 0;
+    virtual PwGisStyle* getEnemyBplaStyle(uint source, uint state) = 0;
 	virtual PwGisStyle* getEnemyBplaTrackStyle(uint source) = 0;
 	virtual PwGisStyle* getInterceptionStyle() = 0;
 	virtual PwGisStyle* getNiippStyle() = 0;
