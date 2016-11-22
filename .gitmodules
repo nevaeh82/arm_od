@@ -1,33 +1,33 @@
 [submodule "redist/QXT"]
 	path = redist/QXT
-	url = git@192.168.137.67:externals/qxt_bin.git
+	url = git@git.okocenter.ru:externals/qxt_bin.git
 [submodule "redist/pwgis"]
 	path = redist/pwgis
-	url = git@192.168.137.67:externals/pwgis_bin.git
+	url = git@git.okocenter.ru:externals/pwgis_bin.git
 [submodule "redist/plugins"]
 	path = redist/plugins
-	url = git@192.168.137.67:externals/qt_plugins_bin.git
+	url = git@git.okocenter.ru:externals/qt_plugins_bin.git
 [submodule "redist/qtsingleapplication"]
 	path = redist/qtsingleapplication
-	url = git@192.168.137.67:externals/qtsingleapplication.git
+	url = git@git.okocenter.ru:externals/qtsingleapplication.git
 [submodule "cmake"]
 	path = cmake
-	url = git@192.168.137.67:externals/cmake.git
+	url = git@git.okocenter.ru:externals/cmake.git
 [submodule "src/CISCommonLib"]
 	path = src/CISCommonLib
-	url = git@192.168.137.67:externals/ciscommonlib.git
+	url = git@git.okocenter.ru:externals/ciscommonlib.git
 [submodule "redist/protobuf"]
 	path = redist/protobuf
-	url = git@192.168.137.67:externals/protobuf_bin.git
+	url = git@git.okocenter.ru:externals/protobuf_bin.git
 [submodule "redist/libmysql"]
 	path = redist/libmysql
-	url = git@192.168.137.67:externals/libmysql.git
+	url = git@git.okocenter.ru:externals/libmysql.git
 [submodule "tools/cxxmock"]
 	path = tools/cxxmock
-	url = git@192.168.137.67:externals/cxxmock.git
+	url = git@git.okocenter.ru:externals/cxxmock.git
 [submodule "tools/cxxtest"]
 	path = tools/cxxtest
-	url = git@192.168.137.67:externals/cxxtest.git
+	url = git@git.okocenter.ru:externals/cxxtest.git
 [submodule "src/ADSBReceiver"]
 	path = src/ADSBReceiver
-	url = git@192.168.137.67:pyarovoy/adsbreceiver.git
+	url = git@git.okocenter.ru:pyarovoy/adsbreceiver.git
