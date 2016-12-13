@@ -45,6 +45,7 @@ public:
 
 public slots:
 	void slotShowWidget();
+	void slotGetAll();
 
 
 signals:
@@ -66,11 +67,11 @@ private slots:
 	void slotSendCommandResetCor();
 	void slotSendCommandSaveCor();
 	void slotSendUserData();
-	void slotGetAll();
-
 
     void slotSetParams();
 
     void slotRequestConfig();
+
+	void slotMapClicked(double lon, double lat);
 };
 

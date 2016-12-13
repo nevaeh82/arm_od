@@ -30,11 +30,19 @@ private:
 
 	void addTableItem(QTableWidget* widget, int r, int c, QVariant value, bool isNum);
 	void ClearTableItem(QTableWidget* widget);
+	int m_workAreaSetCounter;
+
 public:
 	void appendSolverResult(const QString& log);
 
 	SolverProtocol::Packet_DataFromClient_SetRequest_SetClientType getClientParams();
-    void setSolutionConfiguration(SolverProtocol::Packet_DataFromClient_SetRequest *sPkt);
+	void setSolutionConfiguration(SolverProtocol::Packet_DataFromClient_SetRequest *sPkt);
+
+	void setMapClick(double lon, double lat );
+
+private slots:
+	void slotAddStation();
+	void slotRemoveStation();
 
 signals:
 	void onSendSignal();
@@ -51,5 +59,5 @@ signals:
 	void signalSetUser();
 	void signalGetAll();
 
-    void signalSetParams();
+	void signalSetParams();
 };

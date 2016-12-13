@@ -83,39 +83,38 @@ void Hyperbole::updatePath(const QVector<QPointF>& polyline, const QTime timeMea
     //log_debug(QString("HYPERBOLE size:: %1").arg(polyline.size()));
 
 	m_path->setToolTip( timeMeasure.toString( Qt::SystemLocaleShortDate ) );
-
-    updateMap();
 }
 
 void Hyperbole::updatePath(const QVector<QPointF> &polyline,
                            const QVector<QPointF> &polyZone, const QTime timeMeasure)
 {
-    setPolyline( polyline );
-    //log_debug(QString("HYPERBOLE size:: %1").arg(polyline.size()));
+	//log_debug(QString("HYPERBOLE size:: %1").arg(polyline.size()));
 
+	setPolyline( polyline );
     //-----
     if(m_zone) {
         PwGisPointList* points = m_zone->corners();
         points->clear();
 
-        foreach( QPointF point, polyZone ) {
-            if( point.y() < -180 || point.y() > 180 || point.x() > 180 || point.y() < -180 ) {
-                continue;
-            }
-            points->append( new PwGisLonLat( point.y(), point.x() ) );
-        }
+		foreach( QPointF point, polyZone ) {
+			if( point.y() < -180 || point.y() > 180 || point.x() > 180 || point.y() < -180 ) {
+				continue;
+			}
+			points->append( new PwGisLonLat( point.y(), point.x(), m_path ) );
+		}
 
         QPointF accur = polyZone.last();
         int wholeacc = (1000 / accur.x())*10;
+
         m_zone->addStyleByName( QString(MAP_STYLE_NAME_HYPERBOLE_ZONE).arg(3) );
 
-        m_zone->updateMap();
+		m_zone->updateMap();
     }
     //-----
 
     m_path->setToolTip( timeMeasure.toString( Qt::SystemLocaleShortDate ) );
 
-    updateMap();
+	updateMap();
 }
 
 void Hyperbole::removeFromMap()

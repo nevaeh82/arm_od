@@ -29,6 +29,9 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 	connect( m_mapController, SIGNAL( mapOpened() ), SIGNAL( mapOpened() ) );
 	connect( m_mapController, SIGNAL( atlasOpened() ), SIGNAL( atlasOpened() ) );
 	connect( m_mapController, SIGNAL( cancelMapOpen() ), SIGNAL( cancelMapOpen() ) );
+
+	connect( m_mapController, SIGNAL(mapClicked(double,double)), m_solverSetup, SLOT(slotMapClicked(double, double)) );
+
 	m_uavDbManager->registerReceiver( m_mapController );
 	m_uavDbManager->getUavHistory()->registerReceiver( m_mapController );
 

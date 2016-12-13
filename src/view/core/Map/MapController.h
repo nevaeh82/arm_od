@@ -105,6 +105,8 @@ signals:
 	void mapOpened();
 	void atlasOpened();
 	void mapOpenCanceled();
+
+	void mapClicked(double, double);
 };
 
 #endif // MAPCONTROLLER_H

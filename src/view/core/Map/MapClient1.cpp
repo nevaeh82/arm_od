@@ -212,40 +212,54 @@ void MapClient1::addHyperboles(const QByteArray& data, int version, const QColor
 
 void MapClient1::DrawHyerboles(QList<QVector<QPointF>> list, QTime time, const QColor color)
 {
-//    if ( m_hyperboleList.count() > list.count() ) {
-//        for ( int i = list.count(); i < m_hyperboleList.count(); i++ ) {
+	if ( m_hyperboleList.count() > list.count() ) {
+		for ( int i = list.count(); i < m_hyperboleList.count(); i++ ) {
+			m_hyperboleList[i]->removeFromMap();
+		}
+	}
+//    if ( m_hyperboleList.count() > 0 ) {
+//        for ( int i = 0; i < m_hyperboleList.count(); i++ ) {
 //            m_hyperboleList[i]->removeFromMap();
+//            delete m_hyperboleList.at(i);
 //        }
 //    }
-    if ( m_hyperboleList.count() > 0 ) {
-        for ( int i = 0; i < m_hyperboleList.count(); i++ ) {
-            m_hyperboleList[i]->removeFromMap();
-            delete m_hyperboleList.at(i);
-        }
-    }
 
-    m_hyperboleList.clear();
+//    m_hyperboleList.clear();
+
+	for(int z=0; z<100; z++) {
 
     for ( int i = 0; i < list.count(); ++i ) {
         if( i < m_hyperboleList.count() ) {
-            m_hyperboleList[i]->updatePath( list[i], time );
+			m_hyperboleList[i]->updatePath( list[i], time );
         } else {
             MapFeature::Hyperbole* hyperbole;
             hyperbole = m_factory->createHyperbole( list[i], time, color );
             m_hyperboleList << hyperbole;
         }
     }
+
+		if ( m_hyperboleList.count() > 0 ) {
+			for ( int i = 0; i < m_hyperboleList.count(); i++ ) {
+				m_hyperboleList[i]->removeFromMap();
+				delete m_hyperboleList.at(i);
+			}
+		}
+
+		m_hyperboleList.clear();
+
+	}
 }
 
-void MapClient1::DrawHyerboles(QList<QVector<QPointF>> list,
-                               QList<QVector<QPointF>> zone,
-                               QTime time, const QColor color)
+void MapClient1::DrawHyerboles(const QList<QVector<QPointF> > &list,
+							   const QList<QVector<QPointF> > &zone,
+							   const QTime &time, const QColor &color)
 {
 //    if ( m_hyperboleList.count() > list.count() ) {
 //        for ( int i = list.count(); i < m_hyperboleList.count(); i++ ) {
 //            m_hyperboleList[i]->removeFromMap();
 //        }
 //    }
+
         clearHyperbole();
 
 
@@ -254,6 +268,7 @@ void MapClient1::DrawHyerboles(QList<QVector<QPointF>> list,
             hyperbole = m_factory->createHyperbole( list[i], zone[i], time, color );
             m_hyperboleList << hyperbole;
     }
+
 }
 
 void MapClient1::addHyperboleInternal(const QByteArray& data, int version, const QColor color )
@@ -775,7 +790,7 @@ void MapClient1::clearKKPoint()
 
 void MapClient1::clearEllipse()
 {
-    for(int k = 0; k < m_ellipseCounter+1; k++) {
+	for(int k = 0; k < m_ellipseCounter+2; k++) {
         m_pwWidget->removeObject(QString("ERR_Ellipse_%1").arg(k));
     }
 
@@ -786,6 +801,8 @@ void MapClient1::clearTrajEllipse(QString id)
 {
     m_trajEllipseCounter.removeOne(id);
     m_pwWidget->removeObject(QString("ERR_trajectory_Ellipse_%1").arg(id));
+
+	clearEllipse();
 }
 
 void MapClient1::clearHyperbole()

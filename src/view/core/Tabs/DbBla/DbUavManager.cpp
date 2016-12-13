@@ -104,7 +104,7 @@ int DbUavManager::addUavInfo(const UavInfo &uavInfo, bool actual,
 	}
 
 	if (uav.name.isEmpty()) {
-        uav.name = uavInfo.name;
+		uav.name = uavInfo.name;
 	}
 
 	// If current record is not actual information about BPLA

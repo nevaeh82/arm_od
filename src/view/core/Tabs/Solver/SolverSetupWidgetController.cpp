@@ -9,8 +9,8 @@
 
 SolverSetupWidgetController::SolverSetupWidgetController(ITabManager* tabManager, QObject* parent):
 	QObject(parent),
-    m_isSend(false),
-    m_isReceivedConfig(false)
+	m_isSend(false),
+	m_isReceivedConfig(false)
 {
 	m_view = NULL;
 	m_tabManager = tabManager;
@@ -45,7 +45,7 @@ void SolverSetupWidgetController::appendView(SolverSetupWidget *view)
 	connect(m_view, SIGNAL(signalSetUser()), this, SLOT(slotSendUserData()));
 	connect(m_view, SIGNAL(signalGetAll()), this, SLOT(slotGetAll()));
 
-    connect(m_view, SIGNAL(signalSetParams()), this, SLOT(slotSetParams()));
+	connect(m_view, SIGNAL(signalSetParams()), this, SLOT(slotSetParams()));
 }
 
 void SolverSetupWidgetController::onMethodCalled(const QString &method, const QVariant &argument)
@@ -55,13 +55,13 @@ void SolverSetupWidgetController::onMethodCalled(const QString &method, const QV
 
 SolverSetupWidget *SolverSetupWidgetController::getView()
 {
-    return m_view;
+	return m_view;
 }
 
 void SolverSetupWidgetController::setMapFlag()
 {
-    m_isReceivedConfig = false;
-    m_startTimer.singleShot( SOLVERSETTINGS_REQUEST_TIMEOUT, this, SLOT(slotRequestConfig()) );
+	m_isReceivedConfig = false;
+	m_startTimer.singleShot( SOLVERSETTINGS_REQUEST_TIMEOUT, this, SLOT(slotRequestConfig()) );
 }
 
 void SolverSetupWidgetController::slotShowWidget()
@@ -85,15 +85,15 @@ void SolverSetupWidgetController::onMethodCalledSlot(QString method, QVariant ar
 		if( isSolverMessageCommandSolver(pkt) && m_isSend) {
 			m_isSend = false;
 			QString msg = QString::fromStdString(pkt.datafromsolver().message().message());
-            //QMessageBox::information( m_view, tr("SolverMessage"), msg, QMessageBox::Yes );
+			//QMessageBox::information( m_view, tr("SolverMessage"), msg, QMessageBox::Yes );
 		}
 
 		if( isSolverMessageSolverResponse( pkt ) ) {
 			SolverProtocol::Packet_DataFromSolver_SolverResponse response = pkt.datafromsolver().solverresponse();
 			m_view->setSolverSettings( response );
-            if(response.has_detectors()) {
-                m_isReceivedConfig = true;
-            }
+			if(response.has_detectors()) {
+				m_isReceivedConfig = true;
+			}
 		}
 
 	}
@@ -195,23 +195,28 @@ void SolverSetupWidgetController::slotGetAll()
 	SolverProtocol::Packet pkt;
 	createCommandSolverGetAll( pkt );
 
-    sendSolverCommand(pkt);
+	sendSolverCommand(pkt);
 }
 
 void SolverSetupWidgetController::slotSetParams()
 {
-    SolverProtocol::Packet pkt;
-    pkt = m_view->getSolverParams();
+	SolverProtocol::Packet pkt;
+	pkt = m_view->getSolverParams();
 
-    sendSolverCommand(pkt);
+	sendSolverCommand(pkt);
 }
 
 void SolverSetupWidgetController::slotRequestConfig()
 {
-    if(!m_isReceivedConfig) {
-        m_startTimer.singleShot( SOLVERSETTINGS_REQUEST_TIMEOUT, this, SLOT(slotRequestConfig()) );
-        slotGetAll();
-    }
+	if(!m_isReceivedConfig) {
+		m_startTimer.singleShot( SOLVERSETTINGS_REQUEST_TIMEOUT, this, SLOT(slotRequestConfig()) );
+		slotGetAll();
+	}
+}
+
+void SolverSetupWidgetController::slotMapClicked(double lon, double lat)
+{
+	m_view->setMapClick( lon, lat );
 }
 
 void SolverSetupWidgetController::sendSolverCommand( const SolverProtocol::Packet& pkt )

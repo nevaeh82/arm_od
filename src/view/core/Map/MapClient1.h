@@ -101,8 +101,8 @@ private:
 
     //Strange name, hard work in DZankoi
     void DrawHyerboles(QList<QVector<QPointF>> list, QTime time, const QColor color);
-    void DrawHyerboles(QList<QVector<QPointF> > list,
-                       QList<QVector<QPointF> > zone, QTime time, const QColor color);
+	void DrawHyerboles(const QList<QVector<QPointF> >& list,
+					   const QList<QVector<QPointF> >& zone, const QTime& time, const QColor& color);
 
     void clearEllipse();
     void clearHyperbole();

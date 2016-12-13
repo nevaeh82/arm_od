@@ -115,6 +115,8 @@ void MapController::onMapClicked(double lon, double lat)
 
 	QPointF point( lon, lat );
 
+	emit mapClicked( lon, lat );
+
 //	client->addNiippPoint( point );
 
 //	if( m_niippControllers.contains( 100 ) ) {
@@ -230,18 +232,18 @@ void MapController::onUavInfoChanged(const UavInfo& uavInfo, const QString& uavR
 									 const QVector<QPointF>& tail,
 									 const QVector<QPointF>& tailStdDev)
 {
-	IMapClient* client = getMapClient();
-	if( NULL == client ) return;
+//	IMapClient* client = getMapClient();
+//	if( NULL == client ) return;
 
-	if( uavRole == OUR_UAV_ROLE ) {
-		client->addFriendBpla( uavInfo );
-		return;
-	}
+//	if( uavRole == OUR_UAV_ROLE ) {
+//		client->addFriendBpla( uavInfo );
+//		return;
+//	}
 
-	if( uavRole == ENEMY_UAV_ROLE ) {
-		client->addEnemyBpla( uavInfo, tail, tailStdDev );
-		return;
-	}
+//	if( uavRole == ENEMY_UAV_ROLE ) {
+//		client->addEnemyBpla( uavInfo, tail, tailStdDev );
+//		return;
+//	}
 }
 
 /// \todo Refactor this peace of shit
@@ -261,59 +263,11 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 	} else if( method == RPC_SLOT_SERVER_SEND_ADSB_DATA ) {
 		client->addAdsb( data );
 	}
-	else if( method == RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION ) {
 
-		QDataStream ds(&data, QIODevice::ReadWrite);
-		A_Dir_Ans_msg msg;
-		ds >> msg.requestId;
-		ds >> msg.sourceId;
-		ds >> msg.dateTime;
-		ds >> msg.post;
-		ds >> msg.postLatitude;
-		ds >> msg.postLongitude;
-		ds >> msg.postHeight;
-		ds >> msg.frequency;
-		ds >> msg.widht;
-		ds >> msg.direction;
-		ds >> msg.angle;
-		ds >> msg.level;
-		ds >> msg.quality;
-		ds >> msg.motionType;
-		ds >> msg.motionConfidence;
-
-		int id_post = msg.post.right(1).toInt();
-
-		client->updatePeleng(msg.sourceId, id_post, msg.postLatitude, msg.postLongitude, msg.direction);
-	} else if( method == RPC_SLOT_SERVER_SEND_ATLANT_POSITION ) {
-
-		QDataStream ds(&data, QIODevice::ReadWrite);
-		A_Pos_Ans_msg msg;
-		ds >> msg.requestId;
-		ds >> msg.sourceId;
-		ds >> msg.dateTime;
-		ds >> msg.latitude;
-		ds >> msg.longitude;
-		ds >> msg.quality;
-
-		if( !m_mapPelengEvilIds.contains( msg.sourceId ) ) {
-			m_mapPelengEvilIds.insert( msg.sourceId, ++m_pelengEvilIds );
-			if( m_pelengEvilIds > 49 ) {
-				m_pelengEvilIds = 0;
-				m_mapPelengEvilIds.clear();
-			}
-		}
-
-		UavInfo uav;
-		uav.uavId = m_mapPelengEvilIds.value( msg.sourceId );
-		uav.lon = msg.longitude;
-		uav.lat = msg.latitude;
-
-		client->addEnemyBpla( uav );
-	}
-	else if( method == RPC_SLOT_SERVER_SEND_HYPERBOLA ) {
-		client->addHyperboles(data);
-	}
-    else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_1) {
+//	else if( method == RPC_SLOT_SERVER_SEND_HYPERBOLA ) {
+//		client->addHyperboles(data);
+//	}
+	else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_1) {
         SolverProtocol::Packet pkt;
         pkt.ParseFromArray( data.data(), data.size() );
 
@@ -324,60 +278,60 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
             client->addHyperboles(data, 1);
         }
 
-        if(pkt.has_datafromsolver() && pkt.datafromsolver().has_solution_manual_altitude() &&
-           pkt.datafromsolver().solution_manual_altitude().has_singlemarks()) {
+//        if(pkt.has_datafromsolver() && pkt.datafromsolver().has_solution_manual_altitude() &&
+//           pkt.datafromsolver().solution_manual_altitude().has_singlemarks()) {
 
-            SolverProtocol::Packet_DataFromSolver_SolverSolution_SingleMarks sMsg =              pkt.datafromsolver().solution_manual_altitude().singlemarks();
+//            SolverProtocol::Packet_DataFromSolver_SolverSolution_SingleMarks sMsg =              pkt.datafromsolver().solution_manual_altitude().singlemarks();
 
-            QByteArray msg;
-            msg.resize(sMsg.ByteSize());
-            sMsg.SerializeToArray(msg.data(), msg.size());
-            //Draw it from trajectories temrorally too. - next if
-            //here draw only ellipse
-            client->addSingleMark(msg);
-        }
+//            QByteArray msg;
+//            msg.resize(sMsg.ByteSize());
+//            sMsg.SerializeToArray(msg.data(), msg.size());
+//            //Draw it from trajectories temrorally too. - next if
+//            //here draw only ellipse
+//            client->addSingleMark(msg);
+//        }
 
-        if( isSolverMessageHasTrajectoryManual(pkt) ) {
-            //Trajectory from db. No kk here
-            QByteArray msg;
-            int size = pkt.datafromsolver().solution_manual_altitude().trajectory_size();
-            for(int i = 0; i<size; i++) {
-                SolverProtocol::Packet_DataFromSolver_SolverSolution_Trajectory sol = pkt.datafromsolver().solution_manual_altitude().trajectory(i);
-                msg.resize(sol.ByteSize());
-                sol.SerializeToArray(msg.data(), msg.size());
-                client->addTrajectoryKK( msg );
-            }
-        }
+//        if( isSolverMessageHasTrajectoryManual(pkt) ) {
+//            //Trajectory from db. No kk here
+//            QByteArray msg;
+//            int size = pkt.datafromsolver().solution_manual_altitude().trajectory_size();
+//            for(int i = 0; i<size; i++) {
+//                SolverProtocol::Packet_DataFromSolver_SolverSolution_Trajectory sol = pkt.datafromsolver().solution_manual_altitude().trajectory(i);
+//                msg.resize(sol.ByteSize());
+//                sol.SerializeToArray(msg.data(), msg.size());
+//                client->addTrajectoryKK( msg );
+//            }
+//        }
 
-        //Draw stations and area from settings Solver responce
-        if( isSolverMessageSolverResponse( pkt ) ) {
-            SolverProtocol::Packet_DataFromSolver_SolverResponse response = pkt.datafromsolver().solverresponse();
+//        //Draw stations and area from settings Solver responce
+//        if( isSolverMessageSolverResponse( pkt ) ) {
+//            SolverProtocol::Packet_DataFromSolver_SolverResponse response = pkt.datafromsolver().solverresponse();
 
-            if( response.has_detectors() ) {
+//            if( response.has_detectors() ) {
 
-                QByteArray dataToSend;
-                dataToSend.resize( response.detectors().ByteSize() );
-                response.detectors().SerializeToArray(dataToSend.data(), dataToSend.size());
+//                QByteArray dataToSend;
+//                dataToSend.resize( response.detectors().ByteSize() );
+//                response.detectors().SerializeToArray(dataToSend.data(), dataToSend.size());
 
-                client->addStation( dataToSend );
-            }
+//                client->addStation( dataToSend );
+//            }
 
-            if(response.has_areaofresponsibility()) {
-                QPointF point1(response.areaofresponsibility().mincoordinates().lon(),
-                               response.areaofresponsibility().mincoordinates().lat());
-                QPointF point2(response.areaofresponsibility().maxcoordinates().lon(),
-                               response.areaofresponsibility().maxcoordinates().lat());
-                client->addWorkArea( point1, point2 );
-            }
-        }
+//            if(response.has_areaofresponsibility()) {
+//                QPointF point1(response.areaofresponsibility().mincoordinates().lon(),
+//                               response.areaofresponsibility().mincoordinates().lat());
+//                QPointF point2(response.areaofresponsibility().maxcoordinates().lon(),
+//                               response.areaofresponsibility().maxcoordinates().lat());
+//                client->addWorkArea( point1, point2 );
+//            }
+//        }
 
-        //get messages
-        if( isSolverMessageSolverMessage(pkt) ) {
-            QString msg = QString::fromStdString(pkt.datafromsolver().message().message());
+//        //get messages
+//        if( isSolverMessageSolverMessage(pkt) ) {
+//            QString msg = QString::fromStdString(pkt.datafromsolver().message().message());
 
-            if(msg.contains(QString::fromLocal8Bit("очищен"), Qt::CaseInsensitive)) {
-                client->clearSolver1();
-            }
-        }
+//            if(msg.contains(QString::fromLocal8Bit("очищен"), Qt::CaseInsensitive)) {
+//                client->clearSolver1();
+//            }
+//        }
     }
 }

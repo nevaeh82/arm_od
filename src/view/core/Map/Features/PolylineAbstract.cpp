@@ -14,8 +14,8 @@ PolylineAbstract::PolylineAbstract(IObjectsFactory* factory, const QString& id, 
 
 PolylineAbstract::~PolylineAbstract()
 {
-	m_path->removeFromMap();
-	delete m_path;
+		m_path->removeFromMap();
+		delete m_path;
 }
 
 void PolylineAbstract::setPolyline(const QVector<QPointF>& polyline)

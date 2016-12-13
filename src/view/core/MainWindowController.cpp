@@ -161,6 +161,8 @@ void MainWindowController::rpcConnectionEstablished()
 {
 	m_rpcConfigClient->requestGetStationList("./Tabs/Tabs.ini");
 
+	m_solverSetupWidgetController->slotGetAll();
+
 	/// BUG HERE!!!
 //	m_rpcConfigClient->requestGetDbConfiguration("./DB/db_uav.ini");
 
