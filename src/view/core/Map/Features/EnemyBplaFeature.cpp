@@ -33,11 +33,11 @@ EnemyBpla::EnemyBpla(IObjectsFactory* factory, const QString& id, const UavInfo&
 	// init source label
 	switch ( m_sourceId ) {
 		case UAV_SOLVER_MANUAL_SOURCE:
-            m_nameTranslated = QObject::tr("");
+			m_nameTranslated = QObject::tr("_M");
 			break;
 
 		case UAV_SOLVER_AUTO_SOURCE:
-            m_nameTranslated = QObject::tr("");
+			m_nameTranslated = QObject::tr("_A");
 			break;
 
 		case UAV_SOLVER_SINGLE_1_SOURCE:
@@ -51,15 +51,19 @@ EnemyBpla::EnemyBpla(IObjectsFactory* factory, const QString& id, const UavInfo&
 			break;
 
 		default:
-            m_nameTranslated = QObject::tr("");
+			m_nameTranslated = QObject::tr("");
 			break;
+	}
+
+	if(m_isHistorical) {
+		m_nameTranslated = m_nameTranslated + QObject::tr("H");
 	}
 
 //	m_nameTranslated = m_nameTranslated
 //			.arg( m_isHistorical ? QObject::tr( "BPLA_HISTORICAL_SUFFIX" ) : "" )
 //			.replace( "%2", "%1" ) + "\\n%2\\n%3\\n%4";
 
-    setName( uav.name );
+	setName( uav.name + m_nameTranslated );
 }
 
 void EnemyBpla::setName(const QString& name)

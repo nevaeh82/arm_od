@@ -92,6 +92,8 @@ public:
 
 	void setRpcConfig(const quint16& port, const QString& host);
 
+	void setARMRConnection(bool b);
+
 private:
 	int init();
 //	void readSettings();

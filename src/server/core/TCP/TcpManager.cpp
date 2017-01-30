@@ -3,7 +3,8 @@
 #include "GPS.pb.h"
 
 TcpManager::TcpManager(QObject* parent) :
-	QObject(parent)
+	QObject(parent),
+	m_rpcClient(NULL)
 {
 	m_rpcServer = NULL;
 	m_tcpServer = NULL;
@@ -237,6 +238,10 @@ void TcpManager::onMessageReceived(const quint32 deviceType, const QString& devi
 				outputDataStream << positionDataVector;
 
 				m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_BLA_POINTS, dataToSend);
+
+				if(m_rpcClient) {
+					m_rpcClient->sendDataByRpc(TCP_ARMR_SEND_KTR_DATA, dataToSend);
+				}
 			}
 			break;
 		case DeviceTypes::AIS_TCP_DEVICE:
@@ -305,7 +310,19 @@ void TcpManager::onMethodCalledInternalSlot(const QString& method, const QVarian
 		controller->sendData(MessageSP(new Message<QByteArray>(TCP_ARMR_SEND_SOLVER_DATA, argument.toByteArray())));*/
 
 		m_rpcClient->sendDataByRpc(TCP_ARMR_SEND_SOLVER_DATA, argument.toByteArray());
-	} else if (method == RPC_SLOT_SET_NIIPP_BPLA) {
+	}
+	else if (method == RPC_SLOT_SET_KTR_TO_ARMT) {
+			//TODO: REMOVE RPCCLIENT USAGE WHEN TCP CLIENT PROTOBUF WILL BE TESTED
+
+			/*BaseTcpDeviceController* controller = m_controllersMap.value(getTcpClientName(), NULL);
+			if (controller == NULL) {
+				return;
+			}
+			controller->sendData(MessageSP(new Message<QByteArray>(TCP_ARMR_SEND_SOLVER_DATA, argument.toByteArray())));*/
+
+			m_rpcClient->sendDataByRpc(TCP_ARMR_SEND_KTR_DATA, argument.toByteArray());
+	}
+	else if (method == RPC_SLOT_SET_NIIPP_BPLA) {
 			//TODO: REMOVE RPCCLIENT USAGE WHEN TCP CLIENT PROTOBUF WILL BE TESTED
 
 //			QString name;
@@ -455,5 +472,9 @@ void TcpManager::slotGpsData(QByteArray data)
 
 
     m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_BLA_POINTS, dataToSend);
+
+	if(m_rpcClient) {
+		m_rpcClient->sendDataByRpc(TCP_ARMR_SEND_KTR_DATA, dataToSend);
+	}
 
 }

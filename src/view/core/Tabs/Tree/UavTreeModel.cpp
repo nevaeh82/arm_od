@@ -150,7 +150,7 @@ void UavTreeModel::onUavAdded(const Uav &uav, const QString& uavRole)
 		addSourceNode( item, UAV_SLICES_SOURCE, tr("KTR"), uav.uavId );
 	} else
 	if ( uavRole == ENEMY_UAV_ROLE ) {
-        //addSourceNode( item, UAV_SOLVER_AUTO_SOURCE, tr("Auto mode"), uav.uavId );
+		addSourceNode( item, UAV_SOLVER_AUTO_SOURCE, tr("Auto mode"), uav.uavId );
 		addSourceNode( item, UAV_SOLVER_MANUAL_SOURCE, tr("Manual mode"), uav.uavId );
         //addSourceNode( item, UAV_SOLVER_SINGLE_1_SOURCE, tr("Single mode: Point 1"), uav.uavId );
         //addSourceNode( item, UAV_SOLVER_SINGLE_2_SOURCE, tr("Single mode: Point 2"), uav.uavId );
@@ -162,9 +162,9 @@ void UavTreeModel::onUavAdded(const Uav &uav, const QString& uavRole)
 
 void UavTreeModel::onUavRemoved(const Uav &uav, const QString& uavRole)
 {
-	if (uavRole != m_targetRole){
-		return;
-	}
+//	if (uavRole != m_targetRole){
+//		return;
+//	}
 
 	for (int i= 0; i< m_rootItem->childCount(); ++i) {
 
@@ -253,7 +253,7 @@ void UavTreeModel::onPropertyChanged(const UavInfo &uavInfo, const uint propId, 
 		bool isReal;
 		stationItem->data().name.toInt( &isReal );
 
-        //if (uavInfo.historical == isReal) continue;
+		//if (uavInfo.historical == isReal) continue;
 
 		int sourceState = isInFlight ? 1 : 0;;
 		int stationState = sourceState;

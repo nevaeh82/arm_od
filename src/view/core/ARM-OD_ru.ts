@@ -49,22 +49,42 @@
         <translation>Экспорт в XLS</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="65"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="164"/>
+        <source>Connect to ARM_R:</source>
+        <translation>Спектры: </translation>
+    </message>
+    <message>
+        <location filename="ControlPanel/ControlPanel.ui" line="178"/>
         <source>Connect to DB:</source>
         <translation>Подключение к БД: </translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="119"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="104"/>
         <source>From:</source>
         <translation>От:</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="126"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="206"/>
         <source>To:</source>
         <translation>До:</translation>
     </message>
+    <message>
+        <location filename="ControlPanel/ControlPanel.ui" line="37"/>
+        <source>Speed:</source>
+        <translation>Скорость проигрывания:</translation>
+    </message>
+    <message>
+        <location filename="ControlPanel/ControlPanel.ui" line="124"/>
+        <source> sec</source>
+        <translation> сек</translation>
+    </message>
+    <message>
+        <location filename="ControlPanel/ControlPanel.ui" line="127"/>
+        <source>x</source>
+        <translation></translation>
+    </message>
     <message utf8="true">
-        <location filename="ControlPanel/ControlPanel.ui" line="149"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="47"/>
         <source>Лог Базы Данных</source>
         <translation></translation>
     </message>
@@ -73,18 +93,18 @@
         <translation type="obsolete">Лог Базы Данных</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="37"/>
-        <location filename="ControlPanel/ControlPanel.cpp" line="71"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="87"/>
+        <location filename="ControlPanel/ControlPanel.cpp" line="75"/>
         <source>Start</source>
         <translation>Пуск</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="30"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="171"/>
         <source>Stop</source>
         <translation>Остановить</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.ui" line="109"/>
+        <location filename="ControlPanel/ControlPanel.ui" line="94"/>
         <source>Current time:</source>
         <translation>Текущее время:</translation>
     </message>
@@ -106,12 +126,12 @@
         <translation type="obsolete">Текущее время: %1</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.cpp" line="71"/>
+        <location filename="ControlPanel/ControlPanel.cpp" line="75"/>
         <source>Pause</source>
         <translation>Пауза</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanel.cpp" line="76"/>
+        <location filename="ControlPanel/ControlPanel.cpp" line="80"/>
         <source>Resume</source>
         <translation>Продолжить</translation>
     </message>
@@ -119,23 +139,23 @@
 <context>
     <name>ControlPanelController</name>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="108"/>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="113"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="117"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="122"/>
         <source>Unable to play history</source>
         <translation>Невозможно воспроизвести запись</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="108"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="117"/>
         <source>End date should be greater than start date.</source>
         <translation>Конечная дата должна быть больше начальной</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="113"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="122"/>
         <source>Data for selected period do not exist.</source>
         <translation>Данные для выбранного периода отсутствуют.</translation>
     </message>
     <message>
-        <location filename="ControlPanel/ControlPanelController.cpp" line="130"/>
+        <location filename="ControlPanel/ControlPanelController.cpp" line="139"/>
         <source>Save xls export</source>
         <translation>Сохранить экспорт БД в XLS</translation>
     </message>
@@ -185,8 +205,8 @@
     <message>
         <location filename="Tabs/DbBla/DbUavController.cpp" line="178"/>
         <location filename="Tabs/DbBla/DbUavController.cpp" line="228"/>
-        <location filename="Tabs/DbBla/DbUavController.cpp" line="452"/>
-        <location filename="Tabs/DbBla/DbUavController.cpp" line="524"/>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="457"/>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="529"/>
         <source>Error reading to DB </source>
         <translation>Ошибка чтения БД</translation>
     </message>
@@ -197,20 +217,27 @@
         <translation>Успешное чтение записи бла в БД</translation>
     </message>
     <message>
-        <location filename="Tabs/DbBla/DbUavController.cpp" line="354"/>
-        <location filename="Tabs/DbBla/DbUavController.cpp" line="448"/>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="453"/>
         <source>Ok writing to DB </source>
         <translation>Успешная запись в БД</translation>
     </message>
     <message>
-        <location filename="Tabs/DbBla/DbUavController.cpp" line="358"/>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="362"/>
         <source>Error adding to DB </source>
         <translation>Ошибка добавления в БД</translation>
     </message>
     <message>
-        <location filename="Tabs/DbBla/DbUavController.cpp" line="520"/>
+        <location filename="Tabs/DbBla/DbUavController.cpp" line="525"/>
         <source>Ok add source to DB </source>
         <translation>Успешное добавление записи в БД</translation>
+    </message>
+</context>
+<context>
+    <name>DbUavManager</name>
+    <message>
+        <location filename="Tabs/DbBla/DbUavManager.cpp" line="517"/>
+        <source>%1_single</source>
+        <translation>%1_одиноч</translation>
     </message>
 </context>
 <context>
@@ -317,50 +344,50 @@
 <context>
     <name>MapClient1</name>
     <message>
-        <location filename="Map/MapClient1.cpp" line="189"/>
+        <location filename="Map/MapClient1.cpp" line="199"/>
         <source>NIIPP</source>
         <translation>НИИПП</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="136"/>
+        <location filename="Map/MapClient1.cpp" line="137"/>
         <source>UAV_enemy_manual</source>
         <oldsource>UAV_enemy</oldsource>
         <translation>БПЛА Р</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="135"/>
+        <location filename="Map/MapClient1.cpp" line="136"/>
         <source>UAV_enemy_track_manual</source>
         <oldsource>UAV_enemy_track</oldsource>
         <translation>БПЛА Р: трек</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="139"/>
+        <location filename="Map/MapClient1.cpp" line="140"/>
         <source>UAV_enemy_auto</source>
         <translation>БПЛА А</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="138"/>
+        <location filename="Map/MapClient1.cpp" line="139"/>
         <source>UAV_enemy_track_auto</source>
         <translation>БПЛА А: трек</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="141"/>
+        <location filename="Map/MapClient1.cpp" line="142"/>
         <source>UAV_enemy_single</source>
         <translation>БПЛА Т</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="145"/>
+        <location filename="Map/MapClient1.cpp" line="146"/>
         <source>UAV</source>
         <translation>БЛА</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="144"/>
+        <location filename="Map/MapClient1.cpp" line="145"/>
         <source>UAV_track_autopilot</source>
         <oldsource>UAV_track</oldsource>
         <translation>БЛА: трек от автопилота</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="143"/>
+        <location filename="Map/MapClient1.cpp" line="144"/>
         <source>UAV_track_KTR</source>
         <translation>БЛА: трек от КТР</translation>
     </message>
@@ -420,31 +447,36 @@
     </message>
     <message>
         <location filename="Map/MapClient1.cpp" line="131"/>
+        <source>Hyperbole-Zone</source>
+        <translation>Гипербозоны</translation>
+    </message>
+    <message>
+        <location filename="Map/MapClient1.cpp" line="132"/>
         <source>History</source>
         <translation>История</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="132"/>
+        <location filename="Map/MapClient1.cpp" line="133"/>
         <source>Point</source>
         <translation>Точки</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="133"/>
+        <location filename="Map/MapClient1.cpp" line="134"/>
         <source>workArea</source>
         <translation>Рабочая область</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="147"/>
+        <location filename="Map/MapClient1.cpp" line="148"/>
         <source>ADSB</source>
         <translation>АДСБ</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="148"/>
+        <location filename="Map/MapClient1.cpp" line="149"/>
         <source>ADSBtrack</source>
         <translation>АДСБтрек</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="952"/>
+        <location filename="Map/MapClient1.cpp" line="1032"/>
         <source>Ingur</source>
         <translation>Ингур</translation>
     </message>
@@ -496,22 +528,22 @@
 <context>
     <name>MapTabWidgetController</name>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="36"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="39"/>
         <source>Property</source>
         <translation>Свойство</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="36"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="39"/>
         <source>Value</source>
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="216"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="219"/>
         <source>SPIP DD-1</source>
         <translation>СПИП ДД-1</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="222"/>
+        <location filename="Tabs/MapTabWidgetController.cpp" line="225"/>
         <source>SPIP DD-2</source>
         <translation>СПИП ДД-2</translation>
     </message>
@@ -725,19 +757,17 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="Map/Features/FriendBplaFeature.cpp" line="24"/>
         <source>UAV-C-H</source>
-        <translation>БЛА-С-И</translation>
+        <translation type="obsolete">БЛА-С-И</translation>
     </message>
     <message>
-        <location filename="Map/Features/FriendBplaFeature.cpp" line="26"/>
+        <location filename="Map/Features/FriendBplaFeature.cpp" line="19"/>
         <source>UAV (#%1)</source>
         <translation>БЛА (№%1)</translation>
     </message>
     <message>
-        <location filename="Map/Features/FriendBplaFeature.cpp" line="24"/>
         <source>UAV-C</source>
-        <translation>БЛА-С</translation>
+        <translation type="obsolete">БЛА-С</translation>
     </message>
     <message>
         <source>UAV_enemy (#%1)\n%2\n%3</source>
@@ -779,8 +809,8 @@
         <translation type="obsolete">И</translation>
     </message>
     <message>
-        <location filename="Map/Features/FriendBplaFeature.cpp" line="27"/>
-        <location filename="Tabs/DbBla/UavHistory.cpp" line="345"/>
+        <location filename="Map/Features/FriendBplaFeature.cpp" line="20"/>
+        <location filename="UAV/UavModel.cpp" line="62"/>
         <source>%1-H</source>
         <translation>%1-И</translation>
     </message>
@@ -813,6 +843,31 @@
         <location filename="Map/Features/StationFeature.cpp" line="8"/>
         <source>OP</source>
         <translation>ОП</translation>
+    </message>
+    <message>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="36"/>
+        <source>_M</source>
+        <translation>_Руч</translation>
+    </message>
+    <message>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="40"/>
+        <source>_A</source>
+        <translation>_Авт</translation>
+    </message>
+    <message>
+        <location filename="Map/Features/EnemyBplaFeature.cpp" line="59"/>
+        <source>H</source>
+        <translation>Ист</translation>
+    </message>
+    <message>
+        <location filename="UAV/UavModel.cpp" line="40"/>
+        <source>A</source>
+        <translation>Авт</translation>
+    </message>
+    <message>
+        <location filename="UAV/UavModel.cpp" line="42"/>
+        <source>M</source>
+        <translation>Руч</translation>
     </message>
 </context>
 <context>
@@ -913,260 +968,405 @@
         <translation>Пароль</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="113"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="693"/>
+        <source>Stations</source>
+        <translation>Станции</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="836"/>
+        <source> Mhz</source>
+        <translation>Мгц</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="891"/>
         <source>Reset Corrections</source>
         <translation>Сброс поправок</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="127"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="915"/>
         <source>Save Corrections</source>
         <translation>Сохранить поправки</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="134"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="120"/>
         <source>Stop</source>
         <translation>Остановить</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="141"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="127"/>
         <source>Restart</source>
         <translation>Перезапустить</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="148"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="134"/>
         <source>Clear</source>
         <translation>Очистить</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="155"/>
         <source>Start Corrections</source>
-        <translation>Старт вычисления поправок</translation>
+        <translation type="obsolete">Старт вычисления поправок</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="162"/>
         <source>Stop Corrections</source>
-        <translation>Остановить вычисление поправок</translation>
+        <translation type="obsolete">Остановить вычисление поправок</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="175"/>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="184"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="147"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="156"/>
         <source>Solver Params</source>
         <translation>Параметры КВК</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="190"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="162"/>
         <source>Max. SKO</source>
         <translation>Макс. СКО</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="197"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="169"/>
         <source>Max. Position error</source>
         <translation>Макс. ошибка</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="204"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="176"/>
         <source>Trajectory length:</source>
         <translation>Длина траекторий</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="251"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="223"/>
         <source>Left down</source>
         <translation>Нижний</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="256"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="228"/>
         <source>Right up</source>
         <translation>Верхний</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="261"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="233"/>
         <source>lon</source>
         <translation>Долгота</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="266"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="238"/>
         <source>lat</source>
         <translation>Широта</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="274"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="251"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="479"/>
         <source>Aim height:</source>
         <translation>Высота цели</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="281"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="258"/>
         <source>Auto</source>
         <translation>Авто</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="288"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="265"/>
         <source>SolveTypes</source>
         <translation>Тип решения</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="294"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="271"/>
         <source>Trajectories</source>
         <translation>Траектории</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="301"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="278"/>
         <source>One Marks</source>
         <translation>Одиночные отметки</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="308"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="285"/>
         <source>Particles</source>
         <translation>Частицы</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="315"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="292"/>
         <source>Position lines</source>
         <translation>Линии положения</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="325"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="302"/>
         <source>Max. speed</source>
         <translation>Макс. скорость</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="332"/>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="489"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="309"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="466"/>
         <source> sec</source>
         <translation> сек</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="345"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="322"/>
         <source>From map</source>
         <translation>с карты</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="352"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="329"/>
         <source>Trajectory points:</source>
         <translation>Точки траекторий</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="359"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="336"/>
         <source> points</source>
         <translation> точки</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="372"/>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="402"/>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="445"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="349"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="379"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="422"/>
         <source> m</source>
         <translation> м</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="388"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="365"/>
         <source>Solver Area</source>
         <translation>Область ответственности</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="395"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="372"/>
         <source>Version:</source>
         <translation>Версия:</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="418"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="395"/>
         <source> km/h</source>
         <translation> км/ч</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="438"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="415"/>
         <source>Min delays for single marks</source>
         <translation>Мин задержки</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="461"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="438"/>
         <source>Manual</source>
         <translation>Ручное</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="475"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="452"/>
         <source>Merge</source>
         <translation>Объединять решения</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="482"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="459"/>
         <source>isMerge</source>
         <translation>Объединять</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="519"/>
-        <source>Stations and Corrections</source>
-        <translation>Поправки и датчики</translation>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="503"/>
+        <source>Extra Solver Params</source>
+        <translation>Дополнительные параметры</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="525"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="509"/>
+        <source>Gamma spreading params</source>
+        <translation>Параметры Гамма распределения</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="521"/>
+        <source>alpha = </source>
+        <translation>альфа = </translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="528"/>
+        <source>Num of &quot;parts&quot; :</source>
+        <translation>Число &quot;частиц&quot; :</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="545"/>
+        <source>beta = </source>
+        <translation>Бета = </translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="559"/>
+        <source>Num of active &quot;parts&quot; :</source>
+        <translation>Число активных &quot;частиц&quot; :</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="566"/>
+        <source>Probability density:</source>
+        <translation>Плотность вероятности шума:</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="576"/>
+        <source>Probability noize: </source>
+        <translation>Вероятность появления шума:</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="593"/>
+        <source>Aim probability:</source>
+        <translation>Вероятность рождения цели:</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="616"/>
+        <source>Many aims on one freq</source>
+        <translation>Много целей на одной частоте:</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="636"/>
+        <source>Time mode:</source>
+        <translation>Режим времени:</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="643"/>
+        <source>Correct height in manual</source>
+        <translation>Корректировать высоту в ручную</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="650"/>
+        <source>Update Mode:</source>
+        <translation>Режим обновления: </translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="658"/>
+        <source>Online mode</source>
+        <translation>Реальное время</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="663"/>
+        <source>Offline mode</source>
+        <translation>Оффлайн режим</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="672"/>
+        <source>Platform time</source>
+        <translation>Время на платформе</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="677"/>
+        <source>Solver time</source>
+        <translation>Время на решателе</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="685"/>
+        <source>Many frequency for single aim</source>
+        <translation>Несколько частот для одной цели</translation>
+    </message>
+    <message>
+        <source>Stations and Corrections</source>
+        <translation type="obsolete">Поправки и датчики</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="940"/>
+        <source>What to correct</source>
+        <translation>Пары датчиков 
+для корректировки</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="855"/>
+        <source>Current corrections</source>
+        <translation>Текущие поправки</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="898"/>
+        <source>Count corrections</source>
+        <translation>Расчет поправок</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="763"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="566"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="733"/>
         <source>Station</source>
         <translation>Датчик</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="571"/>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="635"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="738"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="816"/>
         <source>Lon</source>
         <translation>Долгота</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="576"/>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="630"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="743"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="811"/>
         <source>Lat</source>
         <translation>Широта</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="581"/>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="640"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="947"/>
+        <source>Freq </source>
+        <translation>Частота</translation>
+    </message>
+    <message utf8="true">
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="955"/>
+        <source>Сообщения</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="968"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.cpp" line="82"/>
+        <source>Client:  %1</source>
+        <translation>Клиент:  %1</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="243"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="748"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="821"/>
         <source>Height</source>
         <translation>Высота</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="589"/>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="674"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="756"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="777"/>
         <source>Click on map</source>
         <translation>На карте</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="596"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="905"/>
         <source>Stations Coordinates:</source>
         <translation>Координаты станций</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="625"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="806"/>
         <source>Iri</source>
         <translation>ИРИ</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="651"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="770"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="694"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="830"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="922"/>
         <source>Corrections</source>
-        <translation>поправки</translation>
+        <translation>Поправки</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.ui" line="701"/>
         <source>Accurancy</source>
-        <translation>точность</translation>
+        <translation type="obsolete">точность</translation>
     </message>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidget.cpp" line="17"/>
+        <location filename="Tabs/Solver/SolverSetupWidget.cpp" line="20"/>
         <source>Solver setup</source>
         <translation>Настройки КВК</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.cpp" line="62"/>
+        <source>Message</source>
+        <translation>Сообщение</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.cpp" line="65"/>
+        <source>Warning</source>
+        <translation>Предупреждение</translation>
+    </message>
+    <message>
+        <location filename="Tabs/Solver/SolverSetupWidget.cpp" line="68"/>
+        <source>Error</source>
+        <translation>Ошибка</translation>
     </message>
 </context>
 <context>
     <name>SolverSetupWidgetController</name>
     <message>
-        <location filename="Tabs/Solver/SolverSetupWidgetController.cpp" line="88"/>
         <source>SolverMessage</source>
-        <translation>Сообщение КВК</translation>
+        <translation type="obsolete">Сообщение КВК</translation>
     </message>
 </context>
 <context>
@@ -1218,14 +1418,12 @@
         <translation>Ручной</translation>
     </message>
     <message>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="155"/>
         <source>Single mode: Point 1</source>
-        <translation>Точка 1</translation>
+        <translation type="obsolete">Точка 1</translation>
     </message>
     <message>
-        <location filename="Tabs/Tree/UavTreeModel.cpp" line="156"/>
         <source>Single mode: Point 2</source>
-        <translation>Точка 2</translation>
+        <translation type="obsolete">Точка 2</translation>
     </message>
 </context>
 </TS>

@@ -17,7 +17,7 @@
 #include "SolverPacket1.pb.h"
 
 class SolverSetupWidgetController : public QObject, public IController<SolverSetupWidget>,
-									 public IRpcListener
+		public IRpcListener
 {
 	Q_OBJECT
 public:
@@ -33,15 +33,17 @@ private:
 	void sendSolverCommand(const SolverProtocol::Packet& data);
 
 	bool m_isSend;
-    bool m_isReceivedConfig;
+	bool m_isReceivedConfig;
 
-    QTimer m_startTimer;
+	QTimer m_startTimer;
 public:
 	void appendView(SolverSetupWidget* view);
 	virtual void onMethodCalled(const QString& method, const QVariant& argument);
 	SolverSetupWidget* getView();
 
-    void setMapFlag();
+	void setMapFlag();
+
+	void setARMRConnection(bool b);
 
 public slots:
 	void slotShowWidget();
@@ -68,10 +70,11 @@ private slots:
 	void slotSendCommandSaveCor();
 	void slotSendUserData();
 
-    void slotSetParams();
+	void slotSetParams();
 
-    void slotRequestConfig();
+	void slotRequestConfig();
 
 	void slotMapClicked(double lon, double lat);
+	void slotCorrectionCalculation(int isCorrect);
 };
 

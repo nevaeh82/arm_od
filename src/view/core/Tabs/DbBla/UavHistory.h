@@ -20,9 +20,9 @@ private:
 	QSqlDatabase m_database;
 	QSqlQuery m_query;
 
-    QMap<QString, QDateTime> m_uavLastDate;
-    QMap<QString, QString> m_uavRoles;
-    QMap<QString, Uav> m_knownUavsList;
+	QMap<QString, QDateTime> m_uavLastDate;
+	QMap<QString, QString> m_uavRoles;
+	QMap<QString, Uav> m_knownUavsList;
 
 	bool m_startResult;
 	bool m_isPaused;
@@ -42,6 +42,8 @@ public:
 	void resume();
 	void stop();
 
+	void setTimeoutMux(int timeout);
+
 	void setDatabase(const QSqlDatabase& database);
 	void setLifeTime(int msecs);
 
@@ -58,6 +60,8 @@ signals:
 	void startFinished();
 	void stopFinished();
 
+	void signalTimeoutMux(int);
+
 protected slots:
 	void startInternal(const QDateTime& start, const QDateTime& end, int mode);
 	void stopInternal();
@@ -65,6 +69,8 @@ protected slots:
 	void resumeInternal();
 
 	void updateHistoryState();
+
+	void slotInitTimeoutMux(int mux);
 
 	void sendStatus();
 	void sendStatus(IUavHistoryListener::Status status);

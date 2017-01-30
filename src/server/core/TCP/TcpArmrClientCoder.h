@@ -4,7 +4,7 @@
 #include <QObject>
 #include "Tcp/BaseTcpDeviceCoder.h"
 #include "ZVPacket.pb.h"
-#include "UAVDefines.h"
+#include "zavCommon/UAVDefines.h"
 
 class TcpArmrClientCoder : public BaseTcpDeviceCoder
 {

@@ -1,18 +1,18 @@
 option optimize_for = LITE_RUNTIME;
 package SolverProtocol;
 
-//качество оценки
+//показатель качества рассчитанной оценки
 enum EstimateQuality {
-    GOOD_QUALITY = 1;
-    BAD_QUALITY = 2;
-    UNKNOWN_QUALITY =3;
+    GOOD_QUALITY = 1;   //хорошее качество
+    BAD_QUALITY = 2;    //плохое качество
+    UNKNOWN_QUALITY =3; //неизвестное качество
 }
 
 //состояние движения цели
 enum StateOfMotion {
-    MOVING = 1;
-    STANDING = 2;
-    UNKNOWN_STATE = 3;
+    MOVING = 1;         //движущаяся цель
+    STANDING = 2;       //стационарная цель
+    UNKNOWN_STATE = 3;  //неизвестная цель
 }
 
 // тип времени, привязываемый, пакетам с данными
@@ -28,7 +28,7 @@ enum UpdateModeType {
 }
 
 //Тип клиента
-//все типы клиентов имеют доступ к get-запросам и имеют возможность смотреть результтаты расчетов
+//все типы клиентов имеют доступ к get-запросам и имеют возможность смотреть результаты расчетов
 enum ClientType {
     administrator = 1; //администратор - может все, что предусмотрено протоколом обмена
     operator_     = 2; //оператор карты - может изменять настройки, связанные с
@@ -100,7 +100,7 @@ message Corrections {
         required int32 first_detector_index  = 1;
         //индекс второго датчика в паре, формирующей временную задержку
         required int32 second_detector_index = 2;
-        //корректировка к разностям расстояний
+        //корректировка к задержке времени [c.]
         required double correction = 3;
     }
     repeated Correction correction = 1;
@@ -149,13 +149,13 @@ message MeasurementsData {
     message DataPacket {
         required int32 first_detector_index  = 1; //индекс первого датчика
         required int32 second_detector_index = 2; //индекс второго датчика
-        required double time_delay = 3; //задержка времени м/у приходами сигналов на датчики
-        required double time_delay_sdv = 4; //СКО случайной ошибки определения задержки
-        optional double dopler = 5;         //доплеровский сдвиг
-        optional double dopler_sdv = 6;     //СКО случайной ошибки определения доплера
+        required double time_delay = 3; //задержка времени м/у приходами сигналов на датчики, c
+        required double time_delay_sdv = 4; //СКО случайной ошибки определения задержки, c
+        optional double dopler = 5;         //доплеровский сдвиг, Гц
+        optional double dopler_sdv = 6;     //СКО случайной ошибки определения доплера, Гц
     }
 
-    required double central_frequency = 1;  //центральная частота сигнала
+    required double central_frequency = 1;  //центральная частота сигнала, МГц
     required int64 datetime = 2;            //время получения измерений
     repeated DataPacket data_packet = 3;    //массив пактов с измерениями
 }
@@ -199,9 +199,9 @@ message SettingsOfMergingMeasurements {
     required double time_window = 2;    //временное окно объединения (в секундах)
 }
 
-//!Настройки режима "летающие датчики", в котором датчики установлены на БПЛА
+//Настройки режима "летающие датчики", в котором датчики установлены на БПЛА
 message DetectorsFlyingModeSettings {
-    //! Ассоциация идентификатора БПЛА какому-то номеру датчика
+    //Ассоциация идентификатора БПЛА какому-то номеру датчика
     message DetectorOnDrone {
         required string drone_id = 1; //Идентификатор БПЛА
         required int32 number_of_detector = 2; //номер датчика

@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>524</width>
-    <height>635</height>
+    <width>579</width>
+    <height>641</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="0">
+   <item row="3" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QPushButton" name="pbGetAll">
@@ -32,7 +32,7 @@
      </item>
     </layout>
    </item>
-   <item row="0" column="0">
+   <item row="1" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -41,7 +41,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -105,26 +105,12 @@
             </item>
            </layout>
           </item>
-          <item row="0" column="0" rowspan="2" colspan="3">
+          <item row="0" column="0" colspan="3">
            <layout class="QGridLayout" name="gridLayout_4">
-            <item row="2" column="1">
-             <widget class="QPushButton" name="pbCorReset">
-              <property name="text">
-               <string>Reset Corrections</string>
-              </property>
-             </widget>
-            </item>
             <item row="4" column="0">
              <widget class="Line" name="line">
               <property name="orientation">
                <enum>Qt::Vertical</enum>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="1">
-             <widget class="QPushButton" name="pbCorSave">
-              <property name="text">
-               <string>Save Corrections</string>
               </property>
              </widget>
             </item>
@@ -146,20 +132,6 @@
              <widget class="QPushButton" name="pbClear">
               <property name="text">
                <string>Clear</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QPushButton" name="pbCorStart">
-              <property name="text">
-               <string>Start Corrections</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QPushButton" name="pbCorStop">
-              <property name="text">
-               <string>Stop Corrections</string>
               </property>
              </widget>
             </item>
@@ -212,7 +184,7 @@
             </property>
             <property name="minimumSize">
              <size>
-              <width>260</width>
+              <width>366</width>
               <height>100</height>
              </size>
             </property>
@@ -244,7 +216,7 @@
              <number>2</number>
             </property>
             <property name="columnCount">
-             <number>2</number>
+             <number>3</number>
             </property>
             <row>
              <property name="text">
@@ -264,6 +236,11 @@
             <column>
              <property name="text">
               <string>lat</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Height</string>
              </property>
             </column>
            </widget>
@@ -711,56 +688,12 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_3">
+     <widget class="QWidget" name="tab_6">
       <attribute name="title">
-       <string>Stations and Corrections</string>
+       <string>Stations</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_8">
-       <item row="7" column="2" colspan="3">
-        <widget class="QTableWidget" name="twToCorrect">
-         <property name="columnCount">
-          <number>1</number>
-         </property>
-         <column/>
-        </widget>
-       </item>
-       <item row="6" column="2" colspan="2">
-        <widget class="QLabel" name="label_23">
-         <property name="text">
-          <string>What to correct</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QLabel" name="label_12">
-         <property name="text">
-          <string>Current corrections</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="1" colspan="2">
-        <widget class="QCheckBox" name="cbStartCorrections">
-         <property name="text">
-          <string>Count corrections</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
-        <widget class="QTableWidget" name="twCurrentCorrections">
-         <property name="columnCount">
-          <number>1</number>
-         </property>
-         <column/>
-        </widget>
-       </item>
-       <item row="3" column="3">
-        <widget class="QPushButton" name="pbAddStation">
-         <property name="text">
-          <string>Add</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="5">
+      <layout class="QGridLayout" name="gridLayout_12">
+       <item row="0" column="0" colspan="3">
         <widget class="QTableWidget" name="twStations">
          <property name="minimumSize">
           <size>
@@ -817,31 +750,45 @@
          </column>
         </widget>
        </item>
-       <item row="3" column="0">
+       <item row="1" column="0">
         <widget class="QCheckBox" name="cbStationOnMap">
          <property name="text">
           <string>Click on map</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QLabel" name="label_10">
+       <item row="1" column="1">
+        <widget class="QPushButton" name="pbAddStation">
          <property name="text">
-          <string>Stations Coordinates:</string>
+          <string>Add</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="0" colspan="3">
+       <item row="1" column="2">
+        <widget class="QPushButton" name="pbRemoveStation">
+         <property name="text">
+          <string>Remove</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QCheckBox" name="cbIriFromMap">
+         <property name="text">
+          <string>Click on map</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="3">
         <widget class="QTableWidget" name="twIri">
          <property name="minimumSize">
           <size>
-           <width>320</width>
+           <width>0</width>
            <height>50</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>320</width>
+           <width>9999999</width>
            <height>60</height>
           </size>
          </property>
@@ -876,14 +823,48 @@
          </column>
         </widget>
        </item>
-       <item row="3" column="4">
-        <widget class="QPushButton" name="pbRemoveStation">
-         <property name="text">
-          <string>Remove</string>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>Corrections</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_8">
+       <item row="4" column="4" colspan="2">
+        <widget class="QSpinBox" name="sbFrequencyForCorrection">
+         <property name="suffix">
+          <string> Mhz</string>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="minimum">
+          <number>20</number>
+         </property>
+         <property name="maximum">
+          <number>5000</number>
+         </property>
+         <property name="value">
+          <number>730</number>
          </property>
         </widget>
        </item>
-       <item row="10" column="1">
+       <item row="2" column="1">
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>Current corrections</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QTableWidget" name="twCurrentCorrections">
+         <property name="columnCount">
+          <number>1</number>
+         </property>
+         <column/>
+        </widget>
+       </item>
+       <item row="7" column="1">
         <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -896,35 +877,53 @@
          </property>
         </spacer>
        </item>
-       <item row="5" column="0">
-        <widget class="QCheckBox" name="cbIriFromMap">
+       <item row="3" column="2" colspan="4">
+        <widget class="QTableWidget" name="twToCorrect">
+         <property name="columnCount">
+          <number>1</number>
+         </property>
+         <column/>
+        </widget>
+       </item>
+       <item row="6" column="4" colspan="2">
+        <widget class="QPushButton" name="pbCorReset">
          <property name="text">
-          <string>Click on map</string>
+          <string>Reset Corrections</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="0">
+       <item row="4" column="1" colspan="2">
+        <widget class="QCheckBox" name="cbStartCorrections">
+         <property name="text">
+          <string>Count corrections</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>Stations Coordinates:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1" colspan="5">
+        <widget class="QTextBrowser" name="textBrowserCorrection"/>
+       </item>
+       <item row="6" column="1">
+        <widget class="QPushButton" name="pbCorSave">
+         <property name="text">
+          <string>Save Corrections</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
         <widget class="QLabel" name="label_11">
          <property name="text">
           <string>Corrections</string>
          </property>
         </widget>
        </item>
-       <item row="9" column="1">
-        <widget class="QPushButton" name="pbSaveCorections">
-         <property name="text">
-          <string>Save</string>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="3" colspan="2">
-        <widget class="QPushButton" name="pbDropCorrections">
-         <property name="text">
-          <string>Drop</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0" rowspan="3">
+       <item row="3" column="0" rowspan="4">
         <widget class="QTableWidget" name="twWorkCorrections">
          <property name="columnCount">
           <number>1</number>
@@ -935,8 +934,42 @@
          <column/>
         </widget>
        </item>
+       <item row="2" column="2" colspan="3">
+        <widget class="QLabel" name="label_23">
+         <property name="text">
+          <string>What to correct</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="3">
+        <widget class="QCheckBox" name="cbFrequencyForCorrection">
+         <property name="text">
+          <string>Freq </string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tab_5">
+      <attribute name="title">
+       <string>Сообщения</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_11">
+       <item row="0" column="0">
+        <widget class="QTextBrowser" name="textBrowser"/>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="lblClientType">
+     <property name="text">
+      <string>Client:  %1</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
     </widget>
    </item>
   </layout>

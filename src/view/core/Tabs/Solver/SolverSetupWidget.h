@@ -23,12 +23,13 @@ public:
 	void setSolverVersion(const QString &version);
 	void setSolverSettings(SolverProtocol::Packet_DataFromSolver_SolverResponse &data);
 
-    SolverProtocol::Packet getSolverParams();
+	SolverProtocol::Packet getSolverParams();
 
 private:
 	Ui::SolverSetupWidget *ui;
 
-	void addTableItem(QTableWidget* widget, int r, int c, QVariant value, bool isNum);
+	void addTableItem(QTableWidget* widget, int r, int c, QVariant value, bool isNum, bool isGrad = false);
+	void addTableCheckbox(QTableWidget* widget, int r, int c, const QString &title);
 	void ClearTableItem(QTableWidget* widget);
 	int m_workAreaSetCounter;
 
@@ -40,6 +41,7 @@ public:
 
 	void setMapClick(double lon, double lat );
 
+	void setSolverMessage(int, QString);
 private slots:
 	void slotAddStation();
 	void slotRemoveStation();
@@ -60,4 +62,6 @@ signals:
 	void signalGetAll();
 
 	void signalSetParams();
+
+	void onCorrectionCalculation(int);
 };

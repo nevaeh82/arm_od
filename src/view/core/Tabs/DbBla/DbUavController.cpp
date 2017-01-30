@@ -299,12 +299,12 @@ int DbUavController::addUavInfo(const UavInfo& info)
 
 	QSqlQuery query(m_db);
 	bool succeeded = query.prepare(
-				"INSERT INTO info "
-                    "(uavId, device, source, uavName, latitude, longitude, altitude, "
-					"latitudeStdDev, longitudeStdDev, speed, yaw, restTime, statusTypeId, datetime) "
+				"REPLACE INTO info "
+				"(uavId, device, source, uavName, latitude, longitude, altitude, "
+				"latitudeStdDev, longitudeStdDev, speed, yaw, restTime, statusTypeId, datetime) "
 				"VALUES "
-                    "(:uavId, :device, :source, :name, :lat, :lon, :alt, "
-					":latStdDev, :lonStdDev, :speed, :yaw, :restTime, :statusId, :dateTime) "
+				"(:uavId, :device, :source, :name, :lat, :lon, :alt, "
+				":latStdDev, :lonStdDev, :speed, :yaw, :restTime, :statusId, :dateTime) "
 				);
 
 	if (!succeeded){
@@ -316,51 +316,51 @@ int DbUavController::addUavInfo(const UavInfo& info)
 	query.bindValue(":uavId", info.uavId);
 	query.bindValue(":device", info.device);
 	query.bindValue(":source", info.source);
-    query.bindValue(":name", info.name);
+	query.bindValue(":name", info.name);
 
 	query.bindValue(":lat", info.lat);
-//	query.bindValue(":lat2", info.lat);
+	//	query.bindValue(":lat2", info.lat);
 	query.bindValue(":latStdDev", info.latStddev);
-//	query.bindValue(":latStdDev2", info.latStddev);
+	//	query.bindValue(":latStdDev2", info.latStddev);
 
 	query.bindValue(":lon", info.lon);
-//	query.bindValue(":lon2", info.lon);
+	//	query.bindValue(":lon2", info.lon);
 	query.bindValue(":lonStdDev", info.lonStddev);
-//	query.bindValue(":lonStdDev2", info.lonStddev);
+	//	query.bindValue(":lonStdDev2", info.lonStddev);
 
 	query.bindValue(":alt", info.alt);
-//	query.bindValue(":alt2", info.alt);
+	//	query.bindValue(":alt2", info.alt);
 
 	query.bindValue(":speed", info.speed);
-//	query.bindValue(":speed2", info.speed);
+	//	query.bindValue(":speed2", info.speed);
 
 	query.bindValue(":yaw", info.yaw);
-//	query.bindValue(":yaw2", info.yaw);
+	//	query.bindValue(":yaw2", info.yaw);
 
 	query.bindValue(":restTime", info.restTime.toString("hh:mm:ss"));
-//	query.bindValue(":restTime2", info.restTime.toString("hh:mm:ss"));
+	//	query.bindValue(":restTime2", info.restTime.toString("hh:mm:ss"));
 
 	query.bindValue(":statusId", info.statusId);
-//	query.bindValue(":statusId2", info.statusId);
+	//	query.bindValue(":statusId2", info.statusId);
 
-    if( !info.dateTime.isValid() ) {
-        query.bindValue(":dateTime", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
-    } else {
-        query.bindValue(":dateTime", info.dateTime.toString("yyyy-MM-dd hh:mm:ss"));
-    }
+	if( !info.dateTime.isValid() ) {
+		query.bindValue(":dateTime", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
+	} else {
+		query.bindValue(":dateTime", info.dateTime.toString("yyyy-MM-dd hh:mm:ss"));
+	}
 
 
-    QString tmp = query.lastQuery();
+	QString tmp = query.lastQuery();
 	succeeded = query.exec();
-    tmp = query.lastQuery();
+	tmp = query.lastQuery();
 
 	if (succeeded){
-        //sendLog(QString(tr("Ok writing to DB ")));
+		//sendLog(QString(tr("Ok writing to DB ")));
 		return query.lastInsertId().toUInt();
 	} else {
 		QString er = query.lastError().databaseText() + "\n" + query.lastError().driverText();
 		sendLog(QString(tr("Error adding to DB ") + er));
-        //log_debug("SQL query is wrong! " + er);
+		//log_debug("SQL query is wrong! " + er);
 	}
 
 	return INVALID_INDEX;
@@ -397,17 +397,17 @@ bool DbUavController::getUavInfoByUavId(const uint uavId, QList<UavInfo> &uavInf
 		info.uavId = query.value(1).toInt();
 		info.device = query.value(2).toInt();
 		info.source = query.value(3).toInt();
-        info.name = query.value(4).toString();
-        info.lat = query.value(5).toDouble();
-        info.lon = query.value(6).toDouble();
-        info.alt = query.value(7).toDouble();
-        info.latStddev = query.value(8).toDouble();
-        info.lonStddev = query.value(9).toDouble();
-        info.speed = query.value(11).toDouble();
-        info.yaw = query.value(12).toDouble();
-        info.restTime = QTime::fromString(query.value(13).toString());
-        info.statusId = query.value(14).toInt();
-        info.dateTime = QDateTime::fromString(query.value(15).toString());
+		info.name = query.value(4).toString();
+		info.lat = query.value(5).toDouble();
+		info.lon = query.value(6).toDouble();
+		info.alt = query.value(7).toDouble();
+		info.latStddev = query.value(8).toDouble();
+		info.lonStddev = query.value(9).toDouble();
+		info.speed = query.value(11).toDouble();
+		info.yaw = query.value(12).toDouble();
+		info.restTime = QTime::fromString(query.value(13).toString());
+		info.statusId = query.value(14).toInt();
+		info.dateTime = QDateTime::fromString(query.value(15).toString());
 
 		uavInfoList.append(info);
 	}
@@ -437,7 +437,7 @@ int DbUavController::addDevice(const Devices& device)
 	bool succeeded = query.prepare(QString("INSERT INTO devices (deviceTypeId, port, uavId)")
 								   + QString("VALUES(:deviceTypeId, :port, :uavId);"));
 
-	if (!succeeded){
+	if (!succeeded) {
 		QString er = query.lastError().text();
 		log_debug("SQL is wrong! " + er);
 		return INVALID_INDEX;
@@ -604,6 +604,7 @@ Source DbUavController::getSource(const uint sourceId)
 
 	Source source;
 	source.id = -1;
+	source.sourceId = 0;
 
 	if(!m_db.isOpen()){
 		return source;
@@ -729,27 +730,27 @@ bool DbUavController::deleteUavMissionsByUavId(const uint uavId)
 		return false;
 	}
 
-		QSqlQuery query(m_db);
-		bool succeeded = query.prepare(QString("DELETE FROM uavmission WHERE uavID = :uavId;"));
+	QSqlQuery query(m_db);
+	bool succeeded = query.prepare(QString("DELETE FROM uavmission WHERE uavID = :uavId;"));
 
-		if (!succeeded) {
-			QString er = query.lastError().text();
-			log_debug("SQL is wrong! " + er);
-			return false;
-		}
+	if (!succeeded) {
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
+		return false;
+	}
 
-		query.bindValue(":uavId", uavId);
+	query.bindValue(":uavId", uavId);
 
-		succeeded = query.exec();
+	succeeded = query.exec();
 
-		if (!succeeded){
-			QString er = query.lastError().text();
-			log_debug("SQL is wrong! " + er);
-			m_db.commit();
-			return false;
-		}
-
+	if (!succeeded){
+		QString er = query.lastError().text();
+		log_debug("SQL is wrong! " + er);
 		m_db.commit();
+		return false;
+	}
+
+	m_db.commit();
 
 	return true;
 }

@@ -7,6 +7,7 @@ RPCServer::RPCServer(QObject* parent)
 	: RpcServerBase(parent)
 	, _router(0)
 	, _subscriber(0)
+	, m_armr_connection(false)
 {
 	connect(this, SIGNAL(sendDataByRpcSignal(QString,QByteArray)), this, SLOT(sendDataByRpcSlot(QString,QByteArray)));
 }
@@ -32,6 +33,9 @@ bool RPCServer::start(quint16 port, QHostAddress address)
 	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCBPLAPoints1(QByteArray)), RPC_SLOT_SERVER_SEND_BPLA_POINTS_1);
 	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCBPLAPointsAuto(QByteArray)), RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO);
 	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCHyperbola(QByteArray)), RPC_SLOT_SERVER_SEND_HYPERBOLA);
+
+	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCARMRConnection(bool)), RPC_SLOT_SERVER_SEND_ARMR_CONNECTION);
+
 	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCAtlantDirection(QByteArray)), RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION);
 	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCAtlantPosition(QByteArray)), RPC_SLOT_SERVER_SEND_ATLANT_POSITION);
 
@@ -96,6 +100,9 @@ void RPCServer::_slotRPCConnetion(quint64 client)
 	connect(cl, SIGNAL(signalSendToNIIPPPoints(quint64,QByteArray*)), this, SLOT(rpc_slot_send_NIIPP_data(quint64,QByteArray*)));
 	connect(cl, SIGNAL(signalSendToRPCAtlantDirection(quint64,QByteArray*)), this, SLOT(rpc_slot_send_atlant_direction(quint64,QByteArray*)));
 	connect(cl, SIGNAL(signalSendToRPCAtlantPosition(quint64,QByteArray*)), this, SLOT(rpc_slot_send_atlant_position(quint64,QByteArray*)));
+
+	emit signalSendToRPCARMRConnection(m_armr_connection);
+	time.singleShot(5000, this, SLOT(slotSendStatusARMR()));
 }
 
 
@@ -120,6 +127,16 @@ void RPCServer::requestGetDbConfigurationSlot(quint64 client, QString configFile
 	foreach (IRpcListener* receiver, m_receiversList) {
 		receiver->onMethodCalled(RPC_METHOD_CONFIG_REQUEST_GET_DB_CONFIGURATION, QVariant(configFilename));
 	}
+}
+
+void RPCServer::slotARMRSetConnection(bool b)
+{
+	m_armr_connection = b;
+}
+
+void RPCServer::slotSendStatusARMR()
+{
+	emit signalSendToRPCARMRConnection(m_armr_connection);
 }
 
 void RPCServer::sendDataByRpcSlot(QString signalType, QByteArray data)

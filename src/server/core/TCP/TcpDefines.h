@@ -24,6 +24,7 @@
 
 #define TCP_ARMR_SEND_SOLVER_DATA			"tcpArmrSendSolverData"
 #define TCP_ARMR_SEND_SOLVER_CLEAR			"tcpArmrSendSolverClear"
+#define TCP_ARMR_SEND_KTR_DATA				"tcpArmrSendKtrData"
 
 /// AIS device internal
 #define TCP_AIS_ANSWER_DATA					"tcpAisAnswerData"

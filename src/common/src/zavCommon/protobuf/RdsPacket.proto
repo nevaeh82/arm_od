@@ -1,0 +1,290 @@
+syntax="proto2";
+//option optimize_for = LITE_RUNTIME;
+package RdsProtobuf;
+
+//#################################################################################################
+// Оборудование
+//#################################################################################################
+
+//#### Настройки приемника
+message ReceiverSettings {
+	required int32 frequency = 1;// Частота
+	required int32 attenuator1 = 2;// Первый аттенюатор. 0 = 0 дБ, 1 = 10дБ! (надо сделать один суммарный аттенюатор)
+	required int32 attenuator2 = 3;// Второй аттенюатор. От 0 до 15. Какое значение – столько и дБ. 
+	required int32 filter = 4;// Полоса приемника. Нужно т.к. у некоторых новых ПРМ она другая.
+}
+
+//#### Параметры приемника
+message ReceiverOptions {
+	required string title = 1;// Название (может быть нужно если приемник «отдельный»)
+	required bool status = 2;// Вкл. или выкл.
+	required string ip = 3;// IP
+	required ReceiverSettings settings = 4;// Настройки приемника
+}
+
+//#### Параметры канала (cоответствует датчику)
+message ChannelOptions {
+	// Координаты датчика
+	message Coordinates {
+		required double latitude = 1;// Широта (град)
+		required double longitude = 2;// Долгота (град)
+		required double altitude = 3;// Высота (м)
+	}
+	required string title = 1;// Название
+	required ReceiverOptions receiver = 2;// Настройки приемника
+	required bool inversion = 3;// Инверсия спектра
+	optional Coordinates coordinates = 4;// Координаты датчика
+}
+
+//#### Параметры платформы с АЦП
+message DeviceOptions {
+	required string title = 1;// Название
+	required bool status = 2;// Вкл. или выкл.
+	required string ip = 3;// IP
+	required int32 sync = 4;// Тип синхронизации (0 = межплатная, 1 = GPS, 2 = GPS + delay, 3 = none). Чтобы различать платформы разного типа.
+	optional bool enabled = 5;
+	repeated ChannelOptions channels = 6;// Параметры каналов. Сколько их столько и каналов
+}
+
+//#################################################################################################
+// Общие сообщения
+//#################################################################################################
+
+//#### Частотный диапазон
+message Range {
+	required double start = 1;// Начальная частота (МГц)
+	required double end = 2;// Конечная частота (МГц)
+}
+
+//#### Данные свертки
+message Convolution {
+	required int32 first_detector_index  = 1;// Индекс первого датчика
+	required int32 second_detector_index = 2;// Индекс второго датчика
+	required double delay = 3;// Задержка времени м/у приходами сигналов на датчики (сек). T_1 - T_2
+	required double delay_accuracy = 4;// СКО случайной ошибки определения задержки (cек)
+	optional double doppler = 5;// Доплеровский сдвиг (Гц)
+	optional double doppler_accuracy = 6;// СКО случайной ошибки определения доплера (Гц)
+}
+
+//#################################################################################################
+// Get, Set and Current
+//#################################################################################################
+
+// С помощью GetMessage клиент запрашивает настройки. В ответ клиент получает текущие настройки CurrentMessage.
+
+// Некоторые настройки клиент может задавать (помечены (*)). В ответ на SetMessage клиент получает AnswerMessage. 
+// Если все правильно то это будет Confirmation. Если задаваемые значения не прошли проверку то будет Error + сообщение с соответствующими текущими настройками CurrentMessage.
+
+
+//#### Система
+message System {
+
+	// Параметры системы. 
+	message SystemOptions {
+		required string title = 1;// Название
+		repeated DeviceOptions devices = 2;// Параметры платформ. Сколько их столько и платформ
+	}
+
+	// Платформа. Для включения/выключения платформы
+	message Device {
+		required int32 device_Index = 1;// Индекс платформы
+		required bool status = 2;// Вкл. или выкл.
+	}
+
+	// Приемник. Для включения/выключения приемника, настройки его частоты и аттенюаторов.
+	message Receiver {
+		required int32 device_Index = 1;// Индекс платформы
+		required int32 channel_Index = 2;// Индекс канала платфомы
+		oneof messageType {
+			bool status = 3;// Вкл. или выкл.
+			ReceiverSettings settings = 4;// Настройки приемника (частота, аттенюаторы)
+		}
+	}
+	
+	oneof Message {
+		SystemOptions options = 1;
+		Device device = 2;
+		Receiver receiver = 3;
+	}
+}
+
+//#################################################################################################
+// Сообщение от клиента
+//#################################################################################################
+
+message ClientMessage {
+	
+	// Запросить (забитые значения игнорируются, текущие значения в ответе сервера)
+	message GetMessage {
+
+		oneof Message { 
+			System system = 1;
+		}
+	}
+
+	// Задать
+	message SetMessage {
+
+		oneof Message { 
+			System system = 1;
+		}
+	}
+
+	message OneShot {
+
+		message Location {
+			required int32 duration = 1;// Длительность выборки (мс)
+			required int32 central_frequency = 2;// Центральная частота (МГц).
+			required Range range = 3;// Выделенная область
+			required bool convolution = 4;// Вычислять ли свертку
+			required bool doppler = 5;// Вычислять ли доплеровский сдвиг
+			required bool convolution_plot = 6;// Отправлять ли графики свертки
+			required bool hump = 7;
+			required int32 averaging_frequency_band = 8;// Полоса усреднения по частоте (кГц). От 1 до 500 кГц. (Для графиков)
+		}
+
+		// Анализ г-на Кислицына
+		message Analysis {
+			required int32 duration = 1;// Длительность выборки (мс)
+			required int32 central_frequency = 2;// Центральная частота (МГц).
+			required int32 detector_index = 3;// Индекс датчика
+			required Range range = 4;// Область анализа
+		}
+
+		message Record {
+			required int32 duration = 1;// Длительность выборки (мс)
+			required int32 central_frequency = 2;// Центральная частота (МГц).
+			required int32 detector_index = 3;// Индекс датчика
+			required Range range = 4;// Выделенная область			
+		}
+
+		oneof Message { 
+			Location location = 1;
+			Analysis analysis = 2;
+			Record record = 3;
+		}
+	}
+
+	enum CommandType {
+	    restart = 1;// Перезапустить сервер
+	}
+
+	oneof MessageType { 
+		GetMessage get = 1;
+		SetMessage set = 2;
+		OneShot one_shot = 3;	
+		CommandType command = 4;
+	}
+}
+
+//#################################################################################################
+// Сообщение от сервера
+//#################################################################################################
+
+message ServerMessage {	
+
+	// Текущие настройки
+	message CurrentMessage {
+		oneof Request { 
+			System system = 1;
+		}
+	}
+	
+	// Ответ
+	message AnswerMessage {
+
+		// Сообщение об ошибке
+		message Error {
+			required string str = 1;// Описание ошибки 
+		}
+
+		// Подтверждение о получении команды от клиента
+		message Confirmation {
+			required string str = 1;
+		}
+	
+		oneof RequestType {
+			Error error = 1;
+			Confirmation confirmation = 2;
+		}
+	}
+
+	message OneShotData {
+
+		message LocationData {
+
+			message Plot {
+				required int32 index = 1;// Индекс графика
+				repeated float data = 2;// Значения Y
+				required double axis_x_start = 3;// Начальное значение по оси Х
+				required double axis_x_step = 4;// Шаг по оси Х
+			}
+
+			//#### Горб
+			message Hump {
+				required int32 detector_index = 1;
+				required Range range = 2;
+			}
+
+			required bool success = 1;// Статус операции
+			required string error = 2;// Описание ошибки 
+			required int64 date_time = 3;// Время измерения
+			required int32 central_frequency = 4;// Центральная частота (МГц).
+			required Range range = 5;// Полоса, для которой проводились измерения
+			repeated bool detector_status = 6;// Статус сигнала соответствующего канала. Сколько же сколько и каналов. Если false значит оцифровать сигнал не удалось.
+			repeated Convolution convolution = 7;// Массив со свертками
+			repeated Plot spectrum_plot = 8;
+			repeated Hump hump = 9;// Горбы
+			repeated Plot convolution_plot = 10;
+		}
+
+		message AnalysisData {
+
+			//####  Сигналы распознанные библиотекой г-на Кислицына
+			message AnalysisOutput {
+				required double central_frequency = 1;// Центральная частота сигнала
+				required Range range = 2;// Полоса сигнала
+				optional string system = 3;// Система связи
+				optional string modulation = 4;// Вид модуляции
+				optional int32 estimation_probability = 5;// Корректность анализа в %				
+				optional string more_info = 6;// Тут страна, оператор, ячейка и т.д.  
+			}
+
+			required bool success = 1;// Статус операции
+			required string error = 2;// Описание ошибки 
+			required int64 date_time = 3;// Время измерения
+			required int32 central_frequency = 4;// Центральная частота (МГц).
+			required Range range = 5;// Полоса, для которой проводились измерения
+			required int32 detector_index = 6;// Индекс датчика
+			repeated AnalysisOutput signal = 7;
+		}
+
+		message RecordData {
+			required bool success = 1;// Статус операции
+			required string error = 2;// Описание ошибки 
+		}
+
+		oneof Message { 
+			LocationData location_data = 1;
+			AnalysisData analysis_data = 2;
+			RecordData record_data = 3;
+		}
+	}
+
+	oneof MessageType { 
+		CurrentMessage current = 1;
+		AnswerMessage answer = 2;
+		OneShotData one_shot_data = 3;
+	}
+}
+
+//#################################################################################################
+// Пакет
+//#################################################################################################
+
+message Packet {
+	oneof PacketType { 
+		ClientMessage from_client = 1;
+		ServerMessage from_server = 2;
+	}
+}

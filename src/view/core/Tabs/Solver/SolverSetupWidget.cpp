@@ -25,8 +25,9 @@ SolverSetupWidget::SolverSetupWidget(QWidget *parent) :
 	connect(ui->pbStop, SIGNAL(clicked(bool)), this, SIGNAL(signalStopSolver()));
 	connect(ui->pbRestart, SIGNAL(clicked(bool)), this, SIGNAL(signalRestartSolver()));
 	connect(ui->pbClear, SIGNAL(clicked(bool)), this, SIGNAL(signalClearSolver()));
-	connect(ui->pbCorStart, SIGNAL(clicked(bool)), this, SIGNAL(signalStartSolverCorrections()));
-	connect(ui->pbCorStop, SIGNAL(clicked(bool)), this, SIGNAL(signalStopSolverCorrections()));
+
+	connect(ui->cbStartCorrections, SIGNAL(stateChanged(int)), this, SIGNAL(onCorrectionCalculation(int)));
+
 	connect(ui->pbCorReset, SIGNAL(clicked(bool)), this, SIGNAL(signalResetSolverCorrections()));
 	connect(ui->pbCorSave, SIGNAL(clicked(bool)), this, SIGNAL(signalSaveSolverCorrections()));
 
@@ -52,6 +53,24 @@ void SolverSetupWidget::setSolverVersion(const QString &version)
 	ui->lblSolverVersion->setText( version );
 }
 
+void SolverSetupWidget::setSolverMessage(int type, QString text)
+{
+	QString txtType;
+	QString color;
+
+	if(type == 1) {
+		txtType = tr("Message");
+		color = "green";
+	} else if(type == 2) {
+		txtType = tr("Warning");
+		color = "yellow";
+	} else if(type == 3) {
+		txtType = tr("Error");
+		color = "red";
+	}
+	ui->textBrowser->append( QString("<b><font color=\"%1\">%2</font></b>  \n      %3").arg(color).arg(txtType).arg(text) );
+}
+
 void SolverSetupWidget::setSolverSettings(SolverProtocol::Packet_DataFromSolver_SolverResponse& data)
 {
 	if( data.has_solverversion() ) {
@@ -60,6 +79,8 @@ void SolverSetupWidget::setSolverSettings(SolverProtocol::Packet_DataFromSolver_
 
 	if( data.has_clienttype() ) {
 		ui->cbClientType->setCurrentIndex( ((int)data.clienttype())-1 );
+		ui->lblClientType->setText(tr("Client:  %1").arg( QString("  %1").arg(   ui->cbClientType->itemText(((int)data.clienttype())-1)  ) ));
+
 	}
 
 	if( data.has_solutionconfiguration() ) {
@@ -109,24 +130,26 @@ void SolverSetupWidget::setSolverSettings(SolverProtocol::Packet_DataFromSolver_
 		for(int i = 0; i < data.detectors().detector_size(); i++) {
 			addTableItem(ui->twStations, i, 0, QString::fromStdString(data.detectors().detector(i).detector_name()), false);
 
-			addTableItem(ui->twStations, i, 1, (data.detectors().detector(i).coords().lon()), true);
-			addTableItem(ui->twStations, i, 2, (data.detectors().detector(i).coords().lat()), true);
+			addTableItem(ui->twStations, i, 1, (data.detectors().detector(i).coords().lon()), true, true);
+			addTableItem(ui->twStations, i, 2, (data.detectors().detector(i).coords().lat()), true, true);
 			addTableItem(ui->twStations, i, 3, (data.detectors().detector(i).coords().alt()), true);
 		}
 	}
 
 	if(data.has_areaofresponsibility()) {
-		addTableItem(ui->twWorkRect, 0, 0, (data.areaofresponsibility().mincoordinates().lon()), true);
-		addTableItem(ui->twWorkRect, 0, 1, (data.areaofresponsibility().mincoordinates().lat()), true);
+		addTableItem(ui->twWorkRect, 0, 0, (data.areaofresponsibility().mincoordinates().lon()), true, true);
+		addTableItem(ui->twWorkRect, 0, 1, (data.areaofresponsibility().mincoordinates().lat()), true, true);
+		addTableItem(ui->twWorkRect, 0, 2, (data.areaofresponsibility().mincoordinates().alt()), false);
 
-		addTableItem(ui->twWorkRect, 1, 0, (data.areaofresponsibility().maxcoordinates().lon()), true);
-		addTableItem(ui->twWorkRect, 1, 1, (data.areaofresponsibility().maxcoordinates().lat()), true);
+		addTableItem(ui->twWorkRect, 1, 0, (data.areaofresponsibility().maxcoordinates().lon()), true, true);
+		addTableItem(ui->twWorkRect, 1, 1, (data.areaofresponsibility().maxcoordinates().lat()), true, true);
+		addTableItem(ui->twWorkRect, 1, 2, (data.areaofresponsibility().maxcoordinates().alt()), false);
 	}
 
 	if(data.has_sourcecoordsforcorrecting()) {
 		SolverProtocol::Coordinates coord = data.sourcecoordsforcorrecting().coords();
-		addTableItem(ui->twIri, 0, 0, (coord.lon()), true);
-		addTableItem(ui->twIri, 0, 1, (coord.lat()), true);
+		addTableItem(ui->twIri, 0, 0, (coord.lon()), true, true);
+		addTableItem(ui->twIri, 0, 1, (coord.lat()), true, true);
 		addTableItem(ui->twIri, 0, 2, (coord.alt()), true);
 	}
 
@@ -168,6 +191,8 @@ void SolverSetupWidget::setSolverSettings(SolverProtocol::Packet_DataFromSolver_
 
 		ui->twWorkCorrections->setRowCount( data.coorrections().correction_size() );
 		ui->twWorkCorrections->setColumnCount(1);
+		ui->twToCorrect->setRowCount( data.coorrections().correction_size() );
+		ui->twToCorrect->setColumnCount(1);
 
 		QStringList headers;
 		for(int i = 0; i<data.coorrections().correction_size(); i++ ) {
@@ -183,8 +208,60 @@ void SolverSetupWidget::setSolverSettings(SolverProtocol::Packet_DataFromSolver_
 		for(int i = 0; i<data.coorrections().correction_size(); i++ ) {
 			SolverProtocol::Corrections_Correction corr = data.coorrections().correction(i);
 			addTableItem( ui->twWorkCorrections, i, 0, QString::number(corr.correction()*1000000), false );
+		}
+
+		int row = 0;
+		foreach (QString title, headers) {
+			addTableCheckbox(ui->twToCorrect, row, 0, title);
+			row++;
+		}
+
+	}
+
+	if(data.has_calculatedcoorrections()) {
+		ui->twCurrentCorrections->setRowCount( data.calculatedcoorrections().correction_size() );
+		ui->twCurrentCorrections->setColumnCount(1);
+
+		QStringList headers;
+		for(int i = 0; i<data.calculatedcoorrections().correction_size(); i++ ) {
+			SolverProtocol::Corrections_Correction corr = data.calculatedcoorrections().correction(i);
+			headers.append(QString("%1-%2").arg(corr.first_detector_index())
+						   .arg(corr.second_detector_index()));
+//			ui->twCurrentCorrections->verticalHeaderItem(i)->setText( QString("%1-%2").arg(corr.first_detector_index())
+//																					  .arg(corr.second_detector_index())
+//																	  );
+		}
+		ui->twCurrentCorrections->setVerticalHeaderLabels(headers);
+
+		for(int i = 0; i<data.calculatedcoorrections().correction_size(); i++ ) {
+			SolverProtocol::Corrections_Correction corr = data.calculatedcoorrections().correction(i);
+			addTableItem( ui->twCurrentCorrections, i, 0, QString::number(corr.correction()*1000000), false );
 
 		}
+	}
+
+	if(data.has_settingsofcorrectionscalculation()) {
+
+		for(int j = 0; j<ui->twToCorrect->rowCount(); j++) {
+			QCheckBox* cb = dynamic_cast<QCheckBox*>(ui->twToCorrect->cellWidget(j, 0));
+			cb->setChecked(true);
+		}
+
+		for( int i = 0; i<data.settingsofcorrectionscalculation().uncorrectable_delay_size(); i++ ) {
+			QString txt = QString("%1-%2").arg(data.settingsofcorrectionscalculation().uncorrectable_delay(i).first())
+										  .arg(data.settingsofcorrectionscalculation().uncorrectable_delay(i).second());
+			for(int j = 0; j<ui->twToCorrect->rowCount(); j++) {
+				QCheckBox* cb = dynamic_cast<QCheckBox*>(ui->twToCorrect->cellWidget(j, 0));
+				if(cb->text() == txt) {
+					cb->setChecked(false);
+				}
+			}
+		}
+	}
+
+	//Receiving Solver messages
+	if(data.has_messageofcorrectingprocess()) {
+		ui->textBrowserCorrection->append(QString::fromStdString(data.messageofcorrectingprocess()));
 	}
 }
 
@@ -231,12 +308,12 @@ SolverProtocol::Packet SolverSetupWidget::getSolverParams()
 	SolverProtocol::Coordinates* coord = sPkt->mutable_setareaofresponsibility()->mutable_areaofresponsibility()->mutable_mincoordinates();
 	coord->set_lon( dynamic_cast<QDoubleSpinBox*>(ui->twWorkRect->cellWidget(0, 0))->value() );
 	coord->set_lat( dynamic_cast<QDoubleSpinBox*>(ui->twWorkRect->cellWidget(0, 1))->value() );
-	coord->set_alt( 0 );
+	coord->set_alt( dynamic_cast<QLineEdit*>(ui->twWorkRect->cellWidget(0, 2))->text().toInt() );
 
 	coord = sPkt->mutable_setareaofresponsibility()->mutable_areaofresponsibility()->mutable_maxcoordinates();
 	coord->set_lon( dynamic_cast<QDoubleSpinBox*>(ui->twWorkRect->cellWidget(1, 0))->value() );
 	coord->set_lat( dynamic_cast<QDoubleSpinBox*>(ui->twWorkRect->cellWidget(1, 1))->value() );
-	coord->set_alt( 0 );
+	coord->set_alt( dynamic_cast<QLineEdit*>(ui->twWorkRect->cellWidget(1, 2))->text().toInt() );
 
 	//IRI
 	SolverProtocol::CoordinatesInTime* tcoord = sPkt->mutable_setsourcecoordinates()->mutable_sourcecoordsforcorrecting();
@@ -255,6 +332,61 @@ SolverProtocol::Packet SolverSetupWidget::getSolverParams()
 		det->mutable_coords()->set_lon(dynamic_cast<QDoubleSpinBox*>(ui->twStations->cellWidget(i, 1))->value());
 		det->mutable_coords()->set_lat(dynamic_cast<QDoubleSpinBox*>(ui->twStations->cellWidget(i, 2))->value());
 		det->mutable_coords()->set_alt(dynamic_cast<QDoubleSpinBox*>(ui->twStations->cellWidget(i, 3))->value());
+	}
+
+	//current corrections
+	for(int k = 0; k < ui->twWorkCorrections->rowCount(); k++) {
+		QLineEdit* le = dynamic_cast<QLineEdit*>(ui->twWorkCorrections->cellWidget(k, 0));
+		QStringList title = ui->twWorkCorrections->verticalHeaderItem(k)->text().split("-");
+		if(title.size() < 2) {
+			continue;
+		}
+
+		SolverProtocol::Corrections_Correction* corr =
+				sPkt->mutable_setcorrections()->mutable_coorrections()->add_correction();
+		corr->set_first_detector_index( title.at(0).toInt() );
+		corr->set_second_detector_index( title.at(1).toInt() );
+
+		bool convert = false;
+		QString txt = le->text();
+		volatile double delay = le->text().toDouble(&convert);
+
+		if(!convert) {
+			delay = 0;
+			le->setText(QString::number(0.0));
+		}
+
+		delay = delay / (double)1000000.0;
+		corr->set_correction( delay );
+	}
+
+	//corrections to goto count
+
+	if(ui->cbFrequencyForCorrection->isChecked()) {
+		sPkt->mutable_setsettingsofcorrectionscalculation()->
+				mutable_settingsofcorrectionscalculation()->set_frequency_for_correction(ui->sbFrequencyForCorrection->value());
+	}
+
+	sPkt->mutable_setsettingsofcorrectionscalculation()->mutable_settingsofcorrectionscalculation();
+
+	for(int i = 0; i < ui->twToCorrect->rowCount(); i++) {
+
+		QCheckBox* cb = dynamic_cast<QCheckBox*>(ui->twToCorrect->cellWidget(i, 0));
+		if( cb->isChecked() ) {
+			continue;
+		}
+
+		QStringList title = cb->text().split("-");
+
+		if(title.size() < 2) {
+			continue;
+		}
+
+		SolverProtocol::SettingsOfCorrectionsCalculation_PairOfDetectorsIndexes* pair =
+				sPkt->mutable_setsettingsofcorrectionscalculation()->mutable_settingsofcorrectionscalculation()->add_uncorrectable_delay();
+
+		pair->set_first(title.at(0).toInt());
+		pair->set_second(title.at(1).toInt());
 	}
 
 	setSolutionConfiguration(sPkt);
@@ -294,10 +426,12 @@ void SolverSetupWidget::setMapClick(double lon, double lat)
 		if(m_workAreaSetCounter == 0) {
 			addTableItem( ui->twWorkRect, 0, 0, lon, true);
 			addTableItem( ui->twWorkRect, 0, 1, lat, true);
+			addTableItem( ui->twWorkRect, 0, 2, 0, false);
 			m_workAreaSetCounter++;
 		} else {
 			addTableItem( ui->twWorkRect, 1, 0, lon, true);
 			addTableItem( ui->twWorkRect, 1, 1, lat, true);
+			addTableItem( ui->twWorkRect, 1, 2, 1000, false);
 			m_workAreaSetCounter = 0;
 			ui->cbWorkAreaFromMap->setChecked(false);
 		}
@@ -350,7 +484,7 @@ SolverProtocol::Packet_DataFromClient_SetRequest_SetClientType SolverSetupWidget
 }
 
 //Table view work
-void SolverSetupWidget::addTableItem(QTableWidget* widget, int r, int c, QVariant value, bool isNum)
+void SolverSetupWidget::addTableItem(QTableWidget* widget, int r, int c, QVariant value, bool isNum, bool isGrad)
 {
 	bool isSet = false;
 	if(isNum) {
@@ -363,7 +497,14 @@ void SolverSetupWidget::addTableItem(QTableWidget* widget, int r, int c, QVarian
 		sb->setMaximum(180);
 		sb->setValue( value.toDouble() );
 
-		sb->setSuffix( " °" );
+		if(isGrad) {
+			sb->setDecimals(6);
+			sb->setSuffix( " °" );
+		} else {
+			sb->setDecimals(2);
+		}
+
+
 		if(isSet) {
 			widget->setCellWidget( r, c, sb );
 		}
@@ -379,6 +520,19 @@ void SolverSetupWidget::addTableItem(QTableWidget* widget, int r, int c, QVarian
 			widget->setCellWidget( r, c, le );
 		}
 	}
+}
+
+void SolverSetupWidget::addTableCheckbox(QTableWidget *widget, int r, int c, const QString& title)
+{
+	QCheckBox* cb;
+
+	cb = dynamic_cast<QCheckBox*>(widget->cellWidget(r, c));
+	if(!cb) {
+		cb = new QCheckBox(title, widget);
+		widget->setCellWidget(r, c, cb);
+	}
+
+	cb->setChecked(true);
 }
 
 //Table view work

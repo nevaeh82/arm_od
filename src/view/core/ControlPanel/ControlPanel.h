@@ -38,10 +38,14 @@ public:
 
 	void onSetDbLog(const QString& logTxt);
 
+	void setARMRConnection(bool b);
+
 signals:
 	void startPlayingHistorySignal();
 	void stopPlayingHistorySignal();
 	void startExportToXls();
+
+	void signalOnMux(int);
 };
 
 #endif // CONTROLPANEL_H

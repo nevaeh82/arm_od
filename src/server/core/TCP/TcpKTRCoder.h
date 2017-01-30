@@ -13,7 +13,7 @@
 #include <logManager/LogManager.h>
 
 #include "TcpDefines.h"
-#include "UAVDefines.h"
+#include "zavCommon/UAVDefines.h"
 
 class TcpKTRCoder : public BaseTcpDeviceCoder
 {

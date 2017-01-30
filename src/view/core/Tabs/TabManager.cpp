@@ -64,6 +64,11 @@ void TabManager::send_data_niipp_control(int id, QByteArray ba)
 
 }
 
+void TabManager::set_arm_r_connection(bool b)
+{
+	setARMRConnection(b);
+}
+
 void TabManager::setRpcConfig(const quint16& port, const QString& host)
 {
 	m_rpcHost = host;
@@ -180,6 +185,13 @@ void TabManager::addSolverSetupController(SolverSetupWidgetController *controlle
 void TabManager::setUavLifeTime(int msecs)
 {
 	m_dbUavManager->setLifeTime( msecs );
+}
+
+void TabManager::setARMRConnection(bool b)
+{
+	foreach (MapTabWidgetController* cntr, m_tabWidgetsMap.values()) {
+		cntr->setARMRConnection(b);
+	}
 }
 
 void TabManager::start()

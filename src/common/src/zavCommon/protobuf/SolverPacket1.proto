@@ -38,18 +38,18 @@ message Packet {
             getUpdateMode = 15;                //получить тип обновления расчетной информации
             getTimeType = 16;                  //получить тип времени
             getSolution = 17;                  //получить текущее решение
-            getDataAssociations = 18;          //получить ассоциированные данные
-            getSourceCoordsForCorrecting = 19; //получить координаты источника для вычисления поправок
-            getSettingsOfCorrectionsCalculation = 20; //получить настройки вычисления поправок
-            getCalculatedCorrections     = 21; //получить рассчитанные, с помощью процедуры, поправки
-            areCorrectionsBeingCalculated= 22; //включена ли сейчас процедура вычисления поправок
-            getMultitargetTrackingSettings= 23;//получить настройки алгоритмов трекинга
-            getAllSettingsFromSolver = 24;     //получить все настройки у решателя
-            getDataBaseRecordingSettings = 25; //получить настройки записи в базу данных
-            getMinDelaysCountForSingleMarks = 26; //получить минимальное количество задержек,
+            getSourceCoordsForCorrecting = 18; //получить координаты источника для вычисления поправок
+            getSettingsOfCorrectionsCalculation = 19; //получить настройки вычисления поправок
+            getCalculatedCorrections     = 20; //получить рассчитанные, с помощью процедуры, поправки
+            areCorrectionsBeingCalculated= 21; //включена ли сейчас процедура вычисления поправок
+            getMultitargetTrackingSettings= 22;//получить настройки алгоритмов трекинга
+            getAllSettingsFromSolver = 23;     //получить все настройки у решателя
+            getDataBaseRecordingSettings = 24; //получить настройки записи в базу данных
+            getMinDelaysCountForSingleMarks = 25; //получить минимальное количество задержек,
                                                   //необходимое для расчета одиночных отметок
-            getSettingsOfMergingMeasurements = 27; //!получить натройки объединения измерений
-            getDetectorsFlyingModeSettings = 28;   //!получить настройки режима "летающие датчики"
+            getSettingsOfMergingMeasurements = 26; //!получить натройки объединения измерений
+            getDetectorsFlyingModeSettings = 27;   //!получить настройки режима "летающие датчики"
+            getRetranslationRoutes = 28;   //!получить пути ретрансляции режима "летающие датчики"
         }
 
         //запросы на задание каких-либо данных решателю
@@ -131,7 +131,7 @@ message Packet {
                 required UpdateModeType updateMode = 1;
             }
 
-            //задать тип времени
+            //задать тип временной привязки пакетов
             message SetTimeType {
                 required TimeType timeType = 1;
             }
@@ -171,6 +171,11 @@ message Packet {
                 required DetectorsFlyingModeSettings detectorsFlyingModeSettings = 1;
             }
 
+            //задать пути ретрансляции режима "летающие датчики"
+            message SetRetranslationRoutes {
+                required Corrections retranslationRoutes = 1;
+            }
+
             optional SetClientType setClientType = 1;
             optional SetSolutionConfiguration setSolutionConfiguration = 2;
             optional SetTrajectoriesMaxLength setTrajectoriesMaxLength = 3;
@@ -194,6 +199,7 @@ message Packet {
             optional SetMinDelaysCountForSingleMarks setMinDelaysCountForSingleMarks = 21;
             optional SetSettingsOfMergingMeasurements setSettingsOfMergingMeasurements = 22;
             optional SetDetectorsFlyingModeSettings setDetectorsFlyingModeSettings = 23;
+            optional SetRetranslationRoutes setRetranslationRoutes = 24;
         }
         //удалить существующую цель с идентификатором target_id
         message ClearTarget {
@@ -295,18 +301,6 @@ message Packet {
             optional PositionLines positionLines = 4; //линии положения
         }
 
-        //список последовательностей измерений, ассоциированных с целями
-        message DataAssociations {
-
-            //пакет ассоциаций измерений для цели с идентификатором targetID
-            message AssociatedData {
-                required string targetID = 1;  //!ID цели
-                //последовательность измерений, соответствующих данной цели
-                repeated MeasurementsData measurementsData = 2;
-            }
-            repeated AssociatedData associatedData = 1;
-        }
-
         //возможные ответы решателя, поступающие клиентам
         message SolverResponse {
             optional string solverVersion = 1;
@@ -350,12 +344,6 @@ message Packet {
 
         //решение с автоматическим определением высоты
         optional SolverSolution solution_automatic_altitude = 2;
-
-        //массив ассоциаций измерений для решения с ручным заданием высоты
-        optional DataAssociations data_associations_manual_altitude = 3;
-
-        //массив ассоциаций измерений для решения с автоматическим определениемвысоты
-        optional DataAssociations data_associations_automatic_altitude = 4;
 
         //ответ сервера на какой-либо запрос
         optional SolverResponse solverResponse = 5;

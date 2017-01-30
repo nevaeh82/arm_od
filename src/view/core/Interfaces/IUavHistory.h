@@ -19,6 +19,8 @@ public:
 	virtual void resume() = 0;
 	virtual void stop() = 0;
 
+	virtual void setTimeoutMux(int timeout) = 0;
+
 	virtual void setDatabase(const QSqlDatabase& database) = 0;
 	virtual void setLifeTime(int msecs) = 0;
 

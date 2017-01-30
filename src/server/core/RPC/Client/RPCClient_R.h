@@ -25,7 +25,7 @@
 #include "Rpc/RpcDefines.h"
 #include <Rpc/RpcRoutedClient.h>
 
-#include "UAVDefines.h"
+#include "zavCommon/UAVDefines.h"
 
 #include "TCP/TcpDefines.h"
 
@@ -82,6 +82,7 @@ signals:
 	void signalSetClientId(int id);
 	void signalSetSolver(QByteArray data);
 	void signalSetSolverClear(QByteArray data);
+	void signalSetKtr(QByteArray data);
 
 public slots:
 

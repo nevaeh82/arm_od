@@ -44,7 +44,7 @@ public:
 							   const QVector<QPointF> &tail = QVector<QPointF>(),
 							   const QVector<QPointF> &tailStdDev = QVector<QPointF>() ) = 0;
     virtual void addSingleMark( const QByteArray& uav ) = 0;
-    virtual void addTrajectoryKK( const QByteArray& uav ) = 0;
+	virtual void addTrajectoryKK( const QByteArray& uav, const int source ) = 0;
     virtual void clearSolver1() = 0;
 
     virtual void addStation( const QByteArray& data ) = 0;

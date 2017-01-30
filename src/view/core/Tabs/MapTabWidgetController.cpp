@@ -155,8 +155,8 @@ int MapTabWidgetController::createRPC()
 	m_rpcClient->registerReceiver(m_mapController);
 	m_rpcClient->registerReceiver(m_uavDbManager);
 
-	m_rpcClient->registerReceiver(m_niipp1);
-	m_rpcClient->registerReceiver(m_niipp2);
+//	m_rpcClient->registerReceiver(m_niipp1);
+//	m_rpcClient->registerReceiver(m_niipp2);
 
 	m_rpcClient->registerReceiver( m_solverSetup );
 
@@ -244,6 +244,11 @@ void MapTabWidgetController::setRpcConfig(const quint16& port, const QString& ho
 {
 	m_rpcHostAddress = host;
 	m_rpcHostPort = port;
+}
+
+void MapTabWidgetController::setARMRConnection(bool b)
+{
+	m_controlPanelController->setARMRConnection(b);
 }
 
 void MapTabWidgetController::openAtlasSlot()

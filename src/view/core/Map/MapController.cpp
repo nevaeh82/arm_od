@@ -232,18 +232,23 @@ void MapController::onUavInfoChanged(const UavInfo& uavInfo, const QString& uavR
 									 const QVector<QPointF>& tail,
 									 const QVector<QPointF>& tailStdDev)
 {
-//	IMapClient* client = getMapClient();
-//	if( NULL == client ) return;
+	IMapClient* client = getMapClient();
+	if( NULL == client ) return;
 
-//	if( uavRole == OUR_UAV_ROLE ) {
-//		client->addFriendBpla( uavInfo );
-//		return;
-//	}
+	if( uavRole == OUR_UAV_ROLE ) {
+		client->addFriendBpla( uavInfo );
+		return;
+	}
 
-//	if( uavRole == ENEMY_UAV_ROLE ) {
-//		client->addEnemyBpla( uavInfo, tail, tailStdDev );
-//		return;
-//	}
+	if( uavRole == ENEMY_UAV_ROLE ) {
+
+		if(!uavInfo.historical) {
+			return;
+		}
+
+		client->addEnemyBpla( uavInfo, tail, tailStdDev );
+		return;
+	}
 }
 
 /// \todo Refactor this peace of shit
@@ -268,70 +273,122 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 //		client->addHyperboles(data);
 //	}
 	else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_1) {
-        SolverProtocol::Packet pkt;
-        pkt.ParseFromArray( data.data(), data.size() );
+		SolverProtocol::Packet pkt;
+		pkt.ParseFromArray( data.data(), data.size() );
 
-        if( pkt.has_datafromsolver() &&
-            pkt.datafromsolver().has_solution_manual_altitude() &&
-            pkt.datafromsolver().solution_manual_altitude().has_positionlines() ) {
+		// HYPERBOLE
+		if( pkt.has_datafromsolver() &&
+				pkt.datafromsolver().has_solution_manual_altitude() &&
+				pkt.datafromsolver().solution_manual_altitude().has_positionlines() ) {
 
-            client->addHyperboles(data, 1);
-        }
+			SolverProtocol::Packet_DataFromSolver_SolverSolution_PositionLines plMsg =
+					pkt.datafromsolver().solution_manual_altitude().positionlines();
+			QByteArray dataPL;
+			dataPL.resize(plMsg.ByteSize());
+			plMsg.SerializeToArray(dataPL.data(), dataPL.size());
 
-//        if(pkt.has_datafromsolver() && pkt.datafromsolver().has_solution_manual_altitude() &&
-//           pkt.datafromsolver().solution_manual_altitude().has_singlemarks()) {
+			client->addHyperboles(dataPL, 1);
+		} else if( pkt.has_datafromsolver() &&
+				pkt.datafromsolver().has_solution_automatic_altitude() &&
+				pkt.datafromsolver().solution_automatic_altitude().has_positionlines() ) {
 
-//            SolverProtocol::Packet_DataFromSolver_SolverSolution_SingleMarks sMsg =              pkt.datafromsolver().solution_manual_altitude().singlemarks();
+			SolverProtocol::Packet_DataFromSolver_SolverSolution_PositionLines plMsg =
+					pkt.datafromsolver().solution_automatic_altitude().positionlines();
+			QByteArray dataPL;
+			dataPL.resize(plMsg.ByteSize());
+			plMsg.SerializeToArray(dataPL.data(), dataPL.size());
 
-//            QByteArray msg;
-//            msg.resize(sMsg.ByteSize());
-//            sMsg.SerializeToArray(msg.data(), msg.size());
-//            //Draw it from trajectories temrorally too. - next if
-//            //here draw only ellipse
-//            client->addSingleMark(msg);
-//        }
+			client->addHyperboles(dataPL, 1);
+		}
 
-//        if( isSolverMessageHasTrajectoryManual(pkt) ) {
-//            //Trajectory from db. No kk here
-//            QByteArray msg;
-//            int size = pkt.datafromsolver().solution_manual_altitude().trajectory_size();
-//            for(int i = 0; i<size; i++) {
-//                SolverProtocol::Packet_DataFromSolver_SolverSolution_Trajectory sol = pkt.datafromsolver().solution_manual_altitude().trajectory(i);
-//                msg.resize(sol.ByteSize());
-//                sol.SerializeToArray(msg.data(), msg.size());
-//                client->addTrajectoryKK( msg );
-//            }
-//        }
+		// -----------------
 
-//        //Draw stations and area from settings Solver responce
-//        if( isSolverMessageSolverResponse( pkt ) ) {
-//            SolverProtocol::Packet_DataFromSolver_SolverResponse response = pkt.datafromsolver().solverresponse();
+		//SINGLEMARK
 
-//            if( response.has_detectors() ) {
+		if(pkt.has_datafromsolver() && pkt.datafromsolver().has_solution_manual_altitude() &&
+		   pkt.datafromsolver().solution_manual_altitude().has_singlemarks()) {
 
-//                QByteArray dataToSend;
-//                dataToSend.resize( response.detectors().ByteSize() );
-//                response.detectors().SerializeToArray(dataToSend.data(), dataToSend.size());
+			SolverProtocol::Packet_DataFromSolver_SolverSolution_SingleMarks sMsg =  pkt.datafromsolver().solution_manual_altitude().singlemarks();
 
-//                client->addStation( dataToSend );
-//            }
+			QByteArray msg;
+			msg.resize(sMsg.ByteSize());
+			sMsg.SerializeToArray(msg.data(), msg.size());
+			//Draw it from trajectories temrorally too. - next if
+			//here draw only ellipse
+			client->addSingleMark(msg);
+		}
 
-//            if(response.has_areaofresponsibility()) {
-//                QPointF point1(response.areaofresponsibility().mincoordinates().lon(),
-//                               response.areaofresponsibility().mincoordinates().lat());
-//                QPointF point2(response.areaofresponsibility().maxcoordinates().lon(),
-//                               response.areaofresponsibility().maxcoordinates().lat());
-//                client->addWorkArea( point1, point2 );
-//            }
-//        }
+		if(pkt.has_datafromsolver() && pkt.datafromsolver().has_solution_automatic_altitude() &&
+		   pkt.datafromsolver().solution_automatic_altitude().has_singlemarks()) {
 
-//        //get messages
-//        if( isSolverMessageSolverMessage(pkt) ) {
-//            QString msg = QString::fromStdString(pkt.datafromsolver().message().message());
+			SolverProtocol::Packet_DataFromSolver_SolverSolution_SingleMarks sMsg =
+					pkt.datafromsolver().solution_automatic_altitude().singlemarks();
 
-//            if(msg.contains(QString::fromLocal8Bit("очищен"), Qt::CaseInsensitive)) {
-//                client->clearSolver1();
-//            }
-//        }
+			QByteArray msg;
+			msg.resize(sMsg.ByteSize());
+			sMsg.SerializeToArray(msg.data(), msg.size());
+			//Draw it from trajectories temrorally too. - next if
+			//here draw only ellipse
+			client->addSingleMark(msg);
+		}
+
+		//Error ellipse
+
+		if( isSolverMessageHasTrajectoryManual(pkt) ) {
+			//Trajectory from db. No kk here
+			QByteArray msg;
+			int size = pkt.datafromsolver().solution_manual_altitude().trajectory_size();
+			for(int i = 0; i<size; i++) {
+				SolverProtocol::Packet_DataFromSolver_SolverSolution_Trajectory sol =
+						pkt.datafromsolver().solution_manual_altitude().trajectory(i);
+				msg.resize(sol.ByteSize());
+				sol.SerializeToArray(msg.data(), msg.size());
+				client->addTrajectoryKK( msg, 101 );
+			}
+		}
+
+		if( isSolverMessageHasTrajectoryAuto(pkt) ) {
+			//Trajectory from db. No kk here
+			QByteArray msg;
+			int size = pkt.datafromsolver().solution_automatic_altitude().trajectory_size();
+			for(int i = 0; i<size; i++) {
+				SolverProtocol::Packet_DataFromSolver_SolverSolution_Trajectory sol =
+						pkt.datafromsolver().solution_automatic_altitude().trajectory(i);
+				msg.resize(sol.ByteSize());
+				sol.SerializeToArray(msg.data(), msg.size());
+				client->addTrajectoryKK( msg, 100 );
+			}
+		}
+
+		//Draw stations and area from settings Solver responce
+		if( isSolverMessageSolverResponse( pkt ) ) {
+			SolverProtocol::Packet_DataFromSolver_SolverResponse response = pkt.datafromsolver().solverresponse();
+
+			if( response.has_detectors() ) {
+
+				QByteArray dataToSend;
+				dataToSend.resize( response.detectors().ByteSize() );
+				response.detectors().SerializeToArray(dataToSend.data(), dataToSend.size());
+
+				client->addStation( dataToSend );
+			}
+
+			if(response.has_areaofresponsibility()) {
+				QPointF point1(response.areaofresponsibility().mincoordinates().lon(),
+							   response.areaofresponsibility().mincoordinates().lat());
+				QPointF point2(response.areaofresponsibility().maxcoordinates().lon(),
+							   response.areaofresponsibility().maxcoordinates().lat());
+				client->addWorkArea( point1, point2 );
+			}
+		}
+
+		//get messages
+		if( isSolverMessageSolverMessage(pkt) ) {
+			QString msg = QString::fromStdString(pkt.datafromsolver().message().message());
+
+			if(msg.contains(QString::fromLocal8Bit("очищен"), Qt::CaseInsensitive)) {
+				client->clearSolver1();
+			}
+		}
     }
 }

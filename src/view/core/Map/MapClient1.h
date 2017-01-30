@@ -120,7 +120,7 @@ public slots:
                                const QVector<QPointF> &tailStdDev = QVector<QPointF>() );
 
     virtual void addSingleMark( const QByteArray& uav );
-    virtual void addTrajectoryKK( const QByteArray& uav );
+	virtual void addTrajectoryKK( const QByteArray& uav, const int source = 100 );
 
     virtual void addStation( const QByteArray& data );
     virtual void addWorkArea( const QPointF& point1, const QPointF& point2 );
@@ -182,7 +182,7 @@ private slots:
 
 	void onFeatureClicked(QString id, QString type);
 
-    void addTrajectoryKKInternal(QByteArray data);
+	void addTrajectoryKKInternal(QByteArray data, int source);
 
     void slotSolverClear();
 signals:
@@ -192,7 +192,7 @@ signals:
 						 const QVector<QPointF> &tailStdDev = QVector<QPointF>() );
 
     void singleMarkAdded( QByteArray data );
-    void trajectoryKKAdded( QByteArray data );
+	void trajectoryKKAdded( QByteArray data, int source );
 
 	void bplaRemoved( const Uav& uav );
 

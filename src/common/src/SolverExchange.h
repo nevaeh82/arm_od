@@ -97,6 +97,16 @@ inline bool isSolverMessageHasSingleMarksManual( SolverProtocol::Packet& pkt )
     return false;
 }
 
+inline bool isSolverMessageHasSingleMarksAuto( SolverProtocol::Packet& pkt )
+{
+	if( pkt.has_datafromsolver() && pkt.datafromsolver().has_solution_automatic_altitude() &&
+		pkt.datafromsolver().solution_automatic_altitude().has_singlemarks() ) {
+		return true;
+	}
+
+	return false;
+}
+
 inline bool isSolverMessageHasTrajectoryManual( SolverProtocol::Packet& pkt )
 {
     if( pkt.has_datafromsolver() && pkt.datafromsolver().has_solution_manual_altitude() &&
@@ -105,4 +115,14 @@ inline bool isSolverMessageHasTrajectoryManual( SolverProtocol::Packet& pkt )
     }
 
     return false;
+}
+
+inline bool isSolverMessageHasTrajectoryAuto( SolverProtocol::Packet& pkt )
+{
+	if( pkt.has_datafromsolver() && pkt.datafromsolver().has_solution_automatic_altitude() &&
+		(pkt.datafromsolver().solution_automatic_altitude().trajectory_size() > 0) ) {
+		return true;
+	}
+
+	return false;
 }

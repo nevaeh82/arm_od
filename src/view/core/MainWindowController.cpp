@@ -25,12 +25,12 @@ MainWindowController::MainWindowController(QObject *parent) :
 
 	qRegisterMetaType<IUavHistoryListener::Status>( "Status" );
 
-    resetServer();
+	resetServer();
 
 	QString serverName = "./" + QString(SERVER_NAME);
 	m_serverHandler = new SkyHobbit::Common::ServiceControl::ServiceHandler(serverName, QStringList(), NULL, this);
 
-    m_serverHandler->start(true);
+	m_serverHandler->start(true);
 }
 
 MainWindowController::~MainWindowController()

@@ -72,6 +72,8 @@ void RpcClientRWrapper::initSlot()
 {
 	m_rpcClient = new RPCClient_R(m_router, this);
 	m_rpcClient->start(m_port, m_address);
+
+	connect(m_rpcClient, SIGNAL(signalARMRConnect(bool)), this, SIGNAL(signalARMRConnect(bool)));
 }
 
 void RpcClientRWrapper::sendDataByRpcSlot(QString signalType, QByteArray data)

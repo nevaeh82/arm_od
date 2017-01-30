@@ -61,6 +61,8 @@ public:
 	virtual void send_data(int pid, IMessageOld* msg);
 	virtual void send_data_niipp_control(int id, QByteArray ba);
 
+	void set_arm_r_connection(bool);
+
 	void setRpcConfig(const quint16& port, const QString& host);
 	void setDbConnectionStruct(const DBConnectionStruct& connectionStruct);
 
@@ -71,6 +73,8 @@ public:
 	void addSolverSetupController(SolverSetupWidgetController* controller);
 
 	void setUavLifeTime(int msecs);
+
+	void setARMRConnection(bool b);
 
 private slots:
 	void changeTabSlot(int index);

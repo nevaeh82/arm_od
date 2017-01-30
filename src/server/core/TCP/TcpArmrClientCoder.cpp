@@ -74,6 +74,8 @@ QByteArray TcpArmrClientCoder::decode(const MessageSP message)
 	}
 	else if (messageType == TCP_ARMR_SEND_SOLVER_CLEAR) {
 		packetCommand->set_action(Zaviruha::sendSolverClear);
+	} else if (messageType == TCP_ARMR_SEND_KTR_DATA) {
+		packetCommand->set_action(Zaviruha::sendKtrAction);
 	}
 
 	QByteArray dataToSend;

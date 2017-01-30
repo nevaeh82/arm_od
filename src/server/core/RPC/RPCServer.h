@@ -46,6 +46,10 @@ public:
 
 	void sendDataByRpc(const QString& signalType, const QByteArray& data);
 
+	bool m_armr_connection;
+
+	QTimer time;
+
 private slots:
 	void _slotErrorRPCConnection(QAbstractSocket::SocketError socketError);
 	void _slotRPCConnetion(quint64 client);
@@ -54,6 +58,9 @@ private slots:
 	void sendDataByRpcSlot(QString signalType, QByteArray data);
 	void requestGetStationListSlot(quint64 client, QString configFilename);
 	void requestGetDbConfigurationSlot(quint64 client, QString configFilename);
+
+	void slotARMRSetConnection(bool b);
+	void slotSendStatusARMR();
 
 
 public slots:
@@ -106,6 +113,8 @@ signals:
 	void signalSendToRPCHyperbola(QByteArray);
 	void signalSendToRPCAtlantDirection(QByteArray);
 	void signalSendToRPCAtlantPosition(QByteArray);
+
+	void signalSendToRPCARMRConnection(bool);
 
 	void signalSendToRPCBLAPoints(QByteArray);
 	void signalSendToRPCAISData(QByteArray);

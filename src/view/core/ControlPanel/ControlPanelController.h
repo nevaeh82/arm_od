@@ -31,6 +31,8 @@ public:
 						  const QVector<QPointF> &tailStdDev = QVector<QPointF>());
 	void onStatusChanged(Status status);
 
+	void setARMRConnection(bool b);
+
 signals:
 	void historyStatusChanged(Status status);
 	void currentDateTimeChanged(const QDateTime& date);
@@ -44,6 +46,8 @@ private slots:
 	void onExportToXls();
 
 	void onDbLogReceive(QString);
+
+	void slotChangeMux(int);
 
 };
 

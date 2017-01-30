@@ -11,6 +11,7 @@ enum Actions
 	sendBplaPointsAuto = 4;
 	sendSolverData = 5;
 	sendSolverClear = 6;
+	sendKtrAction = 7;
 }
 
 message Packet

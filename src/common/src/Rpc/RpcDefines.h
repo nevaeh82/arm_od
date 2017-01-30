@@ -47,6 +47,8 @@
 /// to solver
 #define RPC_SLOT_SET_DATA_TO_SOLVER                 "rpc_slot_set_data_to_solver"
 #define RPC_SLOT_SET_CLEAR_TO_SOLVER                "rpc_slot_set_clear_to_solver"
+///TO_ARM_R ktr data
+#define RPC_SLOT_SET_KTR_TO_ARMT					"rpc_slot_set_ktr_to_armr"
 
 #define RPC_SLOT_SET_CLIENT_ID   "rpc_slot_set_client_id"
 
@@ -68,6 +70,8 @@
 #define RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO         "rpc_slot_server_send_bpla_point_from_arm_r_auto"
 #define RPC_SLOT_SERVER_SEND_BPLA_POINTS_SINGLE       "rpc_slot_server_send_bpla_point_from_arm_r_single"
 #define RPC_SLOT_SERVER_SEND_HYPERBOLA                "rpc_slot_server_send_hyperbola"
+
+#define RPC_SLOT_SERVER_SEND_ARMR_CONNECTION          "rpc_slot_server_send_armr_connection"
 
 /// NIIPP
 #define RPC_SLOT_SERVER_SEND_NIIPP_DATA                "rpc_slot_server_send_NIIPP_data"

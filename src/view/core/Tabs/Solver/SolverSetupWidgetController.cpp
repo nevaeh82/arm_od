@@ -37,8 +37,11 @@ void SolverSetupWidgetController::appendView(SolverSetupWidget *view)
 	connect(m_view, SIGNAL(signalStopSolver()), this, SLOT(slotSendCommandStop()));
 	connect(m_view, SIGNAL(signalRestartSolver()), this, SLOT(slotSendCommandRestart()));
 	connect(m_view, SIGNAL(signalClearSolver()), this, SLOT(slotSendCommandClear()));
+
+	connect(m_view, SIGNAL(onCorrectionCalculation(int)), this, SLOT(slotCorrectionCalculation(int)));
 	connect(m_view, SIGNAL(signalStartSolverCorrections()), this, SLOT(slotSendCommandStartCor()));
 	connect(m_view, SIGNAL(signalStopSolverCorrections()), this, SLOT(slotSendCommandStopCor()));
+
 	connect(m_view, SIGNAL(signalResetSolverCorrections()), this, SLOT(slotSendCommandResetCor()));
 	connect(m_view, SIGNAL(signalSaveSolverCorrections()), this, SLOT(slotSendCommandSaveCor()));
 
@@ -46,6 +49,7 @@ void SolverSetupWidgetController::appendView(SolverSetupWidget *view)
 	connect(m_view, SIGNAL(signalGetAll()), this, SLOT(slotGetAll()));
 
 	connect(m_view, SIGNAL(signalSetParams()), this, SLOT(slotSetParams()));
+
 }
 
 void SolverSetupWidgetController::onMethodCalled(const QString &method, const QVariant &argument)
@@ -62,6 +66,14 @@ void SolverSetupWidgetController::setMapFlag()
 {
 	m_isReceivedConfig = false;
 	m_startTimer.singleShot( SOLVERSETTINGS_REQUEST_TIMEOUT, this, SLOT(slotRequestConfig()) );
+}
+
+void SolverSetupWidgetController::setARMRConnection(bool b)
+{
+	if(b) {
+		m_isReceivedConfig = false;
+		slotGetAll();
+	}
 }
 
 void SolverSetupWidgetController::slotShowWidget()
@@ -96,6 +108,19 @@ void SolverSetupWidgetController::onMethodCalledSlot(QString method, QVariant ar
 			}
 		}
 
+		if( isSolverMessageSolverMessage(pkt) ) {
+			m_view->setSolverMessage( (int)pkt.datafromsolver().message().messagetype(),
+									  QString::fromStdString(pkt.datafromsolver().message().message()));
+		}
+
+	} else if(method == RPC_SLOT_SERVER_SEND_ARMR_CONNECTION) {
+		bool b = argument.toBool();
+
+		setARMRConnection(b);
+
+		if(m_tabManager) {
+			m_tabManager->set_arm_r_connection(b);
+		}
 	}
 }
 
@@ -165,6 +190,16 @@ void SolverSetupWidgetController::slotSendCommandStopCor()
 
 	sendSolverCommand(pkt);
 }
+
+void SolverSetupWidgetController::slotCorrectionCalculation(int isCorrect)
+{
+	if(isCorrect) {
+		slotSendCommandStartCor();
+	} else {
+		slotSendCommandStopCor();
+	}
+}
+
 
 void SolverSetupWidgetController::slotSendCommandResetCor()
 {

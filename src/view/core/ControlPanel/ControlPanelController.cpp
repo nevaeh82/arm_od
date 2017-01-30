@@ -26,6 +26,8 @@ void ControlPanelController::appendView(ControlPanel *view)
 	connect(m_view, SIGNAL(startPlayingHistorySignal()), this, SLOT(onStartPlayingHistorySlot()));
 	connect(m_view, SIGNAL(stopPlayingHistorySignal()), this, SLOT(onStopPlayingHistorySlot()));
 	connect(m_view, SIGNAL(startExportToXls()), this, SLOT(onExportToXls()));
+
+	connect(m_view, SIGNAL(signalOnMux(int)), this, SLOT(slotChangeMux(int)));
 }
 
 void ControlPanelController::setUavHistory(IUavHistory *history)
@@ -47,6 +49,13 @@ void ControlPanelController::onUavInfoChanged(const UavInfo& uavInfo, const QStr
 void ControlPanelController::onStatusChanged(IUavHistoryListener::Status status)
 {
 	emit historyStatusChanged(status);
+}
+
+void ControlPanelController::setARMRConnection(bool b)
+{
+	if(m_view) {
+		m_view->setARMRConnection(b);
+	}
 }
 
 void ControlPanelController::changeViewStatus(IUavHistoryListener::Status status)
@@ -141,4 +150,9 @@ void ControlPanelController::onExportToXls()
 void ControlPanelController::onDbLogReceive(QString log)
 {
 	m_view->onSetDbLog(log);
+}
+
+void ControlPanelController::slotChangeMux(int timeout)
+{
+	m_uavHistory->setTimeoutMux(timeout);
 }

@@ -20,7 +20,7 @@
 #include <Interfaces/IRpcListener.h>
 
 #include "Station.h"
-#include "UAVDefines.h"
+#include "zavCommon/UAVDefines.h"
 
 #include "Interfaces/IUavHistoryListener.h"
 

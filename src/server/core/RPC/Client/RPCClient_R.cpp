@@ -57,6 +57,7 @@ bool RPCClient_R::start(quint16 port, QHostAddress address)
 
 	m_clientPeer->attachSignal(this, SIGNAL(signalSetClientId(int)), RPC_SLOT_SET_CLIENT_ID);
 	m_clientPeer->attachSignal(this, SIGNAL(signalSetSolver(QByteArray)), RPC_SLOT_SET_DATA_TO_SOLVER);
+	m_clientPeer->attachSignal(this, SIGNAL(signalSetKtr(QByteArray)), RPC_SLOT_SET_KTR_TO_ARMT);
 	m_clientPeer->attachSignal(this, SIGNAL(signalSetSolverClear(QByteArray)), RPC_SLOT_SET_CLEAR_TO_SOLVER);
 
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_DEF, this, SLOT(rpcSlotServerSendBplaDef(QByteArray)));
@@ -93,6 +94,8 @@ void RPCClient_R::sendDataByRpc(const QString& signalType, const QByteArray& dat
 		emit signalSetSolver(data);
 	} else if (signalType == TCP_ARMR_SEND_SOLVER_CLEAR){
 		emit signalSetSolverClear(data);
+	} else if(signalType == TCP_ARMR_SEND_KTR_DATA) {
+		emit signalSetKtr(data);
 	}
 }
 

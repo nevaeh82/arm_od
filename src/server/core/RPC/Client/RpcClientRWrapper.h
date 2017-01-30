@@ -30,6 +30,8 @@ signals:
 	void initSignal();
 	void sendDataByRpcSignal(QString signalType, QByteArray data);
 
+	void signalARMRConnect(bool);
+
 private slots:
 	void initSlot();
 	void sendDataByRpcSlot(QString signalType, QByteArray data);

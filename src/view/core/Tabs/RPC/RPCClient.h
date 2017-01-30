@@ -26,7 +26,7 @@
 #include "Rpc/RpcDefines.h"
 #include "Rpc/RpcClientBase.h"
 
-#include "UAVDefines.h"
+#include "zavCommon/UAVDefines.h"
 
 #include "Interfaces/IDbUavManager.h"
 #include "Tabs/ITabManager.h"
@@ -67,6 +67,7 @@ public slots:
 	void rpcSendBplaPointsAuto(QByteArray data);
 	void rpcSendBplaPointsSingle(QByteArray data);
 	void rpcSendHyperbola(QByteArray data);
+	void rpcSendARMRConnection(bool b);
 
 	void rpcSendNiippData(QByteArray data);
 	void rpcSendNiippConnectionStatus(QByteArray data);

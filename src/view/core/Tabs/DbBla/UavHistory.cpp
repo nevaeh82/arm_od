@@ -11,11 +11,13 @@
 #include "Tabs/DbBla/Defines.h"
 #include "Tabs/DbBla/DbUavManager.h"
 
+#define SECOND_TIMEOUT 1000
+
 
 UavHistory::UavHistory(QSqlDatabase database, QObject *parent)
 	: QObject(parent)
 {
-	m_timer.setInterval( 1000 );
+	m_timer.setInterval( SECOND_TIMEOUT );
 	m_lifeTime = MAX_LIFE_TIME;
 	m_isPaused = false;
 
@@ -26,6 +28,8 @@ UavHistory::UavHistory(QSqlDatabase database, QObject *parent)
 	connect( this, SIGNAL(paused()), SLOT(pauseInternal()) );
 	connect( this, SIGNAL(resumed()), SLOT(resumeInternal()) );
 	connect( this, SIGNAL(stopped()), SLOT(stopInternal()) );
+
+	connect( this, SIGNAL(signalTimeoutMux(int)), this, SLOT(slotInitTimeoutMux(int)) );
 }
 
 UavHistory::~UavHistory()
@@ -102,14 +106,14 @@ bool UavHistory::xlsExport()
 		info.source = m_query.record().value( "sourceReal" ).toInt();
 		info.historical = true;
 
-        QString uavExtId = UavModel::getExtendedIdHist( info );
+		QString uavExtId = UavModel::getExtendedIdHist( info );
 		infoCollection.insert( QString::number(cnt), info );
 
 		// remember UAV role, because it is not keeped in UavInfo
-        m_uavRoles.insert( info.name, m_query.record().value( "code" ).toString() );
+		m_uavRoles.insert( info.name, m_query.record().value( "code" ).toString() );
 
 		// remember last timestamp of UAV data changing
-        m_uavLastDate.insert( info.name, info.dateTime );
+		m_uavLastDate.insert( info.name, info.dateTime );
 
 		// get time zero msecs
 		nextTime = m_query.record().value( "datetime" ).toDateTime();
@@ -141,6 +145,11 @@ void UavHistory::stop()
 	} else {
 		emit stopped();
 	}
+}
+
+void UavHistory::setTimeoutMux(int timeout)
+{
+	emit signalTimeoutMux(timeout);
 }
 
 void UavHistory::setDatabase(const QSqlDatabase& database)
@@ -219,7 +228,11 @@ void UavHistory::startInternal(const QDateTime& start, const QDateTime& end, int
 
 	if( !m_query.next() ) {
 		m_startResult = false;
+
 		emit startFinished();
+
+		//stopInternal();
+
 		return;
 	}
 
@@ -261,15 +274,15 @@ void UavHistory::resumeInternal()
 void UavHistory::stopInternal()
 {
 	// send remove message for all UAVs
-    foreach( QString id, m_knownUavsList.keys() ) {
-        Uav uav = m_knownUavsList.value(id);
-        //uav.name = id;
-        //uav.historical = true;
+	foreach( QString id, m_knownUavsList.keys() ) {
+		Uav uav = m_knownUavsList.value(id);
+		//uav.name = id;
+		//uav.historical = true;
 
-        QString role = m_uavRoles.value( uav.name );
-        if(role.isEmpty()) {
-            role = ENEMY_UAV_ROLE;
-        }
+		QString role = m_uavRoles.value( uav.name );
+		if(role.isEmpty()) {
+			role = ENEMY_UAV_ROLE;
+		}
 
 		foreach( IUavDbChangedListener* listener, m_receiversList ) {
 			listener->onUavRemoved( uav, role );
@@ -302,9 +315,9 @@ void UavHistory::updateHistoryState()
 	do {
 		UavInfo info;
 
-        info.name = m_query.record().value( "uavName" ).toString();
-		info.id = m_query.record().value( "id" ).toInt();
-		info.uavId = m_query.record().value( "uavIdReal" ).toInt();
+		info.name = m_query.record().value( "uavName" ).toString();
+		info.id = m_query.record().value( "id" ).toInt() + 100000;
+		info.uavId = m_query.record().value( "uavIdReal" ).toInt() + 100000;
 
 		info.lat = m_query.record().value( "latitude" ).toDouble();
 		info.lon = m_query.record().value( "longitude" ).toDouble();
@@ -321,18 +334,19 @@ void UavHistory::updateHistoryState()
 		info.source = m_query.record().value( "sourceReal" ).toInt();
 		info.historical = true;
 
-        QString uavExtId = UavModel::getExtendedIdHist( info );
+		QString uavExtId = UavModel::getExtendedIdHist( info );
 		infoCollection.insert( uavExtId, info );
 
 		// remember UAV role, because it is not keeped in UavInfo
-        m_uavRoles.insert( info.name, m_query.record().value( "code" ).toString() );
+		m_uavRoles.insert( info.name, m_query.record().value( "code" ).toString() );
 
 		// remember last timestamp of UAV data changing
-        m_uavLastDate.insert( info.name, info.dateTime );
+		m_uavLastDate.insert( info.name, info.dateTime );
 
 		if( !m_query.next() ) {
 			stop();
-			break;
+			//break;
+			return;
 		}
 
 		// get time zero msecs
@@ -342,18 +356,18 @@ void UavHistory::updateHistoryState()
 
 	// send actual UAV info for all receivers
 	foreach( UavInfo info, infoCollection ) {
-        QString role = m_uavRoles.value( info.name );
-        if(role.isEmpty()) {
-            role = ENEMY_UAV_ROLE;
-        }
+		QString role = m_uavRoles.value( info.name );
+		if(role.isEmpty()) {
+			role = ENEMY_UAV_ROLE;
+		}
 
 		Uav uav;
 		uav.uavId = info.uavId;
-        uav.name =  UavModel::getExtendedIdHist( info );
+		uav.name =  UavModel::getExtendedIdHist( info );
 		uav.historical = true;
 
-        if (!m_knownUavsList.contains(uav.name)) {
-            m_knownUavsList.insert(uav.name, uav);
+		if (!m_knownUavsList.contains(uav.name)) {
+			m_knownUavsList.insert(uav.name, uav);
 
 			foreach (IUavDbChangedListener* receiver, m_receiversList){
 				receiver->onUavAdded(uav, role);
@@ -367,23 +381,28 @@ void UavHistory::updateHistoryState()
 	}
 
 	// send remove message about outdated UAVs
-    foreach( QString id, m_uavLastDate.keys() ) {
+	foreach( QString id, m_uavLastDate.keys() ) {
 		if( m_uavLastDate.value( id ).msecsTo( time ) < m_lifeTime ) continue;
 
 		Uav uav;
-        //uav.uavId = id;
+		//uav.uavId = id;
 		uav.historical = true;
 
-        QString role = m_uavRoles.value( uav.name );
+		QString role = m_uavRoles.value( uav.name );
 
 		foreach( IUavDbChangedListener* listener, m_receiversList ) {
 			listener->onUavRemoved( uav, role );
 		}
 
-        m_knownUavsList.remove(uav.name);
-        m_uavRoles.remove( uav.name );
-        m_uavLastDate.remove( uav.name );
+		m_knownUavsList.remove(uav.name);
+		m_uavRoles.remove( uav.name );
+		m_uavLastDate.remove( uav.name );
 	}
+}
+
+void UavHistory::slotInitTimeoutMux(int mux)
+{
+	m_timer.setInterval( SECOND_TIMEOUT / mux );
 }
 
 bool UavHistory::onSentToXl(QMap<QString, UavInfo>& infoCollection)
@@ -393,7 +412,7 @@ bool UavHistory::onSentToXl(QMap<QString, UavInfo>& infoCollection)
 	QSqlDatabase db = QSqlDatabase::addDatabase("QODBC","excelexport");
 	QString dsn = QString("DRIVER={Microsoft Excel Driver (*.xls)}; \
 						  DSN=''; FIRSTROWHASNAMES=1; READONLY=FALSE; \
-						  CREATE_DB=\"%1\";DBQ=%2").arg(m_pathToExport).arg(m_pathToExport);
+	CREATE_DB=\"%1\";DBQ=%2").arg(m_pathToExport).arg(m_pathToExport);
 	db.setDatabaseName(dsn);
 	QSqlError err;
 	// Open database
@@ -404,10 +423,10 @@ bool UavHistory::onSentToXl(QMap<QString, UavInfo>& infoCollection)
 		//QMessageBox::about(NULL, "r", "open false");
 	}
 	// Create table
-    QString sql = "create table sheet (id INTEGER, uavIdReal INTEGER, uavName TEXT, latitude DOUBLE, longtitude DOUBLE, altitude DOUBLE, \
-										latitudeStdDev DOUBLE, longitudeStdDev DOUBLE, speed DOUBLE, yaw DOUBLE, restTime TEXT, \
-										statusTypeId INTEGER, dateNtime TEXT, sourceReal INTEGER)";
-	QSqlQuery query(db);
+	QString sql = "create table sheet (id INTEGER, uavIdReal INTEGER, uavName TEXT, latitude DOUBLE, longtitude DOUBLE, altitude DOUBLE, \
+			latitudeStdDev DOUBLE, longitudeStdDev DOUBLE, speed DOUBLE, yaw DOUBLE, restTime TEXT, \
+			statusTypeId INTEGER, dateNtime TEXT, sourceReal INTEGER)";
+			QSqlQuery query(db);
 	if (!query.exec(sql))
 	{
 		qDebug()<< "create table false！";
@@ -417,10 +436,10 @@ bool UavHistory::onSentToXl(QMap<QString, UavInfo>& infoCollection)
 
 	foreach (UavInfo info, infoCollection) {
 		QSqlQuery query(db);
-        query.prepare("INSERT INTO sheet(id, uavIdReal, uavName, latitude, longtitude, altitude, latitudeStdDev, longitudeStdDev, speed, yaw, restTime, statusTypeId, dateNtime, sourceReal) "
+		query.prepare("INSERT INTO sheet(id, uavIdReal, uavName, latitude, longtitude, altitude, latitudeStdDev, longitudeStdDev, speed, yaw, restTime, statusTypeId, dateNtime, sourceReal) "
 					  "VALUES		(:id, :uavIdReal, :latitude, :longtitude, :altitude, :latitudeStdDev, :longitudeStdDev, :speed, :yaw, :restTime, :statusTypeId, :dateNtime, :sourceReal)");
 		query.bindValue(":id", info.id);
-        query.bindValue(":uavName", info.name);
+		query.bindValue(":uavName", info.name);
 		query.bindValue(":uavIdReal", info.uavId);
 		query.bindValue(":latitude", info.lat);
 		query.bindValue(":longtitude", info.lon);

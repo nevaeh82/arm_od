@@ -14,6 +14,10 @@ QString UavModel::getExtendedId(const Uav& uav, uint source)
 	info.source = source;
     info.name = uav.name;
 
+//	if(info.historical) {
+//		return UavModel::getExtendedIdHist( info );
+//	}
+
 	return UavModel::getExtendedId( info );
 }
 
@@ -31,6 +35,12 @@ QString UavModel::getExtendedId(const UavInfo& uav)
 //			.arg(uav.historical ? 1 : 0);
 
     QString id = uav.name;
+
+	if(uav.source == 100) {
+		id = id+QObject::tr("A");
+	} else if(uav.source == 101) {
+		id = id+QObject::tr("M");
+	}
 
 	return id;
 }

@@ -19,7 +19,7 @@
 #include "Interfaces/IUavDbChangedListener.h"
 
 #include "RPC/RpcDefines.h"
-#include "UAVDefines.h"
+#include "zavCommon/UAVDefines.h"
 
 #include "SolverPacket1.pb.h"
 
@@ -48,6 +48,8 @@ private:
 	QFile* fi;
 	LogManager* m_logManager;
 
+	bool m_inRun;
+
 public:
 	explicit DbUavManager(int lifeTime = MAX_LIFE_TIME, QObject *parent = 0);
 	virtual ~DbUavManager();
@@ -64,7 +66,8 @@ public:
 
 	int addUavInfo(const UavInfo&, bool actual = true,
 				   const QVector<QPointF>& tail = QVector<QPointF>(),
-				   const QVector<QPointF>& tailStdDev = QVector<QPointF>());
+				   const QVector<QPointF>& tailStdDev = QVector<QPointF>(),
+				   const QVector<QDateTime>& tailTime = QVector<QDateTime>());
 	bool getUavInfoByUavId(const uint uavId, QList<UavInfo>& uavInfoList);
 
 	IUavHistory* getUavHistory();
@@ -124,24 +127,29 @@ private:
 						const QString &deviceType, const QString &sourceType,
 						bool actual = false,
 						const QVector<QPointF> &tail = QVector<QPointF>(),
-						const QVector<QPointF> &tailStdDev = QVector<QPointF>());
+						const QVector<QPointF> &tailStdDev = QVector<QPointF>(),
+						const QVector<QDateTime> &tailTime = QVector<QDateTime>());
+
 	void addUavInfoToDb(const UAVPositionData& positionData, const QString& role,
 						const QString& uavType, const QString& status,
 						const QString& deviceType, const QString &sourceType,
 						bool actual = true,
 						const QVector<QPointF> &tail = QVector<QPointF>(),
-						const QVector<QPointF> &tailStdDev = QVector<QPointF>());
+						const QVector<QPointF> &tailStdDev = QVector<QPointF>(),
+						const QVector<QDateTime> &tailTime = QVector<QDateTime>());
 
 	QString getEnemySourceTypeName(uint sourceType);
 
-    QList<UAVPositionDataEnemy> getUavListSingleFromProto(SolverProtocol::Packet pkt);
+	QList<UAVPositionDataEnemy> getUavListSingleFromProto(SolverProtocol::Packet pkt, bool autoAlt = false);
     QList<UAVPositionDataEnemy> getUavListTrajectoryFromProto(SolverProtocol::Packet_DataFromSolver_SolverSolution_Trajectory pktTrajectory);
 
 private slots:
 	void timeoutSlot(const QString& key);
 
+	void onMethodCalledInternal(QString method, QVariant argument);
 signals:
     void protoToNiipp(QByteArray proto);
+	void signalMethodCalled(QString, QVariant);
 };
 
 #endif // DBBLAMANAGER_H

@@ -11,6 +11,8 @@ ControlPanel::ControlPanel(QWidget *parent) :
 	connect(ui->stopPB, SIGNAL(clicked()), this, SIGNAL(stopPlayingHistorySignal()));
 	connect(ui->pbExport, SIGNAL(clicked()), this, SIGNAL(startExportToXls()));
 
+	connect(ui->spinBoxPlaySpeed, SIGNAL(valueChanged(int)), this, SIGNAL(signalOnMux(int)));
+
 	ui->timeLabel->hide();
 	ui->timeText->hide();
 
@@ -19,6 +21,8 @@ ControlPanel::ControlPanel(QWidget *parent) :
 	status &= redLbl.load(":/images/bullet_red.png");
 
 	ui->dockWidget->hide();
+
+	ui->connectToArmRlbl->setPixmap(redLbl);
 }
 
 ControlPanel::~ControlPanel()
@@ -92,5 +96,15 @@ QDockWidget*ControlPanel::getDockWgt()
 
 void ControlPanel::onSetDbLog(const QString& logTxt)
 {
+	ui->textEdit->clear();
 	ui->textEdit->append(logTxt);
+}
+
+void ControlPanel::setARMRConnection(bool b)
+{
+	if(b) {
+		ui->connectToArmRlbl->setPixmap(greenLbl);
+	} else {
+		ui->connectToArmRlbl->setPixmap(redLbl);
+	}
 }

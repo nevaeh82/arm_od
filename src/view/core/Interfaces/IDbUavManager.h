@@ -3,6 +3,7 @@
 
 #include <QList>
 #include <QMap>
+#include <QDateTime>
 
 class IUavHistory;
 class IDbUavController;
@@ -37,7 +38,8 @@ public:
 
 	virtual int addUavInfo(const UavInfo&, bool actual = true,
 						   const QVector<QPointF>& tail = QVector<QPointF>(),
-						   const QVector<QPointF>& tailStdDev = QVector<QPointF>()) = 0;
+						   const QVector<QPointF>& tailStdDev = QVector<QPointF>(),
+						   const QVector<QDateTime>& tailTime = QVector<QDateTime>()) = 0;
 	virtual bool getUavInfoByUavId(const uint uavId, QList<UavInfo>& uavInfoList) = 0;
 
 	virtual IUavHistory* getUavHistory() = 0;

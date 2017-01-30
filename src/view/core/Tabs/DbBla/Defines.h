@@ -5,7 +5,7 @@
 #include <QTime>
 #include <QDateTime>
 #include <QMetaType>
-#include "UAVDefines.h"
+#include "zavCommon/UAVDefines.h"
 
 #define FRIEND_UAV_ROLE "friendUavRole"
 #define OUR_UAV_ROLE "ourUavRole"
@@ -42,7 +42,8 @@ typedef struct UavRole
 
 typedef struct UavInfo
 {
-    QString name;
+	QString name;
+	QString role;
 	int id; // PK
 	uint uavId; // FK
 	uint device; // FK
@@ -61,6 +62,7 @@ typedef struct UavInfo
 
 	UavInfo(){
 		historical = false;
+		source = 0;
 	}
 } UavInfo;
 

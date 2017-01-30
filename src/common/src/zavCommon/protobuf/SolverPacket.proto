@@ -1,0 +1,165 @@
+option optimize_for = LITE_RUNTIME;
+
+package SolverClient;
+
+enum Actions
+{
+	unknownAction = 0;
+	sendSolverClientData = 1; //Server send to External Solver
+	sendSolverClientBla = 2; //Not used
+	sendSolverClientResult = 3; //External solver send answer
+}
+
+enum ResultOfCalculation
+{
+	CALCULATED = 1;
+	AN_ERROR_OCCURED = 2;
+	NOT_ENOUGH_INPUT_DATA = 3;
+	NO_SOLUTION = 4;
+	CANT_IDENTIFY_REAL_TRAJECTORY = 5;
+	TOO_LOW_ACCURACY_OF_INPUT_DATA = 6;
+	TOO_FEW_INPUT_DATA = 7;
+	TOO_LOW_ACCURACY_OF_SOLUTION = 8;
+	TARGET_DOES_NOT_HIT_IN_AREA = 9;
+	TARGET_DOES_NOT_HIT_IN_STROB = 10;
+}
+
+enum SolverError
+{
+	SOLVER_SETUP_ERROR = 1;
+	SOLVER_INPUT_DATA_ERROR = 2;
+	SOLVER_INTERNAL_ERROR =3;
+}
+
+enum EstimateQuality
+{
+	GOOD_QUALITY = 1;
+	BAD_QUALITY = 2;
+	UNKNOWN_QUALITY =3;
+}
+
+enum StateOfMotion
+{
+	MOVING = 1;
+	STANDING = 2;
+	UNKNOWN_STATE = 3;
+}
+
+message Packet
+{
+	message ArgumentVariant {
+
+		message BplaPosition
+		{
+			message Coordinates  {
+				required double lat = 1;
+				required double lon = 2;
+				required double alt = 3;
+			}
+			required uint32 bort_number = 1;
+			required int64 time = 2;
+			required Coordinates coordinates = 3;
+			required double speed = 4;
+			required double course = 5;
+		}
+		
+		message SolverInput //Message Descr Server send to External Solver
+		{
+			required double centerFrequency = 1;
+			required int64 datetime = 2;
+			
+			//Вектор разностей времени прихода прихода сигнала между i-ым и опорным
+			//датчиком (в секундах). Количество задержек равно количеству датчиков,
+			//а нулевая задержка обозначает опорный датчик. Важно! В векторе delays
+			//всегда должен находится элемент строго равный 0.0
+			repeated double delays = 3;
+			//Пример: Пусть имеется 6 датчиков. Время прихода сигнала на каждый  
+			//из них задается вектором time = {t1; t2; t3; t4; t5; t6}.
+			//Если третий датчик является опорным, то delays = time - t3
+		}
+		
+		message SolverAnswer //Message Descr External solver send answer
+		{
+			message Coordinates {
+				required double lat = 1;
+				required double lon = 2;
+				required double alt = 3;
+			}
+			
+			message CoordinatesAccuracy {
+				required double lat_acc = 1;
+				required double lon_acc = 2;
+				required double alt_acc = 3;
+			}
+			
+			message MotionEstimate {
+				required int64 datetime = 1;
+				required Coordinates coordinates = 2;
+				required CoordinatesAccuracy coordinates_acc = 3;
+				required double targetSpeed = 4;
+				required double targetSpeed_acc = 5;
+				required double relativeBearing = 6;
+				required EstimateQuality quality = 7;
+				required StateOfMotion state = 8;
+			}
+			
+			message CoordsEstimate {
+				required int64 datetime = 1;
+				required Coordinates coordinates = 2; 
+				required CoordinatesAccuracy coordinates_acc = 3;
+				required EstimateQuality quality = 4;
+			}
+			
+			message Trajectory {
+				required ResultOfCalculation result_of_calculation = 1;
+				repeated MotionEstimate motionEstimate = 2; //MotionEstimate List
+			}
+
+			message SingleMarks {
+				required ResultOfCalculation result_of_calculation = 1;
+				repeated CoordsEstimate coordsEstimate = 2; //CoordsEstimate List
+			}
+
+			message StateLines {
+				message StateLine {
+
+					message LatLon {
+							required double lat = 1;
+							required double lon = 2;
+					}
+					repeated LatLon point = 1;
+
+				}
+				required ResultOfCalculation result_of_calculation = 1;
+				required int64 datetime = 2;
+				repeated StateLine stateLine = 3;
+			}
+
+			message ErrorMessage {
+				required SolverError errorType = 1;
+				required string message = 2;
+			}
+
+
+			// What is in message 
+			required uint32 TargetID = 1;
+			optional Trajectory auto_trajectory = 2;
+			optional Trajectory manual_trajectory = 3;
+			optional SingleMarks singleMarks = 4;
+			optional StateLines stateLines = 5;
+			optional ErrorMessage errorMessage = 6;
+		}
+	
+		optional BplaPosition bplaPoisition = 1; //Not used
+		optional SolverInput solverInput = 2; //Can be server message
+		optional SolverAnswer solverAnswer = 3; //or client message
+	}
+			
+	message Command
+	{
+		required Actions action = 1 [default = unknownAction];
+		optional ArgumentVariant arguments = 2;
+	}
+	
+	required Command command = 1;
+}

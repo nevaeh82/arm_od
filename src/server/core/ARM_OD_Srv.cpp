@@ -111,6 +111,9 @@ void ARM_OD_Srv::addRpcArmrConnection()
 	m_rpcClientR->moveToThread(rpcClientThread);
 	rpcClientThread->start();
 
+	connect(m_rpcClientR, SIGNAL(signalARMRConnect(bool)), _rpc_server, SIGNAL(signalSendToRPCARMRConnection(bool)));
+	connect(m_rpcClientR, SIGNAL(signalARMRConnect(bool)), _rpc_server, SLOT(slotARMRSetConnection(bool)));
+
 	m_rpcClientR->init(port, QHostAddress(host), _router);
 
 	_subscriber_up->add_subscription(SOLVER_SET, m_rpcClientR);
