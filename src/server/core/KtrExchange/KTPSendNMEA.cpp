@@ -40,14 +40,14 @@ void KTPSendNMEA::onConnect(const QString& ktrIp)
 {
 	m_ktrIp = ktrIp;
 
-    connectToHost(ktrIp, KTR_EXNG_PORT);
+	connectToHostAsync(ktrIp, KTR_EXNG_PORT);
 	connect(m_tcpSocket, SIGNAL(readyRead()), this, SLOT(onSocketReadyReadSlot()));
 	connect(m_tcpSocket, SIGNAL(connected()), this, SLOT(onConnectedSlot()));
 }
 
 void KTPSendNMEA::onDisconnect()
 {
-    BaseTcpClient::disconnectFromHost();
+	BaseTcpClient::disconnectFromHostSync();
 }
 
 void KTPSendNMEA::onSocketReadyReadSlot()

@@ -61,7 +61,7 @@ void TcpAISController::connectToHostAISInternalSlot(const QString& host, const q
 	QString __host = TCP_AIS_URL_STANDART;
 	__host += m_zoneManager->getZone(zone);
 
-	m_tcpClient->connectToHost(__host, port);
+	m_tcpClient->connectToHostAsync(__host, port);
 }
 
 void TcpAISController::createTcpAISCoderInternalSlot()
