@@ -398,8 +398,8 @@ void DbUavManager::onMethodCalledInternal(QString method, QVariant argument)
 			return;
 		}
 
-		QString dataToFile = QTime::currentTime().toString("hh:mm:ss:zzz") + " " + QString::number(positionDataVector.at(0).latitude) + " " + QString::number(positionDataVector.at(0).longitude) + " " + QString::number(positionDataVector.at(0).altitude) + "\n";
-		m_logManager->writeToFile(dataToFile);
+//		QString dataToFile = QTime::currentTime().toString("hh:mm:ss:zzz") + " " + QString::number(positionDataVector.at(0).latitude) + " " + QString::number(positionDataVector.at(0).longitude) + " " + QString::number(positionDataVector.at(0).altitude) + "\n";
+//		m_logManager->writeToFile(dataToFile);
 
 		/// Now we take first point, but we need to take more than 1 point
 		UAVPositionData positionData = positionDataVector.at(0);
@@ -409,27 +409,25 @@ void DbUavManager::onMethodCalledInternal(QString method, QVariant argument)
 	} /*else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS) {
 		sendEnemyUavPoints(data, UAV_SOLVER_MANUAL_SOURCE);
 	}*/ else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_1) {
-		//debug
-		int i = 0;
 
 		m_inRun = true;
 
 		SolverProtocol::Packet pkt;
 		pkt.ParseFromArray( data.data(), data.size() );
-		{
-			QList<UAVPositionDataEnemy> uavList = getUavListSingleFromProto(pkt);
+//		{
+//			QList<UAVPositionDataEnemy> uavList = getUavListSingleFromProto(pkt);
 
-			if(!uavList.isEmpty()) {
-				sendEnemyUavPoints(uavList, UAV_SOLVER_SINGLE_1_SOURCE);
-			}
+//			if(!uavList.isEmpty()) {
+//				sendEnemyUavPoints(uavList, UAV_SOLVER_SINGLE_1_SOURCE);
+//			}
 
-			QList<UAVPositionDataEnemy> uavList2 = getUavListSingleFromProto(pkt, true);
+//			QList<UAVPositionDataEnemy> uavList2 = getUavListSingleFromProto(pkt, true);
 
-			if(!uavList2.isEmpty()) {
-				sendEnemyUavPoints(uavList2, UAV_SOLVER_SINGLE_2_SOURCE);
-			}
+//			if(!uavList2.isEmpty()) {
+//				sendEnemyUavPoints(uavList2, UAV_SOLVER_SINGLE_2_SOURCE);
+//			}
 
-		}
+//		}
 
 		{
 			pkt.has_datafromsolver();

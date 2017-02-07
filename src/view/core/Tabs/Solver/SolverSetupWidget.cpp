@@ -130,7 +130,7 @@ void SolverSetupWidget::setSolverSettings(SolverProtocol::Packet_DataFromSolver_
 		for(int i = 0; i < data.detectors().detector_size(); i++) {
 			addTableItem(ui->twStations, i, 0, QString::fromStdString(data.detectors().detector(i).detector_name()), false);
 
-			addTableItem(ui->twStations, i, 1, (data.detectors().detector(i).coords().lon()), true, true);
+            addTableItem(ui->twStations, i, 1, (data.detectors().detector(i).coords().lon()), true, true);
 			addTableItem(ui->twStations, i, 2, (data.detectors().detector(i).coords().lat()), true, true);
 			addTableItem(ui->twStations, i, 3, (data.detectors().detector(i).coords().alt()), true);
 		}
@@ -156,6 +156,18 @@ void SolverSetupWidget::setSolverSettings(SolverProtocol::Packet_DataFromSolver_
 	if(data.has_mindelayscountforsinglemarks()) {
 		ui->sbMinDelays->setValue(data.mindelayscountforsinglemarks());
 	}
+
+    if(data.has_maxallowablerangessdv()) {
+        ui->sbSKO->setValue(data.maxallowablerangessdv());
+    }
+
+    if(data.has_maxallowablevelocity()) {
+        ui->sbSpeed->setValue(data.maxallowablevelocity());
+    }
+
+    if(data.has_maxallowablelocationerror()) {
+        ui->sbPositionError->setValue(data.maxallowablelocationerror());
+    }
 
 	if(data.has_settingsofmergingmeasurements()) {
 		ui->sbMergeTime->setValue(data.settingsofmergingmeasurements().time_window());
@@ -493,9 +505,6 @@ void SolverSetupWidget::addTableItem(QTableWidget* widget, int r, int c, QVarian
 			sb = new QDoubleSpinBox(widget);
 			isSet = true;
 		}
-		sb->setMinimum(-180);
-		sb->setMaximum(180);
-		sb->setValue( value.toDouble() );
 
 		if(isGrad) {
 			sb->setDecimals(6);
@@ -504,6 +513,9 @@ void SolverSetupWidget::addTableItem(QTableWidget* widget, int r, int c, QVarian
 			sb->setDecimals(2);
 		}
 
+        sb->setMinimum(-180);
+        sb->setMaximum(180);
+        sb->setValue( value.toDouble() );
 
 		if(isSet) {
 			widget->setCellWidget( r, c, sb );

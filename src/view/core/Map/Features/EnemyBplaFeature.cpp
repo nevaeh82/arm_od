@@ -59,20 +59,22 @@ EnemyBpla::EnemyBpla(IObjectsFactory* factory, const QString& id, const UavInfo&
 		m_nameTranslated = m_nameTranslated + QObject::tr("H");
 	}
 
+    m_targNameTranslated = QObject::tr("target");
+
 //	m_nameTranslated = m_nameTranslated
 //			.arg( m_isHistorical ? QObject::tr( "BPLA_HISTORICAL_SUFFIX" ) : "" )
 //			.replace( "%2", "%1" ) + "\\n%2\\n%3\\n%4";
 
-	setName( uav.name + m_nameTranslated );
+    m_originName = ( m_targNameTranslated
+                     + uav.name.right(uav.name.length() - uav.name.indexOf("_"))
+                     + m_nameTranslated + QObject::tr("\\n %1 Mhz").arg(uav.id) );
+
+    setName(m_originName);
 }
 
 void EnemyBpla::setName(const QString& name)
 {
 	m_originName = name;
-
-	QString latLonStdDev = QString("(%1, %2)")
-			.arg(m_lattitudeStddev, 0, 'f', 2)
-			.arg(m_longtitudeStddev, 0, 'f', 2);
 
 //	BplaAbstract::setName( m_nameTranslated.arg(
 //							   name,
@@ -88,6 +90,8 @@ void EnemyBpla::update(const UavInfo& uav)
 	// do not update from uav info with not origin source
 	if (m_sourceId != uav.source) return;
 
+    QString tStr = QObject::tr("Target");
+
     if(uav.statusId != m_state) {
         m_styleName = MapStyleManager::getEnemyBplaStyleName( uav.source, m_state );
         m_marker->removeStyleByName(m_styleName);
@@ -98,6 +102,12 @@ void EnemyBpla::update(const UavInfo& uav)
 
         registerStyle();
     }
+
+    m_originName = ( m_targNameTranslated
+                     + uav.name.right(uav.name.length() - uav.name.indexOf("_"))
+                     + m_nameTranslated + QObject::tr("\\n %1 Mhz").arg(uav.id) );
+
+    setName(m_originName);
 
 	BplaAbstract::update( uav );
 	timer->start(lifetime);

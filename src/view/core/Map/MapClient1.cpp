@@ -117,16 +117,16 @@ void MapClient1::init()
 	removeAll();
 
 	// create marker layers
-	addMarkerLayer( 0, "OP", tr( "OP" ) );
+    addMarkerLayer( 0, "OP", tr( "PIPS" ) );
 
-	addMarkerLayer( 6, "Atlant", tr( "Atlant" ) );
-	addMarkerLayer( 7, "Atlant_target", tr( "Atlant target" ) );
-	addMarkerLayer( 8, "Grid", tr( "Grid" ) );
-	addMarkerLayer( 9, "Checkpoints", tr( "Checkpoints" ) );
-	addMarkerLayer( 10, "Interception_point", tr( "Interception point" ) );
-	addMarkerLayer( 11, "Civil_ships", tr( "Civil ships" ) );
-	addMarkerLayer( 12, "Diversion_points", tr( "Diversion points" ) );
-	addMarkerLayer( 13, "SPIP_DD", tr( "SPIP DD" ) );
+    //addMarkerLayer( 6, "Atlant", tr( "Atlant" ) );
+    //addMarkerLayer( 7, "Atlant_target", tr( "Atlant target" ) );
+    //addMarkerLayer( 8, "Grid", tr( "Grid" ) );
+    //addMarkerLayer( 9, "Checkpoints", tr( "Checkpoints" ) );
+    //addMarkerLayer( 10, "Interception_point", tr( "Interception point" ) );
+    //addMarkerLayer( 11, "Civil_ships", tr( "Civil ships" ) );
+    //addMarkerLayer( 12, "Diversion_points", tr( "Diversion points" ) );
+    //addMarkerLayer( 13, "SPIP_DD", tr( "SPIP DD" ) );
 	addMarkerLayer( 14, "Hyperbole", tr( "Hyperbole" ) );
 	addMarkerLayer( 15, "HyperboleZone", tr( "Hyperbole-Zone" ) );
 	addMarkerLayer( 16, "History", tr( "History" ) );
@@ -139,7 +139,7 @@ void MapClient1::init()
 	addMarkerLayer( 103, "UAV_enemy_track_auto", tr( "UAV_enemy_track_auto" ) );
 	addMarkerLayer( 102, "UAV_enemy_auto", tr( "UAV_enemy_auto" ) );
 
-	addMarkerLayer( 104, "UAV_enemy_single", tr( "UAV_enemy_single" ) );
+    //addMarkerLayer( 104, "UAV_enemy_single", tr( "UAV_enemy_single" ) );
 
 	addMarkerLayer( 5, "UAV_track_KTR", tr( "UAV_track_KTR" ) );
 	addMarkerLayer( 4, "UAV_track_autopilot", tr( "UAV_track_autopilot" ) );
@@ -151,6 +151,9 @@ void MapClient1::init()
 
 
 	showLayer( 8, false );
+    showLayer( 14, false );
+    showLayer( 15, false );
+    showLayer( 17, false );
 
 	// create styles for features
 	m_styleManager->createStationStyle( m_mapLayers.value(0) )->apply();
@@ -196,7 +199,7 @@ void MapClient1::init()
 	m_styleManager->createWorkAreaStyle( m_mapLayers.value(18) )->apply();
 
 	//addNiippLayer
-	m_pwWidget->mapProvider()->layerManager()->addVectorLayer( "NIIPP", tr("NIIPP") );
+    //m_pwWidget->mapProvider()->layerManager()->addVectorLayer( "NIIPP", tr("NIIPP") );
 
 	connect( this, SIGNAL( aisAdded( QMap<int, QVector<QString> >) ),
 			 this, SLOT( setAisData( QMap<int, QVector<QString> > ) ) );
@@ -718,7 +721,7 @@ void MapClient1::addSingleMarkInternal(QByteArray data)
 	UavInfo uav;
 	uav.dateTime = QDateTime::fromMSecsSinceEpoch( sMsg.datetime() );
 
-	clearEllipse();
+    //clearEllipse();
 	//    if(m_pointKKlastInd > 300) {
 	//        clearKKPoint();
 	//    }
@@ -735,17 +738,17 @@ void MapClient1::addSingleMarkInternal(QByteArray data)
 
 		m_factory->createKKpoint(m_pwWidget, QPointF(uav.lon, uav.lat), QDateTime::currentDateTime());
 
-		PwGisPointList list;
-		for(int k=0; k < sMsg.singlemark(i).error_ellips().point_size(); k++ ) {
-			SolverProtocol::ErrorEllips_LatLon pp = sMsg.singlemark(i).error_ellips().point(k);
+//		PwGisPointList list;
+//		for(int k=0; k < sMsg.singlemark(i).error_ellips().point_size(); k++ ) {
+//			SolverProtocol::ErrorEllips_LatLon pp = sMsg.singlemark(i).error_ellips().point(k);
 
-			PwGisLonLat *ll = new PwGisLonLat(pp.lon(), pp.lat());
+//			PwGisLonLat *ll = new PwGisLonLat(pp.lon(), pp.lat());
 
-			list.addLonLat(ll);
-		}
+//			list.addLonLat(ll);
+//		}
 
-		m_pwWidget->addPolygon( QString("ERR_Ellipse_%1").arg(m_ellipseCounter),
-								&list, "", "",  MAP_STYLE_NAME_WORK_AREA );
+//		m_pwWidget->addPolygon( QString("ERR_Ellipse_%1").arg(m_ellipseCounter),
+//								&list, "", "",  MAP_STYLE_NAME_WORK_AREA );
 
 		m_ellipseCounter++;
 		//m_pointKKlastInd++;

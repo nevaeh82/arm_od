@@ -10,7 +10,7 @@
 #include "Map/Features/BplaAbstractFeature.h"
 
 
-#define LIFETIME_1 20000
+#define LIFETIME_1 5000
 #define LIFETIME_2 3000
 
 namespace MapFeature {
@@ -25,6 +25,7 @@ class EnemyBpla : public BplaAbstract
 protected:
 	QString m_nameTranslated;
 	QString m_originName;
+    QString m_targNameTranslated;
 
 	QString m_styleName;
 	QString m_trackStyleName;

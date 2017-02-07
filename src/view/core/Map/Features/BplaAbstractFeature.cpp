@@ -131,6 +131,12 @@ void BplaAbstract::update(const UavInfo& uav)
 
 	QPointF point( uav.lon, uav.lat );
 
+    if(m_lastDateTime.msecsTo(uav.dateTime) > 20000) {
+        m_tail->points()->clear();
+    }
+
+    m_lastDateTime = uav.dateTime;
+
 	if( point != position() ) {
 		setPosition( point );
 		changed = true;

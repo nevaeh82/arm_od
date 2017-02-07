@@ -24,6 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	this->showMaximized();
 
 	init();
+
+    connect(ui->actionCrash, SIGNAL(triggered(bool)), this, SLOT(crash(bool)));
 }
 
 MainWindow::~MainWindow()
@@ -80,7 +82,27 @@ void MainWindow::openAtlasAction()
 void MainWindow::openMapAction()
 {
 	this->setStateMapAction( false );
-	emit openMapSignal();
+    emit openMapSignal();
+}
+
+void StackOverflow(int depth)
+{
+    char blockdata[10000];
+    printf("Overflow: %d\n", depth);
+    StackOverflow(depth+1);
+}
+
+void MainWindow::crash(bool a)
+{
+    int* k = NULL;
+    *k = 5;
+
+    //StackOverflow(0);
+}
+
+void MainWindow::signalSs(int b)
+{
+    b = b+1;
 }
 
 void MainWindow::mapOpened()

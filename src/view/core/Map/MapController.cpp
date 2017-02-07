@@ -23,6 +23,8 @@ MapController::MapController(QObject *parent):
 
 	m_initJsTimer = new QTimer(this);
 	m_initJsTimer->setInterval( MAP_INITJS_TIMEOUT );
+
+    m_mapUpTime = QTime::currentTime();
 }
 
 MapController::~MapController()
@@ -208,6 +210,8 @@ void MapController::loadMapSettings()
 	QString mapFile = settings.value("Map/file").toString();
 	QString viewport = settings.value("Map/viewport").toString();
 
+    m_mapUpTimeout = settings.value("Map/mapUpTimeout", 0).toInt();
+
 	// open default map
 	if (!mapFile.isEmpty()) {
 		if ( mapFile.indexOf("internet/") == 0 ) {
@@ -236,6 +240,11 @@ void MapController::onUavInfoChanged(const UavInfo& uavInfo, const QString& uavR
 	if( NULL == client ) return;
 
 	if( uavRole == OUR_UAV_ROLE ) {
+
+        if(!uavInfo.historical) {
+            return;
+        }
+
 		client->addFriendBpla( uavInfo );
 		return;
 	}
@@ -267,12 +276,46 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 		client->addAis(map);
 	} else if( method == RPC_SLOT_SERVER_SEND_ADSB_DATA ) {
 		client->addAdsb( data );
-	}
+    } else if(method == RPC_SLOT_SERVER_SEND_BLA_POINTS) {
+            QDataStream inputDataStream(&data, QIODevice::ReadOnly);
+            QVector<UAVPositionData> positionDataVector;
+            inputDataStream >> positionDataVector;
 
-//	else if( method == RPC_SLOT_SERVER_SEND_HYPERBOLA ) {
-//		client->addHyperboles(data);
-//	}
-	else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_1) {
+            if (positionDataVector.size() < 1) {
+                log_debug("Size uavpositiondata vector < 1");
+                return;
+            }
+
+//            QString dataToFile = QTime::currentTime().toString("hh:mm:ss:zzz") + " " + QString::number(positionDataVector.at(0).latitude) + " " + QString::number(positionDataVector.at(0).longitude) + " " + QString::number(positionDataVector.at(0).altitude) + "\n";
+//            m_logManager->writeToFile(dataToFile);
+
+            /// Now we take first point, but we need to take more than 1 point
+            UAVPositionData positionData = positionDataVector.at(0);
+            positionData.name = QString::number(positionData.boardID);
+            positionData.state = 1;
+
+            UavInfo uav;
+            uav.lat = positionDataVector.at(0).latitude;
+            uav.lon = positionDataVector.at(0).longitude;
+            uav.alt = positionDataVector.at(0).altitude;
+            uav.yaw = positionDataVector.at(0).course;
+            uav.name = QString::number(positionData.boardID);
+            uav.id = positionData.boardID;
+
+            //onUavInfoChanged(uav, OUR_UAV_ROLE);
+            uav.source = UAV_AUTOPILOT_SOURCE;
+            client->addFriendBpla( uav );
+    } else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_1) {
+
+        volatile int tval = m_mapUpTime.msecsTo(QTime::currentTime());
+       volatile int tval2 = m_mapUpTimeout;
+
+        if(m_mapUpTime.msecsTo(QTime::currentTime()) < m_mapUpTimeout) {
+            return;
+        }
+        m_mapUpTime = QTime::currentTime();
+
+
 		SolverProtocol::Packet pkt;
 		pkt.ParseFromArray( data.data(), data.size() );
 

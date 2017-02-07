@@ -33,6 +33,8 @@ protected:
 	bool m_tailEnabled;
 	bool m_autoTail;
 
+    QDateTime m_lastDateTime;
+
 	BplaAbstract(IObjectsFactory* factory, const QString& id, const UavInfo& uav);
 
 public:

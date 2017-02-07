@@ -58,6 +58,10 @@ private slots:
 	void openAtlasAction();
 	void openMapAction();
 
+    void crash(bool a);
+
+    void signalSs(int);
+
 
 };
 Q_DECLARE_METATYPE(rpc_send_points_vector)

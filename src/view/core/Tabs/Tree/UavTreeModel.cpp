@@ -8,6 +8,8 @@
 #define LAT_PROPERTY_ID		1
 #define LON_PROPERTY_ID		2
 #define ALT_PROPERTY_ID		3
+#define SPEED_PROPERTY_ID		4
+#define COURSE_PROPERTY_ID		5
 
 #define LAT_KTR_PROPERTY_ID		4
 #define LON_KTR_PROPERTY_ID		5
@@ -103,12 +105,22 @@ void UavTreeModel::addSourceNode(TreeItem* item, uint sourceType, QString name, 
 	inProperty.value = 0;
 	nodeSolverAuto.properties.append(inProperty);
 
-	if ( sourceType != UAV_SLICES_SOURCE ) {
-		inProperty.id = ALT_PROPERTY_ID;
-		inProperty.name = tr("alt");
+    if ( sourceType != UAV_SLICES_SOURCE ) {
+        inProperty.id = ALT_PROPERTY_ID;
+        inProperty.name = tr("alt");
         inProperty.value = 10;
-		nodeSolverAuto.properties.append(inProperty);
-	}
+        nodeSolverAuto.properties.append(inProperty);
+    }
+
+    inProperty.id = SPEED_PROPERTY_ID;
+    inProperty.name = tr("speed");
+    inProperty.value = 0;
+    nodeSolverAuto.properties.append(inProperty);
+
+    inProperty.id = COURSE_PROPERTY_ID;
+    inProperty.name = tr("course");
+    inProperty.value = 0;
+    nodeSolverAuto.properties.append(inProperty);
 
 	TreeItem* sourceItem =  new TreeItem(nodeSolverAuto.object, item);
 
@@ -130,7 +142,14 @@ void UavTreeModel::onUavAdded(const Uav &uav, const QString& uavRole)
 	SettingsNode inSettingsNode;
 	inSettingsNode.object.id = uav.uavId;
 	inSettingsNode.object.name = uav.name;
-	inSettingsNode.object.isEditable = false;
+    if(uavRole == ENEMY_UAV_ROLE) {
+        inSettingsNode.object.name = uav.name;
+
+        inSettingsNode.object.name = ( tr("target")
+                             + uav.name.right(uav.name.length() - uav.name.indexOf("_")) );
+
+    }
+    inSettingsNode.object.isEditable = false;
 	inSettingsNode.object.pid = 0;
 	inSettingsNode.object.state = 0;
 
@@ -204,9 +223,12 @@ void UavTreeModel::onUavInfoChanged(const UavInfo &uavInfo, const QString& uavRo
 	onPropertyChanged(uavInfo, LAT_PROPERTY_ID, tr("lat"), number.sprintf( "%.4f", uavInfo.lat ));
 	onPropertyChanged(uavInfo, LON_PROPERTY_ID, tr("lon"), number.sprintf( "%.4f", uavInfo.lon ));
 
-	if (UAV_SLICES_SOURCE != uavInfo.source) {
-		onPropertyChanged(uavInfo, ALT_PROPERTY_ID, tr("alt"), QString::number( (int) uavInfo.alt ));
-	}
+    if (UAV_SLICES_SOURCE != uavInfo.source) {
+        onPropertyChanged(uavInfo, ALT_PROPERTY_ID, tr("alt"), QString::number( (int) uavInfo.alt ));
+    }
+
+    onPropertyChanged(uavInfo, SPEED_PROPERTY_ID, tr("speed"), number.sprintf( "%.4f", uavInfo.speed ));
+    onPropertyChanged(uavInfo, COURSE_PROPERTY_ID, tr("course"), number.sprintf( "%.4f", uavInfo.yaw ));
 
 	if (m_isNeedRedraw) {
 		return;

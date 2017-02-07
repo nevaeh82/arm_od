@@ -41,7 +41,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -568,7 +568,11 @@
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="QDoubleSpinBox" name="sbProbabilityDensity"/>
+           <widget class="QDoubleSpinBox" name="sbProbabilityDensity">
+            <property name="decimals">
+             <number>8</number>
+            </property>
+           </widget>
           </item>
           <item row="4" column="0">
            <widget class="QLabel" name="label_21">
@@ -579,6 +583,9 @@
           </item>
           <item row="4" column="1">
            <widget class="QDoubleSpinBox" name="sbProbabilityNoize">
+            <property name="decimals">
+             <number>8</number>
+            </property>
             <property name="maximum">
              <double>0.990000000000000</double>
             </property>
@@ -597,7 +604,7 @@
           <item row="5" column="1">
            <widget class="QDoubleSpinBox" name="sbAimProbability">
             <property name="decimals">
-             <number>4</number>
+             <number>10</number>
             </property>
             <property name="maximum">
              <double>0.990000000000000</double>

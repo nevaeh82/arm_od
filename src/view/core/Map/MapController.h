@@ -88,6 +88,8 @@ private:
 	void setViewport(QString viewport);
 
 	QTimer* m_initJsTimer;
+    QTime m_mapUpTime;
+    int m_mapUpTimeout;
 
 public slots:
 	void openMapFromAtlas();

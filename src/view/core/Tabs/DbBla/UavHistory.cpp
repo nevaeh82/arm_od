@@ -316,7 +316,7 @@ void UavHistory::updateHistoryState()
 		UavInfo info;
 
 		info.name = m_query.record().value( "uavName" ).toString();
-		info.id = m_query.record().value( "id" ).toInt() + 100000;
+        info.id = m_query.record().value( "uavIdReal" ).toInt();
 		info.uavId = m_query.record().value( "uavIdReal" ).toInt() + 100000;
 
 		info.lat = m_query.record().value( "latitude" ).toDouble();
