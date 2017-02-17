@@ -1,3 +1,5 @@
+#include <QMessageBox>
+
 #include "../Icons/IconsGenerator.h"
 
 #include "MapWidget.h"
@@ -25,4 +27,9 @@ QWidget* MapWidget::getWidget()
 PwGisWidget* MapWidget::getPwGis()
 {
 	return ui->_pwwidget;
+}
+
+void MapWidget::slotApply(int)
+{
+	//QMessageBox::critical(this, "income", "Ok", QMessageBox::Ok);
 }

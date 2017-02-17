@@ -215,82 +215,169 @@ MessageSP TcpKTRCoder::parseLocationFromBoard(const QByteArray& data)
 
 MessageSP TcpKTRCoder::parseLocationFromKTR(const QByteArray& data)
 {
-	QString inputDataAsString(data.constData());
+//	QString inputDataAsString(data.constData());
 
-	QStringList dl1 = inputDataAsString.split("$KTPGA,");
-	QString ddt = dl1.at(1);
+//	QStringList dl1 = inputDataAsString.split("$KTPGA,");
+//	QString ddt = dl1.at(1);
 
-	QStringList dl2 = ddt.split("END");
-	QString final_string = dl2.at(0);
+//	QStringList dl2 = ddt.split("END");
+//	QString final_string = dl2.at(0);
 
-	QStringList dl3 = final_string.split(",");
+//	QStringList dl3 = final_string.split(",");
 
-	QString data2 = dl3.at(1);
-	QString data3 = data2.left(data2.length() - 1);
+//	QString data2 = dl3.at(1);
+//	QString data3 = data2.left(data2.length() - 1);
 
-	int count_points = data3.toInt();
-	if (count_points > 2) {
-		count_points = 1;
-	}
+//	int count_points = data3.toInt();
+//	if (count_points > 2) {
+//		count_points = 1;
+//	}
 
-	QVector<UAVPositionData> positionDataVector;
-	for (int i = 0; i < count_points; ++i) {
-		QString f1 = dl3.at(i + 2);
-		QStringList l33 = f1.split("{");
+//	QVector<UAVPositionData> positionDataVector;
+//	for (int i = 0; i < count_points; ++i) {
+//		QString f1 = dl3.at(i + 2);
+//		QStringList l33 = f1.split("{");
 
-		f1 = l33.at(1);
-		f1.remove("}");
-		l33 = f1.split("|");
+//		f1 = l33.at(1);
+//		f1.remove("}");
+//		l33 = f1.split("|");
 
-		QString lat = l33.at(0);
-		QStringList tmp1 = lat.split("*");
-		double deg = tmp1.at(0).toDouble();
-		QStringList tmp2 = tmp1.at(1).split("'");
-		double min = tmp2.at(0).toDouble();
-		QStringList tmp3 = tmp2.at(1).split("'");
-		QString ss = tmp3.at(0);
-		ss.remove("\"");
-		double sec = ss.toDouble();
-
-		double lat_f = sec/60;
-		lat_f += min;
-		lat_f /= 60;
-		lat_f += deg;
-
-		QString lon = l33.at(1);
-		QStringList tmp11 = lon.split("*");
-		double deg1 = tmp11.at(0).toDouble();
-		QStringList tmp21 = tmp11.at(1).split("'");
-		double min1 = tmp21.at(0).toDouble();
-		QStringList tmp31 = tmp21.at(1).split("'");
-
-//		QString ss1 = tmp31.at(0);
+//		QString lat = l33.at(0);
+//		QStringList tmp1 = lat.split("*");
+//		double deg = tmp1.at(0).toDouble();
+//		QStringList tmp2 = tmp1.at(1).split("'");
+//		double min = tmp2.at(0).toDouble();
+//		QStringList tmp3 = tmp2.at(1).split("'");
+//		QString ss = tmp3.at(0);
 //		ss.remove("\"");
-//		double sec1 = ss1.toDouble();
+//		double sec = ss.toDouble();
 
-		QString ss1=tmp31.at(0);
-		ss1.remove(ss1.size()-1, 1);
-		double sec1=ss1.toDouble();
+//		double lat_f = sec/60;
+//		lat_f += min;
+//		lat_f /= 60;
+//		lat_f += deg;
 
-		double lon_f = sec1/60;
-		lon_f += min1;
-		lon_f /= 60;
-		lon_f += deg1;
+//		QString lon = l33.at(1);
+//		QStringList tmp11 = lon.split("*");
+//		double deg1 = tmp11.at(0).toDouble();
+//		QStringList tmp21 = tmp11.at(1).split("'");
+//		double min1 = tmp21.at(0).toDouble();
+//		QStringList tmp31 = tmp21.at(1).split("'");
 
-		UAVPositionData positionData;
-		positionData.latitude = lat_f;
-		positionData.longitude = lon_f;
-		positionData.sourceType = UAV_SLICES_SOURCE;
+////		QString ss1 = tmp31.at(0);
+////		ss.remove("\"");
+////		double sec1 = ss1.toDouble();
 
-		positionDataVector.push_back(positionData);
-	}
+//		QString ss1=tmp31.at(0);
+//		ss1.remove(ss1.size()-1, 1);
+//		double sec1=ss1.toDouble();
 
-	QByteArray dataToSend;
-	QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
+//		double lon_f = sec1/60;
+//		lon_f += min1;
+//		lon_f /= 60;
+//		lon_f += deg1;
 
-	dataStream << positionDataVector;
+//		UAVPositionData positionData;
+//		positionData.latitude = lat_f;
+//		positionData.longitude = lon_f;
+//		positionData.sourceType = UAV_SLICES_SOURCE;
 
-	return MessageSP(new Message<QByteArray>(TCP_KTR_ANSWER_BPLA, dataToSend));
+//		positionDataVector.push_back(positionData);
+//	}
+
+//	QByteArray dataToSend;
+//	QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
+
+//	dataStream << positionDataVector;
+
+//	return MessageSP(new Message<QByteArray>(TCP_KTR_ANSWER_BPLA, dataToSend));
+
+
+
+    // old format - not use
+    // $KTPGA,OBJ_ID=1044,2X,P0={42*38'32.14"|41*38'7.81"},P1={42*35'1.21"|41*50'53.51"},END
+    // new format - used
+    // $KTPGA,OBJ_ID=XXXXX,2(3)X,P0={ШИРОТА,ДОЛГОТА},P1={ШИРОТА,ДОЛГОТА},END\r\n
+
+    if (data.isEmpty()) {
+        return MessageSP();
+    }
+
+    QList<QByteArray> dataList = data.split('\r');
+    QVector<UAVPositionData> positionDataVector;
+
+    foreach (QByteArray ktrga, dataList) {
+//		log_trace(DebugUtils::printByteArray(ktrga, true));
+        if (!ktrga.contains("$KTPGA")) {
+            continue;
+        }
+
+        int index_posp0 = ktrga.indexOf("P0=");
+        int index_posp1 = ktrga.indexOf("P1=");
+
+//		log_trace("index_posp0->" + QString::number(index_posp0));
+//		log_trace("index_posp1->" + QString::number(index_posp1));
+
+        QByteArray p0, p1;
+
+        if (index_posp0 > 0 && index_posp1 > 0) {
+            p0 = ktrga.mid(index_posp0+4, index_posp1 - index_posp0-6);
+            p1 = ktrga.mid(index_posp1+4, ktrga.size() - index_posp1-9);
+        } else if (index_posp0 > 0 && index_posp1 < 0) {
+            p0 = ktrga.mid(index_posp0+4, ktrga.size() - index_posp0 - 9);
+        } else if (index_posp0 < 0 && index_posp1 < 0) {
+            continue;
+        }
+
+//		log_trace("p0->" + DebugUtils::printByteArray(p0, true));
+//		log_trace("p1->" + DebugUtils::printByteArray(p1, true));
+
+        if (!p0.isEmpty()) {
+            double lat = 0, lon = 0;
+            QList<QByteArray> list = p0.split('|');
+            if (list.size() >= 2) {
+                lat = list.at(0).toDouble();
+                lon = list.at(1).toDouble();
+            }
+//			log_trace("lat->" + QString::number(lat));
+//			log_trace("lon->" + QString::number(lon));
+            UAVPositionData positionData;
+            //positionData.boardID = m_board;
+            //positionData.device = m_device;
+            positionData.latitude = lat;
+            positionData.longitude = lon;
+            positionData.sourceType = UAV_SLICES_SOURCE;
+            positionDataVector.push_back(positionData);
+        }
+        if (!p1.isEmpty()) {
+            double lat = 0, lon = 0;
+            QList<QByteArray> list = p1.split('|');
+            if (list.size() >= 2) {
+                lat = list.at(0).toDouble();
+                lon = list.at(1).toDouble();
+            }
+//			log_trace("lat->" + QString::number(lat));
+//			log_trace("lon->" + QString::number(lon));
+            UAVPositionData positionData;
+            //positionData.boardID = m_board;
+            //positionData.device = m_device;
+            positionData.latitude = lat;
+            positionData.longitude = lon;
+            positionData.sourceType = UAV_SLICES_SOURCE;
+            positionDataVector.push_back(positionData);
+        }
+    }
+
+    if (positionDataVector.isEmpty() ) {
+        return MessageSP();
+    }
+
+    QByteArray dataToSend;
+    QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
+
+    dataStream << positionDataVector;
+
+    return MessageSP(new Message<QByteArray>(TCP_KTR_ANSWER_BPLA, dataToSend));
 }
 
 MessageSP TcpKTRCoder::parseBoardList(const QByteArray& data)
@@ -301,6 +388,12 @@ MessageSP TcpKTRCoder::parseBoardList(const QByteArray& data)
 
 	int count_bla = inputData.at(0);
 	QList<quint16> identificators;
+
+	if (count_bla > 0 ) {
+		if (inputData.size() < ((3 + (count_bla-1)*24) + 1)) {
+			return MessageSP();
+		}
+	}
 
 	for (int i = 0; i < count_bla; i++) {
 		quint16 id = ((quint8)inputData.at(3 + i*24) << 8) + (quint8)inputData.at(2 + i*24);

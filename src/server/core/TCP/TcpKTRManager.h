@@ -23,6 +23,14 @@
 #define KTR_DEVICE_KTRGA623		623
 #define KTR_BOARD_BROADCAST		65535
 
+struct KTRDev
+{
+	BaseTcpDeviceController* controller;
+	int board;
+	int device;
+};
+
+
 class TcpKTRManager : public QObject, public ITcpKTRManager
 {
 	Q_OBJECT
@@ -41,6 +49,9 @@ private:
 
 	QSet<QString> m_hostPortForUpdate;
 
+	QMap<QString, KTRDev> m_ktrList;
+	QTimer* m_ktrUpTimer;
+
 public:
 	explicit TcpKTRManager(ITcpListener* tcpManager, QObject* parent = NULL);
 	virtual ~TcpKTRManager();
@@ -53,6 +64,7 @@ public:
 
 private slots:
 	void timeoutSlot(const QString& key);
+	void slotUpKtr();
 
 
 

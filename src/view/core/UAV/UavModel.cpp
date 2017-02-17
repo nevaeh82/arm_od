@@ -37,9 +37,9 @@ QString UavModel::getExtendedId(const UavInfo& uav)
     QString id = uav.name;
 
 	if(uav.source == 100) {
-		id = id+QObject::tr("A");
+		id = id+"-"+QObject::tr("A");
 	} else if(uav.source == 101) {
-		id = id+QObject::tr("M");
+		id = id+"-"+QObject::tr("M");
 	}
 
 	return id;

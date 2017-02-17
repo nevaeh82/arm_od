@@ -303,7 +303,7 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
             uav.id = positionData.boardID;
 
             //onUavInfoChanged(uav, OUR_UAV_ROLE);
-            uav.source = UAV_AUTOPILOT_SOURCE;
+			uav.source = positionDataVector.at(0).sourceType;
             client->addFriendBpla( uav );
     } else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_1) {
 

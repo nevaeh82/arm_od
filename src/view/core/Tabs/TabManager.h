@@ -49,9 +49,13 @@ private:
 
 	QMenu* m_viewMenu;
 
+	MapWidget* m_mapWidget;
+
 public:
 	TabManager(QTabWidget *tabWidget, QObject *parent = 0);
 	virtual ~TabManager();
+
+	MapWidget* getMapWidget() {return m_mapWidget;}
 
 	void start();
 

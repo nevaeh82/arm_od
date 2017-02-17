@@ -10,6 +10,12 @@ TcpKTRManager::TcpKTRManager(ITcpListener* tcpManager, QObject *parent) :
 
 	connect(m_timeoutSignalMapper, SIGNAL(mapped(const QString &)),
 			this, SLOT(timeoutSlot(const QString &)));
+
+	m_ktrUpTimer = new QTimer(this);
+
+	connect(m_ktrUpTimer, SIGNAL(timeout()), this, SLOT(slotUpKtr()));
+
+	m_ktrUpTimer->start(50000);
 }
 
 TcpKTRManager::~TcpKTRManager()
@@ -43,13 +49,13 @@ void TcpKTRManager::connectToBoard(const QString& hostPort, const quint16& board
 		log_debug("lifetimer NULL!!");
 	}
 
-    if(controller) {
-       // bool stat = controller->isConnected();
+	if(controller) {
+		// bool stat = controller->isConnected();
 
-        int k=0;
-        k++;
-        //Q_UNUSED(stat);
-    }
+		int k=0;
+		k++;
+		//Q_UNUSED(stat);
+	}
 
 	if (controller == NULL && lifeTimer == NULL) {
 
@@ -63,13 +69,13 @@ void TcpKTRManager::connectToBoard(const QString& hostPort, const quint16& board
 		controller->createTcpClient();
 		controller->createTcpDeviceCoder();
 
-        QThread* controllerThread = new QThread;
-        connect(controller, SIGNAL(destroyed()), controllerThread, SLOT(terminate()));
-        connect(this, SIGNAL(threadTerminateSignal()), controllerThread, SLOT(quit()));
-        connect(this, SIGNAL(threadTerminateSignal()), controller, SLOT(deleteLater()));
-        connect(this, SIGNAL(threadTerminateSignal()), controllerThread, SLOT(deleteLater()));
-        controller->asQObject()->moveToThread(controllerThread);
-        controllerThread->start();
+		QThread* controllerThread = new QThread;
+		connect(controller, SIGNAL(destroyed()), controllerThread, SLOT(terminate()));
+		connect(this, SIGNAL(threadTerminateSignal()), controllerThread, SLOT(quit()));
+		connect(this, SIGNAL(threadTerminateSignal()), controller, SLOT(deleteLater()));
+		connect(this, SIGNAL(threadTerminateSignal()), controllerThread, SLOT(deleteLater()));
+		controller->asQObject()->moveToThread(controllerThread);
+		controllerThread->start();
 
 		m_connectionMap.insert(key, controller);
 
@@ -82,15 +88,15 @@ void TcpKTRManager::connectToBoard(const QString& hostPort, const quint16& board
 			log_debug("Everything is not ok... HostPort is empty");
 		}
 
-        controller->connectToHost(strList.at(0), strList.at(1).toUInt());
+		controller->connectToHost(strList.at(0), strList.at(1).toUInt());
 
-//        QTime t = QTime::currentTime().addSecs(100);
-//		while( !controller->isConnected() && QTime::currentTime() < t) {
-//			qApp->processEvents();
-//		}
+		//        QTime t = QTime::currentTime().addSecs(100);
+		//		while( !controller->isConnected() && QTime::currentTime() < t) {
+		//			qApp->processEvents();
+		//		}
 
-      //  bool b = controller->isConnected();
-      //  Q_UNUSED(b);
+		//  bool b = controller->isConnected();
+		//  Q_UNUSED(b);
 
 		lifeTimer = new QTimer();
 		connect(lifeTimer, SIGNAL(timeout()), m_timeoutSignalMapper, SLOT(map()));
@@ -107,18 +113,24 @@ void TcpKTRManager::connectToBoard(const QString& hostPort, const quint16& board
 
 	if (m_needToUpdateAfterDisconnect) {
 
-//		if (!m_hostPortForUpdate.contains(hostPort)) {
-//			return;
-//		}
+		//		if (!m_hostPortForUpdate.contains(hostPort)) {
+		//			return;
+		//		}
 
-//        bool b = controller->isConnected();
-//        Q_UNUSED(b);
+		//        bool b = controller->isConnected();
+		//        Q_UNUSED(b);
 
 		// Need to register again
 		QByteArray dataToSend;
 		QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
 		dataStream << board << device;
 		controller->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_COMMAND_TO_BPLA, dataToSend)));
+
+		KTRDev dev;
+		dev.board = board;
+		dev.controller = controller;
+		dev.device = device;
+		m_ktrList.insert(key, dev);
 	}
 }
 
@@ -129,10 +141,10 @@ void TcpKTRManager::needToUpdateAfterDisconnect(const bool value, const QString&
 	if (value) {
 		m_hostPortForUpdate.insert(hostPost);
 	} else {
-        m_hostPortForUpdate.remove(hostPost);
+		m_hostPortForUpdate.remove(hostPost);
 	}
 
-    m_needToUpdateAfterDisconnect = value;
+	m_needToUpdateAfterDisconnect = value;
 }
 
 void TcpKTRManager::timeoutSlot(const QString& key)
@@ -141,6 +153,8 @@ void TcpKTRManager::timeoutSlot(const QString& key)
 
 	BaseTcpDeviceController* controller = m_connectionMap.take(key);
 	QTimer* lifeTimer = m_lifeTimerMap.take(key);
+
+	m_ktrList.remove(key);
 
 	if (controller != NULL){
 		controller->disconnectFromHost();
@@ -152,4 +166,12 @@ void TcpKTRManager::timeoutSlot(const QString& key)
 	}
 }
 
-
+void TcpKTRManager::slotUpKtr()
+{
+	foreach (KTRDev dev, m_ktrList.values()) {
+		QByteArray dataToSend;
+		QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
+		dataStream << (quint16)dev.board << (quint32)dev.device;
+		dev.controller->sendData(MessageSP(new Message<QByteArray>(TCP_KTR_REQUEST_COMMAND_TO_BPLA, dataToSend)));
+	}
+}

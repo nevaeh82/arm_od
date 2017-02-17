@@ -195,6 +195,15 @@ void BplaAbstract::removeFromMap()
 	Marker::removeFromMap();
 }
 
+int BplaAbstract::cource()
+{
+	if(m_marker) {
+		return m_marker->rotate();
+	}
+
+	return 0;
+}
+
 void BplaAbstract::registerStyle()
 {
 	if( m_isHistorical ) {

@@ -122,13 +122,15 @@
     <addaction name="actionOpen_from_file"/>
     <addaction name="actionListen_to_ADSB"/>
     <addaction name="actionListen_to_online_ADSB"/>
+    <addaction name="separator"/>
+    <addaction name="actionCount_capture"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
      <string>Settings</string>
     </property>
-    <addaction name="actionKoordinatometriyaParameters"/>
     <addaction name="actionSolver_Commands"/>
+    <addaction name="actionKtr_Settings"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -141,18 +143,11 @@
     </property>
     <addaction name="actionRestartServer"/>
    </widget>
-   <widget class="QMenu" name="menuI">
-    <property name="title">
-     <string>i</string>
-    </property>
-    <addaction name="actionCrash"/>
-   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
    <addaction name="menuMap"/>
    <addaction name="menuSettings"/>
    <addaction name="menuServer"/>
-   <addaction name="menuI"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionNew">
@@ -212,6 +207,16 @@
   <action name="actionCrash">
    <property name="text">
     <string>Crash</string>
+   </property>
+  </action>
+  <action name="actionCount_capture">
+   <property name="text">
+    <string>Count capture</string>
+   </property>
+  </action>
+  <action name="actionKtr_Settings">
+   <property name="text">
+    <string>Ktr Addres</string>
    </property>
   </action>
  </widget>

@@ -70,6 +70,8 @@ public:
 	virtual void updateMap();
 	virtual void removeFromMap();
 
+	int cource();
+
 protected:
 	void registerStyle();
 

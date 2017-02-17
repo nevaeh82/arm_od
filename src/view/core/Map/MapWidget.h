@@ -25,6 +25,12 @@ private:
 
 signals:
 	void mapClicked(double, double);
+
+	void signalApply(int);
+	void signalClear();
+
+private slots:
+	void slotApply(int);
 };
 
 #endif // MAPCONTROLLERWIDGET_H

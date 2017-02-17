@@ -10,7 +10,10 @@
 #include <QTabWidget>
 #include <QStackedWidget>
 
+#include "FormCapture.h"
 #include "Tabs/TabManager.h"
+
+#include "KtrAdressControl.h"
 
 typedef QVector<QPointF>         rpc_send_points_vector;
 typedef QPointF                  rpc_QPointF;
@@ -26,6 +29,9 @@ class MainWindow : public QMainWindow
 
 private:
 	Ui::MainWindow* ui;
+
+	FormCapture* m_formCapture;
+	KtrAdressControl* m_ktrAddressControl;
 
 public:
 	explicit MainWindow(QWidget *parent = 0);
@@ -44,6 +50,7 @@ private:
 	void init();
 	void setStateMapAction( bool value );
 
+	QPointF drawAim(QPointF pos, int angle);
 signals:
 	void openAtlasSignal();
 	void openMapSignal();
@@ -54,6 +61,9 @@ signals:
 
 	void signalSolverCommandsDialog();
 
+	void signalApply(int);
+	void signalClear();
+
 private slots:
 	void openAtlasAction();
 	void openMapAction();
@@ -61,6 +71,8 @@ private slots:
     void crash(bool a);
 
     void signalSs(int);
+
+	void slotCaptureCount();
 
 
 };

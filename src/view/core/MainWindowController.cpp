@@ -91,6 +91,11 @@ void MainWindowController::init()
 
 	connect(m_view, SIGNAL(signalSolverCommandsDialog()), m_solverSetupWgt, SLOT(show()));
 
+	if(m_tabManager->getMapWidget()) {
+		connect(m_view, SIGNAL(signalApply(int)), m_tabManager->getMapWidget(), SIGNAL(signalApply(int)));
+		connect(m_view, SIGNAL(signalClear()), m_tabManager->getMapWidget(), SIGNAL(signalClear()));
+	}
+
 	serverStartedSlot();
 }
 
@@ -260,6 +265,12 @@ void MainWindowController::onMethodCalled(const QString& method, const QVariant&
 			m_tabManager->clearAllInformation();
 			m_tabManager->setStationsConfiguration(stationList);
 			m_tabManager->addStationTabs();
+
+			if(m_tabManager->getMapWidget()) {
+				connect(m_view, SIGNAL(signalApply(int)), m_tabManager->getMapWidget(), SIGNAL(signalApply(int)));
+				connect(m_view, SIGNAL(signalApply(int)), m_tabManager->getMapWidget(), SLOT(slotApply(int)));
+				connect(m_view, SIGNAL(signalClear()), m_tabManager->getMapWidget(), SIGNAL(signalClear()));
+			}
 
 		} else if (method == RPC_METHOD_CONFIG_ANSWER_DB_CONFIGURATION) {
 

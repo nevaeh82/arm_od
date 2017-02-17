@@ -26,6 +26,47 @@ MainWindow::MainWindow(QWidget *parent) :
 	init();
 
     connect(ui->actionCrash, SIGNAL(triggered(bool)), this, SLOT(crash(bool)));
+
+	m_formCapture = new FormCapture(0);
+	connect(m_formCapture, SIGNAL(signalApply(int)), m_formCapture, SLOT(hide()));
+	connect(m_formCapture, SIGNAL(signalClear()), m_formCapture, SLOT(hide()));
+	connect(m_formCapture, SIGNAL(signalApply(int)), this, SIGNAL(signalApply(int)));
+	connect(m_formCapture, SIGNAL(signalClear()), this, SIGNAL(signalClear()));
+
+	m_ktrAddressControl = new KtrAdressControl();
+	connect(ui->actionKtr_Settings, SIGNAL(triggered(bool)), m_ktrAddressControl, SLOT(show()));
+
+	QPointF point(34.171325,45.918281);
+	drawAim(point, 50);
+}
+
+QPointF MainWindow::drawAim(QPointF pos, int angle)
+{
+	double BB = 34.023650 - 34.153769;
+	double A = (46.018133-45.819489)/BB;
+	double B = 1;
+	double C = (34.153769*45.819489 - 34.023650*46.018133)/BB;
+
+	double A1 = -tan((double)angle);
+	double B1 = 1;
+	double C1 = tan((double)angle)*pos.x()-pos.y();
+
+	QPointF res;
+
+	res.setX(  -(  (C*B1-C1*B)/(A*B1-A1*B)  )   );
+	double tmp;
+	if(angle>180) {
+		res.setX( res.x() - 0.2*(1-modf(angle/90, &tmp)) );
+	} else {
+		res.setX( res.x() + 0.2*(1-modf(angle/90, &tmp)) );
+	}
+
+	res.setY(  -(  (A*C1-A1*C)/(A*B1-A1*B)  )   );
+
+	log_debug(QString("aimX: %1").arg(res.x()));
+	log_debug(QString("aimY: %1").arg(res.y()));
+
+	return res;
 }
 
 MainWindow::~MainWindow()
@@ -65,12 +106,19 @@ void MainWindow::init()
 	connect( ui->actionListen_to_online_ADSB, SIGNAL(triggered(bool)), this, SIGNAL(signalEnableOnlineAdsb(bool)) );
 
 	connect( ui->actionSolver_Commands, SIGNAL(triggered(bool)), this, SIGNAL(signalSolverCommandsDialog()) );
+
+	connect(ui->actionCount_capture, SIGNAL(triggered(bool)), this, SLOT(slotCaptureCount()));
 }
 
 void MainWindow::setStateMapAction( bool value )
 {
 	ui->actionOpen_Atlas->setEnabled( value );
 	ui->actionOpen_from_file->setEnabled( value );
+}
+
+void MainWindow::slotCaptureCount()
+{
+	m_formCapture->show();
 }
 
 void MainWindow::openAtlasAction()

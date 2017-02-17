@@ -4,7 +4,8 @@
 
 
 TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
-	QObject(parent)
+	QObject(parent),
+	m_mapWidget(NULL)
 {
 	m_currentWidget = NULL;
 
@@ -128,6 +129,9 @@ void TabManager::addStationTabs()
 		m_tabWidget->addTab(tabWidget, station->name);
 
 		m_tabWidgetsMap.insert(station->name, tabWidgetController);
+
+		m_mapWidget = tabWidget->getMapWidget();
+
 	}
 
 	emit readyToStart();

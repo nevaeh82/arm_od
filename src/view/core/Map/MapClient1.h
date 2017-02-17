@@ -36,6 +36,8 @@ class MapClient1 : public QObject, public IMapClient
 	Q_OBJECT
 
 private:
+	Pw::Gis::Circle* m_captureCircle;
+
 	IMapStyleManager* m_styleManager;
 	MapFeature::IFeaturesFactory* m_factory;
 	Pw::Gis::IMapBounds* m_bounds;
@@ -62,7 +64,10 @@ private:
 	QMap<QString, MapFeature::Ais*> m_aisList;
 	QMap<QString, MapFeature::ADSBPlaneFeature*> m_adsbList;
 	QMap<QString, MapFeature::Station*> m_stationList;
+
 	QList<MapFeature::CheckPoint*> m_checkPointsList;
+	QList<QPair<QPointF, QPointF>> m_linesList;
+
 	QList<MapFeature::Hyperbole*> m_hyperboleList;
 
 	QSet<uint> m_uavKnownSources;
@@ -98,6 +103,7 @@ private:
 
 	void readStationsFromFile(QString fileName);
 	void readCheckPointsFromFile(QString fileName);
+	void readCheckLinesFromFile(QString fileName);
 
     //Strange name, hard work in DZankoi
     void DrawHyerboles(QList<QVector<QPointF>> list, QTime time, const QColor color);
@@ -107,7 +113,8 @@ private:
     void clearEllipse();
     void clearHyperbole();
     void clearKKPoint();
-    void clearTrajEllipse(QString id);
+	void clearTrajEllipse(QString id);
+	QPointF drawAim(QPointF pos, int angle);
 public slots:
 	virtual void init();
 	virtual void setPoint();
@@ -185,6 +192,10 @@ private slots:
 	void addTrajectoryKKInternal(QByteArray data, int source);
 
     void slotSolverClear();
+
+	void countCaptureApply(int);
+	void slotCaptureClear();
+
 signals:
 	void friendBplaAdded( const UavInfo& uav );
 	void enemyBplaAdded( const UavInfo& uav,

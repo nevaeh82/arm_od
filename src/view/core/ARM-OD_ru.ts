@@ -241,6 +241,47 @@
     </message>
 </context>
 <context>
+    <name>FormCapture</name>
+    <message>
+        <location filename="FormCapture.ui" line="14"/>
+        <source>Form</source>
+        <translation>Переехват цели</translation>
+    </message>
+    <message>
+        <location filename="FormCapture.ui" line="20"/>
+        <source>Aim ID:</source>
+        <translation>Номер цели: </translation>
+    </message>
+    <message>
+        <location filename="FormCapture.ui" line="34"/>
+        <source>Apply</source>
+        <translation>Применить</translation>
+    </message>
+    <message>
+        <location filename="FormCapture.ui" line="41"/>
+        <source>Clear</source>
+        <translation>Очистить</translation>
+    </message>
+</context>
+<context>
+    <name>KtrAdressControl</name>
+    <message>
+        <location filename="KtrAdressControl.ui" line="20"/>
+        <source>Form</source>
+        <translation>Адрес КТР</translation>
+    </message>
+    <message>
+        <location filename="KtrAdressControl.ui" line="42"/>
+        <source>Apply</source>
+        <translation>Применить</translation>
+    </message>
+    <message>
+        <location filename="KtrAdressControl.ui" line="52"/>
+        <source>Need to restart programm after changes ktr IP</source>
+        <translation>Перезапустите программу для применения изменений!</translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <location filename="MainWindow.ui" line="14"/>
@@ -263,64 +304,79 @@
         <translation>Карта</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="128"/>
+        <location filename="MainWindow.ui" line="130"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="135"/>
+        <location filename="MainWindow.ui" line="137"/>
         <source>View</source>
         <translation>Вид</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="140"/>
+        <location filename="MainWindow.ui" line="142"/>
         <source>Server</source>
         <translation>Сервер</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="156"/>
+        <location filename="MainWindow.ui" line="158"/>
         <source>New</source>
         <translation>Новый пункт</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="161"/>
+        <location filename="MainWindow.ui" line="163"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="166"/>
+        <location filename="MainWindow.ui" line="168"/>
         <source>Open Atlas</source>
         <translation>Открыть атлас</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="171"/>
+        <location filename="MainWindow.ui" line="173"/>
         <source>Open from file</source>
         <translation>Открыть из файла</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="176"/>
+        <location filename="MainWindow.ui" line="178"/>
         <source>Solver settings</source>
         <translation>Параметры координатометрии</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="181"/>
+        <location filename="MainWindow.ui" line="183"/>
         <source>Restart Server</source>
         <translation>Перезапуск сервера</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="189"/>
+        <location filename="MainWindow.ui" line="191"/>
         <source>Listen to ADSB</source>
         <translation>Отображать ADSB</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="197"/>
+        <location filename="MainWindow.ui" line="199"/>
         <source>Listen to online ADSB</source>
         <translation>Отображать ADSB из web</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="202"/>
+        <location filename="MainWindow.ui" line="204"/>
         <source>SolverCommands</source>
         <translation>Настройка КВК</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="209"/>
+        <source>Crash</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="214"/>
+        <source>Count capture</source>
+        <translation>Расчет зоны перехата</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="219"/>
+        <source>Ktr Addres</source>
+        <translation>Настройка адреса Ктр</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="20"/>
@@ -331,12 +387,12 @@
 <context>
     <name>MainWindowController</name>
     <message>
-        <location filename="MainWindowController.cpp" line="99"/>
+        <location filename="MainWindowController.cpp" line="104"/>
         <source>Unable to connect to server</source>
         <translation>Неудалось подключиться к серверу</translation>
     </message>
     <message>
-        <location filename="MainWindowController.cpp" line="99"/>
+        <location filename="MainWindowController.cpp" line="104"/>
         <source>Please try to restart application</source>
         <translation>Попробуйте перезапустить приложение</translation>
     </message>
@@ -348,29 +404,29 @@
         <translation type="obsolete">НИИПП</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="137"/>
+        <location filename="Map/MapClient1.cpp" line="141"/>
         <source>UAV_enemy_manual</source>
         <oldsource>UAV_enemy</oldsource>
         <translation>БПЛА Р</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="136"/>
+        <location filename="Map/MapClient1.cpp" line="140"/>
         <source>UAV_enemy_track_manual</source>
         <oldsource>UAV_enemy_track</oldsource>
         <translation>БПЛА Р: трек</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="120"/>
+        <location filename="Map/MapClient1.cpp" line="124"/>
         <source>PIPS</source>
         <translation>ПИПС</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="140"/>
+        <location filename="Map/MapClient1.cpp" line="144"/>
         <source>UAV_enemy_auto</source>
         <translation>БПЛА А</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="139"/>
+        <location filename="Map/MapClient1.cpp" line="143"/>
         <source>UAV_enemy_track_auto</source>
         <translation>БПЛА А: трек</translation>
     </message>
@@ -379,18 +435,18 @@
         <translation type="obsolete">БПЛА Т</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="146"/>
+        <location filename="Map/MapClient1.cpp" line="150"/>
         <source>UAV</source>
         <translation>БЛА</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="145"/>
+        <location filename="Map/MapClient1.cpp" line="149"/>
         <source>UAV_track_autopilot</source>
         <oldsource>UAV_track</oldsource>
         <translation>БЛА: трек от автопилота</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="144"/>
+        <location filename="Map/MapClient1.cpp" line="148"/>
         <source>UAV_track_KTR</source>
         <translation>БЛА: трек от КТР</translation>
     </message>
@@ -435,42 +491,48 @@
         <translation type="obsolete">ОП</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="130"/>
+        <location filename="Map/MapClient1.cpp" line="134"/>
         <source>Hyperbole</source>
         <translation>Гипербола</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="131"/>
+        <location filename="Map/MapClient1.cpp" line="135"/>
         <source>Hyperbole-Zone</source>
         <translation>Гипербозоны</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="132"/>
+        <location filename="Map/MapClient1.cpp" line="136"/>
         <source>History</source>
         <translation>История</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="133"/>
+        <location filename="Map/MapClient1.cpp" line="137"/>
         <source>Point</source>
         <translation>Точки</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="134"/>
+        <location filename="Map/MapClient1.cpp" line="138"/>
         <source>workArea</source>
         <translation>Рабочая область</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="148"/>
+        <location filename="Map/MapClient1.cpp" line="152"/>
         <source>ADSB</source>
         <translation>АДСБ</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="149"/>
+        <location filename="Map/MapClient1.cpp" line="153"/>
         <source>ADSBtrack</source>
         <translation>АДСБтрек</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="1035"/>
+        <location filename="Map/MapClient1.cpp" line="950"/>
+        <source>Capture aim %1</source>
+        <translation>Зона перехвата 
+ Цели № %1</translation>
+    </message>
+    <message>
+        <location filename="Map/MapClient1.cpp" line="1155"/>
         <source>Ingur</source>
         <translation>Ингур</translation>
     </message>

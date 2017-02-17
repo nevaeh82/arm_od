@@ -58,8 +58,8 @@ int main(int argc, char *argv[])
 	QApplication a(argc, argv);
 	Logger::setupLogger("./logs/ArmOD.log");
 
-    hwnd = ::GetDesktopWindow();
-    backtrace_register();
+	hwnd = ::GetDesktopWindow();
+	backtrace_register();
 
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 	QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));

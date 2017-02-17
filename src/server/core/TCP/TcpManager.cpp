@@ -202,9 +202,13 @@ void TcpManager::onMessageReceived(const quint32 deviceType, const QString& devi
 				QDataStream inputDataStream(&messageData, QIODevice::ReadOnly);
 				inputDataStream >> boardList;
 
+//				boardList.append(1044);
+//				boardList.append(1089);
+//				boardList.append(10400);
+
 				foreach (quint16 boardID, boardList) {
 					m_ktrManager->connectToBoard(controller->getHost(), boardID, KTR_DEVICE_AUTOPILOT);
-                    m_ktrManager->connectToBoard(controller->getHost(), boardID, KTR_DEVICE_KTRGA622);
+					m_ktrManager->connectToBoard(controller->getHost(), boardID, KTR_DEVICE_KTRGA623);
 				}
 
 				m_ktrManager->needToUpdateAfterDisconnect(false, controller->getHost());

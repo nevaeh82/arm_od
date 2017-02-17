@@ -20,6 +20,7 @@ MapClient1::MapClient1(MapWidget* pwWidget, Station* station, QObject* parent)
 	, m_niippPoint( 0 )
 	, m_pointKKlastInd( 0 )
 	, m_ellipseCounter( 0 )
+	, m_captureCircle(NULL)
 {
 	m_view = pwWidget;
 	m_pwWidget = pwWidget->getPwGis();
@@ -100,6 +101,9 @@ MapClient1::MapClient1(MapWidget* pwWidget, Station* station, QObject* parent)
 	connect(&m_objectsManager->events(), SIGNAL(featureClicked(QString,QString)), SLOT(onFeatureClicked(QString,QString)));
 
 	connect(this, SIGNAL(onSolverClear()), this, SLOT(slotSolverClear()));
+
+	connect(m_view, SIGNAL(signalApply(int)), this, SLOT(countCaptureApply(int)));
+	connect(m_view, SIGNAL(signalClear()), this, SLOT(slotCaptureClear()));
 }
 
 MapClient1::~MapClient1()
@@ -498,6 +502,38 @@ void MapClient1::removeNiippPoint()
 	m_niippPoint = 0;
 }
 
+void MapClient1::readCheckLinesFromFile(QString fileName)
+{
+	QSettings settings( fileName, QSettings::IniFormat );
+	settings.setIniCodec( QTextCodec::codecForName("UTF-8") );
+
+	QStringList childKeys = settings.childGroups();
+	foreach( const QString &childKey, childKeys ) {
+		settings.beginGroup( childKey );
+
+		QVariant name = settings.value( "Name" );
+		QVariant lat1 = settings.value( "Latitude1" );
+		QVariant lon1 = settings.value( "Longitude1" );
+		QVariant lat2 = settings.value( "Latitude2" );
+		QVariant lon2 = settings.value( "Longitude2" );
+
+		if( name.isNull() || !name.canConvert( QVariant::String ) ) continue;
+		if( lat1.isNull() || !lat1.canConvert( QVariant::Double ) ) continue;
+		if( lon1.isNull() || !lon1.canConvert( QVariant::Double ) ) continue;
+		if( lat2.isNull() || !lat2.canConvert( QVariant::Double ) ) continue;
+		if( lon2.isNull() || !lon2.canConvert( QVariant::Double ) ) continue;
+
+		Pw::Gis::Path* tmpPath = m_pwWidget->mapProvider()->objectsFactory()->createPath();
+		tmpPath->points()->append(new PwGisLonLat(lon1.toDouble(), lat1.toDouble()));
+		tmpPath->points()->append(new PwGisLonLat(lon2.toDouble(), lat2.toDouble()));
+		tmpPath->addStyleByName(MAP_STYLE_NAME_CHECK_POINTS);
+
+		tmpPath->updateMap();
+
+		settings.endGroup();
+	}
+}
+
 void MapClient1::readCheckPointsFromFile(QString fileName)
 {
 	QSettings settings( fileName, QSettings::IniFormat );
@@ -537,6 +573,11 @@ void MapClient1::setPoint()
 	mapPointsSettingFile.append( "/Map/map_points.ini" );
 
 	readCheckPointsFromFile( mapPointsSettingFile );
+
+	QString mapLinesSettingFile = QCoreApplication::applicationDirPath();
+	mapLinesSettingFile.append( "/Map/map_lines.ini" );
+
+	readCheckLinesFromFile( mapLinesSettingFile );
 }
 
 void MapClient1::addMarkerLayer( int id, const QString& layerId,
@@ -843,6 +884,85 @@ void MapClient1::slotSolverClear()
 	clearEllipse();
 	clearKKPoint();
 	clearHyperbole();
+}
+
+QPointF MapClient1::drawAim(QPointF pos, int angle)
+{
+	double BB = 34.023650 - 34.153769;
+	double A = (46.018133-45.819489)/BB;
+	double B = 1;
+	double C = (34.153769*45.819489 - 34.023650*46.018133)/BB;
+
+	double A1 = -tan((double)angle);
+	double B1 = 1;
+	double C1 = tan((double)angle)*pos.x()-pos.y();
+
+	QPointF res;
+
+	res.setX(  -(  (C*B1-C1*B)/(A*B1-A1*B)  )   );
+	double tmp;
+	if(angle>180) {
+		res.setX( res.x() - 0.2*(1-modf(angle/90, &tmp)) );
+	} else {
+		res.setX( res.x() + 0.2*(1-modf(angle/90, &tmp)) );
+	}
+
+	res.setY(  -(  (A*C1-A1*C)/(A*B1-A1*B)  )   );
+
+	log_debug(QString("aimX: %1").arg(res.x()));
+	log_debug(QString("aimY: %1").arg(res.y()));
+
+	return res;
+}
+
+void MapClient1::countCaptureApply(int aim)
+{
+	bool isFound = false;
+	QString keyBla;
+	foreach (QString key, m_enemyBplaList.keys()) {
+		int numStart = key.indexOf("_");
+		int numEnd = key.indexOf("-");
+
+		QString valid = key.mid(numStart+1, numEnd-numStart-1).toInt();
+
+		int id = valid.toInt();
+		id = 1;
+
+		log_debug(QString("start %1 end %2 str %3   resultId  %4").arg(numStart).arg(numEnd).arg(valid).arg(id));
+
+		if(id == aim) {
+			isFound = true;
+			keyBla = key;
+			break;
+		}
+	}
+
+	if(!isFound) {
+		return;
+	}
+
+	QPointF point(m_enemyBplaList.value(keyBla)->position().x(),
+				  m_enemyBplaList.value(keyBla)->position().y());
+
+	QPointF aimPoint = drawAim(point, m_enemyBplaList.value(keyBla)->cource());
+
+	m_captureCircle = m_pwWidget->mapProvider()->objectsFactory()->createCircle();
+	m_captureCircle->setName(tr("Capture aim %1").arg(aim));
+
+	m_captureCircle->setOriginPoint(new PwGisLonLat(aimPoint.x(), aimPoint.y()));
+	m_captureCircle->setRadius(5000);
+	m_captureCircle->addStyleByName(MAP_STYLE_NAME_WORK_AREA);
+
+	m_captureCircle->updateMap();
+}
+
+void MapClient1::slotCaptureClear()
+{
+	if(m_captureCircle) {
+		m_captureCircle->removeFromMap();
+	}
+
+	m_captureCircle = NULL;
 }
 
 void MapClient1::removeBplaInternal(const Uav& uav)
