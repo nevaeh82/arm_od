@@ -14,6 +14,7 @@ Niipp::Niipp()
 {
     m_id = 0;
     m_parentTab = NULL;
+	m_enComplex = false;
 }
 
 Niipp::Niipp(int id, QString name, QPointF latlon, ITabManager* parentTab)
@@ -92,6 +93,8 @@ void Niipp::startCommand()
 void Niipp::enableComplex(bool state)
 {
 	if( m_parentTab == NULL ) return;
+
+	m_enComplex = state;
 
 	QByteArray ba;
 	QDataStream ds(&ba, QIODevice::WriteOnly);
@@ -181,7 +184,7 @@ void Niipp::sendEvil(const QPointF& point, const QPointF& point_uvoda, double al
 
 	if( m_parentTab == NULL ) return;
 
-    if(m_enable == false) return;
+	if(m_enComplex == false) return;
 
 	QByteArray ba;
 	QDataStream ds(&ba, QIODevice::ReadWrite);

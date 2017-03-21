@@ -76,6 +76,7 @@ private:
 	ITabManager*    m_parentTab;
 
 	bool            m_enable;
+	bool m_enComplex;
 };
 
 #endif // NIIPPCONTROLMODEL_H
