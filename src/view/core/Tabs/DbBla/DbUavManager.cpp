@@ -594,8 +594,9 @@ void DbUavManager::addUavInfoToDb(const UAVPositionDataEnemy& positionDataEnemy,
 	// workaround if dateTime is greather then current system dateTime
 	// we should reduce a day
 	/// \todo we sould pass data from ARM R in DateTime format
+	/// XZ wthf???? Do current datetime!!!!
 	if ( positionData.dateTime > QDateTime::currentDateTime() ) {
-		positionData.dateTime = positionData.dateTime.addDays( -1 );
+		positionData.dateTime = QDateTime::currentDateTime();
 	}
 
 	addUavInfoToDb(positionData, role, uavType, status, deviceType, sourceType, actual, tail, tailStdDev);

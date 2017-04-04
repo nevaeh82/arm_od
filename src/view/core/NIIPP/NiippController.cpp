@@ -143,10 +143,10 @@ void NiippController::setPoint(QPointF coord)
 
 void NiippController::sendEnemyBpla(QPointF point, QPointF point_uvoda, double alt, double bearing)
 {
-//	if(!m_view->getStartState())
-//	{
-//		return;
-//	}
+	if(!m_view->getStartState())
+	{
+		return;
+	}
 
 	m_model->setAntenaIndex(m_view->getAntenaIndex());
 	m_model->setSBpowerValue(m_view->getSbPowerValue());
@@ -198,12 +198,13 @@ void NiippController::onUavInfoChanged(const UavInfo& uavInfo, const QString& ua
 	Q_UNUSED( tailStdDev );
 
 	if ( uavRole != ENEMY_UAV_ROLE ) return;
-	//if ( uavInfo.source != UAV_SOLVER_MANUAL_SOURCE ) return;
+	if ( uavInfo.source != UAV_SOLVER_MANUAL_SOURCE &&
+		 uavInfo.source != UAV_SOLVER_AUTO_SOURCE) return;
 
 	/// \todo: I don't know why numbers are 100 and 101. It's from MapClient1
 	if( getId() == 100 || getId() == 101 ) {
 		QPointF point( uavInfo.lon, uavInfo.lat );
-		sendEnemyBpla( point, m_model->getPoint(), uavInfo.alt, uavInfo.yaw );
+		sendEnemyBpla(point, m_model->getPoint(), uavInfo.alt, uavInfo.yaw );
 	}
 }
 

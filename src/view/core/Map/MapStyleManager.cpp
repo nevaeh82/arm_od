@@ -71,8 +71,8 @@ PwGisStyle* MapStyleManager::createFriendBplaSliceStyle(const QString& layerId)
 	PwGisStyle* style = createStyle( MAP_STYLE_NAME_FRIEND_BPLA_SLICE, &exists );
 
 	if( !exists ) {
-		style->setProperty( PwGisStyle::strokeColor, "red" );
-		style->setProperty( PwGisStyle::strokeOpacity, "0.3" );
+		style->setProperty( PwGisStyle::strokeColor, "black" );
+		//style->setProperty( PwGisStyle::strokeOpacity, "0.3" );
 		style->setProperty( PwGisStyle::layer, layerId );
 	}
 
