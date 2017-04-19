@@ -124,6 +124,7 @@
     <addaction name="actionListen_to_online_ADSB"/>
     <addaction name="separator"/>
     <addaction name="actionCount_capture"/>
+    <addaction name="actionLoad_Base_stations"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
@@ -217,6 +218,11 @@
   <action name="actionKtr_Settings">
    <property name="text">
     <string>Ktr Addres</string>
+   </property>
+  </action>
+  <action name="actionLoad_Base_stations">
+   <property name="text">
+    <string>Load Base stations</string>
    </property>
   </action>
  </widget>

@@ -31,6 +31,8 @@ MainWindowController::MainWindowController(QObject *parent) :
 	m_serverHandler = new SkyHobbit::Common::ServiceControl::ServiceHandler(serverName, QStringList(), NULL, this);
 
 	m_serverHandler->start(true);
+
+	m_xmlParser = new BaseParser(this);
 }
 
 MainWindowController::~MainWindowController()
@@ -95,6 +97,8 @@ void MainWindowController::init()
 		connect(m_view, SIGNAL(signalApply(int)), m_tabManager->getMapWidget(), SIGNAL(signalApply(int)));
 		connect(m_view, SIGNAL(signalClear()), m_tabManager->getMapWidget(), SIGNAL(signalClear()));
 	}
+
+	connect(m_view, SIGNAL(signalLoadBaseStations()), this, SLOT(slotLoadBaseStations()));
 
 	serverStartedSlot();
 }
@@ -250,7 +254,12 @@ void MainWindowController::enableAdsbOnlineClient(bool status)
 
 void MainWindowController::mapOpened()
 {
-    m_solverSetupWidgetController->setMapFlag();
+	m_solverSetupWidgetController->setMapFlag();
+}
+
+void MainWindowController::slotLoadBaseStations()
+{
+	m_xmlParser->getView()->show();
 }
 
 void MainWindowController::onMethodCalled(const QString& method, const QVariant& argument)

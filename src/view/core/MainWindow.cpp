@@ -108,6 +108,8 @@ void MainWindow::init()
 	connect( ui->actionSolver_Commands, SIGNAL(triggered(bool)), this, SIGNAL(signalSolverCommandsDialog()) );
 
 	connect(ui->actionCount_capture, SIGNAL(triggered(bool)), this, SLOT(slotCaptureCount()));
+
+	connect(ui->actionLoad_Base_stations, SIGNAL(triggered(bool)), this, SIGNAL(signalLoadBaseStations()));
 }
 
 void MainWindow::setStateMapAction( bool value )

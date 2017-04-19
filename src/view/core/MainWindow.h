@@ -64,6 +64,8 @@ signals:
 	void signalApply(int);
 	void signalClear();
 
+	void signalLoadBaseStations();
+
 private slots:
 	void openAtlasAction();
 	void openMapAction();

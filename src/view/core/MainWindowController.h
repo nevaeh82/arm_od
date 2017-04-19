@@ -21,6 +21,8 @@
 #include "Tabs/RPC/RpcConfigClient.h"
 #include "Rpc/RpcDefines.h"
 
+#include "BaseParser/BaseParser.h"
+
 class MainWindowController : public QObject, public IRpcListener//, public IController<MainWindow>
 {
 	Q_OBJECT
@@ -40,6 +42,8 @@ private:
 	SolverSetupWidgetController* m_solverSetupWidgetController;
 
 	int m_uavLifeTime;
+
+	BaseParser* m_xmlParser;
 
 public:
 	explicit MainWindowController(QObject *parent = 0);
@@ -63,7 +67,8 @@ private slots:
 	void enableAdsbClient(bool);
 	void enableAdsbOnlineClient(bool);
 
-    void mapOpened();
+	void mapOpened();
+	void slotLoadBaseStations();
 
 private:
 
