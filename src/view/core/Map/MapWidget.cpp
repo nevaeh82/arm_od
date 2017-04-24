@@ -12,6 +12,11 @@ MapWidget::MapWidget(QWidget *parent) :
 	ui->setupUi(this);
 
 	connect( ui->_pwwidget, SIGNAL(mapClicked(double,double)), this, SIGNAL(mapClicked(double, double)) );
+
+	m_xmlParser = new BaseParser(this);
+
+	connect(m_xmlParser->getView(), SIGNAL(signalBaseStationOnMap(double,double,QString)), this, SIGNAL(onShowBaseStation(double, double, QString)));
+	connect(m_xmlParser->getView(), SIGNAL(signalClearStationOnMap()), this, SIGNAL(onClearBaseStation()));
 }
 
 MapWidget::~MapWidget()
@@ -32,4 +37,9 @@ PwGisWidget* MapWidget::getPwGis()
 void MapWidget::slotApply(int)
 {
 	//QMessageBox::critical(this, "income", "Ok", QMessageBox::Ok);
+}
+
+void MapWidget::slotLoadBaseStations()
+{
+	m_xmlParser->getView()->show();
 }

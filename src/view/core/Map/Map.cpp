@@ -1,5 +1,7 @@
 #include "Map.h"
 
+#include <QFile>
+
 
 Map::Map(QObject *parent ) :
 	QObject(parent)
@@ -8,6 +10,7 @@ Map::Map(QObject *parent ) :
 	m_mapManager = 0;
 	m_profileManager = 0;
 	m_layerManager = 0;
+	m_pwWidget = 0;
 }
 
 Map::~Map()
@@ -21,6 +24,7 @@ Map::~Map()
 void Map::init(QMap<int, Station*> map_settings, MapWidget* pwwidget)
 {
 	m_mapSettings = map_settings;
+	m_pwWidget = pwwidget;
 
 	QMap<int, Station*>::iterator it;
 	for (it = m_mapSettings.begin(); it != m_mapSettings.end(); ++it)
@@ -31,6 +35,29 @@ void Map::init(QMap<int, Station*> map_settings, MapWidget* pwwidget)
         m_firstClient = client;
 
 		connect( this, SIGNAL(modelMapReady()), client, SLOT(init()) );
+	}
+}
+
+void Map::saveCache()
+{
+	if(m_pwWidget){
+		m_pwWidget->getPwGis()->executeScript("var GEOJSON_PARSER = new OpenLayers.Format.GeoJSON();");
+		QString retVal = m_pwWidget->getPwGis()->executeScript("GEOJSON_PARSER.write(client.vectorLayer.features);").toString();
+
+
+		QFile f(MAPOBJECTS_CACHE);
+		f.open(QIODevice::WriteOnly);
+		f.write(retVal.toLatin1());
+		f.close();
+
+
+		retVal = m_pwWidget->getPwGis()->executeScript("GEOJSON_PARSER.write(client.markerLayer.features);").toString();
+
+
+		QFile fm(MAPMARKERS_CACHE);
+		fm.open(QIODevice::WriteOnly);
+		fm.write(retVal.toLatin1());
+		fm.close();
 	}
 }
 

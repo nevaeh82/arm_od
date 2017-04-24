@@ -94,6 +94,9 @@ signals:
 	void readyToStart();
 	void finished();
 
+	void signalClearMap();
+	void signalLoadObjects();
+	void signalSaveObjects();
 
 };
 

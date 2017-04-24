@@ -10,6 +10,8 @@ SolverSetupWidget::SolverSetupWidget(QWidget *parent) :
 {
 	ui->setupUi(this);
 
+	m_solverMessageCounter = 0;
+
 	// Hide "?" button
 	Qt::WindowFlags flags = windowFlags();
 	Qt::WindowFlags helpFlag = Qt::WindowContextHelpButtonHint;
@@ -68,7 +70,15 @@ void SolverSetupWidget::setSolverMessage(int type, QString text)
 		txtType = tr("Error");
 		color = "red";
 	}
+
+	if(m_solverMessageCounter > 100) {
+		ui->textBrowser->clear();
+		m_solverMessageCounter = 0;
+	}
+
 	ui->textBrowser->append( QString("<b><font color=\"%1\">%2</font></b>  \n      %3").arg(color).arg(txtType).arg(text) );
+
+	m_solverMessageCounter++;
 }
 
 void SolverSetupWidget::setSolverSettings(SolverProtocol::Packet_DataFromSolver_SolverResponse& data)

@@ -484,9 +484,11 @@ void DbUavManager::onMethodCalled(const QString& method, const QVariant& argumen
 	//log_debug(QString("OK::::: IN RUN %1  >>>>>>>>>>>>").arg(m_inRun));
 
 	if(m_inRun) {
+		//log_debug(QString("DB is Busy ....... %1>>>>>>>>>>>>").arg(method));
 		return;  //Drop if db is writing in
 	}
 
+	//log_debug(QString("DB Ready to write! %1>>>>>>>>>>>>").arg(method));
 	emit signalMethodCalled(method, argument);
 }
 
@@ -827,7 +829,7 @@ void DbUavManager::timeoutSlot(const QString& key)
 {
 	QMutexLocker deleteLocker(&m_deleteMutex);
 
-    Uav uav = m_knownUavsList.take(key);
+	Uav uav = m_knownUavsList.take(key);
 	QTimer* lifeTimer = m_lifeTimerMap.take(key);
 
 	log_debug(QString("DELETING UAV BY ID = %1...").arg(QString::number(uav.uavId)));

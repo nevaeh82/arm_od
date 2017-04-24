@@ -98,6 +98,13 @@ void MainWindow::init()
 	connect( ui->actionOpen_from_file, SIGNAL( triggered() ),
 		this, SLOT( openMapAction() ) );
 
+	connect( ui->actionClear_map, SIGNAL( triggered() ),
+		this, SIGNAL( signalClearMap() ) );
+	connect( ui->actionLoad_objects, SIGNAL( triggered() ),
+		this, SIGNAL( signalLoadObjects() ) );
+	connect( ui->actionSave_objects, SIGNAL( triggered() ),
+		this, SIGNAL( signalSaveObjects() ) );
+
 	connect(ui->actionKoordinatometriyaParameters, SIGNAL(triggered()), this, SIGNAL(setupKoordinatometriyaSignal()));
 
 	connect(ui->actionRestartServer, SIGNAL(triggered()), this, SIGNAL(signalResetServer()));

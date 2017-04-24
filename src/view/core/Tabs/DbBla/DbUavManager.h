@@ -49,6 +49,7 @@ private:
 	LogManager* m_logManager;
 
 	bool m_inRun;
+	QString method;
 
 public:
 	explicit DbUavManager(int lifeTime = MAX_LIFE_TIME, QObject *parent = 0);

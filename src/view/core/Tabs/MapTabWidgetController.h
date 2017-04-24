@@ -119,6 +119,9 @@ public slots:
 	void onSendDataToNiippControl(int id, QByteArray data);
 	void openAtlasSlot();
 	void openMapSlot();
+	void clearMapSlot();
+	void loadObjetsSlot();
+	void saveObjectsSlot();
 };
 
 #endif // MAPTABWIDGETCONTROLLER_H

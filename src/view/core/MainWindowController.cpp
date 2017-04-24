@@ -31,8 +31,6 @@ MainWindowController::MainWindowController(QObject *parent) :
 	m_serverHandler = new SkyHobbit::Common::ServiceControl::ServiceHandler(serverName, QStringList(), NULL, this);
 
 	m_serverHandler->start(true);
-
-	m_xmlParser = new BaseParser(this);
 }
 
 MainWindowController::~MainWindowController()
@@ -69,6 +67,11 @@ void MainWindowController::init()
 
 	connect(m_view, SIGNAL(openAtlasSignal()), m_tabManager, SIGNAL(openAtlasSignal()));
 	connect(m_view, SIGNAL(openMapSignal()), m_tabManager, SIGNAL(openMapSignal()));
+
+	connect(m_view, SIGNAL(signalClearMap()), m_tabManager, SIGNAL(signalClearMap()));
+	connect(m_view, SIGNAL(signalLoadObjects()), m_tabManager, SIGNAL(signalLoadObjects()));
+	connect(m_view, SIGNAL(signalSaveObjects()), m_tabManager, SIGNAL(signalSaveObjects()));
+
 	connect(m_tabManager, SIGNAL( mapOpened() ), m_view, SLOT( mapOpened() ));
 	connect(m_tabManager, SIGNAL( atlasOpened() ), m_view, SLOT( mapOpened() ));
     connect(m_tabManager, SIGNAL( mapOpened() ), this, SLOT( mapOpened() ));
@@ -97,8 +100,6 @@ void MainWindowController::init()
 		connect(m_view, SIGNAL(signalApply(int)), m_tabManager->getMapWidget(), SIGNAL(signalApply(int)));
 		connect(m_view, SIGNAL(signalClear()), m_tabManager->getMapWidget(), SIGNAL(signalClear()));
 	}
-
-	connect(m_view, SIGNAL(signalLoadBaseStations()), this, SLOT(slotLoadBaseStations()));
 
 	serverStartedSlot();
 }
@@ -257,11 +258,6 @@ void MainWindowController::mapOpened()
 	m_solverSetupWidgetController->setMapFlag();
 }
 
-void MainWindowController::slotLoadBaseStations()
-{
-	m_xmlParser->getView()->show();
-}
-
 void MainWindowController::onMethodCalled(const QString& method, const QVariant& argument)
 {
 	QByteArray data = argument.toByteArray();
@@ -279,12 +275,13 @@ void MainWindowController::onMethodCalled(const QString& method, const QVariant&
 				connect(m_view, SIGNAL(signalApply(int)), m_tabManager->getMapWidget(), SIGNAL(signalApply(int)));
 				connect(m_view, SIGNAL(signalApply(int)), m_tabManager->getMapWidget(), SLOT(slotApply(int)));
 				connect(m_view, SIGNAL(signalClear()), m_tabManager->getMapWidget(), SIGNAL(signalClear()));
+				connect(m_view, SIGNAL(signalLoadBaseStations()), m_tabManager->getMapWidget(), SLOT(slotLoadBaseStations()));
 			}
 
 		} else if (method == RPC_METHOD_CONFIG_ANSWER_DB_CONFIGURATION) {
 
 			QDataStream dataStream(&data, QIODevice::ReadOnly);
-			DBConnectionStruct dbConfig;;
+			DBConnectionStruct dbConfig;
 			dataStream >> dbConfig;
 
 			m_tabManager->setDbConnectionStruct(dbConfig);

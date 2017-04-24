@@ -360,7 +360,7 @@ int DbUavController::addUavInfo(const UavInfo& info)
 	} else {
 		QString er = query.lastError().databaseText() + "\n" + query.lastError().driverText();
 		sendLog(QString(tr("Error adding to DB ") + er));
-		//log_debug("SQL query is wrong! " + er);
+		log_debug("SQL query is wrong! " + er);
 	}
 
 	return INVALID_INDEX;

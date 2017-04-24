@@ -59,6 +59,8 @@ private slots:
 
 signals:
 	void signalPathSelected(QString);
+	void signalBaseStationOnMap(double lon, double lat, QString source);
+	void signalClearStationOnMap();
 };
 
 #endif // BASEPARSERWIDGET_H

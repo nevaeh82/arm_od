@@ -86,6 +86,7 @@ private:
     uint m_pointKKlastInd;
     uint m_ellipseCounter;
     QList<QString> m_trajEllipseCounter;
+	QList<Pw::Gis::Marker*> m_baseStationMarkerList;
 
 public:
 	MapClient1( MapWidget* pwwidget, Station* station, QObject* parent = NULL );
@@ -191,10 +192,15 @@ private slots:
 
 	void addTrajectoryKKInternal(QByteArray data, int source);
 
-    void slotSolverClear();
+	void slotSolverClear();
 
 	void countCaptureApply(int);
 	void slotCaptureClear();
+
+	void onFeatureAdded(QString id, QString type);
+
+	void slotAddBaseStation(double lon, double lat, QString name);
+	void slotClearBaseStation();
 
 signals:
 	void friendBplaAdded( const UavInfo& uav );

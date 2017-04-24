@@ -82,6 +82,7 @@ public:
 								  const QVector<QPointF> &tailStdDev = QVector<QPointF>());
 	virtual void onStatusChanged(Status) {}
 
+	void saveCache();
 private:
 	IMapClient* getMapClient();
 
@@ -99,6 +100,10 @@ public slots:
 
 	void loadMapSettings();
 	void setStationVisible(bool state);
+
+	void clearObjects();
+	void loadObjects();
+	void saveObjects();
 
 private slots:
 	void mapOpenFinished();

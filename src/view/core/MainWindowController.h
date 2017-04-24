@@ -43,8 +43,6 @@ private:
 
 	int m_uavLifeTime;
 
-	BaseParser* m_xmlParser;
-
 public:
 	explicit MainWindowController(QObject *parent = 0);
 	virtual ~MainWindowController();
@@ -68,7 +66,6 @@ private slots:
 	void enableAdsbOnlineClient(bool);
 
 	void mapOpened();
-	void slotLoadBaseStations();
 
 private:
 

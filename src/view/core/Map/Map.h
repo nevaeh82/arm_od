@@ -10,6 +10,9 @@
 
 #include "MapClient1.h"
 
+#define MAPOBJECTS_CACHE "./Map/objectsCache.geojson"
+#define MAPMARKERS_CACHE "./Map/markersCache.geojson"
+
 class Map : public QObject
 {
 	Q_OBJECT
@@ -31,7 +34,8 @@ public:
 	void setStationVisible(bool state);
 	IMapClient*getMapClient(int id);
 
-    IMapClient *getFirstMapClient();
+	IMapClient *getFirstMapClient();
+	void saveCache();
 private:
 	Pw::Gis::IMapManager        *m_mapManager;
 	Pw::Gis::IProfileManager    *m_profileManager;
@@ -45,6 +49,8 @@ private:
 	QMap<int, QString>          _map_layers;
 	Pw::Gis::ILayerManager      *m_layerManager;
 	int                         m_layersCounter;
+
+	MapWidget* m_pwWidget;
 
 private slots:
 	void onMapReady();

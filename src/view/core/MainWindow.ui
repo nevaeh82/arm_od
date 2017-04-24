@@ -122,6 +122,9 @@
     <addaction name="actionOpen_from_file"/>
     <addaction name="actionListen_to_ADSB"/>
     <addaction name="actionListen_to_online_ADSB"/>
+    <addaction name="actionClear_map"/>
+    <addaction name="actionSave_objects"/>
+    <addaction name="actionLoad_objects"/>
     <addaction name="separator"/>
     <addaction name="actionCount_capture"/>
     <addaction name="actionLoad_Base_stations"/>
@@ -223,6 +226,21 @@
   <action name="actionLoad_Base_stations">
    <property name="text">
     <string>Load Base stations</string>
+   </property>
+  </action>
+  <action name="actionClear_map">
+   <property name="text">
+    <string>Clear map</string>
+   </property>
+  </action>
+  <action name="actionSave_objects">
+   <property name="text">
+    <string>Save objects</string>
+   </property>
+  </action>
+  <action name="actionLoad_objects">
+   <property name="text">
+    <string>Load objects</string>
    </property>
   </action>
  </widget>

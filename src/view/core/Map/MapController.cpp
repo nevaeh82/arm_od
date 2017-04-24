@@ -107,6 +107,9 @@ void MapController::onMapReady()
 					m_viewport.right(), m_viewport.bottom() );
 	}
 
+	loadObjects();
+
+
 	emit mapOpened();
 }
 
@@ -133,6 +136,35 @@ void MapController::onMapClicked(double lon, double lat)
 void MapController::setStationVisible(bool state)
 {
 	m_mapModel->setStationVisible(state);
+}
+
+void MapController::clearObjects()
+{
+	m_view->getPwGis()->executeScript( QString("map.getLayer(\"%1\").removeAllFeatures();").arg("vectors") );
+		m_view->getPwGis()->executeScript( QString("map.getLayer(\"%1\").removeAllFeatures();").arg("markers") );
+}
+
+void MapController::loadObjects()
+{
+	QFile f(MAPOBJECTS_CACHE);
+	f.open(QIODevice::ReadOnly);
+	QString js = QString(f.readAll());
+	f.close();
+
+	&m_view->getPwGis()->executeScript("var GEOJSON_PARSER = new OpenLayers.Format.GeoJSON();");
+	&m_view->getPwGis()->executeScript(QString("client.vectorLayer.addFeatures(GEOJSON_PARSER.read(%1))").arg(js)).toString();
+
+	QFile fm(MAPMARKERS_CACHE);
+	fm.open(QIODevice::ReadOnly);
+	js = QString(fm.readAll());
+	fm.close();
+
+	&m_view->getPwGis()->executeScript(QString("client.markerLayer.addFeatures(GEOJSON_PARSER.read(%1))").arg(js)).toString();
+}
+
+void MapController::saveObjects()
+{
+	saveCache();
 }
 
 void MapController::mapOpenFinished()
@@ -183,6 +215,11 @@ void MapController::appendView(MapWidget *view)
 		events = &m_view->getPwGis()->mapProvider()->mapManager()->events();
 		connect( events, SIGNAL(atlasReady()), SIGNAL(atlasOpened()) );
 	}
+}
+
+void MapController::saveCache()
+{
+	m_mapModel->saveCache();
 }
 
 void MapController::closeMap()

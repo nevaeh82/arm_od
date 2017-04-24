@@ -100,10 +100,15 @@ MapClient1::MapClient1(MapWidget* pwWidget, Station* station, QObject* parent)
 
 	connect(&m_objectsManager->events(), SIGNAL(featureClicked(QString,QString)), SLOT(onFeatureClicked(QString,QString)));
 
+	connect(&m_objectsManager->events(), SIGNAL(featureAdded(QString,QString)), SLOT(onFeatureAdded(QString,QString)));
+
 	connect(this, SIGNAL(onSolverClear()), this, SLOT(slotSolverClear()));
 
 	connect(m_view, SIGNAL(signalApply(int)), this, SLOT(countCaptureApply(int)));
 	connect(m_view, SIGNAL(signalClear()), this, SLOT(slotCaptureClear()));
+
+	connect(pwWidget, SIGNAL(onShowBaseStation(double,double,QString)), this, SLOT(slotAddBaseStation(double, double, QString)));
+	connect(pwWidget, SIGNAL(onClearBaseStation()), this, SLOT(slotClearBaseStation()));
 }
 
 MapClient1::~MapClient1()
@@ -126,7 +131,7 @@ void MapClient1::init()
     //addMarkerLayer( 6, "Atlant", tr( "Atlant" ) );
     //addMarkerLayer( 7, "Atlant_target", tr( "Atlant target" ) );
     //addMarkerLayer( 8, "Grid", tr( "Grid" ) );
-    //addMarkerLayer( 9, "Checkpoints", tr( "Checkpoints" ) );
+	addMarkerLayer( 9, "Checkpoints", tr( "Checkpoints" ) );
     //addMarkerLayer( 10, "Interception_point", tr( "Interception point" ) );
     //addMarkerLayer( 11, "Civil_ships", tr( "Civil ships" ) );
     //addMarkerLayer( 12, "Diversion_points", tr( "Diversion points" ) );
@@ -1126,6 +1131,33 @@ void MapClient1::onFeatureClicked(QString id, QString type)
 			break;
 		}
 	}
+}
+
+void MapClient1::onFeatureAdded(QString id, QString type)
+{
+}
+
+void MapClient1::slotAddBaseStation(double lon, double lat, QString name)
+{
+	if(lon == 0 && lat == 0) {
+		return;
+	}
+
+	Pw::Gis::Marker* marker = m_pwWidget->mapProvider()->objectsFactory()->createMarker();
+	marker->setPosition(new PwGisLonLat(lon, lat));
+	marker->setName(name);
+	marker->updateMap();
+	m_baseStationMarkerList.append(marker);
+}
+
+void MapClient1::slotClearBaseStation()
+{
+	foreach (Pw::Gis::Marker* marker, m_baseStationMarkerList) {
+		marker->removeFromMap();
+		delete marker;
+	}
+
+	m_baseStationMarkerList.clear();
 }
 
 void MapClient1::readStationsFromFile(QString fileName)

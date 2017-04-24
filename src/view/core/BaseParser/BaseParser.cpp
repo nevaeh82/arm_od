@@ -68,8 +68,11 @@ void BaseParser::readFromPath(QString path)
 					QStringList lst = xml.text().toString().split("_");
 					log_debug(date.toString());
 
-					//date =  date.fromString(QString("%1_%2_%3").arg(lst.at(0).arg(lst.at(1).arg(lst.at(2)))), "yyyy_MM_dd");
-					oneData.datetime =  xml.text().toString();
+					QString dt = "";
+					if(lst.size() > 5) {
+						dt = QString("%1.%2.%3  %4:%5:%6").arg(lst.at(0)).arg(lst.at(1)).arg(lst.at(2)).arg(lst.at(3)).arg(lst.at(4)).arg(lst.at(5));
+					}
+					oneData.datetime = dt;
 					continue;
 				}
 

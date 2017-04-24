@@ -3,6 +3,8 @@
 
 #include <QFileDialog>
 
+#include <QApplication>
+
 BaseParserWidget::BaseParserWidget(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::BaseParserWidget)
@@ -10,6 +12,7 @@ BaseParserWidget::BaseParserWidget(QWidget *parent) :
 	ui->setupUi(this);
 
 	connect(ui->pbOpen, SIGNAL(clicked()), this, SLOT(slotOpenXmpPath()));
+	connect(ui->pbMapClear, SIGNAL(clicked(bool)), this, SIGNAL(signalClearStationOnMap()));
 
 }
 
@@ -44,17 +47,23 @@ void BaseParserWidget::setTableData(const QList<MobileSession>& data)
 		ui->tableWidget->item(row, 6)->setText(QString::number(session.lat));
 		ui->tableWidget->item(row, 7)->setText(session.source);
 
+		if(ui->cbOnMap->isChecked()) {
+			emit signalBaseStationOnMap(session.lon, session.lat, session.source);
+		}
+
 		row++;
 
 		if(row >= 100000) {
 			return;
 		}
+
+		qApp->processEvents();
 	}
 }
 
 void BaseParserWidget::slotOpenXmpPath()
 {
 	QString path = QFileDialog::getExistingDirectory(this, tr("Open Database files"), "");
-
+	ui->lePath->setText(path);
 	emit signalPathSelected(path);
 }

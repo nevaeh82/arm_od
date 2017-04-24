@@ -70,6 +70,8 @@ MapTabWidgetController::~MapTabWidgetController()
 
 	m_rpcClient->stop();
 
+	m_mapController->saveCache();
+
 	m_mapController->closeAtlas();
 	m_mapController->closeMap();
 
@@ -261,6 +263,20 @@ void MapTabWidgetController::openMapSlot()
 	m_mapController->openMapFromLocalFile();
 }
 
+void MapTabWidgetController::clearMapSlot()
+{
+	m_mapController->clearObjects();
+}
+
+void MapTabWidgetController::loadObjetsSlot()
+{
+	m_mapController->loadObjects();
+}
+
+void MapTabWidgetController::saveObjectsSlot()
+{
+	m_mapController->saveObjects();
+}
 
 void MapTabWidgetController::onBlaTreeItemDoubleClicked(QModelIndex index)
 {

@@ -124,7 +124,12 @@ void TabManager::addStationTabs()
 
 		connect(this, SIGNAL(signalSendToNIIPPControl(int,QByteArray)), tabWidgetController, SLOT(_slot_send_data_to_niipp_control(int,QByteArray)));
 		connect(this, SIGNAL(openAtlasSignal()), tabWidgetController, SLOT(openAtlasSlot()));
+
 		connect(this, SIGNAL(openMapSignal()), tabWidgetController, SLOT(openMapSlot()));
+
+		connect(this, SIGNAL(signalClearMap()), tabWidgetController, SLOT(clearMapSlot()));
+		connect(this, SIGNAL(signalLoadObjects()), tabWidgetController, SLOT(loadObjetsSlot()));
+		connect(this, SIGNAL(signalSaveObjects()), tabWidgetController, SLOT(saveObjectsSlot()));
 
 		m_tabWidget->addTab(tabWidget, station->name);
 

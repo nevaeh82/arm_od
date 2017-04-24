@@ -32,6 +32,7 @@ private:
 	void addTableCheckbox(QTableWidget* widget, int r, int c, const QString &title);
 	void ClearTableItem(QTableWidget* widget);
 	int m_workAreaSetCounter;
+	int m_solverMessageCounter;
 
 public:
 	void appendSolverResult(const QString& log);
