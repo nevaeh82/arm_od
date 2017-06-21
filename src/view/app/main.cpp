@@ -1,4 +1,5 @@
 #include <QtGui/QApplication>
+#include <QtSingleApplication>
 #include <QTranslator>
 #include <QtDeclarative/QDeclarativeView>
 #include <QtDeclarative/QDeclarativeContext>
@@ -49,8 +50,12 @@ backtrace_register(void)
 int main(int argc, char *argv[])
 {
 
-	QApplication a(argc, argv);
+	QtSingleApplication a(argc, argv);
 	Logger::setupLogger("./logs/ArmOD.log");
+
+	if(a.isRunning()) {
+		return 0;
+	}
 
 	HWND hwnd = GetConsoleWindow();
 	ShowWindow(hwnd, 0);
