@@ -25,6 +25,8 @@ MapClient1::MapClient1(MapWidget* pwWidget, Station* station, QObject* parent)
 	m_view = pwWidget;
 	m_pwWidget = pwWidget->getPwGis();
 
+	connect(pwWidget, SIGNAL(signalApplyCross(int)), this, SLOT(onApplyCross(int)));
+
 	m_styleManager = new MapStyleManager( m_pwWidget->mapProvider()->styleFactory() );
 	m_objectsManager = m_pwWidget->mapProvider()->objectsManager();
 
@@ -132,7 +134,7 @@ void MapClient1::init()
     //addMarkerLayer( 7, "Atlant_target", tr( "Atlant target" ) );
     //addMarkerLayer( 8, "Grid", tr( "Grid" ) );
 	addMarkerLayer( 9, "Checkpoints", tr( "Checkpoints" ) );
-    //addMarkerLayer( 10, "Interception_point", tr( "Interception point" ) );
+	addMarkerLayer( 10, "Interception_point", tr( "Interception point" ) );
     //addMarkerLayer( 11, "Civil_ships", tr( "Civil ships" ) );
     //addMarkerLayer( 12, "Diversion_points", tr( "Diversion points" ) );
     //addMarkerLayer( 13, "SPIP_DD", tr( "SPIP DD" ) );
@@ -160,9 +162,10 @@ void MapClient1::init()
 
 
 	showLayer( 8, false );
-    showLayer( 14, false );
-    showLayer( 15, false );
-    showLayer( 17, false );
+	showLayer( 9, false );
+	showLayer( 14, false );
+	showLayer( 15, false );
+	showLayer( 17, false );
 
 	// create styles for features
 	m_styleManager->createStationStyle( m_mapLayers.value(0) )->apply();
@@ -171,11 +174,13 @@ void MapClient1::init()
 	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(100), UAV_SOLVER_MANUAL_SOURCE, 2 )->apply();
 	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(100), UAV_SOLVER_MANUAL_SOURCE, 3 )->apply();
 	m_styleManager->createEnemyBplaTrackStyle( m_mapLayers.value(101), UAV_SOLVER_MANUAL_SOURCE )->apply();
+	m_styleManager->createEnemyBplaErrorStyle( m_mapLayers.value(101), UAV_SOLVER_MANUAL_SOURCE )->apply();
 
 	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(102), UAV_SOLVER_AUTO_SOURCE, 1 )->apply();
 	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(102), UAV_SOLVER_AUTO_SOURCE, 2 )->apply();
 	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(102), UAV_SOLVER_AUTO_SOURCE, 3 )->apply();
 	m_styleManager->createEnemyBplaTrackStyle( m_mapLayers.value(103), UAV_SOLVER_AUTO_SOURCE )->apply();
+	m_styleManager->createEnemyBplaErrorStyle( m_mapLayers.value(101), UAV_SOLVER_AUTO_SOURCE )->apply();
 
 	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(104), UAV_SOLVER_SINGLE_1_SOURCE, 1 )->apply();
 	m_styleManager->createEnemyBplaStyle( m_mapLayers.value(104), UAV_SOLVER_SINGLE_2_SOURCE, 1 )->apply();
@@ -709,6 +714,7 @@ void MapClient1::addFriendBplaInternal(const UavInfo& uav)
 		// and UAV exists, update slice track
 		if( bpla != NULL ) {
 			bpla->setSlice( QPointF( uav.lon, uav.lat ) );
+			bpla->setInfo(uav);
 		} else {
 			// else create new one
 			bpla = m_factory->createFriendBpla( uav );
@@ -758,6 +764,13 @@ void MapClient1::addEnemyBplaInternal(const UavInfo& uav,
 	}
 
 	bpla->updateMap();
+}
+
+void MapClient1::setBoardExtraInfo(int val)
+{
+	foreach (MapFeature::EnemyBpla* bpla, m_enemyBplaList) {
+		bpla->setExtraInfo(val);
+	}
 }
 
 void MapClient1::addSingleMarkInternal(QByteArray data)
@@ -812,6 +825,8 @@ void MapClient1::addTrajectoryKKInternal(QByteArray data, int source)
 	uav.id = sol.central_frequency();
 	uav.lat = sol.motionestimate(sol.motionestimate_size()-1).coordinates().lat();
 	uav.lon = sol.motionestimate(sol.motionestimate_size()-1).coordinates().lon();
+	uav.latStddev = sol.motionestimate(sol.motionestimate_size()-1).coordinates_acc().lat_acc();
+	uav.lonStddev = sol.motionestimate(sol.motionestimate_size()-1).coordinates_acc().lon_acc();
 	uav.alt = sol.motionestimate(sol.motionestimate_size()-1).coordinates().alt();
 	uav.yaw = sol.motionestimate(sol.motionestimate_size()-1).relativebearing();
 	uav.source = source;
@@ -980,10 +995,12 @@ void MapClient1::removeBplaInternal(const Uav& uav)
 		}
 
 		if( m_enemyBplaList.contains( id ) ) {
-			//clearTrajEllipse( id );
+			clearTrajEllipse( id );
 			delete m_enemyBplaList.take( id );
 		}
 	}
+
+	clearEllipse();
 }
 
 //add AIS
@@ -1158,6 +1175,55 @@ void MapClient1::slotClearBaseStation()
 	}
 
 	m_baseStationMarkerList.clear();
+}
+
+void MapClient1::onApplyCross(int val)
+{
+	QList<UavInfo> l1;
+	QList<UavInfo> l2;
+
+	foreach (QString id, m_enemyBplaList.keys()) {
+		log_debug(id);
+	}
+
+	foreach (QString id, m_friendBplaList.keys()) {
+		log_debug(id);
+	}
+
+	int idEnemy = 0;
+	int idFriend = 0;
+
+	idEnemy = val >> 16;
+	idFriend = val & 0xFFFF;
+
+	QList<UavInfo> enemyInfo;
+	QList<UavInfo> friendInfo;
+
+	bool isEnemy = false;
+	bool isFriend = false;
+
+	foreach (QString id, m_enemyBplaList.keys()) {
+		if(id.contains(QString::number(idEnemy))) {
+			enemyInfo.append(m_enemyBplaList.value(id)->getInfo());
+			isEnemy = true;
+		}
+	}
+
+	foreach (QString id, m_friendBplaList.keys()) {
+		if(id.contains(QString::number(idFriend))) {
+			friendInfo.append(m_friendBplaList.value(id)->getInfo());
+			isFriend = true;
+		}
+	}
+
+	if( isEnemy &&
+		isFriend ) {
+
+		l1.append( m_enemyBplaList.values().at(0)->getInfo() );
+		l2.append( m_enemyBplaList.values().at(1)->getInfo() );
+
+		addPerehvatData(idFriend, idEnemy, friendInfo, enemyInfo);
+	}
 }
 
 void MapClient1::readStationsFromFile(QString fileName)

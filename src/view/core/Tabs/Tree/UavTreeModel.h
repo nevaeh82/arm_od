@@ -16,6 +16,7 @@ private:
 	bool m_isNeedRedraw;
 
 	QString m_targetRole;
+	int m_isExtraInfo;
 
 public:
 	explicit UavTreeModel(const QStringList& headers, QObject *parent = 0);
@@ -42,8 +43,12 @@ private:
 
 	void addSourceNode(TreeItem* item, uint sourceType, QString name, uint uavId);
 
+	int getId(const UavInfo &uav);
+	int getId(const Uav &uav);
+
 private slots:
 	void updateData();
+	void onExtraBoardInfo(int);
 };
 
 #endif // BLATREEMODEL_H

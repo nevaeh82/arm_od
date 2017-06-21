@@ -159,8 +159,23 @@ PwGisStyle* MapStyleManager::createEnemyBplaTrackStyle(const QString& layerId, u
 	if( !exists ) {
 		style->setProperty( PwGisStyle::strokeColor, "blue" );
 		style->setProperty( PwGisStyle::layer, layerId );
-        style->setProperty( PwGisStyle::fillColor, "blue" );
-        style->setProperty( PwGisStyle::fillOpacity, "20" );
+		style->setProperty( PwGisStyle::fillColor, "blue" );
+		style->setProperty( PwGisStyle::fillOpacity, "0.3" );
+	}
+
+	return style;
+}
+
+PwGisStyle *MapStyleManager::createEnemyBplaErrorStyle(const QString &layerId, uint source)
+{
+	bool exists;
+	PwGisStyle* style = createStyle( MapStyleManager::getEnemyBplaErrorStyleName(source), &exists );
+
+	if( !exists ) {
+		style->setProperty( PwGisStyle::strokeColor, "gray" );
+		style->setProperty( PwGisStyle::layer, layerId );
+		style->setProperty( PwGisStyle::fillColor, "gray" );
+		style->setProperty( PwGisStyle::fillOpacity, "0.5" );
 	}
 
 	return style;

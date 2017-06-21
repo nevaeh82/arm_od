@@ -131,12 +131,15 @@ void TabManager::addStationTabs()
 		connect(this, SIGNAL(signalLoadObjects()), tabWidgetController, SLOT(loadObjetsSlot()));
 		connect(this, SIGNAL(signalSaveObjects()), tabWidgetController, SLOT(saveObjectsSlot()));
 
+		connect(this, SIGNAL(signalOnExtraBoardInfo(int)), tabWidgetController, SIGNAL(signalOnExtraBoardInfo(int)));
+
 		m_tabWidget->addTab(tabWidget, station->name);
 
 		m_tabWidgetsMap.insert(station->name, tabWidgetController);
 
 		m_mapWidget = tabWidget->getMapWidget();
 
+		m_rpcClient = tabWidgetController->getRpcClient();
 	}
 
 	emit readyToStart();

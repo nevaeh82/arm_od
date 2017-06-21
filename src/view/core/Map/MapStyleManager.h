@@ -26,6 +26,7 @@ public:
 	virtual PwGisStyle* createAdsbTrackStyle(const QString& layerId);
     virtual PwGisStyle* createEnemyBplaStyle(const QString& layerId, uint source, uint state);
 	virtual PwGisStyle* createEnemyBplaTrackStyle(const QString& layerId, uint source);
+	virtual PwGisStyle* createEnemyBplaErrorStyle(const QString& layerId, uint source);
 	virtual PwGisStyle* createInterceptionStyle(const QString& layerId);
 	virtual PwGisStyle* createNiippStyle(const QString& layerId);
 	virtual PwGisStyle* createNiippPointStyle(const QString& layerId);
@@ -59,8 +60,9 @@ public:
 	inline virtual PwGisStyle* getHistoryStyle() { return getStyle( MAP_STYLE_NAME_HISTORY ); }
 	inline virtual PwGisStyle* getHyperboleStyle() { return getStyle( MAP_STYLE_NAME_HYPERBOLE ); }
 
-    static inline QString getEnemyBplaStyleName(uint source, uint state) { return QString(MAP_STYLE_NAME_ENEMY_BPLA).arg(source).arg(state); }
+	static inline QString getEnemyBplaStyleName(uint source, uint state) { return QString(MAP_STYLE_NAME_ENEMY_BPLA).arg(source).arg(state); }
 	static inline QString getEnemyBplaTrackStyleName(uint source) { return QString(MAP_STYLE_NAME_ENEMY_BPLA_TRACK).arg(source); }
+	static inline QString getEnemyBplaErrorStyleName(uint source) { return QString(MAP_STYLE_NAME_ENEMY_BPLA_ERROR).arg(source); }
 
 	static inline QString getADSBStyleName() { return QString(MAP_STYLE_NAME_ADSB); }
 	static inline QString getADSBTrackStyleName() { return QString(MAP_STYLE_NAME_ADSB); }

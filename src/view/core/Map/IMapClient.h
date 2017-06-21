@@ -73,6 +73,8 @@ public:
                                 const QColor color = QColor::Invalid) = 0;
 
 	virtual void removeAll() = 0;
+
+	virtual void setBoardExtraInfo(int) = 0;
 };
 
 #endif // IMAPCLIENT_H

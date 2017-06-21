@@ -4,17 +4,16 @@
 
 #include "Interfaces/IUavHistoryListener.h"
 
-#define SERVER_NAME "ZaviruhaODServer"
-
 MainWindowController::MainWindowController(QObject *parent) :
-    QObject(parent),
-    m_solverSetupWidgetController(NULL)
+	QObject(parent),
+	m_solverSetupWidgetController(NULL)
 {
 	m_view = NULL;
 	m_tabManager = NULL;
 	m_rpcConfigClient = NULL;
 	m_uavLifeTime = 0;
 	m_serverHandler = 0;
+	m_ping = true;
 
 	qRegisterMetaType<QVector<QPointF> >("rpc_send_points_vector");
 	qRegisterMetaType<quint32>("quint32");
@@ -31,6 +30,14 @@ MainWindowController::MainWindowController(QObject *parent) :
 	m_serverHandler = new SkyHobbit::Common::ServiceControl::ServiceHandler(serverName, QStringList(), NULL, this);
 
 	m_serverHandler->start(true);
+
+	connect(m_serverHandler, SIGNAL(signalProcessDead()), this, SLOT(slotServerProcessDead()));
+
+
+	m_rpcCheckTimer = new QTimer(this);
+	connect(m_rpcCheckTimer, SIGNAL(timeout()), this, SLOT(slotCheckRpc()));
+
+	m_rpcCheckTimer->start(30000);
 }
 
 MainWindowController::~MainWindowController()
@@ -74,13 +81,14 @@ void MainWindowController::init()
 
 	connect(m_tabManager, SIGNAL( mapOpened() ), m_view, SLOT( mapOpened() ));
 	connect(m_tabManager, SIGNAL( atlasOpened() ), m_view, SLOT( mapOpened() ));
-    connect(m_tabManager, SIGNAL( mapOpened() ), this, SLOT( mapOpened() ));
-    connect(m_tabManager, SIGNAL( atlasOpened() ), this, SLOT( mapOpened() ));
+	connect(m_tabManager, SIGNAL( mapOpened() ), this, SLOT( mapOpened() ));
+	connect(m_tabManager, SIGNAL( atlasOpened() ), this, SLOT( mapOpened() ));
 	connect(m_tabManager, SIGNAL( cancelMapOpen() ), m_view, SLOT( cancelMapOpen() ));
 	connect(m_view, SIGNAL(setupKoordinatometriyaSignal()), this, SLOT(solverDialogSlot()));
 	connect(m_view, SIGNAL(signalResetServer()), this, SLOT(resetServer()));
 	connect(m_view, SIGNAL(signalEnableAdsb(bool)), this, SLOT(enableAdsbClient(bool)));
 	connect(m_view, SIGNAL(signalEnableOnlineAdsb(bool)), this, SLOT(enableAdsbOnlineClient(bool)));
+	connect(m_view, SIGNAL(signalOnExtraBoardInfo(int)), m_tabManager, SIGNAL(signalOnExtraBoardInfo(int)));
 
 	m_rpcConfigClient = new RpcConfigClient(this);
 	m_rpcConfigClient->registerReceiver(this);
@@ -141,11 +149,11 @@ void MainWindowController::resetServer()
 	bool searchResult;
 
 	//! TODO Make other function to kill process
-//	searchResult = m_serverHandler->isProcessExist( m_serverHandler->getServicePath(), serverPIDList );
+	//	searchResult = m_serverHandler->isProcessExist( m_serverHandler->getServicePath(), serverPIDList );
 
-//	if( searchResult ) {
-//		m_serverHandler->killProcessExist( serverPIDList );
-//	}
+	//	if( searchResult ) {
+	//		m_serverHandler->killProcessExist( serverPIDList );
+	//	}
 
 	QStringList param;
 	param.append("/F");
@@ -153,11 +161,17 @@ void MainWindowController::resetServer()
 	param.append("ZaviruhaODServer.exe");
 	QProcess::execute("taskkill", param);
 
-    QStringList paramAtlas;
-    paramAtlas.append("/F");
-    paramAtlas.append("/IM");
-    paramAtlas.append("PwGisAtlas.exe");
-    QProcess::execute("taskkill", paramAtlas);
+	QStringList paramAtlas;
+	paramAtlas.append("/F");
+	paramAtlas.append("/IM");
+	paramAtlas.append("PwGisAtlas.exe");
+	QProcess::execute("taskkill", paramAtlas);
+
+	QStringList paramServer;
+	paramServer.append("/F");
+	paramServer.append("/IM");
+	paramServer.append("PwGisServer.exe");
+	QProcess::execute("taskkill", paramServer);
 }
 
 void MainWindowController::startTabManger()
@@ -174,10 +188,10 @@ void MainWindowController::rpcConnectionEstablished()
 	m_solverSetupWidgetController->slotGetAll();
 
 	/// BUG HERE!!!
-//	m_rpcConfigClient->requestGetDbConfiguration("./DB/db_uav.ini");
+	//	m_rpcConfigClient->requestGetDbConfiguration("./DB/db_uav.ini");
 
-//	m_rpcConfigClient->requestGetMapObjects("./Map/map_objects.ini");
-//	m_rpcConfigClient->requestGetMapObjects("./Map/map_points.ini");
+	//	m_rpcConfigClient->requestGetMapObjects("./Map/map_objects.ini");
+	//	m_rpcConfigClient->requestGetMapObjects("./Map/map_points.ini");
 }
 
 void MainWindowController::solverDialogSlot()
@@ -195,25 +209,25 @@ void MainWindowController::solverDialogSlot()
 	CommandMessage* msg = NULL;
 
 	switch (res){
-		case SOLVERSETTINGDIALOGACCEPT:
-		{
-			ds << solverSettingsDialog.getTrackLength();
-			ds << solverSettingsDialog.getHeight();
+	case SOLVERSETTINGDIALOGACCEPT:
+	{
+		ds << solverSettingsDialog.getTrackLength();
+		ds << solverSettingsDialog.getHeight();
 
-			msg = new CommandMessage(COMMAND_SET_SOLVER, ba);
-			break;
-		}
-		case SOLVERSETTINGDIALOGCLEAR:
-		{
-			bool t = true;
-			ds << t;
+		msg = new CommandMessage(COMMAND_SET_SOLVER, ba);
+		break;
+	}
+	case SOLVERSETTINGDIALOGCLEAR:
+	{
+		bool t = true;
+		ds << t;
 
-			msg = new CommandMessage(COMMAND_SET_SOLVER_CLEAR, ba);
-			break;
-		}
-		default:
-			return;
-			break;
+		msg = new CommandMessage(COMMAND_SET_SOLVER_CLEAR, ba);
+		break;
+	}
+	default:
+		return;
+		break;
 	}
 
 	if (NULL == msg){
@@ -250,7 +264,7 @@ void MainWindowController::enableAdsbOnlineClient(bool status)
 
 	msg = new CommandMessage(COMMAND_SET_ADSB, ba);
 
-    m_tabManager->send_data(0, msg);
+	m_tabManager->send_data(0, msg);
 }
 
 void MainWindowController::mapOpened()
@@ -258,32 +272,65 @@ void MainWindowController::mapOpened()
 	m_solverSetupWidgetController->setMapFlag();
 }
 
+void MainWindowController::slotServerProcessDead()
+{
+	QProcess p;
+	QString guiName = "./" + QString(GUI_NAME);
+	p.startDetached(guiName);
+
+	qApp->exit(0);
+}
+
+void MainWindowController::slotCheckRpc()
+{
+	if(!m_armrConnection) {
+		m_ping = true;
+		return;
+	}
+
+	if(!m_ping) {
+		log_debug("Ololo, no ping from ARM_R, goto restart");
+		slotServerProcessDead();
+	} else {
+		m_ping = false;
+	}
+}
+
 void MainWindowController::onMethodCalled(const QString& method, const QVariant& argument)
 {
 	QByteArray data = argument.toByteArray();
-		if (method == RPC_METHOD_CONFIG_ANSWER_STATION_LIST) {
+	if (method == RPC_METHOD_CONFIG_ANSWER_STATION_LIST) {
 
-			QDataStream dataStream(&data, QIODevice::ReadOnly);
-			QList<StationConfiguration> stationList;
-			dataStream >> stationList;
+		QDataStream dataStream(&data, QIODevice::ReadOnly);
+		QList<StationConfiguration> stationList;
+		dataStream >> stationList;
 
-			m_tabManager->clearAllInformation();
-			m_tabManager->setStationsConfiguration(stationList);
-			m_tabManager->addStationTabs();
+		m_tabManager->clearAllInformation();
+		m_tabManager->setStationsConfiguration(stationList);
+		m_tabManager->addStationTabs();
 
-			if(m_tabManager->getMapWidget()) {
-				connect(m_view, SIGNAL(signalApply(int)), m_tabManager->getMapWidget(), SIGNAL(signalApply(int)));
-				connect(m_view, SIGNAL(signalApply(int)), m_tabManager->getMapWidget(), SLOT(slotApply(int)));
-				connect(m_view, SIGNAL(signalClear()), m_tabManager->getMapWidget(), SIGNAL(signalClear()));
-				connect(m_view, SIGNAL(signalLoadBaseStations()), m_tabManager->getMapWidget(), SLOT(slotLoadBaseStations()));
-			}
-
-		} else if (method == RPC_METHOD_CONFIG_ANSWER_DB_CONFIGURATION) {
-
-			QDataStream dataStream(&data, QIODevice::ReadOnly);
-			DBConnectionStruct dbConfig;
-			dataStream >> dbConfig;
-
-			m_tabManager->setDbConnectionStruct(dbConfig);
+		if(m_tabManager->getMapWidget()) {
+			connect(m_view, SIGNAL(signalApply(int)), m_tabManager->getMapWidget(), SIGNAL(signalApply(int)));
+			connect(m_view, SIGNAL(signalApply(int)), m_tabManager->getMapWidget(), SLOT(slotApply(int)));
+			connect(m_view, SIGNAL(signalClear()), m_tabManager->getMapWidget(), SIGNAL(signalClear()));
+			connect(m_view, SIGNAL(signalLoadBaseStations()), m_tabManager->getMapWidget(), SLOT(slotLoadBaseStations()));
 		}
+
+		m_tabManager->getRpcClient()->registerReceiver(this);
+
+	} else if (method == RPC_METHOD_CONFIG_ANSWER_DB_CONFIGURATION) {
+
+		QDataStream dataStream(&data, QIODevice::ReadOnly);
+		DBConnectionStruct dbConfig;
+		dataStream >> dbConfig;
+
+		m_tabManager->setDbConnectionStruct(dbConfig);
+	} else if(method == RPC_SLOT_SERVER_SEND_MAP_PING) {
+		m_ping = true;
+		log_debug("Im Pinging!!!!!!!!! =))))))))))))))))))");
+	} else if(method == RPC_SLOT_SERVER_SEND_ARMR_CONNECTION) {
+		bool b = argument.toBool();
+
+		m_armrConnection = b;
+	}
 }

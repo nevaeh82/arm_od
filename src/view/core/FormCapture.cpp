@@ -18,5 +18,7 @@ FormCapture::~FormCapture()
 
 void FormCapture::slotApply()
 {
-	emit signalApply(ui->spinBox->value());
+	int idCommon = 0;
+	idCommon = (ui->spinBox->value() << 16) + (ui->spinBox_2->value());
+	emit signalApply(idCommon);
 }

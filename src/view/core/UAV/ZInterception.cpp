@@ -1,5 +1,7 @@
 #include "ZInterception.h"
 
+#include "Logger/Logger.h"
+
 ZInterception::ZInterception(IMapClient* client)
 {
 	_client = client;
@@ -50,7 +52,7 @@ void ZInterception::_slot_set(int bla, int bpla, QByteArray per, QByteArray targ
 	int state1;
 	ds1 >> state1;
 
-	getIntcData(point1, alt1, 30, 5);
+	getIntcData(point1, alt1, speed1, 30);
 	getAimData(track.at(track.size()-1), alt, speed, bearing);
 
 	mainProcessing();
@@ -72,7 +74,7 @@ void ZInterception::getAimData(QPointF aCoordCurrentAim, float aHgtCurrentAim, f
 	mCoordCurrentAim=aCoordCurrentAim; //qDebug()<<"Координаты "<<aCoordCurrentAim.x()<<" "<<aCoordCurrentAim.y();
 	mHgtCurrentAim=aHgtCurrentAim; //qDebug()<<"Высота "<<aHgtCurrentAim;
 	mCurrentAimSpd=aSpdAim; //qDebug()<<"Скорость "<<aSpdAim;
-	mCurrentAimCourse=aCourseAim; //qDebug()<<"Курс "<<aCourseAim;
+	mCurrentAimCourse=(aCourseAim *(-1)) + 90; //qDebug()<<"Курс "<<aCourseAim;
 
 }
 
@@ -111,8 +113,10 @@ void ZInterception::mainProcessing()
 		//Определение времени, за которое перехватчик наберет высоту
 		aTempTimeToHgtIntercept=(mHgtCurrentAim+1000-mHgtCurrentIntc)/mMaxHgtSpd;
 
+		log_debug(QString("i: %1  aTempTimeToIntercept: %2    aTempTimeToHgtIntercept:  %3  ").arg(i).arg(aTempTimeToIntercept).arg(aTempTimeToHgtIntercept));
+
 		//Определение условия выполнения перехвата
-		if (i>aTempTimeToIntercept && i>aTempTimeToHgtIntercept)
+		if (i>aTempTimeToIntercept || i>aTempTimeToHgtIntercept)
 		{
 			//Перехват возможен, определяем курс, скорость, высоту перехватчика
 			QPointF aIntcCoords=aTempInterceptionCoord;               //Координаты перехвата

@@ -54,6 +54,8 @@ private:
 
 	ITcpKTRManager* m_ktrManager; //UAV connections
 
+	QTimer* m_ktrConnectTimer;
+
 public:
 	explicit TcpManager(QObject* parent = NULL);
 	virtual ~TcpManager();
@@ -83,13 +85,18 @@ signals:
 	void threadTerminateSignal();
 	void onMethodCalledInternalSignal(const QString& method, const QVariant& argument);
 
+	void signalMessageReceived(quint32 deviceType, QString deviceName, MessageSP argument);
+
 private slots:
 	void onMethodCalledInternalSlot(const QString &method, const QVariant &argument);
+	void onMessageReceivedInternal(quint32 deviceType, QString deviceName, MessageSP argument);
 
 	void createAdsbDevice();
 	void createwwwAdsbDevice();
 
-    void slotGpsData(QByteArray data);
+	void slotGpsData(QByteArray data);
+
+	void slotManualKtrConnetion();
 
 	// ITcpManager interface
 };

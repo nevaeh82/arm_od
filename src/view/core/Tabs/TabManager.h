@@ -51,6 +51,8 @@ private:
 
 	MapWidget* m_mapWidget;
 
+	RpcClientWrapper* m_rpcClient;
+
 public:
 	TabManager(QTabWidget *tabWidget, QObject *parent = 0);
 	virtual ~TabManager();
@@ -80,6 +82,8 @@ public:
 
 	void setARMRConnection(bool b);
 
+	RpcClientWrapper* getRpcClient() {return m_rpcClient;}
+
 private slots:
 	void changeTabSlot(int index);
 
@@ -97,6 +101,8 @@ signals:
 	void signalClearMap();
 	void signalLoadObjects();
 	void signalSaveObjects();
+
+	void signalOnExtraBoardInfo(int);
 
 };
 

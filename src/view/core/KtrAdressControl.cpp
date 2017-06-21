@@ -35,8 +35,9 @@ void KtrAdressControl::init()
 		if(name.contains("KTR"))
 		{
 			ui->ipframe->setText(settings.value("ip", "127.0.0.1").toString());
-			settings.endGroup();
+			ui->leBoardList->setText(settings.value("boardList", "").toString());
 
+			settings.endGroup();
 		   // m_ktrNmea->onConnect(m_KTRSettingStruct.host);
 
 			return;
@@ -58,6 +59,8 @@ void KtrAdressControl::slotApply()
 		if(name.contains("KTR"))
 		{
 			settings.setValue("ip", QVariant(ui->ipframe->text()));
+			settings.setValue("boardList", QVariant(ui->leBoardList->text()));
+
 			settings.endGroup();
 
 		   // m_ktrNmea->onConnect(m_KTRSettingStruct.host);

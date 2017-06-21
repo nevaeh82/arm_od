@@ -69,6 +69,7 @@ signals:
 	void signalClearMap();
 	void signalLoadObjects();
 	void signalSaveObjects();
+	void signalOnExtraBoardInfo(int);
 
 private slots:
 	void openAtlasAction();
@@ -79,6 +80,8 @@ private slots:
     void signalSs(int);
 
 	void slotCaptureCount();
+
+	void slotOnExtraBoardInfo(bool val);
 
 
 };

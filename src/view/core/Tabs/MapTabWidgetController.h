@@ -94,6 +94,8 @@ public:
 
 	void setARMRConnection(bool b);
 
+	RpcClientWrapper* getRpcClient() {return m_rpcClient;}
+
 private:
 	int init();
 //	void readSettings();
@@ -110,6 +112,8 @@ signals:
 	void cancelMapOpen();
 
 	void onDbOutLog(QString log);
+
+	void signalOnExtraBoardInfo(int);
 
 private slots:
 	void onBlaTreeItemDoubleClicked(QModelIndex index);

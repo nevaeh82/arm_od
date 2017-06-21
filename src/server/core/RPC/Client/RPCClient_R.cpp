@@ -62,6 +62,7 @@ bool RPCClient_R::start(quint16 port, QHostAddress address)
 
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_DEF, this, SLOT(rpcSlotServerSendBplaDef(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_DEF_1, this, SLOT(rpcSlotServerSendBplaDef1(QByteArray)));
+	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_MAP_PING, this, SLOT(rpcSlotServerSendMapPing(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_DEF, this, SLOT(rpcSlotServerSendBplaDef(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_DEF_AUTO, this, SLOT(rpcSlotServerSendBplaDefAuto(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_DEF_SINGLE, this, SLOT(rpcSlotServerSendBplaDefSingle(QByteArray)));
@@ -167,6 +168,15 @@ void RPCClient_R::rpcSlotServerSendBplaDef1(QByteArray ba)
 
 	QSharedPointer<IMessageOld> msg(new MessageOld(m_id, ARM_R_SERVER_BPLA_COORDS_1, out));
 	m_subscriber->data_ready(ARM_R_SERVER_BPLA_COORDS_1, msg);
+}
+
+void RPCClient_R::rpcSlotServerSendMapPing(QByteArray ba)
+{
+	QByteArray *out = new QByteArray();
+	out->append(ba);
+
+	QSharedPointer<IMessageOld> msg(new MessageOld(m_id, ARM_R_SERVER_MAP_PING, out));
+	m_subscriber->data_ready(ARM_R_SERVER_MAP_PING, msg);
 }
 
 void RPCClient_R::rpcSlotServerSendBplaDefAuto(QByteArray ba)

@@ -34,7 +34,7 @@ class DbUavManager : public QObject, public IDbUavManager, public BaseSubject<IU
 private:
 	IDbUavController* m_dbController;
 
-    QMap<QString, Uav> m_knownUavsList;
+	QMap<QString, Uav> m_knownUavsList;
 	QMap<QString, QTimer*> m_lifeTimerMap;
 	QSignalMapper* m_timeoutSignalMapper;
 
@@ -55,7 +55,7 @@ public:
 	explicit DbUavManager(int lifeTime = MAX_LIFE_TIME, QObject *parent = 0);
 	virtual ~DbUavManager();
 
-    QMap<QString, Uav> getKnownUavList();
+	QMap<QString, Uav> getKnownUavList();
 
 	void setDbController(IDbUavController*);
 	void setLifeTime(int msecs);
@@ -142,15 +142,16 @@ private:
 	QString getEnemySourceTypeName(uint sourceType);
 
 	QList<UAVPositionDataEnemy> getUavListSingleFromProto(SolverProtocol::Packet pkt, bool autoAlt = false);
-    QList<UAVPositionDataEnemy> getUavListTrajectoryFromProto(SolverProtocol::Packet_DataFromSolver_SolverSolution_Trajectory pktTrajectory);
+	QList<UAVPositionDataEnemy> getUavListTrajectoryFromProto(SolverProtocol::Packet_DataFromSolver_SolverSolution_Trajectory pktTrajectory);
 
 private slots:
 	void timeoutSlot(const QString& key);
 
 	void onMethodCalledInternal(QString method, QVariant argument);
 signals:
-    void protoToNiipp(QByteArray proto);
+	void protoToNiipp(QByteArray proto);
 	void signalMethodCalled(QString, QVariant);
+	void signalWriteToBd(int);
 };
 
 #endif // DBBLAMANAGER_H

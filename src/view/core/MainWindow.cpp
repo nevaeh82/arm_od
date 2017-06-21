@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	init();
 
-    connect(ui->actionCrash, SIGNAL(triggered(bool)), this, SLOT(crash(bool)));
+	connect(ui->actionCrash, SIGNAL(triggered(bool)), this, SLOT(crash(bool)));
 
 	m_formCapture = new FormCapture(0);
 	connect(m_formCapture, SIGNAL(signalApply(int)), m_formCapture, SLOT(hide()));
@@ -36,8 +36,17 @@ MainWindow::MainWindow(QWidget *parent) :
 	m_ktrAddressControl = new KtrAdressControl();
 	connect(ui->actionKtr_Settings, SIGNAL(triggered(bool)), m_ktrAddressControl, SLOT(show()));
 
-	QPointF point(34.171325,45.918281);
+	QPointF point(34.171325, 45.918281);
 	drawAim(point, 50);
+
+	QString path = QApplication::applicationDirPath() + "/Client.ini";
+	QSettings settings(path, QSettings::IniFormat);
+
+	if( settings.value("Map/mapExtraBoardInfo").toBool() ) {
+		ui->actionShow_extra_board_info->setChecked(true);
+	}
+
+	connect(ui->actionShow_extra_board_info, SIGNAL(triggered(bool)), this, SLOT(slotOnExtraBoardInfo(bool)));
 }
 
 QPointF MainWindow::drawAim(QPointF pos, int angle)
@@ -128,6 +137,16 @@ void MainWindow::setStateMapAction( bool value )
 void MainWindow::slotCaptureCount()
 {
 	m_formCapture->show();
+}
+
+void MainWindow::slotOnExtraBoardInfo(bool val)
+{
+	emit signalOnExtraBoardInfo((int)val);
+
+	QString path = QApplication::applicationDirPath() + "/Client.ini";
+	QSettings settings(path, QSettings::IniFormat);
+
+	settings.setValue("Map/mapExtraBoardInfo", val);
 }
 
 void MainWindow::openAtlasAction()

@@ -56,6 +56,12 @@ MapTabWidgetController::MapTabWidgetController(Station *station, QMap<int, Stati
 	m_uavDbManager->getUavHistory()->registerReceiver( m_controlPanelController );
 
 	connect(this, SIGNAL(onDbOutLog(QString)), m_controlPanelController, SLOT(onDbLogReceive(QString)));
+	connect(m_uavDbManager, SIGNAL(signalWriteToBd(int)), m_controlPanelController, SLOT(slotStateWriteToBd(int)));
+
+	connect(this, SIGNAL(signalOnExtraBoardInfo(int)), m_allyUavTreeModel, SLOT(onExtraBoardInfo(int)));
+	connect(this, SIGNAL(signalOnExtraBoardInfo(int)), m_enemyUavTreeModel, SLOT(onExtraBoardInfo(int)));
+	connect(this, SIGNAL(signalOnExtraBoardInfo(int)), m_mapController, SLOT(onExtraBoardInfo(int)));
+	connect(this, SIGNAL(signalOnExtraBoardInfo(int)), m_mapController, SIGNAL(signalOnExtraBoardInfo(int)));
 
 	start();
 }
@@ -178,21 +184,21 @@ int MapTabWidgetController::createTree()
 
 	tree = m_view->getBlaTreeView();
 	tree->setModel(m_allyUavTreeModel);
-	tree->setItemDelegate(m_treeDelegate);
+	//tree->setItemDelegate(m_treeDelegate);
 	tree->header()->resizeSection(0, qMax( TREE_KEYS_COLUMN_MIN_WIDTH, tree->header()->width() / 2 ) );
 	tree->header()->resizeSection(1, tree->header()->width() - tree->header()->sectionSize(0) );
 
 	connect(m_allyUavTreeModel, SIGNAL(onItemAddedSignal()), tree, SLOT(expandAll()));
 
-	connect(tree, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onBlaTreeItemDoubleClicked(QModelIndex)));
+	//connect(tree, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onBlaTreeItemDoubleClicked(QModelIndex)));
 
 	tree = m_view->getBplaTreeView();
 	tree->setModel(m_enemyUavTreeModel);
-	tree->setItemDelegate(m_treeDelegate);
+	//tree->setItemDelegate(m_treeDelegate);
 	tree->header()->resizeSection(0, qMax( TREE_KEYS_COLUMN_MIN_WIDTH, tree->header()->width() / 2 ) );
 	tree->header()->resizeSection(1, tree->header()->width() - tree->header()->sectionSize(0) );
 
-    //connect(m_enemyUavTreeModel, SIGNAL(onItemAddedSignal()), tree, SLOT(expandAll()));
+	//connect(m_enemyUavTreeModel, SIGNAL(onItemAddedSignal()), tree, SLOT(expandAll()));
 
 	return 0;
 }
@@ -235,11 +241,13 @@ void MapTabWidgetController::appendView(MapTabWidget *view)
 	m_uavDbManager->registerReceiver( m_niipp1 );
 	m_uavDbManager->registerReceiver( m_niipp2 );
 
-    connect(m_uavDbManager, SIGNAL(protoToNiipp(QByteArray)), m_niipp1, SLOT());
+	connect(m_uavDbManager, SIGNAL(protoToNiipp(QByteArray)), m_niipp1, SLOT());
 
 	init();
 
 	emit initFinished();
+
+	connect(this, SIGNAL(signalOnExtraBoardInfo(int)), m_view->getMapWidget(), SIGNAL(signalOnExtraBoardInfo(int)));
 }
 
 void MapTabWidgetController::setRpcConfig(const quint16& port, const QString& host)
@@ -280,6 +288,10 @@ void MapTabWidgetController::saveObjectsSlot()
 
 void MapTabWidgetController::onBlaTreeItemDoubleClicked(QModelIndex index)
 {
+
+	return ; //Do not neet now ...
+
+
 	QModelIndex parent = index.parent();
 
 	if (parent.isValid()){

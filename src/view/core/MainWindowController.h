@@ -23,6 +23,9 @@
 
 #include "BaseParser/BaseParser.h"
 
+#define SERVER_NAME "ZaviruhaODServer"
+#define GUI_NAME "ZaviruhaODView"
+
 class MainWindowController : public QObject, public IRpcListener//, public IController<MainWindow>
 {
 	Q_OBJECT
@@ -42,6 +45,11 @@ private:
 	SolverSetupWidgetController* m_solverSetupWidgetController;
 
 	int m_uavLifeTime;
+
+	bool m_ping;
+	bool m_armrConnection;
+
+	QTimer* m_rpcCheckTimer;
 
 public:
 	explicit MainWindowController(QObject *parent = 0);
@@ -66,6 +74,9 @@ private slots:
 	void enableAdsbOnlineClient(bool);
 
 	void mapOpened();
+
+	void slotServerProcessDead();
+	void slotCheckRpc();
 
 private:
 

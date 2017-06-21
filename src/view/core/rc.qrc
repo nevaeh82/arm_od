@@ -2,6 +2,7 @@
     <qresource prefix="/images/signals">
         <file>images/bullet_green.png</file>
         <file>images/bullet_red.png</file>
+        <file>images/bullet_yellow.png</file>
         <file>images/zaviruha.png</file>
     </qresource>
     <qresource prefix="/images/punkts">

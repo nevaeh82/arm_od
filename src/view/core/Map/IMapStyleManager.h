@@ -11,6 +11,7 @@
 #define MAP_STYLE_NAME_FRIEND_BPLA_SLICE	"FriendBPLA_Slice"
 #define MAP_STYLE_NAME_ENEMY_BPLA			"EmenyBPLA_%1_%2"
 #define MAP_STYLE_NAME_ENEMY_BPLA_TRACK		"EmenyBPLA_Track_%1"
+#define MAP_STYLE_NAME_ENEMY_BPLA_ERROR		"EmenyBPLA_Error_%1"
 #define MAP_STYLE_NAME_ADSB					"ADSB"
 #define MAP_STYLE_NAME_ADSB_TRACK			"ADSB_TRACK"
 #define MAP_STYLE_NAME_INTERCEPTION			"Interception"
@@ -41,6 +42,7 @@ public:
 	virtual PwGisStyle* createAdsbTrackStyle(const QString& layerId) = 0;
     virtual PwGisStyle* createEnemyBplaStyle(const QString& layerId, uint source, uint state) = 0;
 	virtual PwGisStyle* createEnemyBplaTrackStyle(const QString& layerId, uint source) = 0;
+	virtual PwGisStyle* createEnemyBplaErrorStyle(const QString& layerId, uint source) = 0;
 	virtual PwGisStyle* createInterceptionStyle(const QString& layerId) = 0;
 	virtual PwGisStyle* createNiippStyle(const QString& layerId) = 0;
 	virtual PwGisStyle* createNiippPointStyle(const QString& layerId) = 0;

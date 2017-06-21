@@ -22,18 +22,12 @@ static LPTOP_LEVEL_EXCEPTION_FILTER g_prev = NULL;
 
 LONG WINAPI exception_filter(LPEXCEPTION_POINTERS info)
 {
-     //SymCleanup(GetCurrentProcess());
+	QProcess p;
+	QString guiName = "./" + QString(GUI_NAME);
+	p.startDetached(guiName);
+	p.waitForStarted(10000);
 
-//    MessageBoxA(hwnd,
-//                QObject::tr("Error").toStdString().c_str(),
-//                QObject::tr("Error").toStdString().c_str(),
-//                MB_APPLMODAL);
-
-    QProcess p;
-    p.start("a.bat");
-    p.waitForStarted(10000);
-
-    return EXCEPTION_EXECUTE_HANDLER;
+	return EXCEPTION_EXECUTE_HANDLER;
 }
 
 static void
@@ -60,6 +54,9 @@ int main(int argc, char *argv[])
 
 	HWND hwnd = GetConsoleWindow();
 	ShowWindow(hwnd, 0);
+
+	hwnd = ::GetDesktopWindow();
+	backtrace_register();
 
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 	QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));

@@ -14,6 +14,8 @@ ControlPanelController::ControlPanelController(QObject *parent) :
 
 	connect( this, SIGNAL(historyStatusChanged(Status)), SLOT(changeViewStatus(Status)) );
 	connect( this, SIGNAL(currentDateTimeChanged(QDateTime)), SLOT(changeCurrentDateTime(QDateTime)) );
+
+	connect(this, SIGNAL(signalBdWriteStateInternal(int)), this, SLOT(slotBdWriteStateInternal(int)), Qt::QueuedConnection);
 }
 
 void ControlPanelController::appendView(ControlPanel *view)
@@ -155,4 +157,14 @@ void ControlPanelController::onDbLogReceive(QString log)
 void ControlPanelController::slotChangeMux(int timeout)
 {
 	m_uavHistory->setTimeoutMux(timeout);
+}
+
+void ControlPanelController::slotStateWriteToBd(int val)
+{
+	emit signalBdWriteStateInternal(val);
+}
+
+void ControlPanelController::slotBdWriteStateInternal(int val)
+{
+	m_view->setBdWriteState(val);
 }

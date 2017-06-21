@@ -18,6 +18,7 @@ private:
 
 	QPixmap redLbl;
 	QPixmap greenLbl;
+	QPixmap yellowLbl;
 
 public:
 	explicit ControlPanel(QWidget *parent = 0);
@@ -39,6 +40,8 @@ public:
 	void onSetDbLog(const QString& logTxt);
 
 	void setARMRConnection(bool b);
+
+	void setBdWriteState(int val);
 
 signals:
 	void startPlayingHistorySignal();

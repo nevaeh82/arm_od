@@ -31,6 +31,7 @@
 
 #include "UAV/ZInterception.h"
 
+#include "Tabs/Tree/UavTreeModel.h"
 #include "RPC/RpcDefines.h"
 
 #include "SolverPacket1.pb.h"
@@ -52,6 +53,9 @@ private:
 	int m_pelengEvilIds;
 
 	QRectF m_viewport;
+
+	UavTreeModel* m_ourModel;
+	UavTreeModel* m_enemyModel;
 
 public:
 	MapController(QObject* parent = NULL);
@@ -83,14 +87,18 @@ public:
 	virtual void onStatusChanged(Status) {}
 
 	void saveCache();
+
+	void setEnemyModel(UavTreeModel* model);
+	void setOurModel(UavTreeModel* model);
+
 private:
 	IMapClient* getMapClient();
 
 	void setViewport(QString viewport);
 
 	QTimer* m_initJsTimer;
-    QTime m_mapUpTime;
-    int m_mapUpTimeout;
+	QTime m_mapUpTime;
+	int m_mapUpTimeout;
 
 public slots:
 	void openMapFromAtlas();
@@ -107,6 +115,7 @@ public slots:
 
 private slots:
 	void mapOpenFinished();
+	void onExtraBoardInfo(int);
 
 signals:
 	void mapOpened();
@@ -114,6 +123,7 @@ signals:
 	void mapOpenCanceled();
 
 	void mapClicked(double, double);
+	void signalOnExtraBoardInfo(int);
 };
 
 #endif // MAPCONTROLLER_H

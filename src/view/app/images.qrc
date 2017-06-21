@@ -1,7 +1,8 @@
 <RCC>
   <qresource prefix="/">
-    <file>images/bullet_green.png</file>
+  <file>images/bullet_green.png</file>
 	<file>images/bullet_red.png</file>
+  <file>images/bullet_yellow.png</file>
 	<file>images/Points/redmark16.png</file>
 	<file>images/Points/redmark24.png</file>
 	<file>images/Points/redmark32.png</file>
@@ -14,7 +15,7 @@
 	<file>images/UAV/BPLAB.png</file>
 	<file>images/UAV/BPLABU.png</file>
 	<file>images/AIS/PostPlaneBlack.png</file>
-	<file>images/AIS/PostPlaneYellow.png</file>	
+	<file>images/AIS/PostPlaneYellow.png</file>
 	<file>images/cloud-popup-relative.png</file>
 	<file>images/popupClose.png</file>
 	<file>images/customActivateEdit.js</file>
@@ -25,4 +26,3 @@
 	<file>images/UAV/cross.png</file>
   </qresource>
 </RCC>
-

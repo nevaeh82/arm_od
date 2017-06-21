@@ -18,13 +18,16 @@ MapController::MapController(QObject *parent):
 	QObject(parent)
 {
 	m_view = NULL;
+	m_enemyModel = NULL;
+	m_ourModel = NULL;
+
 	m_mapModel = new Map(this);
 	m_pelengEvilIds = 0;
 
 	m_initJsTimer = new QTimer(this);
 	m_initJsTimer->setInterval( MAP_INITJS_TIMEOUT );
 
-    m_mapUpTime = QTime::currentTime();
+	m_mapUpTime = QTime::currentTime();
 }
 
 MapController::~MapController()
@@ -85,10 +88,10 @@ void MapController::openMapFromAtlas()
 void MapController::openMapFromLocalFile()
 {
 	QString filename = QFileDialog::getOpenFileName(
-		m_view,
-		tr( "Open map" ),
-		QDir::currentPath(),
-		tr( "Map files (*.chart *.sxf *.sit *.map *.gc *.gst)" ) );
+				m_view,
+				tr( "Open map" ),
+				QDir::currentPath(),
+				tr( "Map files (*.chart *.sxf *.sit *.map *.gc *.gst)" ) );
 	if ( !filename.isNull() ) {
 		m_mapModel->openMap(filename);
 	} else {
@@ -122,15 +125,15 @@ void MapController::onMapClicked(double lon, double lat)
 
 	emit mapClicked( lon, lat );
 
-//	client->addNiippPoint( point );
+	//	client->addNiippPoint( point );
 
-//	if( m_niippControllers.contains( 100 ) ) {
-//		m_niippControllers.value( 100 )->setPoint( point );
-//	}
+	//	if( m_niippControllers.contains( 100 ) ) {
+	//		m_niippControllers.value( 100 )->setPoint( point );
+	//	}
 
-//	if( m_niippControllers.contains( 101 ) ) {
-//		m_niippControllers.value( 101 )->setPoint( point );
-//	}
+	//	if( m_niippControllers.contains( 101 ) ) {
+	//		m_niippControllers.value( 101 )->setPoint( point );
+	//	}
 }
 
 void MapController::setStationVisible(bool state)
@@ -141,7 +144,7 @@ void MapController::setStationVisible(bool state)
 void MapController::clearObjects()
 {
 	m_view->getPwGis()->executeScript( QString("map.getLayer(\"%1\").removeAllFeatures();").arg("vectors") );
-		m_view->getPwGis()->executeScript( QString("map.getLayer(\"%1\").removeAllFeatures();").arg("markers") );
+	m_view->getPwGis()->executeScript( QString("map.getLayer(\"%1\").removeAllFeatures();").arg("markers") );
 }
 
 void MapController::loadObjects()
@@ -174,9 +177,15 @@ void MapController::mapOpenFinished()
 	}
 }
 
+void MapController::onExtraBoardInfo(int val)
+{
+	IMapClient* client = getMapClient();
+	client->setBoardExtraInfo(val);
+}
+
 IMapClient *MapController::getMapClient(int id)
 {
-    return m_mapModel->getMapClient(id);
+	return m_mapModel->getMapClient(id);
 }
 
 void MapController::setNiippController(INiippController* controller)
@@ -222,6 +231,16 @@ void MapController::saveCache()
 	m_mapModel->saveCache();
 }
 
+void MapController::setEnemyModel(UavTreeModel *model)
+{
+	m_enemyModel = model;
+}
+
+void MapController::setOurModel(UavTreeModel *model)
+{
+	m_ourModel = model;
+}
+
 void MapController::closeMap()
 {
 	m_mapModel->closeMap();
@@ -247,7 +266,7 @@ void MapController::loadMapSettings()
 	QString mapFile = settings.value("Map/file").toString();
 	QString viewport = settings.value("Map/viewport").toString();
 
-    m_mapUpTimeout = settings.value("Map/mapUpTimeout", 0).toInt();
+	m_mapUpTimeout = settings.value("Map/mapUpTimeout", 1000).toInt();
 
 	// open default map
 	if (!mapFile.isEmpty()) {
@@ -278,9 +297,9 @@ void MapController::onUavInfoChanged(const UavInfo& uavInfo, const QString& uavR
 
 	if( uavRole == OUR_UAV_ROLE ) {
 
-        if(!uavInfo.historical) {
-            return;
-        }
+		if(!uavInfo.historical) {
+			return;
+		}
 
 		client->addFriendBpla( uavInfo );
 		return;
@@ -313,48 +332,60 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 		client->addAis(map);
 	} else if( method == RPC_SLOT_SERVER_SEND_ADSB_DATA ) {
 		client->addAdsb( data );
-    } else if(method == RPC_SLOT_SERVER_SEND_BLA_POINTS) {
-            QDataStream inputDataStream(&data, QIODevice::ReadOnly);
-            QVector<UAVPositionData> positionDataVector;
-            inputDataStream >> positionDataVector;
+	} else if(method == RPC_SLOT_SERVER_SEND_BLA_POINTS) {
+		QDataStream inputDataStream(&data, QIODevice::ReadOnly);
+		QVector<UAVPositionData> positionDataVector;
+		inputDataStream >> positionDataVector;
 
-            if (positionDataVector.size() < 1) {
-                log_debug("Size uavpositiondata vector < 1");
-                return;
-            }
+		if (positionDataVector.size() < 1) {
+			log_debug("Size uavpositiondata vector < 1");
+			return;
+		}
 
-//            QString dataToFile = QTime::currentTime().toString("hh:mm:ss:zzz") + " " + QString::number(positionDataVector.at(0).latitude) + " " + QString::number(positionDataVector.at(0).longitude) + " " + QString::number(positionDataVector.at(0).altitude) + "\n";
-//            m_logManager->writeToFile(dataToFile);
+		//            QString dataToFile = QTime::currentTime().toString("hh:mm:ss:zzz") + " " + QString::number(positionDataVector.at(0).latitude) + " " + QString::number(positionDataVector.at(0).longitude) + " " + QString::number(positionDataVector.at(0).altitude) + "\n";
+		//            m_logManager->writeToFile(dataToFile);
 
-            /// Now we take first point, but we need to take more than 1 point
-            UAVPositionData positionData = positionDataVector.at(0);
-            positionData.name = QString::number(positionData.boardID);
-            positionData.state = 1;
+		/// Now we take first point, but we need to take more than 1 point
+		UAVPositionData positionData = positionDataVector.at(0);
+		positionData.name = QString::number(positionData.boardID);
+		positionData.state = 1;
 
-            UavInfo uav;
-            uav.lat = positionDataVector.at(0).latitude;
-            uav.lon = positionDataVector.at(0).longitude;
-            uav.alt = positionDataVector.at(0).altitude;
-            uav.yaw = positionDataVector.at(0).course;
-            uav.name = QString::number(positionData.boardID);
-            uav.id = positionData.boardID;
+		UavInfo uav;
+		uav.lat = positionDataVector.at(0).latitude;
+		uav.lon = positionDataVector.at(0).longitude;
+		uav.alt = positionDataVector.at(0).altitude;
+		uav.yaw = positionDataVector.at(0).course;
+		uav.name = QString::number(positionData.boardID);
+		uav.id = positionData.boardID;
 
-            //onUavInfoChanged(uav, OUR_UAV_ROLE);
-			uav.source = positionDataVector.at(0).sourceType;
-            client->addFriendBpla( uav );
-    } else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_1) {
+		//onUavInfoChanged(uav, OUR_UAV_ROLE);
+		uav.source = positionDataVector.at(0).sourceType;
+		client->addFriendBpla( uav );
 
-        volatile int tval = m_mapUpTime.msecsTo(QTime::currentTime());
-       volatile int tval2 = m_mapUpTimeout;
-
-        if(m_mapUpTime.msecsTo(QTime::currentTime()) < m_mapUpTimeout) {
-            return;
-        }
-        m_mapUpTime = QTime::currentTime();
+		if(m_ourModel) {
+			m_ourModel->onUavInfoChanged(uav, OUR_UAV_ROLE);
+		}
+	} else if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_1) {
 
 
 		SolverProtocol::Packet pkt;
 		pkt.ParseFromArray( data.data(), data.size() );
+
+		if( (	pkt.has_datafromsolver() &&
+				pkt.datafromsolver().has_solution_manual_altitude() &&
+				pkt.datafromsolver().solution_manual_altitude().has_positionlines()) ||
+				(pkt.has_datafromsolver() &&
+				pkt.datafromsolver().has_solution_automatic_altitude() &&
+				pkt.datafromsolver().solution_automatic_altitude().has_positionlines()) )
+		{
+
+			if(m_mapUpTime.msecsTo(QTime::currentTime()) < m_mapUpTimeout) {
+				return;
+			}
+			m_mapUpTime = QTime::currentTime();
+
+		}
+
 
 		// HYPERBOLE
 		if( pkt.has_datafromsolver() &&
@@ -369,8 +400,8 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 
 			client->addHyperboles(dataPL, 1);
 		} else if( pkt.has_datafromsolver() &&
-				pkt.datafromsolver().has_solution_automatic_altitude() &&
-				pkt.datafromsolver().solution_automatic_altitude().has_positionlines() ) {
+				   pkt.datafromsolver().has_solution_automatic_altitude() &&
+				   pkt.datafromsolver().solution_automatic_altitude().has_positionlines() ) {
 
 			SolverProtocol::Packet_DataFromSolver_SolverSolution_PositionLines plMsg =
 					pkt.datafromsolver().solution_automatic_altitude().positionlines();
@@ -386,7 +417,7 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 		//SINGLEMARK
 
 		if(pkt.has_datafromsolver() && pkt.datafromsolver().has_solution_manual_altitude() &&
-		   pkt.datafromsolver().solution_manual_altitude().has_singlemarks()) {
+				pkt.datafromsolver().solution_manual_altitude().has_singlemarks()) {
 
 			SolverProtocol::Packet_DataFromSolver_SolverSolution_SingleMarks sMsg =  pkt.datafromsolver().solution_manual_altitude().singlemarks();
 
@@ -399,7 +430,7 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 		}
 
 		if(pkt.has_datafromsolver() && pkt.datafromsolver().has_solution_automatic_altitude() &&
-		   pkt.datafromsolver().solution_automatic_altitude().has_singlemarks()) {
+				pkt.datafromsolver().solution_automatic_altitude().has_singlemarks()) {
 
 			SolverProtocol::Packet_DataFromSolver_SolverSolution_SingleMarks sMsg =
 					pkt.datafromsolver().solution_automatic_altitude().singlemarks();
@@ -424,6 +455,17 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 				msg.resize(sol.ByteSize());
 				sol.SerializeToArray(msg.data(), msg.size());
 				client->addTrajectoryKK( msg, 101 );
+
+				if(m_enemyModel) {
+					UavInfo uav;
+					uav.lat = sol.motionestimate(sol.motionestimate_size()-1).coordinates().lat();
+					uav.lon = sol.motionestimate(sol.motionestimate_size()-1).coordinates().lon();
+					uav.alt = sol.motionestimate(sol.motionestimate_size()-1).coordinates().alt();
+					uav.yaw = sol.motionestimate(sol.motionestimate_size()-1).relativebearing();
+					uav.name = QString::fromStdString(sol.targetid());
+
+					m_enemyModel->onUavInfoChanged(uav, ENEMY_UAV_ROLE);
+				}
 			}
 		}
 
@@ -437,6 +479,17 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 				msg.resize(sol.ByteSize());
 				sol.SerializeToArray(msg.data(), msg.size());
 				client->addTrajectoryKK( msg, 100 );
+
+				if(m_enemyModel) {
+					UavInfo uav;
+					uav.lat = sol.motionestimate(sol.motionestimate_size()-1).coordinates().lat();
+					uav.lon = sol.motionestimate(sol.motionestimate_size()-1).coordinates().lon();
+					uav.alt = sol.motionestimate(sol.motionestimate_size()-1).coordinates().alt();
+					uav.yaw = sol.motionestimate(sol.motionestimate_size()-1).relativebearing();
+					uav.name = QString::fromStdString(sol.targetid());
+
+					m_enemyModel->onUavInfoChanged(uav, ENEMY_UAV_ROLE);
+				}
 			}
 		}
 
@@ -470,5 +523,5 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 				client->clearSolver1();
 			}
 		}
-    }
+	}
 }

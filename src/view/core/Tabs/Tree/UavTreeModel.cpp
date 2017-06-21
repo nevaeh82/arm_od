@@ -1,3 +1,6 @@
+#include <QSettings>
+#include <QApplication>
+
 #include <Logger/Logger.h>
 #include <TreeModel/TreeItem.h>
 #include <Settings/SettingsNode.h>
@@ -11,11 +14,15 @@
 #define SPEED_PROPERTY_ID		4
 #define COURSE_PROPERTY_ID		5
 
-#define LAT_KTR_PROPERTY_ID		4
-#define LON_KTR_PROPERTY_ID		5
+#define LAT_ACC_PROPERTY_ID		6
+#define LON_ACC_PROPERTY_ID		7
+
+//#define LAT_KTR_PROPERTY_ID		4
+//#define LON_KTR_PROPERTY_ID		5
 
 UavTreeModel::UavTreeModel(const QStringList &headers, QObject *parent) :
-	TreeModelBase(headers, parent)
+	TreeModelBase(headers, parent),
+	m_isExtraInfo(0)
 {
 	m_treeUpdater.setInterval(500);
 	m_treeUpdater.start();
@@ -25,6 +32,11 @@ UavTreeModel::UavTreeModel(const QStringList &headers, QObject *parent) :
 	m_isNeedRedraw = false;
 
 	m_targetRole = OUR_UAV_ROLE;
+
+	QString path = QApplication::applicationDirPath() + "/Client.ini";
+	QSettings settings(path, QSettings::IniFormat);
+
+	m_isExtraInfo = settings.value("Map/mapExtraBoardInfo").toInt();
 }
 
 UavTreeModel::~UavTreeModel()
@@ -42,6 +54,11 @@ void UavTreeModel::updateData()
 	}
 }
 
+void UavTreeModel::onExtraBoardInfo(int val)
+{
+	m_isExtraInfo = val;
+}
+
 QVariant UavTreeModel::data(const QModelIndex &index, int role) const
 {
 	if (!index.isValid()) {
@@ -54,15 +71,15 @@ QVariant UavTreeModel::data(const QModelIndex &index, int role) const
 		return QVariant();
 	}
 
-	if (role == Qt::CheckStateRole) {
+//	if (role == Qt::CheckStateRole) {
 
-		if ((item->data().pid != 0) || (index.column() != 0)) {
-			return QVariant();
-		}
+//		if ((item->data().pid != 0) || (index.column() != 0)) {
+//			return QVariant();
+//		}
 
-		return ((item->data().state > 0) ? Qt::Checked : Qt::Unchecked);
+//		return ((item->data().state > 0) ? Qt::Checked : Qt::Unchecked);
 
-	}
+//	}
 
 	return TreeModelBase::data(index, role);
 }
@@ -105,22 +122,36 @@ void UavTreeModel::addSourceNode(TreeItem* item, uint sourceType, QString name, 
 	inProperty.value = 0;
 	nodeSolverAuto.properties.append(inProperty);
 
-    if ( sourceType != UAV_SLICES_SOURCE ) {
-        inProperty.id = ALT_PROPERTY_ID;
-        inProperty.name = tr("alt");
-        inProperty.value = 10;
-        nodeSolverAuto.properties.append(inProperty);
-    }
+	if(m_isExtraInfo) {
+		if ( sourceType != UAV_SLICES_SOURCE ) {
+			inProperty.id = ALT_PROPERTY_ID;
+			inProperty.name = tr("alt");
+			inProperty.value = 10;
+			nodeSolverAuto.properties.append(inProperty);
+		}
+	}
 
-    inProperty.id = SPEED_PROPERTY_ID;
-    inProperty.name = tr("speed");
-    inProperty.value = 0;
-    nodeSolverAuto.properties.append(inProperty);
+	inProperty.id = SPEED_PROPERTY_ID;
+	inProperty.name = tr("speed");
+	inProperty.value = 0;
+	nodeSolverAuto.properties.append(inProperty);
 
-    inProperty.id = COURSE_PROPERTY_ID;
-    inProperty.name = tr("course");
-    inProperty.value = 0;
-    nodeSolverAuto.properties.append(inProperty);
+	inProperty.id = COURSE_PROPERTY_ID;
+	inProperty.name = tr("course");
+	inProperty.value = 0;
+	nodeSolverAuto.properties.append(inProperty);
+
+	if( sourceType == UAV_SOLVER_AUTO_SOURCE || sourceType == UAV_SOLVER_MANUAL_SOURCE ) {
+		inProperty.id = LAT_ACC_PROPERTY_ID;
+		inProperty.name = tr("latACC");
+		inProperty.value = 0;
+		nodeSolverAuto.properties.append(inProperty);
+
+		inProperty.id = LON_ACC_PROPERTY_ID;
+		inProperty.name = tr("lonACC");
+		inProperty.value = 0;
+		nodeSolverAuto.properties.append(inProperty);
+	}
 
 	TreeItem* sourceItem =  new TreeItem(nodeSolverAuto.object, item);
 
@@ -138,18 +169,32 @@ void UavTreeModel::onUavAdded(const Uav &uav, const QString& uavRole)
 		return;
 	}
 
+	int id = getId(uav);
+
+	log_debug(QString("Added %1   -   %2 %3").arg(uav.name).arg(id).arg(uav.historical));
+
+	for (int i = 0; i< m_rootItem->childCount(); i++) {
+
+		TreeItem* stationItem = m_rootItem->child(i);
+
+		if (stationItem->data().id == id) {
+			//log_debug("Tree has that item");
+			return;
+		}
+	}
+
 	//QString name = uav.name;
 	SettingsNode inSettingsNode;
-	inSettingsNode.object.id = uav.uavId;
+	inSettingsNode.object.id = id;
 	inSettingsNode.object.name = uav.name;
-    if(uavRole == ENEMY_UAV_ROLE) {
-        inSettingsNode.object.name = uav.name;
+	if(uavRole == ENEMY_UAV_ROLE) {
+		inSettingsNode.object.name = uav.name;
 
-        inSettingsNode.object.name = ( tr("target")
-                             + uav.name.right(uav.name.length() - uav.name.indexOf("_")) );
+		inSettingsNode.object.name = ( tr("target")
+									   + uav.name.right(uav.name.length() - uav.name.indexOf("_")) );
 
-    }
-    inSettingsNode.object.isEditable = false;
+	}
+	inSettingsNode.object.isEditable = false;
 	inSettingsNode.object.pid = 0;
 	inSettingsNode.object.state = 0;
 
@@ -168,12 +213,12 @@ void UavTreeModel::onUavAdded(const Uav &uav, const QString& uavRole)
 		addSourceNode( item, UAV_AUTOPILOT_SOURCE, tr("Autopilot"), uav.uavId );
 		addSourceNode( item, UAV_SLICES_SOURCE, tr("KTR"), uav.uavId );
 	} else
-	if ( uavRole == ENEMY_UAV_ROLE ) {
-		addSourceNode( item, UAV_SOLVER_AUTO_SOURCE, tr("Auto mode"), uav.uavId );
-		addSourceNode( item, UAV_SOLVER_MANUAL_SOURCE, tr("Manual mode"), uav.uavId );
-        //addSourceNode( item, UAV_SOLVER_SINGLE_1_SOURCE, tr("Single mode: Point 1"), uav.uavId );
-        //addSourceNode( item, UAV_SOLVER_SINGLE_2_SOURCE, tr("Single mode: Point 2"), uav.uavId );
-	}
+		if ( uavRole == ENEMY_UAV_ROLE ) {
+			addSourceNode( item, UAV_SOLVER_AUTO_SOURCE, tr("Auto mode"), uav.uavId );
+			addSourceNode( item, UAV_SOLVER_MANUAL_SOURCE, tr("Manual mode"), uav.uavId );
+			//addSourceNode( item, UAV_SOLVER_SINGLE_1_SOURCE, tr("Single mode: Point 1"), uav.uavId );
+			//addSourceNode( item, UAV_SOLVER_SINGLE_2_SOURCE, tr("Single mode: Point 2"), uav.uavId );
+		}
 
 	emit layoutChanged();
 	emit onItemAddedSignal();
@@ -181,14 +226,12 @@ void UavTreeModel::onUavAdded(const Uav &uav, const QString& uavRole)
 
 void UavTreeModel::onUavRemoved(const Uav &uav, const QString& uavRole)
 {
-//	if (uavRole != m_targetRole){
-//		return;
-//	}
+	int id = getId(uav);
 
 	for (int i= 0; i< m_rootItem->childCount(); ++i) {
 
 		TreeItem* childItem = m_rootItem->child(i);
-		if (childItem->data().id != uav.uavId) {
+		if (childItem->data().id != id) {
 			continue;
 		}
 
@@ -198,7 +241,7 @@ void UavTreeModel::onUavRemoved(const Uav &uav, const QString& uavRole)
 		bool isReal;
 		childItem->data().name.toInt( &isReal );
 
-        //if (uav.historical == isReal) continue;
+		//if (uav.historical == isReal) continue;
 
 		emit layoutAboutToBeChanged();
 		m_rootItem->removeChild(childItem);
@@ -220,18 +263,19 @@ void UavTreeModel::onUavInfoChanged(const UavInfo &uavInfo, const QString& uavRo
 
 	QString number;
 
-	onPropertyChanged(uavInfo, LAT_PROPERTY_ID, tr("lat"), number.sprintf( "%.4f", uavInfo.lat ));
-	onPropertyChanged(uavInfo, LON_PROPERTY_ID, tr("lon"), number.sprintf( "%.4f", uavInfo.lon ));
+	onPropertyChanged(uavInfo, LAT_PROPERTY_ID, tr("lat"), number.sprintf( "%.6f", uavInfo.lat ));
+	onPropertyChanged(uavInfo, LON_PROPERTY_ID, tr("lon"), number.sprintf( "%.6f", uavInfo.lon ));
 
-    if (UAV_SLICES_SOURCE != uavInfo.source) {
-        onPropertyChanged(uavInfo, ALT_PROPERTY_ID, tr("alt"), QString::number( (int) uavInfo.alt ));
-    }
+	//if (UAV_SLICES_SOURCE != uavInfo.source) {
+		onPropertyChanged(uavInfo, ALT_PROPERTY_ID, tr("alt"), QString::number( (int) uavInfo.alt ));
+	//}
 
-    onPropertyChanged(uavInfo, SPEED_PROPERTY_ID, tr("speed"), number.sprintf( "%.4f", uavInfo.speed ));
-    onPropertyChanged(uavInfo, COURSE_PROPERTY_ID, tr("course"), number.sprintf( "%.4f", uavInfo.yaw ));
+	onPropertyChanged(uavInfo, SPEED_PROPERTY_ID, tr("speed"), number.sprintf( "%.4f", uavInfo.speed ));
+	onPropertyChanged(uavInfo, COURSE_PROPERTY_ID, tr("course"), number.sprintf( "%.4f", uavInfo.yaw ));
 
-	if (m_isNeedRedraw) {
-		return;
+	if( uavInfo.source == UAV_SOLVER_AUTO_SOURCE || uavInfo.source == UAV_SOLVER_MANUAL_SOURCE ) {
+		onPropertyChanged(uavInfo, LAT_ACC_PROPERTY_ID, tr("latACC"), number.sprintf( "%.4f", uavInfo.latStddev ));
+		onPropertyChanged(uavInfo, LON_ACC_PROPERTY_ID, tr("lonAcc"), number.sprintf( "%.4f", uavInfo.lonStddev ));
 	}
 
 	m_isNeedRedraw = true;
@@ -244,17 +288,21 @@ void UavTreeModel::setTargetRole(const QString &role)
 	m_targetRole = role;
 }
 
-void UavTreeModel::onPropertyChanged(const UavInfo &uavInfo, const uint propId, const QString &name, const QVariant &value)
+void UavTreeModel::onPropertyChanged(const UavInfo &uav, const uint propId, const QString &name, const QVariant &value)
 {
 	/// TODO: need to uncomment after imlementing of speed receiving from KTR
 	bool isInFlight = true;
 
-	if (uavInfo.source != UAV_SLICES_SOURCE) {
-		isInFlight = /*(uavInfo.speed > 0) && */(uavInfo.alt > 0);
+	if (uav.source != UAV_SLICES_SOURCE) {
+		isInFlight = /*(uavInfo.speed > 0) && */(uav.alt > 0);
 	}
 
 	Property inProperty;
-	inProperty.pid = uavInfo.uavId;
+
+	int id = getId(uav);
+
+	inProperty.pid = id;
+
 	inProperty.id = propId;
 	inProperty.isEditable = false;
 	inProperty.state = 0;
@@ -266,6 +314,7 @@ void UavTreeModel::onPropertyChanged(const UavInfo &uavInfo, const uint propId, 
 		TreeItem* stationItem = m_rootItem->child(i);
 
 		if (stationItem->data().id != inProperty.pid) {
+			//log_debug(QString("wrong data id  station %1  property %2  -  %3").arg(stationItem->data().id).arg(inProperty.pid).arg(uav.name));
 			continue;
 		}
 
@@ -291,12 +340,15 @@ void UavTreeModel::onPropertyChanged(const UavInfo &uavInfo, const uint propId, 
 				stationState = 1;
 			}
 
-			if (sourceItem  == NULL && data.id == uavInfo.source) {
+			if (sourceItem  == NULL && data.id == uav.source) {
 				sourceItem  = stationItem->child(j);
 			}
 		}
 
-		if (sourceItem == NULL) continue;
+		if (sourceItem == NULL) {
+			//log_debug("null source item");
+			continue;
+		}
 
 		// update station item state
 		data = stationItem->data();
@@ -316,4 +368,100 @@ void UavTreeModel::onPropertyChanged(const UavInfo &uavInfo, const uint propId, 
 			}
 		}
 	}
+}
+
+int UavTreeModel::getId(const UavInfo& uav) {
+	int id = 0;
+
+	QString name = uav.name;
+
+	if(name.contains("_")) {
+		int from = name.indexOf("_")+1;
+		int count = name.indexOf("-");
+
+		if(count < from) {
+			count = -1;
+		}
+
+		if(count > 0) {
+			count = count - from;
+			if(count < 0) {
+				count = -1;
+			}
+		}
+		//id =uav.name.right(uav.name.length() - uav.name.indexOf("_") - 1 ).toInt();
+		if(count > 0 || uav.historical) {
+			id = QString("555" + name.mid(from, count)).toInt();
+		} else {
+			id = name.mid(from, count).toInt();
+		}
+	} else {
+		int from = 0;
+		int count = name.indexOf("-");
+		if(count > 0) {
+			count = count - from;
+			if(count < from || count < 0) {
+				count = -1;
+			}
+		}
+		//id =uav.name.right(uav.name.length() - uav.name.indexOf("_") - 1 ).toInt();
+		if(count > 0 || uav.historical) {
+			id = QString("555" + name.mid(from, count)).toInt();
+		} else {
+			id = name.mid(from, count).toInt();
+		}
+		//id =uav.name.toInt();
+	}
+
+	//log_debug(QString("%1   -   %2").arg(name).arg(id));
+
+	return id;
+}
+
+int UavTreeModel::getId(const Uav &uav)
+{
+
+	int id = 0;
+
+	QString name = uav.name;
+
+	if(name.contains("_")) {
+		int from = name.indexOf("_")+1;
+		int count = name.indexOf("-");
+
+		if(count < from) {
+			count = -1;
+		}
+
+		if(count > 0) {
+			count = count - from;
+			if(count < 0) {
+				count = -1;
+			}
+		}
+		//id =uav.name.right(uav.name.length() - uav.name.indexOf("_") - 1 ).toInt();
+		if(count > 0 || uav.historical) {
+			id = QString("555" + name.mid(from, count)).toInt();
+		} else {
+			id = name.mid(from, count).toInt();
+		}
+	} else {
+		int from = 0;
+		int count = name.indexOf("-");
+		if(count > 0) {
+			count = count - from;
+			if(count < from || count < 0) {
+				count = -1;
+			}
+		}
+		//id =uav.name.right(uav.name.length() - uav.name.indexOf("_") - 1 ).toInt();
+		if(count > 0 || uav.historical) {
+			id = QString("555" + name.mid(from, count)).toInt();
+		} else {
+			id = name.mid(from, count).toInt();
+		}
+		//id =uav.name.toInt();
+	}
+
+	return id;
 }

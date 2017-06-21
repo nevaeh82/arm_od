@@ -34,8 +34,9 @@ PwGisWidget* MapWidget::getPwGis()
 	return ui->_pwwidget;
 }
 
-void MapWidget::slotApply(int)
+void MapWidget::slotApply(int id)
 {
+	emit signalApplyCross(id);
 	//QMessageBox::critical(this, "income", "Ok", QMessageBox::Ok);
 }
 

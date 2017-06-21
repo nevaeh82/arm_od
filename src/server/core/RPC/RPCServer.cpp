@@ -31,6 +31,7 @@ bool RPCServer::start(quint16 port, QHostAddress address)
 
 	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCBPLAPoints(QByteArray)), RPC_SLOT_SERVER_SEND_BPLA_POINTS);
 	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCBPLAPoints1(QByteArray)), RPC_SLOT_SERVER_SEND_BPLA_POINTS_1);
+	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCMapPing(QByteArray)), RPC_SLOT_SERVER_SEND_MAP_PING);
 	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCBPLAPointsAuto(QByteArray)), RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO);
 	m_serverPeer->attachSignal(this, SIGNAL(signalSendToRPCHyperbola(QByteArray)), RPC_SLOT_SERVER_SEND_HYPERBOLA);
 
@@ -93,6 +94,7 @@ void RPCServer::_slotRPCConnetion(quint64 client)
 	connect(cl, SIGNAL(signalSendToRPCAISData(quint64,QByteArray*)), this, SLOT(rpc_slot_send_ais_data(quint64,QByteArray*)));
 	connect(cl, SIGNAL(signalSendToRPCBPLAPoints(quint64,QByteArray*)), this, SLOT(rpc_slot_send_bpla_points(quint64,QByteArray*)));
 	connect(cl, SIGNAL(signalSendToRPCBPLAPoints1(quint64,QByteArray*)), this, SLOT(rpc_slot_send_bpla_points_1(quint64,QByteArray*)));
+	connect(cl, SIGNAL(signalSendToRPCMapPing(quint64,QByteArray*)), this, SLOT(rpc_slot_send_map_ping(quint64,QByteArray*)));
 	connect(cl, SIGNAL(signalSendToRPCBPLAPointsAuto(quint64,QByteArray*)), this, SLOT(rpc_slot_send_bpla_points_auto(quint64,QByteArray*)));
 	connect(cl, SIGNAL(signalSendToRPCBPLAPointsSingle(quint64,QByteArray*)), this, SLOT(rpc_slot_send_bpla_points_single(quint64,QByteArray*)));
 	connect(cl, SIGNAL(signalSendToRPCHyperbola(quint64,QByteArray*)), this, SLOT(rpc_slot_send_hyperbola(quint64,QByteArray*)));
@@ -150,6 +152,9 @@ void RPCServer::sendDataByRpcSlot(QString signalType, QByteArray data)
 	} else if (signalType == RPC_SLOT_SERVER_SEND_BPLA_POINTS_1) {
 		emit signalSendToRPCBPLAPoints1(data);
 	}
+	else if (signalType == RPC_SLOT_SERVER_SEND_MAP_PING) {
+			emit signalSendToRPCMapPing(data);
+	}
 	else if (signalType == RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO) {
 		emit signalSendToRPCBPLAPointsAuto(data);
 	} else if (signalType == RPC_SLOT_SERVER_SEND_BPLA_POINTS_SINGLE) {
@@ -186,6 +191,7 @@ void RPCServer::rpc_slot_set_client_id(quint64 client, int id)
 	_subscriber->add_subscription(KTR_BLA, cl);
 	_subscriber->add_subscription(ARM_R_SERVER_BPLA_COORDS, cl);
 	_subscriber->add_subscription(ARM_R_SERVER_BPLA_COORDS_1, cl);
+	_subscriber->add_subscription(ARM_R_SERVER_MAP_PING, cl);
 	_subscriber->add_subscription(ARM_R_SERVER_BPLA_COORDS_AUTO, cl);
 	_subscriber->add_subscription(ARM_R_SERVER_BPLA_COORDS_SINGLE, cl);
 	_subscriber->add_subscription(ARM_R_SERVER_HYPERBOLA, cl);
@@ -309,6 +315,11 @@ void RPCServer::rpc_slot_send_bpla_points(quint64 client, QByteArray* data)
 void RPCServer::rpc_slot_send_bpla_points_1(quint64 client, QByteArray* data)
 {
 	m_serverPeer->call(client, RPC_SLOT_SERVER_SEND_BPLA_POINTS_1, QVariant::fromValue(*data));
+}
+
+void RPCServer::rpc_slot_send_map_ping(quint64 client, QByteArray* data)
+{
+	m_serverPeer->call(client, RPC_SLOT_SERVER_SEND_MAP_PING, QVariant::fromValue(*data));
 }
 
 void RPCServer::rpc_slot_send_bpla_points_auto(quint64 client, QByteArray *data)

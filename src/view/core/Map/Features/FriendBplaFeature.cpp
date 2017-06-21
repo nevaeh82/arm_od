@@ -9,6 +9,8 @@ FriendBpla::FriendBpla(IObjectsFactory* factory, const QString& id, const UavInf
 
 	registerStyle();
 
+	m_info = uav;
+
 	setName( uav.name );
 }
 

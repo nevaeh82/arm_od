@@ -37,6 +37,8 @@ signals:
 	void historyStatusChanged(Status status);
 	void currentDateTimeChanged(const QDateTime& date);
 
+	void signalBdWriteStateInternal(int);
+
 private slots:
 	void changeViewStatus(Status status);
 	void changeCurrentDateTime(const QDateTime& date);
@@ -48,6 +50,10 @@ private slots:
 	void onDbLogReceive(QString);
 
 	void slotChangeMux(int);
+
+	void slotStateWriteToBd(int val);
+
+	void slotBdWriteStateInternal(int val);
 
 };
 

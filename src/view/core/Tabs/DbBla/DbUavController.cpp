@@ -1267,12 +1267,15 @@ void DbUavController::moveToThread(QThread* thread)
 	DbControllerBase::moveToThread( thread );
 }
 
+#include <QSqlDriver>
+
 bool DbUavController::beginTransaction()
 {
 	if ( m_db.transaction() ) return true;
 
 	QString er = m_db.lastError().text();
 	log_debug("SQL is wrong! " + er);
+	log_debug(QString("SQL is wrong! %1").arg(m_db.driver()->hasFeature(QSqlDriver::Transactions)));
 	return false;
 }
 
@@ -1281,7 +1284,7 @@ bool DbUavController::commit()
 	if ( m_db.commit() ) return true;
 
 	QString er = m_db.lastError().text();
-	log_debug("SQL is wrong! " + er);
+	log_debug(QString("SQL is wrong! %1").arg(er));
 	return false;
 }
 
@@ -1362,4 +1365,6 @@ void DbUavController::slotReconnectDb()
 
 	disconnectFromDb();
 	connectToDB(m_connectionParams);
+
+	log_debug("DB reconnect!!!");
 }

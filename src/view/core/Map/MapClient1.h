@@ -83,9 +83,9 @@ private:
 	QTimer* m_hyperboleTimer;
 	QTimer* m_onePointTimer;
 
-    uint m_pointKKlastInd;
-    uint m_ellipseCounter;
-    QList<QString> m_trajEllipseCounter;
+	uint m_pointKKlastInd;
+	uint m_ellipseCounter;
+	QList<QString> m_trajEllipseCounter;
 	QList<Pw::Gis::Marker*> m_baseStationMarkerList;
 
 public:
@@ -99,6 +99,8 @@ public:
 
 	virtual void addPerehvatPoint( int blaId, int bplaId, QPointF coord, float hgt, float radius, int time, float intcCourse, float intcSpeed );
 
+	void setBoardExtraInfo(int);
+
 private:
 	void addMarkerLayer( int id, const QString& layerId, const QString& name );
 
@@ -106,16 +108,17 @@ private:
 	void readCheckPointsFromFile(QString fileName);
 	void readCheckLinesFromFile(QString fileName);
 
-    //Strange name, hard work in DZankoi
-    void DrawHyerboles(QList<QVector<QPointF>> list, QTime time, const QColor color);
+	//Strange name, hard work in DZankoi
+	void DrawHyerboles(QList<QVector<QPointF>> list, QTime time, const QColor color);
 	void DrawHyerboles(const QList<QVector<QPointF> >& list,
 					   const QList<QVector<QPointF> >& zone, const QTime& time, const QColor& color);
 
-    void clearEllipse();
-    void clearHyperbole();
-    void clearKKPoint();
+	void clearEllipse();
+	void clearHyperbole();
+	void clearKKPoint();
 	void clearTrajEllipse(QString id);
 	QPointF drawAim(QPointF pos, int angle);
+
 public slots:
 	virtual void init();
 	virtual void setPoint();
@@ -123,19 +126,19 @@ public slots:
 	virtual void justifyMap();
 
 	virtual void addFriendBpla( const UavInfo& uav );
-    virtual void addEnemyBpla( const UavInfo& uav,
-                               const QVector<QPointF> &tail = QVector<QPointF>(),
-                               const QVector<QPointF> &tailStdDev = QVector<QPointF>() );
+	virtual void addEnemyBpla( const UavInfo& uav,
+							   const QVector<QPointF> &tail = QVector<QPointF>(),
+							   const QVector<QPointF> &tailStdDev = QVector<QPointF>() );
 
-    virtual void addSingleMark( const QByteArray& uav );
+	virtual void addSingleMark( const QByteArray& uav );
 	virtual void addTrajectoryKK( const QByteArray& uav, const int source = 100 );
 
-    virtual void addStation( const QByteArray& data );
-    virtual void addWorkArea( const QPointF& point1, const QPointF& point2 );
+	virtual void addStation( const QByteArray& data );
+	virtual void addWorkArea( const QPointF& point1, const QPointF& point2 );
 
-    virtual void clearSolver1();
+	virtual void clearSolver1();
 
-    virtual void removeBpla( const Uav &uav );
+	virtual void removeBpla( const Uav &uav );
 
 	virtual void addAis( QMap<int, QVector<QString> > vec );
 
@@ -149,7 +152,7 @@ public slots:
 
 	virtual void removeNiippPoint();
 
-    virtual void addHyperboles( const QByteArray& data, int version = 0, const QColor color  = QColor::Invalid );
+	virtual void addHyperboles( const QByteArray& data, int version = 0, const QColor color  = QColor::Invalid );
 
 	virtual void removeAll();
 
@@ -159,7 +162,7 @@ private slots:
 							   const QVector<QPointF> &tail = QVector<QPointF>(),
 							   const QVector<QPointF> &tailStdDev = QVector<QPointF>() );
 
-    void addSingleMarkInternal(QByteArray data);
+	void addSingleMarkInternal(QByteArray data);
 
 	void removeBplaInternal( const Uav& uav );
 
@@ -175,10 +178,10 @@ private slots:
 	void addInterceptionPointData(int friendBplaId, int enemyBplaId, QPointF position,
 								  float height, float radius, int time,
 								  float course, float speed );
-    void addHyperboleInternal(const QByteArray& data, int version, const QColor color );
+	void addHyperboleInternal(const QByteArray& data, int version, const QColor color );
 
-    void addStationInternal(QByteArray data);
-    void addAreaInternal(QPointF point1, QPointF point2);
+	void addStationInternal(QByteArray data);
+	void addAreaInternal(QPointF point1, QPointF point2);
 
 	void removeAllHyperbole();
 	void removeAllonePointTimer();
@@ -202,13 +205,15 @@ private slots:
 	void slotAddBaseStation(double lon, double lat, QString name);
 	void slotClearBaseStation();
 
+	void onApplyCross(int);
+
 signals:
 	void friendBplaAdded( const UavInfo& uav );
 	void enemyBplaAdded( const UavInfo& uav,
 						 const QVector<QPointF> &tail = QVector<QPointF>(),
 						 const QVector<QPointF> &tailStdDev = QVector<QPointF>() );
 
-    void singleMarkAdded( QByteArray data );
+	void singleMarkAdded( QByteArray data );
 	void trajectoryKKAdded( QByteArray data, int source );
 
 	void bplaRemoved( const Uav& uav );
@@ -225,14 +230,14 @@ signals:
 	void interceptionRemoved( int bla_id, int bpla_id );
 
 	void interceptionPointAdded( int bla_id, int bpla_id, QPointF aCoord,
-		float aHgt, float aRadius, int aTime, float aIntcCourse, float aIntcSpeed );
+								 float aHgt, float aRadius, int aTime, float aIntcCourse, float aIntcSpeed );
 
-    void hyperboleAdded(const QByteArray& data, int version, const QColor color);
+	void hyperboleAdded(const QByteArray& data, int version, const QColor color);
 
-    void signalAddStation(QByteArray);
-    void signalAddArea(QPointF, QPointF);
+	void signalAddStation(QByteArray);
+	void signalAddArea(QPointF, QPointF);
 
-    void onSolverClear();
+	void onSolverClear();
 };
 
 #endif // MAPCLIENT1_H

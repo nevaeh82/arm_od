@@ -34,6 +34,9 @@ signals:
 	void signalClear();
 	void onShowBaseStation(double, double, QString);
 	void onClearBaseStation();
+	void signalOnExtraBoardInfo(int);
+
+	void signalApplyCross(int);
 
 private slots:
 	void slotApply(int);

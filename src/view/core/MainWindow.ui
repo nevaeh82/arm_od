@@ -140,6 +140,7 @@
     <property name="title">
      <string>View</string>
     </property>
+    <addaction name="actionShow_extra_board_info"/>
    </widget>
    <widget class="QMenu" name="menuServer">
     <property name="title">
@@ -220,7 +221,7 @@
   </action>
   <action name="actionKtr_Settings">
    <property name="text">
-    <string>Ktr Addres</string>
+    <string>KTP Addres</string>
    </property>
   </action>
   <action name="actionLoad_Base_stations">
@@ -241,6 +242,14 @@
   <action name="actionLoad_objects">
    <property name="text">
     <string>Load objects</string>
+   </property>
+  </action>
+  <action name="actionShow_extra_board_info">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show extra board info</string>
    </property>
   </action>
  </widget>

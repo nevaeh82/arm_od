@@ -13,16 +13,21 @@ ControlPanel::ControlPanel(QWidget *parent) :
 
 	connect(ui->spinBoxPlaySpeed, SIGNAL(valueChanged(int)), this, SIGNAL(signalOnMux(int)));
 
+	ui->pbExport->setVisible(false);
+
 	ui->timeLabel->hide();
 	ui->timeText->hide();
 
 	bool status = false;
 	status &= greenLbl.load(":/images/bullet_green.png");
 	status &= redLbl.load(":/images/bullet_red.png");
+	status &= yellowLbl.load(":/images/bullet_yellow.png");
 
 	ui->dockWidget->hide();
 
 	ui->connectToArmRlbl->setPixmap(redLbl);
+	ui->connectToDbLbl->setPixmap(redLbl);
+	ui->lblWriteToBd->setPixmap(yellowLbl);
 }
 
 ControlPanel::~ControlPanel()
@@ -96,7 +101,7 @@ QDockWidget*ControlPanel::getDockWgt()
 
 void ControlPanel::onSetDbLog(const QString& logTxt)
 {
-	ui->textEdit->clear();
+	//ui->textEdit->clear();
 	ui->textEdit->append(logTxt);
 }
 
@@ -106,5 +111,16 @@ void ControlPanel::setARMRConnection(bool b)
 		ui->connectToArmRlbl->setPixmap(greenLbl);
 	} else {
 		ui->connectToArmRlbl->setPixmap(redLbl);
+	}
+}
+
+void ControlPanel::setBdWriteState(int val)
+{
+	if(val < 0) {
+		ui->lblWriteToBd->setPixmap(redLbl);
+	} else if(val == 0) {
+		ui->lblWriteToBd->setPixmap(yellowLbl);
+	} else {
+		ui->lblWriteToBd->setPixmap(greenLbl);
 	}
 }

@@ -87,9 +87,6 @@ void SolverSetupWidgetController::slotShowWidget()
 void SolverSetupWidgetController::onMethodCalledSlot(QString method, QVariant argument)
 {
 	if (method == RPC_SLOT_SERVER_SEND_BPLA_POINTS_1) {
-		//debug
-		int i = 0;
-
 		QByteArray data = argument.toByteArray();
 		SolverProtocol::Packet pkt;
 		pkt.ParseFromArray( data.data(), data.size() );

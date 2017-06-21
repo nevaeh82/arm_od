@@ -66,11 +66,17 @@ void RPCClient::_slotGetData(rpc_msg msg_ptr)
 		emit signalSendToRPCBPLAPoints(cid, dd);
 		break;
 	case ARM_R_SERVER_BPLA_COORDS_1:
-    {
+	{
 		//        ds >> id_temp;
 		emit signalSendToRPCBPLAPoints1(cid, dd);
 		break;
-    }
+	}
+	case ARM_R_SERVER_MAP_PING:
+	{
+		//        ds >> id_temp;
+		emit signalSendToRPCMapPing(cid, dd);
+		break;
+	}
 	case ARM_R_SERVER_BPLA_COORDS_AUTO:
 		emit signalSendToRPCBPLAPointsAuto(cid, dd);
 		break;
