@@ -40,6 +40,7 @@ public:
     virtual PwGisStyle* createHyperboleZoneStyle(const QString& layerId, int accur);
     virtual PwGisStyle* createKKpointStyle(const QString& layerId, const double& opacity);
     virtual PwGisStyle* createWorkAreaStyle(const QString& layerId);
+    virtual PwGisStyle* createNetAreaStyle(const QString& layerId);
 
 	inline virtual PwGisStyle* getAisStyle() { return getStyle( MAP_STYLE_NAME_AIS ); }
 	inline virtual PwGisStyle* getFriendBplaStyle() { return getStyle( MAP_STYLE_NAME_FRIEND_BPLA ); }

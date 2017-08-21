@@ -109,6 +109,9 @@ void MainWindowController::init()
 		connect(m_view, SIGNAL(signalClear()), m_tabManager->getMapWidget(), SIGNAL(signalClear()));
 	}
 
+    connect(this, SIGNAL(signalCommonAlarm(QString,bool)),
+            m_tabManager, SIGNAL(signalAlarm(QString,bool)));
+
 	serverStartedSlot();
 }
 
@@ -328,7 +331,18 @@ void MainWindowController::onMethodCalled(const QString& method, const QVariant&
 	} else if(method == RPC_SLOT_SERVER_SEND_MAP_PING) {
 		m_ping = true;
 		log_debug("Im Pinging!!!!!!!!! =))))))))))))))))))");
-	} else if(method == RPC_SLOT_SERVER_SEND_ARMR_CONNECTION) {
+    } else if(method == RPC_METHOD_NIIPP_WORK_STATUS) {
+        log_debug("Niipp status!!!!!!!!! =))))))))))))))))))");
+
+        QDataStream dataStream(&data, QIODevice::ReadOnly);
+        QString title;
+        bool status;
+        dataStream >> title;
+        dataStream >> status;
+
+        emit signalCommonAlarm(title, status);
+
+    } else if(method == RPC_SLOT_SERVER_SEND_ARMR_CONNECTION) {
 		bool b = argument.toBool();
 
 		m_armrConnection = b;

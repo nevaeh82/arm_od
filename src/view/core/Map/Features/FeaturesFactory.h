@@ -27,7 +27,7 @@ public:
 	virtual Ais*          createAis( const QString& name, const QPointF& position, double course );
 	virtual FriendBpla*   createFriendBpla( const UavInfo& uav );
 	virtual EnemyBpla*    createEnemyBpla( const UavInfo& uav );
-	virtual Interception* createInterception( int friendBplaId, int enemyBplaId, const QPointF& position, float height, float radius, float angle, float speed );
+    virtual Interception* createInterception(int friendBplaId, int enemyBplaId, const QPointF& position, float height, float radius, float angle, float speed , int time);
 	virtual Niipp*        createNiipp( const ::Niipp& niipp );
 	virtual NiippPoint*   createNiippPoint( const QPointF& position = QPointF() );
 	virtual Station*      createStation( const QString& name, const QPointF& position = QPointF() );

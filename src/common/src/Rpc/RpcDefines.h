@@ -72,6 +72,7 @@
 #define RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO         "rpc_slot_server_send_bpla_point_from_arm_r_auto"
 #define RPC_SLOT_SERVER_SEND_BPLA_POINTS_SINGLE       "rpc_slot_server_send_bpla_point_from_arm_r_single"
 #define RPC_SLOT_SERVER_SEND_HYPERBOLA                "rpc_slot_server_send_hyperbola"
+#define RPC_METHOD_NIIPP_WORK_STATUS                  "rpcMethodNIIPPWorkStatus"
 
 #define RPC_SLOT_SERVER_SEND_ARMR_CONNECTION          "rpc_slot_server_send_armr_connection"
 

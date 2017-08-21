@@ -27,6 +27,7 @@
 #define MAP_STYLE_NAME_HYPERBOLE_ZONE		"HyperboleZone_%1"
 #define MAP_STYLE_NAME_POINTKK  			"PointKK_%1"
 #define MAP_STYLE_NAME_WORK_AREA         	"WorkAresStyle"
+#define MAP_STYLE_NAME_NET_AREA         	"NetAresStyle"
 
 
 class IMapStyleManager
@@ -56,6 +57,7 @@ public:
     virtual PwGisStyle* createHyperboleZoneStyle(const QString& layerId, int accur) = 0;
     virtual PwGisStyle* createKKpointStyle(const QString& layerId, const double& opacity) = 0;
     virtual PwGisStyle* createWorkAreaStyle(const QString& layerId) = 0;
+    virtual PwGisStyle* createNetAreaStyle(const QString& layerId) = 0;
 
 	virtual PwGisStyle* getAisStyle() = 0;
 	virtual PwGisStyle* getFriendBplaStyle() = 0;

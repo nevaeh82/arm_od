@@ -5,13 +5,14 @@ namespace MapFeature {
 
 Interception::Interception(IObjectsFactory* factory, const QString& id,
 						   int friendBplaId, int enemyBplaId, const QPointF& position,
-						   float height, float radius, float course, float speed)
+                           float height, float radius, float course, float speed, int time)
 	: FeatureAbstract( factory, id, "", position )
 	, m_friendBplaId( friendBplaId )
 	, m_enemyBplaId( enemyBplaId )
 	, m_height( height )
 	, m_course( course )
 	, m_speed( speed )
+    , m_time( time)
 {
 	m_circle = factory->createCircle();
 	m_circle->setOriginPoint( &m_position );
@@ -23,9 +24,9 @@ Interception::Interception(IObjectsFactory* factory, const QString& id,
 void Interception::updatePresentation()
 {
 	QString caption = QObject::tr( "Altitude" ) + " = " + QString::number( m_height ) + "\\n";
-	caption.append( QObject::tr( "Radius" ) + " = " + QString::number( m_radius ) + "\\n" );
-	caption.append( QObject::tr( "Course" ) + " = " + QString::number( m_course ) + "\\n" );
-	caption.append( QObject::tr( "Speed" ) + " = " + QString::number( m_speed ) );
+    caption.append( QObject::tr( "Course" ) + " = " + QString::number( m_course ) + "\\n" );
+    caption.append( QObject::tr( "time (minute)" ) + " = " + QString::number( m_time/60 ) /*+ "\\n"*/ );
+    //caption.append( QObject::tr( "Speed" ) + " = " + QString::number( m_speed ) );
 
 	m_circle->setName( caption );
 

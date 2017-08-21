@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QDateTime>
 #include <QDockWidget>
+#include <QTimer>
 
 namespace Ui {
 class ControlPanel;
@@ -19,6 +20,8 @@ private:
 	QPixmap redLbl;
 	QPixmap greenLbl;
 	QPixmap yellowLbl;
+
+    QTimer* m_alarmTimer;
 
 public:
 	explicit ControlPanel(QWidget *parent = 0);
@@ -49,6 +52,10 @@ signals:
 	void startExportToXls();
 
 	void signalOnMux(int);
+
+private slots:
+    void onSetAlarm(QString, bool val);
+    void closeAlarm();
 };
 
 #endif // CONTROLPANEL_H

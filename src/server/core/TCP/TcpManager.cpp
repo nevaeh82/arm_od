@@ -411,15 +411,18 @@ void TcpManager::onMessageReceivedInternal(quint32 deviceType, QString deviceNam
 	case DeviceTypes::ARMR_TCP_CLIENT:
 		if (messageType == QString(ARM_R_SERVER_ATLANT_DIRECTION)) {
 			m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_ATLANT_DIRECTION, messageData);
-		} else if (messageType == QString(ARM_R_SERVER_ATLANT_POSITION)){
+        } else if (messageType == QString(ARM_R_SERVER_ATLANT_POSITION)) {
 			m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_ATLANT_POSITION, messageData);
-		} else if (messageType == QString(ARM_R_SERVER_BPLA_COORDS)){
+        } else if (messageType == QString(ARM_R_SERVER_BPLA_COORDS)) {
 			m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_BPLA_POINTS, messageData);
-		} else if (messageType == QString(ARM_R_SERVER_BPLA_COORDS_1)){
+        } else if (messageType == QString(ARM_R_SERVER_BPLA_COORDS_1)) {
 			m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_BPLA_POINTS_1, messageData);
-		} else if (messageType == QString(ARM_R_SERVER_MAP_PING)){
+        } else if (messageType == QString(ARM_R_SERVER_MAP_PING)) {
 			m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_MAP_PING, messageData);
 		}
+        else if (messageType == QString(ARM_R_SERVER_NIIPALARM)) {
+            m_rpcServer->sendDataByRpc(RPC_METHOD_NIIPP_WORK_STATUS, messageData);
+        }
 		else if (messageType == QString(ARM_R_SERVER_BPLA_COORDS_AUTO)){
 			m_rpcServer->sendDataByRpc(RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO, messageData);
 		} else if (messageType == QString(ARM_R_SERVER_HYPERBOLA)) {

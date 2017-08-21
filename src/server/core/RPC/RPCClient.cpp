@@ -77,6 +77,12 @@ void RPCClient::_slotGetData(rpc_msg msg_ptr)
 		emit signalSendToRPCMapPing(cid, dd);
 		break;
 	}
+    case ARM_R_SERVER_NIIPALARM:
+    {
+        //        ds >> id_temp;
+        emit signalSendToRPCNIIPPAlarm(cid, dd);
+        break;
+    }
 	case ARM_R_SERVER_BPLA_COORDS_AUTO:
 		emit signalSendToRPCBPLAPointsAuto(cid, dd);
 		break;

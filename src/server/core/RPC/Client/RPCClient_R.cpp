@@ -63,6 +63,7 @@ bool RPCClient_R::start(quint16 port, QHostAddress address)
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_DEF, this, SLOT(rpcSlotServerSendBplaDef(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_DEF_1, this, SLOT(rpcSlotServerSendBplaDef1(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_MAP_PING, this, SLOT(rpcSlotServerSendMapPing(QByteArray)));
+    m_clientPeer->attachSlot(RPC_METHOD_NIIPP_WORK_STATUS, this, SLOT(rpcSlotServerSendNiipAlarm(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_DEF, this, SLOT(rpcSlotServerSendBplaDef(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_DEF_AUTO, this, SLOT(rpcSlotServerSendBplaDefAuto(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_DEF_SINGLE, this, SLOT(rpcSlotServerSendBplaDefSingle(QByteArray)));
@@ -70,6 +71,7 @@ bool RPCClient_R::start(quint16 port, QHostAddress address)
 
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_ATLANT_DIRECTION, this, SLOT(rpcSlotServerAtlantDirection(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_ATLANT_POSITION, this, SLOT(rpcSlotServerAtlantPosition(QByteArray)));
+    m_clientPeer->attachSlot(RPC_METHOD_NIIPP_WORK_STATUS, this, SLOT(receivedNIIPPStatus(QByteArray)));
 
 	log_debug("Start RPCClient_R");
 	return RpcClientBase::start(port, address);
@@ -179,6 +181,15 @@ void RPCClient_R::rpcSlotServerSendMapPing(QByteArray ba)
 	m_subscriber->data_ready(ARM_R_SERVER_MAP_PING, msg);
 }
 
+void RPCClient_R::rpcSlotServerSendNiipAlarm(QByteArray ba)
+{
+    QByteArray *out = new QByteArray();
+    out->append(ba);
+
+    QSharedPointer<IMessageOld> msg(new MessageOld(m_id, ARM_R_SERVER_NIIPALARM, out));
+    m_subscriber->data_ready(ARM_R_SERVER_NIIPALARM, msg);
+}
+
 void RPCClient_R::rpcSlotServerSendBplaDefAuto(QByteArray ba)
 {
 	QByteArray *out = new QByteArray();
@@ -211,7 +222,6 @@ void RPCClient_R::rpcSlotServerSendHyperbola(QByteArray ba)
 
 	QByteArray *dataToSend = new QByteArray();
 	dataToSend->append(ba);
-	//QDataStream dataStream(&dataToSend, QIODevice::WriteOnly);
 
 	QSharedPointer<IMessageOld> msg(new MessageOld(m_id, ARM_R_SERVER_HYPERBOLA, dataToSend));
 	m_subscriber->data_ready(ARM_R_SERVER_HYPERBOLA, msg);
@@ -236,6 +246,15 @@ void RPCClient_R::rpcSlotServerAtlantPosition(QByteArray ba1)
 	QSharedPointer<IMessageOld> msg1(new MessageOld(m_id, ARM_R_SERVER_ATLANT_POSITION, ba));
 	m_subscriber->data_ready(ARM_R_SERVER_ATLANT_POSITION, msg1);
 
+}
+
+void RPCClient_R::receivedNIIPPStatus(QByteArray ba)
+{
+    QByteArray *dataToSend = new QByteArray();
+    dataToSend->append(ba);
+
+    QSharedPointer<IMessageOld> msg(new MessageOld(m_id, ARM_R_SERVER_NIIPALARM, dataToSend));
+    m_subscriber->data_ready(ARM_R_SERVER_NIIPALARM, msg);
 }
 
 QByteArray RPCClient_R::encodeToEnemyUav(const QByteArray& data, bool singleMode)

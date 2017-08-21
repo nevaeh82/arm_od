@@ -57,6 +57,7 @@ private slots:
 
 signals:
 	void modelMapReady();
+    void onSquare(QString);
 };
 
 #endif // MAP_H

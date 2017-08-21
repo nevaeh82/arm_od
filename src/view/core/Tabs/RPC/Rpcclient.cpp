@@ -63,6 +63,7 @@ void RPCClient::startInternalSlot(quint16 port, QString ipAddress)
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_POINTS, this, SLOT(rpcSendBplaPoints(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_POINTS_1, this, SLOT(rpcSendBplaPoints1(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_MAP_PING, this, SLOT(rpcSendMapPing(QByteArray)));
+    m_clientPeer->attachSlot(RPC_METHOD_NIIPP_WORK_STATUS, this, SLOT(rpcSendNiipStatus(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_POINTS_AUTO, this, SLOT(rpcSendBplaPointsAuto(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_BPLA_POINTS_SINGLE, this, SLOT(rpcSendBplaPointsSingle(QByteArray)));
 	m_clientPeer->attachSlot(RPC_SLOT_SERVER_SEND_HYPERBOLA, this, SLOT(rpcSendHyperbola(QByteArray)));
@@ -160,6 +161,13 @@ void RPCClient::rpcSendMapPing(QByteArray data)
 	foreach (IRpcListener* reciever, m_receiversList) {
 		reciever->onMethodCalled(RPC_SLOT_SERVER_SEND_MAP_PING, QVariant(data));
 	}
+}
+
+void RPCClient::rpcSendNiipStatus(QByteArray data)
+{
+    foreach (IRpcListener* reciever, m_receiversList) {
+        reciever->onMethodCalled(RPC_METHOD_NIIPP_WORK_STATUS, QVariant(data));
+    }
 }
 
 void RPCClient::rpcSendBplaPointsAuto(QByteArray data)

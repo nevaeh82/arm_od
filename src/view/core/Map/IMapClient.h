@@ -75,6 +75,9 @@ public:
 	virtual void removeAll() = 0;
 
 	virtual void setBoardExtraInfo(int) = 0;
+
+    virtual void mapClicked(double lon, double lat) = 0;
+    virtual void mapMoved(double lon, double lat) = 0;
 };
 
 #endif // IMAPCLIENT_H

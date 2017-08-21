@@ -85,6 +85,9 @@ private:
 	// IRpcListener interface
 public:
 	virtual void onMethodCalled(const QString& method, const QVariant& argument);
+
+signals:
+    void signalCommonAlarm(QString txt, bool isOn);
 };
 
 #endif // MAINWINDOWCONTROLLER_H

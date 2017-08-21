@@ -90,12 +90,15 @@ public slots:
 	void rpcSlotServerSendBplaDef(QByteArray ba);
 	void rpcSlotServerSendBplaDef1(QByteArray ba);
 	void rpcSlotServerSendMapPing(QByteArray ba);
+    void rpcSlotServerSendNiipAlarm(QByteArray ba);
 	void rpcSlotServerSendBplaDefAuto(QByteArray ba);
 	void rpcSlotServerSendBplaDefSingle(QByteArray ba);
 	void rpcSlotServerSendHyperbola(QByteArray ba);
 
 	void rpcSlotServerAtlantDirection(QByteArray ba);
 	void rpcSlotServerAtlantPosition(QByteArray ba);
+
+    void receivedNIIPPStatus(QByteArray ba);
 
 };
 

@@ -71,10 +71,9 @@ void MapController::init(QMap<int, Station*> stations)
 	m_mapModel->setProfileManager( m_view->getPwGis()->mapProvider()->profileManager() );
 	m_mapModel->init( stations, m_view );
 
-	m_view->getPwGis()->enableDebugger(false);
-
 	connect( m_mapModel, SIGNAL(modelMapReady()), this, SLOT(onMapReady()) );
 	connect( m_view->getPwGis(), SIGNAL(mapClicked(double,double)), this, SLOT(onMapClicked(double,double)) );
+    connect( m_view->getPwGis(), SIGNAL(mapMouseMove(double,double)), this, SLOT(onMapMouseMove(double,double)) );
 
 	connect(&m_view->getPwGis()->mapProvider()->mapManager()->events(),
 			SIGNAL(mapReady()), this, SLOT(mapOpenFinished()));
@@ -116,6 +115,15 @@ void MapController::onMapReady()
 	emit mapOpened();
 }
 
+void MapController::onMapMouseMove(double lon, double lat)
+{
+    IMapClient* client = getMapClient();
+    if( NULL == client ) return;
+
+
+    client->mapMoved(lon, lat);
+}
+
 void MapController::onMapClicked(double lon, double lat)
 {
 	IMapClient* client = getMapClient();
@@ -124,6 +132,8 @@ void MapController::onMapClicked(double lon, double lat)
 	QPointF point( lon, lat );
 
 	emit mapClicked( lon, lat );
+
+    client->mapClicked(lon, lat);
 
 	//	client->addNiippPoint( point );
 
@@ -224,6 +234,9 @@ void MapController::appendView(MapWidget *view)
 		events = &m_view->getPwGis()->mapProvider()->mapManager()->events();
 		connect( events, SIGNAL(atlasReady()), SIGNAL(atlasOpened()) );
 	}
+
+    connect(m_mapModel, SIGNAL(onSquare(QString)), m_view, SLOT(onSetSquareVal(QString)));
+    connect(this, SIGNAL(onMovingAimAlarm(QString)), m_view, SLOT(onSetMovingAlarm(QString)));
 }
 
 void MapController::saveCache()
@@ -473,12 +486,21 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 			//Trajectory from db. No kk here
 			QByteArray msg;
 			int size = pkt.datafromsolver().solution_automatic_altitude().trajectory_size();
+            bool movingAim = false;
+
 			for(int i = 0; i<size; i++) {
 				SolverProtocol::Packet_DataFromSolver_SolverSolution_Trajectory sol =
 						pkt.datafromsolver().solution_automatic_altitude().trajectory(i);
+
 				msg.resize(sol.ByteSize());
 				sol.SerializeToArray(msg.data(), msg.size());
 				client->addTrajectoryKK( msg, 100 );
+
+                if( SolverProtocol::StateOfMotion::MOVING ==
+                        sol.motionestimate(sol.motionestimate_size()-1).state() ) {
+                    emit onMovingAimAlarm(tr("Moving aim on %1 mHz").arg(sol.central_frequency()));
+                    movingAim = true;
+                }
 
 				if(m_enemyModel) {
 					UavInfo uav;
@@ -491,6 +513,10 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 					m_enemyModel->onUavInfoChanged(uav, ENEMY_UAV_ROLE);
 				}
 			}
+
+            if(!movingAim) {
+                emit onMovingAimAlarm(QString(""));
+            }
 		}
 
 		//Draw stations and area from settings Solver responce

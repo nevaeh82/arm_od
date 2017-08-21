@@ -6,6 +6,14 @@ fileref.setAttribute("type", "text/css")
 var cssPath = "/profiles/";
 fileref.setAttribute("href", cssPath.concat(profile.getProfileName()).concat("/popupStyle.css"));
 
+var ppopup = new OpenLayers.Popup("chicken", 
+                              new OpenLayers.LonLat(5,40), 
+                              new OpenLayers.Size(200,200), 
+                              "example popup",  
+                              true);  
+                                       
+                             map.addPopup(ppopup); 
+
 if (typeof fileref != "undefined") {
     document.getElementsByTagName("head")[0].appendChild(fileref)
 }

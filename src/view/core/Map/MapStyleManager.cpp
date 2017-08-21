@@ -413,6 +413,21 @@ PwGisStyle* MapStyleManager::createWorkAreaStyle(const QString& layerId)
     return style;
 }
 
+PwGisStyle* MapStyleManager::createNetAreaStyle(const QString& layerId)
+{
+    bool exists;
+    PwGisStyle* style = createStyle( MAP_STYLE_NAME_NET_AREA, &exists );
+
+    if( !exists ) {
+        style->setProperty( PwGisStyle::strokeColor, "black" );
+        style->setProperty( PwGisStyle::strokeWidth, "0.3" );
+        style->setProperty( PwGisStyle::fillOpacity, "0" );
+        style->setProperty( PwGisStyle::layer, layerId );
+    }
+
+    return style;
+}
+
 PwGisStyle* MapStyleManager::createStyle(const QString& name, bool* exists)
 {
 	PwGisStyle* style = getStyle( name, false );

@@ -33,6 +33,8 @@ protected:
 	bool m_tailEnabled;
 	bool m_autoTail;
 
+    int m_intId;
+
     QDateTime m_lastDateTime;
 
 	BplaAbstract(IObjectsFactory* factory, const QString& id, const UavInfo& uav);
@@ -71,6 +73,8 @@ public:
 	virtual void removeFromMap();
 
 	int cource();
+
+    int getIntId() const {return m_intId;}
 
 protected:
 	void registerStyle();

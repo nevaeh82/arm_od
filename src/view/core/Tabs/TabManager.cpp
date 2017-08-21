@@ -120,6 +120,9 @@ void TabManager::addStationTabs()
 		//m_viewMenu->addAction(tabWidget->getNiipp2DockWidget()->toggleViewAction());
 		m_viewMenu->addAction(tabWidget->getControlPanelWidget()->getDockWgt()->toggleViewAction());
 
+        connect(this, SIGNAL(signalAlarm(QString,bool)), tabWidget->getControlPanelWidget(),
+                SLOT(onSetAlarm(QString, bool)));
+
 		tabWidgetController->appendView(tabWidget);
 
 		connect(this, SIGNAL(signalSendToNIIPPControl(int,QByteArray)), tabWidgetController, SLOT(_slot_send_data_to_niipp_control(int,QByteArray)));

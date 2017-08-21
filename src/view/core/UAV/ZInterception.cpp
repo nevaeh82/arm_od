@@ -1,5 +1,6 @@
 #include "ZInterception.h"
 
+#include <QMessageBox>
 #include "Logger/Logger.h"
 
 ZInterception::ZInterception(IMapClient* client)
@@ -52,8 +53,32 @@ void ZInterception::_slot_set(int bla, int bpla, QByteArray per, QByteArray targ
 	int state1;
 	ds1 >> state1;
 
-	getIntcData(point1, alt1, speed1, 30);
-	getAimData(track.at(track.size()-1), alt, speed, bearing);
+    if(speed1 < 1) {
+        speed1 = 100;
+    }
+
+    if(speed < 1) {
+        speed = 100;
+    }
+
+    if(speed >100) {
+        speed = 100;
+    }
+
+    if(course1 < 1) {
+        course1 = 0;
+    }
+
+    if(bearing < 1) {
+        bearing = 0;
+    }
+
+    if(alt < 1) {
+        alt = 1000;
+    }
+
+    getIntcData(point1, alt1, 35, 30);
+    getAimData(track.at(track.size()-1), alt, 30, bearing);
 
 	mainProcessing();
 }
@@ -82,7 +107,7 @@ void ZInterception::mainProcessing()
 {
 	//qDebug()<<"Пошла основная обработка";
 
-	int aAllTime=60*60;  //Час на перехват
+    int aAllTime=60*60;  //Час на перехват
 
 	QPointF aTempInterceptionCoord;
 	QPointF aDecartCoordAim=QPointF(0,0);               //Декартовы коориднаты цели
@@ -116,7 +141,7 @@ void ZInterception::mainProcessing()
 		log_debug(QString("i: %1  aTempTimeToIntercept: %2    aTempTimeToHgtIntercept:  %3  ").arg(i).arg(aTempTimeToIntercept).arg(aTempTimeToHgtIntercept));
 
 		//Определение условия выполнения перехвата
-		if (i>aTempTimeToIntercept || i>aTempTimeToHgtIntercept)
+        if (i>aTempTimeToIntercept /*|| i>aTempTimeToHgtIntercept*/)
 		{
 			//Перехват возможен, определяем курс, скорость, высоту перехватчика
 			QPointF aIntcCoords=aTempInterceptionCoord;               //Координаты перехвата
@@ -125,17 +150,25 @@ void ZInterception::mainProcessing()
 			getAngle(aDecartCoordIntc, aIntcCoords, mMaxSpd, aXYSpeed, aCurrentAngle);
 
 			float aCurrentHgtInt=i*mMaxHgtSpd;
-			float aRadius=aCurrentHgtInt-mHgtCurrentAim;
+            float aRadius=/*aCurrentHgtInt-*/mHgtCurrentIntc;
+            //if(aRadius < 1000) {
+                aRadius = 1000;
+            //}
 
 			//Отправка сигнала с данными о точке перехвата
 			decartToGeogr(aTempInterceptionCoord, aIntcCoords, mCoordCurrentAim);
 
 //            emit signal_sendInterceptionPoint(aIntcCoords, aCurrentHgtInt, aRadius, i, aCurrentAngle, mMaxSpd);
-			_client->addPerehvatPoint(_bla, _bpla, aIntcCoords, aCurrentHgtInt, aRadius, i, aCurrentAngle, mMaxSpd);
+            _client->addPerehvatPoint(_bla, _bpla, aIntcCoords, mHgtCurrentIntc*1.2, aRadius, i, aCurrentAngle, mMaxSpd);
 			//Присвоение времени для выхода из цикла
 			i=aAllTime+10;
+            return;
 		}
 	}
+
+    _client->addPerehvatPoint(_bla, _bpla, QPointF(0,0), mHgtCurrentIntc*1.2, 0, 999999, 0, mMaxSpd);
+
+    //QMessageBox::warning(0, tr("Perehvat warning"), tr("Capture in hour is unreal!"), QMessageBox::Ok);
 }
 
 

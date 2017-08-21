@@ -39,15 +39,7 @@ rem run build
 jom all
 if %errorlevel% neq 0 goto error2
 
-rem run tests
-ctest -V -T Test
-if %errorlevel% neq 0 goto error2
-
-rem do cpack only for release
-if not "%build_type%" == "release" goto no_error
-
 cpack
-if %errorlevel% neq 0 goto error2
 
 :no_error
 cd ..

@@ -17,6 +17,20 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="5">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Speed:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="13">
+    <widget class="QLabel" name="connectToArmRlbl">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="19">
     <widget class="QLabel" name="label_6">
      <property name="text">
@@ -34,63 +48,6 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="13">
-    <widget class="QLabel" name="connectToArmRlbl">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="5">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Speed:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0" colspan="24">
-    <widget class="QDockWidget" name="dockWidget">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="windowTitle">
-      <string>Лог Базы Данных</string>
-     </property>
-     <widget class="QWidget" name="dbContents">
-      <layout class="QGridLayout" name="gridLayout_2">
-       <item row="0" column="0">
-        <widget class="QTextEdit" name="textEdit"/>
-       </item>
-      </layout>
-     </widget>
-    </widget>
-   </item>
-   <item row="0" column="7">
-    <spacer name="horizontalSpacer_3">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="0" column="21">
-    <spacer name="horizontalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
    <item row="0" column="6">
     <widget class="QSpinBox" name="spinBoxPlaySpeed">
      <property name="suffix">
@@ -107,25 +64,8 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="22">
-    <widget class="QLabel" name="timeLabel">
-     <property name="text">
-      <string>Current time:</string>
-     </property>
-     <property name="textInteractionFlags">
-      <set>Qt::LinksAccessibleByMouse</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>From:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="14">
-    <spacer name="horizontalSpacer">
+   <item row="0" column="21">
+    <spacer name="horizontalSpacer_2">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -137,18 +77,51 @@
      </property>
     </spacer>
    </item>
-   <item row="0" column="8">
-    <widget class="QPushButton" name="startPB">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
      <property name="text">
-      <string>Start</string>
+      <string>From:</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="9">
-    <widget class="QPushButton" name="stopPB">
-     <property name="text">
-      <string>Stop</string>
+   <item row="0" column="7">
+    <spacer name="horizontalSpacer_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="22">
+    <widget class="QLabel" name="timeLabel">
+     <property name="text">
+      <string>Current time:</string>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::LinksAccessibleByMouse</set>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="24">
+    <widget class="QDockWidget" name="dockWidget">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="windowTitle">
+      <string>Лог Базы Данных</string>
+     </property>
+     <widget class="QWidget" name="dbContents">
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
+        <widget class="QTextEdit" name="textEdit"/>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item row="0" column="4">
@@ -165,6 +138,13 @@
      </property>
     </widget>
    </item>
+   <item row="0" column="8">
+    <widget class="QPushButton" name="startPB">
+     <property name="text">
+      <string>Start</string>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="15">
     <widget class="QLabel" name="label_4">
      <property name="text">
@@ -172,13 +152,30 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="23">
-    <widget class="QLabel" name="timeText">
+   <item row="0" column="9">
+    <widget class="QPushButton" name="stopPB">
+     <property name="text">
+      <string>Stop</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="14">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="17">
+    <widget class="QLabel" name="connectToDbLbl">
      <property name="text">
       <string/>
-     </property>
-     <property name="textInteractionFlags">
-      <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
      </property>
     </widget>
    </item>
@@ -189,10 +186,13 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="17">
-    <widget class="QLabel" name="connectToDbLbl">
+   <item row="0" column="23">
+    <widget class="QLabel" name="timeText">
      <property name="text">
       <string/>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
      </property>
     </widget>
    </item>
@@ -210,10 +210,10 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="2">
-    <widget class="QLabel" name="label_2">
+   <item row="0" column="20">
+    <widget class="QLabel" name="lblWriteToBd">
      <property name="text">
-      <string>To:</string>
+      <string/>
      </property>
     </widget>
    </item>
@@ -230,13 +230,6 @@
      </property>
     </spacer>
    </item>
-   <item row="0" column="20">
-    <widget class="QLabel" name="lblWriteToBd">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="18">
     <spacer name="horizontalSpacer_5">
      <property name="orientation">
@@ -249,6 +242,29 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="0" column="2">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>To:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="24">
+    <widget class="QLabel" name="movingAlarmLbl">
+     <property name="styleSheet">
+      <string notr="true">border: 2px solid red;
+border-radius: 1;
+font: 75 16pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(255, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

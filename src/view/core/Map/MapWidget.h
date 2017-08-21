@@ -3,9 +3,13 @@
 
 #include <QWidget>
 
+#include <QTimer>
+
 #include <pwgiswidget.h>
 #include "BaseParser/BaseParser.h"
 #include "BaseParser/BaseParserWidget.h"
+
+#include "MapInfoWidget.h"
 
 
 namespace Ui {
@@ -24,6 +28,10 @@ public:
 	PwGisWidget* getPwGis();
 	BaseParser* m_xmlParser;
 
+    MapInfoWidget* m_infoWidget;
+
+    QTimer* m_movingTimer;
+
 private:
 	Ui::MapWidget *ui;
 
@@ -41,6 +49,9 @@ signals:
 private slots:
 	void slotApply(int);
 	void slotLoadBaseStations();
+    void onSetSquareVal(QString val);
+    void onSetMovingAlarm(QString val);
+    void onClearMovingAlarm();
 };
 
 #endif // MAPCONTROLLERWIDGET_H

@@ -60,7 +60,7 @@ find_package(PwGis REQUIRED)
 # add settings to installation
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/settings/ DESTINATION ${BINDIR})
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/sql/ DESTINATION ${BINDIR}/sql)
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/sql2/ DESTINATION ${BINDIR}/sql2)
+#install(DIRECTORY ${PROJECT_SOURCE_DIR}/sql2/ DESTINATION ${BINDIR}/sql2)
 
 # scripts for runtime libs installation and copying
 if(INSTALL_RUNTIME_LIBS OR USE_SHARED_OUTPUT)

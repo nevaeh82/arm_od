@@ -28,6 +28,11 @@ ControlPanel::ControlPanel(QWidget *parent) :
 	ui->connectToArmRlbl->setPixmap(redLbl);
 	ui->connectToDbLbl->setPixmap(redLbl);
 	ui->lblWriteToBd->setPixmap(yellowLbl);
+
+    ui->movingAlarmLbl->setVisible(false);
+    m_alarmTimer = new QTimer(this);
+
+    connect(m_alarmTimer, SIGNAL(timeout()), this, SLOT(closeAlarm()));
 }
 
 ControlPanel::~ControlPanel()
@@ -101,7 +106,7 @@ QDockWidget*ControlPanel::getDockWgt()
 
 void ControlPanel::onSetDbLog(const QString& logTxt)
 {
-	//ui->textEdit->clear();
+    ui->textEdit->clear();
 	ui->textEdit->append(logTxt);
 }
 
@@ -123,4 +128,37 @@ void ControlPanel::setBdWriteState(int val)
 	} else {
 		ui->lblWriteToBd->setPixmap(greenLbl);
 	}
+}
+
+void ControlPanel::onSetAlarm(QString title, bool val)
+{
+    if(val) {
+
+
+        if(title.contains("SPROUT")) {
+            ui->movingAlarmLbl->setText(tr("Sprout database alarm!"));
+        } else {
+            QString trTitle = title;
+            if(title.contains("rm")) {
+                trTitle = tr("Armyansk");
+            } else {
+                trTitle = tr("Misovoe");
+            }
+            ui->movingAlarmLbl->setText(tr("Punkt ") + "\"" + trTitle + "\" " + tr(" Flushing") );
+        }
+
+        m_alarmTimer->start(5000);
+        ui->movingAlarmLbl->setVisible(true);
+    } else {
+        ui->movingAlarmLbl->setText("");
+        ui->movingAlarmLbl->setVisible(false);
+        m_alarmTimer->stop();
+    }
+}
+
+void ControlPanel::closeAlarm()
+{
+    ui->movingAlarmLbl->clear();
+    ui->movingAlarmLbl->setVisible(false);
+    m_alarmTimer->stop();
 }

@@ -104,6 +104,8 @@ signals:
 
 	void signalOnExtraBoardInfo(int);
 
+    void signalAlarm(QString, bool);
+
 };
 
 #endif // TABMANAGER_H

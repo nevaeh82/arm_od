@@ -24,10 +24,11 @@ protected:
 	float m_radius;
 	float m_course;
 	float m_speed;
+    int m_time;
 
-	Interception(IObjectsFactory* factory, const QString& id,
-				 int friendBplaId, int enemyBplaId, const QPointF& position,
-				 float height, float radius, float course, float speed);
+    Interception(IObjectsFactory* factory, const QString& id,
+                 int friendBplaId, int enemyBplaId, const QPointF& position,
+                 float height, float radius, float course, float speed, int time);
 
 	void updatePresentation();
 

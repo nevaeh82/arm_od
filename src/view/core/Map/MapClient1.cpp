@@ -2,10 +2,15 @@
 
 #include <Logger/Logger.h>
 #include <math.h>
+#include <QMessageBox>
 
 #include "Uav/UavModel.h"
 #include "Map/MapStyleManager.h"
 #include "Map/MapClient1.h"
+
+#include "PwGis/MapProvider.h"
+#include "PwGis/LayerManager.h"
+
 
 #include "SolverPacket1.pb.h"
 
@@ -21,6 +26,8 @@ MapClient1::MapClient1(MapWidget* pwWidget, Station* station, QObject* parent)
 	, m_pointKKlastInd( 0 )
 	, m_ellipseCounter( 0 )
 	, m_captureCircle(NULL)
+    , m_netLength(0.1)
+    , m_useCustomArea(false)
 {
 	m_view = pwWidget;
 	m_pwWidget = pwWidget->getPwGis();
@@ -111,6 +118,8 @@ MapClient1::MapClient1(MapWidget* pwWidget, Station* station, QObject* parent)
 
 	connect(pwWidget, SIGNAL(onShowBaseStation(double,double,QString)), this, SLOT(slotAddBaseStation(double, double, QString)));
 	connect(pwWidget, SIGNAL(onClearBaseStation()), this, SLOT(slotClearBaseStation()));
+
+    m_qLbl = new QLabel("txtQuadrant", m_pwWidget, Qt::Popup);
 }
 
 MapClient1::~MapClient1()
@@ -143,6 +152,7 @@ void MapClient1::init()
 	addMarkerLayer( 16, "History", tr( "History" ) );
 	addMarkerLayer( 17, "PointKK", tr( "Point" ) );
 	addMarkerLayer( 18, "WorkArea", tr( "workArea" ) );
+    addMarkerLayer( 19, "NetArea", tr( "NetArea" ) );
 
 	addMarkerLayer( 101, "UAV_enemy_track_manual", tr( "UAV_enemy_track_manual" ) );
 	addMarkerLayer( 100, "UAV_enemy_manual", tr( "UAV_enemy_manual" ) );
@@ -166,6 +176,7 @@ void MapClient1::init()
 	showLayer( 14, false );
 	showLayer( 15, false );
 	showLayer( 17, false );
+    showLayer( 19, false );
 
 	// create styles for features
 	m_styleManager->createStationStyle( m_mapLayers.value(0) )->apply();
@@ -211,6 +222,7 @@ void MapClient1::init()
 		m_styleManager->createKKpointStyle( m_mapLayers.value(17), double((double)i/(double)10) )->apply();
 	}
 	m_styleManager->createWorkAreaStyle( m_mapLayers.value(18) )->apply();
+    m_styleManager->createNetAreaStyle( m_mapLayers.value(19) )->apply();
 
 	//addNiippLayer
     //m_pwWidget->mapProvider()->layerManager()->addVectorLayer( "NIIPP", tr("NIIPP") );
@@ -363,31 +375,192 @@ void MapClient1::addStationInternal(QByteArray data)
 
 	m_stationList.clear();
 
+    for(int i = 0; i<m_stationsArea.size(); i++) {
+        m_pwWidget->removeObject( QString("AreaRect%1").arg(i) );
+    }
+    m_stationsArea.clear();
+
 	for(int i = 0; i<pkt.detector_size(); i++ ) {
 		MapFeature::Station* station;
 		QString name = QString::fromStdString(  pkt.detector(i).detector_name() );
 		QPointF pos(pkt.detector(i).coords().lon(),
 					pkt.detector(i).coords().lat());
 
-
 		station = m_factory->createStation( name, pos );
 		m_stationList.insert( name, station );
+        QVector<QPointF> pointAreaList;
+
+        QSettings settings( "Map/map_stations_workArea.ini", QSettings::IniFormat );
+        settings.setIniCodec( QTextCodec::codecForName("UTF-8") );
+        double areaRadiusX = settings.value("areaRadiusX").toDouble();
+        double areaRadiusY = settings.value("areaRadiusY").toDouble();
+        bool useStationsArea = settings.value("useStationsArea", 0).toBool();
+
+        if(useStationsArea) {
+            QPointF pp1 = QPointF(pos.x()-areaRadiusX, pos.y()-areaRadiusY);
+            QPointF pp2 = QPointF(pos.x()+areaRadiusX, pos.y()+areaRadiusY);
+
+            pointAreaList.append(pp1);
+            pointAreaList.append(pp2);
+            QRectF poly;
+            poly.setBottomLeft(pp1);
+            poly.setTopRight(pp2);
+
+            m_stationsArea.append(poly);
+            if(poly.contains(pos)) {
+                //log_debug("Ololo we contains!!!");
+            } else {
+                //log_debug(QString("no contains   xp  %1  yp  %2").arg(pos.x()).arg(pos.y()));
+            }
+        }
 
 		station->updateMap();
 	}
+
+
+    int cnt = 0;
+    foreach (QRectF rect, m_stationsArea) {
+        m_pwWidget->addRectangle( QString("AreaRect%1").arg(cnt), rect.bottomLeft().x(),
+                                  rect.bottomLeft().y(),
+                                  rect.topRight().x(),
+                                  rect.topRight().y(),
+                                  "","", MAP_STYLE_NAME_NET_AREA);
+        cnt++;
+    }
+}
+
+QString MapClient1::getSquareName(double lon, double lat)
+{
+    if(m_arealist.getCount() != 4) {
+        return QString("");
+    }
+
+    if(m_pwWidget->mapProvider()->layerManager()->isVisible(m_mapLayers.value( 19 ))) {
+
+        QPointF point1 = m_areaGeoList.at(0);
+        QPointF point2 = m_areaGeoList.at(1);
+
+        int xCnt = (point2.x() - point1.x()) / m_netLength;
+        int yCnt = (point2.y() - point1.y()) / m_netLength;
+
+        int xCntAll = (point2.x() - point1.x()) / m_netLength + 1;
+
+        if(point1.x() <= lon && point2.x() >= lon &&
+           point1.y() <= lat && point2.y() >= lat) {
+            int xpCnt = (lon - point1.x()) / m_netLength;
+            int ypCnt = (lat - point1.y()) / m_netLength;
+
+            QString xVal = QString(QChar(65+xpCnt%26));
+            QString xValAdd = QString::number(floor((double)xpCnt/26));
+
+            if(xCntAll > 26) {
+                xVal = xVal + xValAdd;
+            }
+
+            return QString(tr("Square: %1 : %2"))
+                    .arg(xVal)
+                    .arg(ypCnt);
+
+        }
+    } else {
+        return QString("");
+    }
+
+    return QString("");
 }
 
 void MapClient1::addAreaInternal(QPointF point1, QPointF point2)
 {
 	QString name = QString("SolverWorkArea");
 
-	PwGisPointList list;
-	list.append( new PwGisLonLat(point1.x(), point1.y()) );
-	list.append( new PwGisLonLat(point1.x(), point2.y()) );
-	list.append( new PwGisLonLat(point2.x(), point2.y()) );
-	list.append( new PwGisLonLat(point2.x(), point1.y()) );
 
-	m_pwWidget->addPolygon( name, &list, "", "", MAP_STYLE_NAME_WORK_AREA);
+    QPointF point1Net;
+    QPointF point2Net;
+    if(m_areaGeoList.size() == 2) {
+        point1Net = m_areaGeoList.at(0);
+        point2Net = m_areaGeoList.at(1);
+        int xCnt = (point2Net.x() - point1Net.x()) / m_netLength + 2;
+        int yCnt = (point2Net.y() - point1Net.y()) / m_netLength + 1;
+        for(int x = 0; x<xCnt+2; x++) {
+            m_pwWidget->removeObject(QString("x%1").arg(x));
+        }
+
+        for(int y = 0; y<yCnt+2; y++) {
+            m_pwWidget->removeObject(QString("y%1").arg(y));
+        }
+    }
+
+    point1Net = point1;
+    point2Net = point2;
+    int inc = 1;
+    if(!m_useCustomArea) {
+        m_areaGeoList.clear();
+        m_areaGeoList.append(point1);
+        m_areaGeoList.append(point2);
+    } else if(m_areaGeoList.size() == 2){
+        point1Net = m_areaGeoList.at(0);
+        point2Net = m_areaGeoList.at(1);
+        inc = 2;
+    }
+
+    m_arealist.clear();
+
+    m_arealist.append( new PwGisLonLat(point1.x(), point1.y()) );
+    m_arealist.append( new PwGisLonLat(point1.x(), point2.y()) );
+    m_arealist.append( new PwGisLonLat(point2.x(), point2.y()) );
+    m_arealist.append( new PwGisLonLat(point2.x(), point1.y()) );
+
+
+    int xCnt = (point2Net.x() - point1Net.x()) / m_netLength + inc;
+    int yCnt = (point2Net.y() - point1Net.y()) / m_netLength + 1;
+
+    double lonCnt = point1Net.x();
+    double latCnt = point1Net.y();
+
+    int charCnt = -1;
+    for(int x = 0; x < xCnt; x++) {
+
+        QString val = QChar(65+x%26);
+        if(!(x%26)) {
+            charCnt++;
+        }
+
+        if(xCnt > 26) {
+            val = val + QString::number(charCnt);
+        }
+
+        m_pwWidget->addLine( QString("x%1").arg(x), lonCnt, point1Net.y(), lonCnt, point2Net.y(),
+                             QString(val),"", MAP_STYLE_NAME_NET_AREA);
+
+        lonCnt += m_netLength;
+    }
+
+    for(int y = 0; y < yCnt; y++) {
+        m_pwWidget->addLine( QString("y%1").arg(y), point1Net.x(), latCnt, point2Net.x(), latCnt,
+                             QString::number(y), "", MAP_STYLE_NAME_NET_AREA);
+
+        latCnt += m_netLength;
+    }
+
+    m_pwWidget->addPolygon( name, &m_arealist, "", "", MAP_STYLE_NAME_WORK_AREA);
+
+//    m_pwWidget->executeScript("var GEOJSON_PARSER = new OpenLayers.Format.GeoJSON();");
+//    m_pwWidget->executeScript("var ff = client.getLayerByName(\"NetArea\").features");
+
+//    m_pwWidget->executeScript("for (var i = 0; i < ff.length; i++) { \
+//           ff[i].geometry = ff[i].geometry.transform('EPSG:3857', 'EPSG:4326'); \
+//      }");
+
+//    QString retVal = m_pwWidget->executeScript("GEOJSON_PARSER.write(ff);").toString();
+
+//    m_pwWidget->executeScript("for (var i = 0; i < ff.length; i++) { \
+//           ff[i].geometry = ff[i].geometry.transform('EPSG:4326', 'EPSG:3857'); \
+//      }");
+
+//    QFile f("net.geojson");
+//    f.open(QIODevice::WriteOnly);
+//    f.write(retVal.toLocal8Bit());
+//    f.close();
 }
 
 void MapClient1::addStation(const QByteArray& data)
@@ -483,7 +656,19 @@ void MapClient1::removeAll()
 	clearObjectsList( MapFeature::Interception, m_interceptionList );
 	clearObjectsList( MapFeature::Station, m_stationList );
 	clearObjectsList( MapFeature::CheckPoint, m_checkPointsList );
-	clearObjectsList( MapFeature::Hyperbole, m_hyperboleList );
+    clearObjectsList( MapFeature::Hyperbole, m_hyperboleList );
+}
+
+void MapClient1::mapClicked(double lon, double lat)
+{
+}
+
+void MapClient1::mapMoved(double lon, double lat)
+{
+
+
+    QString name = getSquareName(lon, lat);
+    emit onSquare(name);
 }
 
 void MapClient1::addInterception(int blaId, int bplaId, QList<UavInfo>& blaInfoList, QList<UavInfo>& bplaInfoList )
@@ -544,6 +729,26 @@ void MapClient1::readCheckLinesFromFile(QString fileName)
 	}
 }
 
+void MapClient1::readCheckNetFromFile(QString fileName)
+{
+    QSettings settings( fileName, QSettings::IniFormat );
+    settings.setIniCodec( QTextCodec::codecForName("UTF-8") );
+
+    m_netLength = settings.value("length").toDouble();
+    m_useCustomArea = settings.value("useCustomArea", 0).toBool();
+
+    QPointF point1;
+    point1.setX(settings.value("leftBottomX").toDouble());
+    point1.setY(settings.value("leftBottomY").toDouble());
+
+    QPointF point2;
+    point2.setX(settings.value("rightTopX").toDouble());
+    point2.setY(settings.value("rightTopY").toDouble());
+
+    m_areaGeoList.append(point1);
+    m_areaGeoList.append(point2);
+}
+
 void MapClient1::readCheckPointsFromFile(QString fileName)
 {
 	QSettings settings( fileName, QSettings::IniFormat );
@@ -588,6 +793,11 @@ void MapClient1::setPoint()
 	mapLinesSettingFile.append( "/Map/map_lines.ini" );
 
 	readCheckLinesFromFile( mapLinesSettingFile );
+
+    QString mapNetSettingFile = QCoreApplication::applicationDirPath();
+    mapNetSettingFile.append( "/Map/map_net.ini" );
+
+    readCheckNetFromFile( mapNetSettingFile );
 }
 
 void MapClient1::addMarkerLayer( int id, const QString& layerId,
@@ -619,14 +829,30 @@ void MapClient1::addPerehvatData( int bla_id, int bpla_id, QList<UavInfo>& blaIn
 	QDataStream ds(&target, QIODevice::WriteOnly);
 	UavInfo tempInfo;
 
-	tempInfo = blaInfoList.last();
+
+    bool finded = false;
+    foreach( MapFeature::FriendBpla* bpla, m_friendBplaList )  {
+        if(bpla->getIntId() == bla_id) {
+            tempInfo = bpla->getInfo();
+            finded = true;
+            break;
+        }
+    }
+
+
+    if(!finded) {
+        tempInfo = blaInfoList.last();
+    }
+
 	QPointF point1;
-	point1.setY(tempInfo.lat);
-	point1.setX(tempInfo.lon);
-	ds1 << point1;
-	double alt1 = tempInfo.alt;
+    point1.setY(tempInfo.lat);
+    point1.setX(tempInfo.lon);
+//    point1.setY(45.5);
+//    point1.setX(34.1);
+    ds1 << point1;
+    double alt1 = /*tempInfo.alt*/1;
 	ds1 << alt1;
-	double speed1 = tempInfo.speed;
+    double speed1 = tempInfo.speed;
 	ds1 << speed1;
 	double course1 = tempInfo.yaw;
 	ds1 << course1;
@@ -634,21 +860,38 @@ void MapClient1::addPerehvatData( int bla_id, int bpla_id, QList<UavInfo>& blaIn
 	int state1 = 1; //set by default. Don't need in interception counting
 	ds1 << state1;
 
-	tempInfo = bplaInfoList.last();
+
+    finded = false;
+    foreach( MapFeature::EnemyBpla* bpla, m_enemyBplaList )  {
+
+        log_debug(QString("OUR ID : %1").arg(bpla->getIntId()));
+
+        if(bpla->getIntId() == bpla_id) {
+            tempInfo = bpla->getInfo();
+            finded = true;
+            break;
+        }
+    }
+
+    if(!finded) {
+        tempInfo = bplaInfoList.last();
+    }
 	int time = 1; //set by default
 	ds << time;
 	int state = 1; //set by default
 	ds << state;
 	QPointF sko;
-	sko.setY(tempInfo.lat);
-	sko.setX(tempInfo.lon);
+    sko.setY(tempInfo.lat);
+    sko.setX(tempInfo.lon);
+//    sko.setY(45.5);
+//    sko.setX(33.5);
 	ds << sko;
 	QVector<QPointF> track;
 	track.append(sko);
 	ds << track;
-	double speed = tempInfo.speed;
+    double speed = tempInfo.speed;
 	ds << speed;
-	double alt = tempInfo.alt;
+    double alt = tempInfo.alt;
 	ds << alt;
 	double bearing = tempInfo.yaw;
 	ds << bearing;
@@ -832,7 +1075,20 @@ void MapClient1::addTrajectoryKKInternal(QByteArray data, int source)
 	uav.source = source;
 	uav.statusId = sol.motionestimate(sol.motionestimate_size()-1).state();
 
-	QString targetId = UavModel::getExtendedId( uav );
+    QString targetId = UavModel::getExtendedId( uav );
+
+    log_debug(targetId + ".....");
+
+    foreach (QRectF area, m_stationsArea) {
+        if(area.contains(QPointF(uav.lon, uav.lat))) {
+            log_debug("Contains!!!");
+            if( m_enemyBplaList.contains( targetId ) ) {
+                m_enemyBplaList.value(targetId)->removeFromMap();
+            }
+            return;
+        }
+    }
+
 
 	QVector<QPointF> tail;
 
@@ -978,8 +1234,14 @@ void MapClient1::countCaptureApply(int aim)
 
 void MapClient1::slotCaptureClear()
 {
+    foreach(MapFeature::Interception* interc, m_interceptionList) {
+        interc->removeFromMap();
+    }
+    m_interceptionList.clear();
+
 	if(m_captureCircle) {
 		m_captureCircle->removeFromMap();
+        //removeBpla();
 	}
 
 	m_captureCircle = NULL;
@@ -1217,13 +1479,13 @@ void MapClient1::onApplyCross(int val)
 	}
 
 	if( isEnemy &&
-		isFriend ) {
-
-		l1.append( m_enemyBplaList.values().at(0)->getInfo() );
-		l2.append( m_enemyBplaList.values().at(1)->getInfo() );
-
+        isFriend ) {
 		addPerehvatData(idFriend, idEnemy, friendInfo, enemyInfo);
-	}
+    } else {
+        friendInfo.append(UavInfo());
+        enemyInfo.append(UavInfo());
+        addPerehvatData(idFriend, idEnemy, friendInfo, enemyInfo);
+    }
 }
 
 void MapClient1::readStationsFromFile(QString fileName)
@@ -1303,6 +1565,10 @@ void MapClient1::addInterceptionPointData( int friendBplaId, int enemyBplaId, QP
 {
 	Q_UNUSED( time );
 
+    if(time == 999999) {
+        QMessageBox::warning(0, tr("Capture"), tr("Capture in hour is impossible"), QMessageBox::Ok);
+    }
+
 	QString key = QString( "%1-%2" ).arg( friendBplaId ).arg( enemyBplaId );
 
 	MapFeature::Interception* intc = m_interceptionList.value( key, NULL );
@@ -1310,7 +1576,7 @@ void MapClient1::addInterceptionPointData( int friendBplaId, int enemyBplaId, QP
 		intc->update( position, height, radius, course, speed );
 	} else {
 		intc = m_factory->createInterception( friendBplaId, enemyBplaId, position, height, radius, course,
-											  speed );
+                                              speed,time );
 		intc->updateMap();
 		m_interceptionList.insert( key, intc );
 	}

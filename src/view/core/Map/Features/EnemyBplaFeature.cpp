@@ -82,6 +82,7 @@ EnemyBpla::EnemyBpla(IObjectsFactory* factory, const QString& id, const UavInfo&
 		m_originName = ( m_targNameTranslated
 						 + uav.name.right(uav.name.length() - uav.name.indexOf("_"))
 						 + m_nameTranslated + QObject::tr("\\n\\n %1 Mhz").arg(uav.id)
+                         + m_nameTranslated + QObject::tr("\\n Height %1 m").arg(uav.alt)
 						 + QObject::tr("\\n accLon %1м").arg(QString::number(uav.lonStddev, 'f', 1))
 						 + QObject::tr("\\n accLat %1м").arg(QString::number(uav.latStddev, 'f', 1)) );
 	}
@@ -128,6 +129,7 @@ void EnemyBpla::update(const UavInfo& uav)
 		m_originName = ( m_targNameTranslated
 						 + uav.name.right(uav.name.length() - uav.name.indexOf("_"))
 						 + m_nameTranslated + QObject::tr("\\n\\n %1 Mhz").arg(uav.id)
+                         + m_nameTranslated + QObject::tr("\\n Height %1 m").arg(uav.alt)
 						 + QObject::tr("\\n accLon %1м").arg(QString::number(uav.lonStddev, 'f', 1))
 						 + QObject::tr("\\n accLat %1м").arg(QString::number(uav.latStddev, 'f', 1))
 						);
@@ -135,7 +137,11 @@ void EnemyBpla::update(const UavInfo& uav)
 
 	setName(m_originName);
 
-	BplaAbstract::update( uav );
+    if(m_state == 2 || m_state == 3) {
+        m_info.yaw = 0;
+    }
+
+    BplaAbstract::update( m_info );
 	timer->start(lifetime);
 
 }

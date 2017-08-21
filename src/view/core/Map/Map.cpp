@@ -35,6 +35,7 @@ void Map::init(QMap<int, Station*> map_settings, MapWidget* pwwidget)
         m_firstClient = client;
 
 		connect( this, SIGNAL(modelMapReady()), client, SLOT(init()) );
+        connect(client, SIGNAL(onSquare(QString)), this, SIGNAL(onSquare(QString)));
 	}
 }
 

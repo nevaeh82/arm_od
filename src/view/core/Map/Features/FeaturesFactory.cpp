@@ -29,11 +29,12 @@ EnemyBpla* FeaturesFactory::createEnemyBpla(const UavInfo& uav)
 
 Interception* FeaturesFactory::createInterception(int friendBplaId, int enemyBplaId,
 												  const QPointF& position, float height,
-												  float radius, float angle, float speed)
+                                                  float radius, float angle, float speed, int time)
 {
-	return new Interception( m_provider->objectsFactory(), m_provider->idGenerator()->GetNewID(),
+    return new Interception( m_provider->objectsFactory(),
+                             /*m_provider->idGenerator()->GetNewID()*/"PerehvatCircleFeature",
 							 friendBplaId, enemyBplaId, position, height, radius, angle,
-							 speed);
+                             speed, time);
 }
 
 Niipp* FeaturesFactory::createNiipp( const ::Niipp& niipp )

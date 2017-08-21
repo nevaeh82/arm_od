@@ -14,6 +14,8 @@
 #include <QMutex>
 #include <QMutexLocker>
 #include <QThread>
+#include <QToolTip>
+#include <QLabel>
 
 #include <MapProvider.h>
 #include <PwGis/ILayerManager.h>
@@ -65,6 +67,8 @@ private:
 	QMap<QString, MapFeature::ADSBPlaneFeature*> m_adsbList;
 	QMap<QString, MapFeature::Station*> m_stationList;
 
+    QList<QRectF> m_stationsArea;
+
 	QList<MapFeature::CheckPoint*> m_checkPointsList;
 	QList<QPair<QPointF, QPointF>> m_linesList;
 
@@ -87,6 +91,12 @@ private:
 	uint m_ellipseCounter;
 	QList<QString> m_trajEllipseCounter;
 	QList<Pw::Gis::Marker*> m_baseStationMarkerList;
+
+    double m_netLength;
+    bool m_useCustomArea;
+    PwGisPointList m_arealist;
+    QList<QPointF> m_areaGeoList;
+
 
 public:
 	MapClient1( MapWidget* pwwidget, Station* station, QObject* parent = NULL );
@@ -119,6 +129,10 @@ private:
 	void clearTrajEllipse(QString id);
 	QPointF drawAim(QPointF pos, int angle);
 
+    void readCheckNetFromFile(QString fileName);
+
+    QLabel* m_qLbl;
+    QString getSquareName(double lon, double lat);
 public slots:
 	virtual void init();
 	virtual void setPoint();
@@ -155,6 +169,9 @@ public slots:
 	virtual void addHyperboles( const QByteArray& data, int version = 0, const QColor color  = QColor::Invalid );
 
 	virtual void removeAll();
+
+    virtual void mapClicked(double lon, double lat);
+    virtual void mapMoved(double lon, double lat);
 
 private slots:
 	void addFriendBplaInternal( const UavInfo& uav );
@@ -238,6 +255,8 @@ signals:
 	void signalAddArea(QPointF, QPointF);
 
 	void onSolverClear();
+
+    void onSquare(QString);
 };
 
 #endif // MAPCLIENT1_H

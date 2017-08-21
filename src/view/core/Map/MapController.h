@@ -105,6 +105,7 @@ public slots:
 	void openMapFromLocalFile();
 	void onMapReady();
 	void onMapClicked(double lon, double lat);
+    void onMapMouseMove(double lon, double lat);
 
 	void loadMapSettings();
 	void setStationVisible(bool state);
@@ -124,6 +125,8 @@ signals:
 
 	void mapClicked(double, double);
 	void signalOnExtraBoardInfo(int);
+
+    void onMovingAimAlarm(QString msg);
 };
 
 #endif // MAPCONTROLLER_H
