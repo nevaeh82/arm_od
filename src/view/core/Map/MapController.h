@@ -19,6 +19,7 @@
 #include <Interfaces/IController.h>
 #include <Interfaces/IRpcListener.h>
 
+#include "NIIPP/nstation.h"
 #include "Station.h"
 #include "zavCommon/UAVDefines.h"
 
@@ -28,6 +29,8 @@
 #include "Map/MapWidget.h"
 #include "Map/MapClient1.h"
 #include "Map/IMapController.h"
+
+#include "TCP/TcpClientManager.h"
 
 #include "UAV/ZInterception.h"
 
@@ -72,6 +75,9 @@ public:
 	virtual void updateNiippPowerZone(const Niipp& niipp);
 	virtual void removeNiippPoint();
 
+    virtual void updateStationPowerZone(const NStation& niipp);
+    virtual void removeStationPowerZone(const NStation& niipp);
+
 	// interface IController
 	virtual void appendView(MapWidget* view);
 
@@ -91,6 +97,8 @@ public:
 	void setEnemyModel(UavTreeModel* model);
 	void setOurModel(UavTreeModel* model);
 
+    void setTcpClientManager(TcpClientManager* manager);
+
 private:
 	IMapClient* getMapClient();
 
@@ -99,6 +107,7 @@ private:
 	QTimer* m_initJsTimer;
 	QTime m_mapUpTime;
 	int m_mapUpTimeout;
+    TcpClientManager* m_tcpClientManager;
 
 public slots:
 	void openMapFromAtlas();

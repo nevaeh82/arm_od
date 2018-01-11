@@ -38,7 +38,7 @@ public:
 	void create();
 
 	bool getState();
-	void setData(QByteArray data);
+//	void setData(QByteArray data);
 
 	int getAntenaType();
 	double getRadiusCircle();

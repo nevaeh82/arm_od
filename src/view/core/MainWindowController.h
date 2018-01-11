@@ -23,6 +23,8 @@
 
 #include "BaseParser/BaseParser.h"
 
+#include "TCP/TcpClientManager.h"
+
 #define SERVER_NAME "ZaviruhaODServer"
 #define GUI_NAME "ZaviruhaODView"
 
@@ -50,6 +52,8 @@ private:
 	bool m_armrConnection;
 
 	QTimer* m_rpcCheckTimer;
+
+    TcpClientManager* m_tcpManager;
 
 public:
 	explicit MainWindowController(QObject *parent = 0);

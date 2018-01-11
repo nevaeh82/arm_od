@@ -42,6 +42,17 @@ Niipp* FeaturesFactory::createNiipp( const ::Niipp& niipp )
 	return new Niipp( m_provider->objectsFactory(), m_provider->idGenerator()->GetNewID(), niipp );
 }
 
+PvoFeature* FeaturesFactory::createPvoStation(const NStation &niipp,
+                                              PwGisStyle* styleSimplePvo,
+                                              PwGisStyle* styleActivePvo,
+                                              PwGisStyle* styleSimpleReb,
+                                              PwGisStyle* styleActiveReb)
+{
+    return new PvoFeature( m_provider->objectsFactory(), m_view->getPwGis(),
+                           niipp, styleSimplePvo, styleActivePvo,
+                           styleSimpleReb, styleActiveReb);
+}
+
 NiippPoint* FeaturesFactory::createNiippPoint(const QPointF& position)
 {
 	return new NiippPoint( m_provider->objectsFactory(), m_provider->idGenerator()->GetNewID(),

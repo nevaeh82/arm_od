@@ -10,6 +10,7 @@
 
 #include "NIIPP/Niipp.h"
 #include "Tabs/DbBla/Defines.h"
+#include "NIIPP/nstation.h"
 
 #include "Map/Features/AisFeature.h"
 #include "Map/Features/EnemyBplaFeature.h"
@@ -24,6 +25,7 @@
 #include "Map/Features/HyperboleFeature.h"
 #include "Map/Features/ADSBPlaneFeature.h"
 #include "Map/Features/PointKKFeature.h"
+#include "Map/Features/PvoFeature.h"
 
 
 namespace MapFeature {
@@ -39,6 +41,11 @@ public:
     virtual Interception* createInterception( int friendBplaId, int enemyBplaId, const QPointF& position, float height, float radius, float angle, float speed, int time ) = 0;
 	virtual Niipp*        createNiipp( const ::Niipp& niipp ) = 0;
 	virtual NiippPoint*   createNiippPoint( const QPointF& position = QPointF() ) = 0;
+    virtual PvoFeature*   createPvoStation( const NStation& niipp,
+                                            PwGisStyle* styleSimplePvo,
+                                            PwGisStyle* styleActivePvo,
+                                            PwGisStyle* styleSimpleReb,
+                                            PwGisStyle* styleActiveReb ) = 0;
 	virtual Station*      createStation( const QString& name, const QPointF& position = QPointF() ) = 0;
 	virtual Pelengator*   createPelengator( int id, const QPointF& position, double angle ) = 0;
 	virtual PelengatorPoint* createPelengatorPoint( const QString& name, const QPointF& position ) = 0;

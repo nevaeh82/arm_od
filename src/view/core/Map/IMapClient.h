@@ -11,6 +11,9 @@
 #include <QPointF>
 #include <QByteArray>
 
+#include "Tcp/TcpClientManager.h"
+
+#include "NIIPP/nstation.h"
 #include "NIIPP/Niipp.h"
 #include "Tabs/DbBla/Defines.h"
 
@@ -61,6 +64,8 @@ public:
 	virtual void removeNiippPoint() = 0;
 
 	virtual void updateNiippPowerZone( const Niipp& niipp ) = 0;
+    virtual void updateStationPowerZone(const NStation& st) = 0;
+    virtual void removeStationPowerZone(const NStation& st) = 0;
 
 	virtual void updatePeleng( int id, int idPost, double lat, double lon, double direction ) = 0;
 
@@ -78,6 +83,8 @@ public:
 
     virtual void mapClicked(double lon, double lat) = 0;
     virtual void mapMoved(double lon, double lat) = 0;
+
+    virtual void setTcpClientManager(TcpClientManager* manager) = 0;
 };
 
 #endif // IMAPCLIENT_H

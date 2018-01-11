@@ -47,7 +47,7 @@ public:
 	inline float radius() { return m_radius; }
 	inline float angle() { return m_angle; }
 
-	void update(const ::Niipp& niipp);
+    void update(const ::Niipp& niipp);
 
 	virtual void updateMap();
 	virtual void removeFromMap();

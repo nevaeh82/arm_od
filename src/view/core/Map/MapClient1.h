@@ -24,6 +24,7 @@
 #include <PwGis/GeoRectangle.h>
 
 #include "Station.h"
+#include "NIIPP/nstation.h"
 
 #include "UAV/ZInterception.h"
 #include "Map/IMapClient.h"
@@ -31,6 +32,8 @@
 #include "Map/Features/FeaturesFactory.h"
 
 #include "ADSBPacket.pb.h"
+
+#include "Tcp/TcpClientManager.h"
 
 
 class MapClient1 : public QObject, public IMapClient
@@ -60,6 +63,7 @@ private:
 	QMap<QString, MapFeature::EnemyBpla*> m_enemyBplaList;
 	QList<MapFeature::EnemyBpla*> m_onePointList;
 	QMap<int, MapFeature::Niipp*> m_niippList;
+    QMap<int, MapFeature::PvoFeature*> m_pvoList;
 	QMap<int, MapFeature::Pelengator*> m_pelengatorList;
 	QMap<int, MapFeature::PelengatorPoint*> m_pelengatorPointsList;
 	QMap<QString, MapFeature::Interception*> m_interceptionList;
@@ -97,6 +101,12 @@ private:
     PwGisPointList m_arealist;
     QList<QPointF> m_areaGeoList;
 
+    PwGisStyle* m_pvoSimpleStyle;
+    PwGisStyle* m_pvoActiveStyle;
+    PwGisStyle* m_rebSimpleStyle;
+    PwGisStyle* m_rebActiveStyle;
+
+    TcpClientManager* m_tcpClientManager;
 
 public:
 	MapClient1( MapWidget* pwwidget, Station* station, QObject* parent = NULL );
@@ -161,6 +171,8 @@ public slots:
 	virtual void addNiippPoint( const QPointF& point );
 
 	virtual void updateNiippPowerZone( const Niipp& niipp );
+    virtual void updateStationPowerZone( const NStation& niipp );
+    virtual void removeStationPowerZone(const NStation &niipp);
 
 	virtual void updatePeleng( int id, int idPost, double lat, double lon, double direction );
 
@@ -172,6 +184,8 @@ public slots:
 
     virtual void mapClicked(double lon, double lat);
     virtual void mapMoved(double lon, double lat);
+
+    virtual void setTcpClientManager(TcpClientManager *manager);
 
 private slots:
 	void addFriendBplaInternal( const UavInfo& uav );

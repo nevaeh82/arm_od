@@ -8,8 +8,8 @@ MapTabWidget::MapTabWidget(QWidget* parent) :
 {
 	ui->setupUi(this);
 
-	ui->spipDD1DockWidget->close();
-	ui->spipDD2DockWidget->close();
+    //ui->spipDD1DockWidget->close();
+    //ui->spipDD2DockWidget->close();
 }
 
 MapTabWidget::~MapTabWidget()
@@ -28,9 +28,9 @@ NiippWidget* MapTabWidget::getNiippWidget(const int number) const {
 		return ui->spipDD1Widget;
 	}
 
-	if (number == 2) {
-		return ui->spipDD2Widget;
-	}
+//	if (number == 2) {
+//		return ui->spipDD2Widget;
+//	}
 
 	return NULL;
 }
@@ -63,9 +63,4 @@ QDockWidget *MapTabWidget::getBplaDockWidget() const
 QDockWidget *MapTabWidget::getNiipp1DockWidget() const
 {
 	return ui->spipDD1DockWidget;
-}
-
-QDockWidget *MapTabWidget::getNiipp2DockWidget() const
-{
-	return ui->spipDD2DockWidget;
 }

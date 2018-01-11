@@ -14,6 +14,7 @@
 #include "Tabs/TabManager.h"
 
 #include "KtrAdressControl.h"
+#include "PvoAddresControl.h"
 
 typedef QVector<QPointF>         rpc_send_points_vector;
 typedef QPointF                  rpc_QPointF;
@@ -32,6 +33,7 @@ private:
 
 	FormCapture* m_formCapture;
 	KtrAdressControl* m_ktrAddressControl;
+    PvoAddressControl* m_pvoAddressControl;
 
 public:
 	explicit MainWindow(QWidget *parent = 0);
@@ -70,6 +72,8 @@ signals:
 	void signalLoadObjects();
 	void signalSaveObjects();
 	void signalOnExtraBoardInfo(int);
+
+    void signalPvoAddressApply(QString host, int port, int serverPort);
 
 private slots:
 	void openAtlasAction();

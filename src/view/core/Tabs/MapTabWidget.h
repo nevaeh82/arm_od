@@ -8,6 +8,7 @@
 #include "Map/MapWidget.h"
 #include "NIIPP/NiippWidget.h"
 #include "ControlPanel/ControlPanel.h"
+#include "TCP/TcpClientManager.h"
 
 namespace Ui {
 class MapTabWidget;
@@ -32,9 +33,12 @@ public:
 	QDockWidget* getNiipp1DockWidget() const;
 	QDockWidget* getNiipp2DockWidget() const;
 
+    void setTcpManager(TcpClientManager* manager) {m_tcpClient = manager;}
+    TcpClientManager* getTcpClientManager() {return m_tcpClient;}
+
 private:
 	Ui::MapTabWidget* ui;
-
+    TcpClientManager* m_tcpClient;
 };
 
 #endif // MAPTABWIDGET_H

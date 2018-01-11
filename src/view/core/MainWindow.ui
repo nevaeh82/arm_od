@@ -135,6 +135,7 @@
     </property>
     <addaction name="actionSolver_Commands"/>
     <addaction name="actionKtr_Settings"/>
+    <addaction name="actionPVO_Address"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -250,6 +251,11 @@
    </property>
    <property name="text">
     <string>Show extra board info</string>
+   </property>
+  </action>
+  <action name="actionPVO_Address">
+   <property name="text">
+    <string>PVO Adress</string>
    </property>
   </action>
  </widget>

@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	QTextCodec::setCodecForTr(codec);
 	QTextCodec::setCodecForCStrings(codec);
 
-	this->setWindowTitle(tr("Zaviruha"));
+    this->setWindowTitle(tr("ARM_OD"));
 
 	this->setWindowIcon(QIcon(":/images/zaviruha.png"));
 
@@ -34,7 +34,12 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(m_formCapture, SIGNAL(signalClear()), this, SIGNAL(signalClear()));
 
 	m_ktrAddressControl = new KtrAdressControl();
+    m_pvoAddressControl = new PvoAddressControl();
+
 	connect(ui->actionKtr_Settings, SIGNAL(triggered(bool)), m_ktrAddressControl, SLOT(show()));
+    connect(ui->actionPVO_Address, SIGNAL(triggered(bool)), m_pvoAddressControl, SLOT(show()));
+    connect(m_pvoAddressControl, SIGNAL(applySignal(QString, int, int)),
+            this, SIGNAL(signalPvoAddressApply(QString, int, int)));
 
 	QPointF point(34.171325, 45.918281);
 	drawAim(point, 50);

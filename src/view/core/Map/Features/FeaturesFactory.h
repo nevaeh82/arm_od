@@ -5,6 +5,7 @@
 
 #include <PwGis/IMapProvider.h>
 
+#include "NIIPP/nstation.h"
 #include "Map/Features/IFeaturesFactory.h"
 #include "Map/IMapStyleManager.h"
 
@@ -30,6 +31,11 @@ public:
     virtual Interception* createInterception(int friendBplaId, int enemyBplaId, const QPointF& position, float height, float radius, float angle, float speed , int time);
 	virtual Niipp*        createNiipp( const ::Niipp& niipp );
 	virtual NiippPoint*   createNiippPoint( const QPointF& position = QPointF() );
+    virtual PvoFeature *  createPvoStation( const NStation& niipp,
+                                            PwGisStyle* styleSimplePvo,
+                                            PwGisStyle* styleActivePvo,
+                                            PwGisStyle* styleSimpleReb,
+                                            PwGisStyle* styleActiveReb );
 	virtual Station*      createStation( const QString& name, const QPointF& position = QPointF() );
 	virtual Pelengator*   createPelengator(int id, const QPointF& position, double angle );
 	virtual PelengatorPoint* createPelengatorPoint( const QString& name, const QPointF& position );

@@ -1,13 +1,15 @@
 #include <QMessageBox>
 
 #include "MainWindowController.h"
-
+#include "NIIPP/nstation.h"
 #include "Interfaces/IUavHistoryListener.h"
 
 MainWindowController::MainWindowController(QObject *parent) :
 	QObject(parent),
 	m_solverSetupWidgetController(NULL)
 {
+    QApplication::setOverrideCursor(QCursor(Qt::ArrowCursor));
+
 	m_view = NULL;
 	m_tabManager = NULL;
 	m_rpcConfigClient = NULL;
@@ -21,6 +23,7 @@ MainWindowController::MainWindowController(QObject *parent) :
 	qRegisterMetaType<Uav>( "Uav" );
 	qRegisterMetaType<UavInfo>( "UavInfo" );
 	qRegisterMetaType<Niipp>( "Niipp" );
+    qRegisterMetaType<NStation>("NStation");
 
 	qRegisterMetaType<IUavHistoryListener::Status>( "Status" );
 
@@ -38,6 +41,8 @@ MainWindowController::MainWindowController(QObject *parent) :
 	connect(m_rpcCheckTimer, SIGNAL(timeout()), this, SLOT(slotCheckRpc()));
 
 	m_rpcCheckTimer->start(30000);
+
+    m_tcpManager = new TcpClientManager(this);
 }
 
 MainWindowController::~MainWindowController()
@@ -67,6 +72,7 @@ void MainWindowController::init()
 
 	m_tabManager = new TabManager(m_view->getMainTabWidget(), this);
 	m_tabManager->setViewMenu(m_view->getViewMenu());
+    m_tabManager->setTcpClientManager(m_tcpManager);
 
 	if( m_uavLifeTime > 0 ) m_tabManager->setUavLifeTime( m_uavLifeTime );
 
@@ -89,6 +95,9 @@ void MainWindowController::init()
 	connect(m_view, SIGNAL(signalEnableAdsb(bool)), this, SLOT(enableAdsbClient(bool)));
 	connect(m_view, SIGNAL(signalEnableOnlineAdsb(bool)), this, SLOT(enableAdsbOnlineClient(bool)));
 	connect(m_view, SIGNAL(signalOnExtraBoardInfo(int)), m_tabManager, SIGNAL(signalOnExtraBoardInfo(int)));
+
+    connect(m_view, SIGNAL(signalPvoAddressApply(QString,int,int)),
+            m_tcpManager, SLOT(reconnectAll(QString,int,int)), Qt::QueuedConnection);
 
 	m_rpcConfigClient = new RpcConfigClient(this);
 	m_rpcConfigClient->registerReceiver(this);

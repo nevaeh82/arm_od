@@ -12,6 +12,8 @@
 #define IMAGE_STATION_RED_128		"/profiles/Zav/Punkts/StationRed128.png"
 #define IMAGE_POINT_RED_48			"/profiles/Zav/Points/redmark48.png"
 #define IMAGE_ADSB_PLANE			"/profiles/Zav/AIS/PostPlaneBlack.png"
+#define IMAGE_STATION_PVO			"/profiles/Zav/PvoAnt.png"
+#define IMAGE_STATION_REB			"/profiles/Zav/RebAnt.png"
 
 MapStyleManager::MapStyleManager(IStyleFactory* factory)
 	: m_factory( factory )
@@ -427,6 +429,68 @@ PwGisStyle* MapStyleManager::createNetAreaStyle(const QString& layerId)
 
     return style;
 }
+
+
+
+
+PwGisStyle* MapStyleManager::createStationPvoStyle(const QString& layerId, int active)
+{
+    bool exists;
+    PwGisStyle* style = createStyle( QString(MAP_STYLE_NAME_PVO).arg(active), &exists );
+
+    if( !exists ) {
+        style->setProperty( PwGisStyle::mapFontColor, "brown" );
+        style->setProperty( PwGisStyle::mapFontSize, "10pt");
+        style->setProperty( PwGisStyle::fillColor, "Red" );
+        style->setProperty( PwGisStyle::strokeColor, "Red" );
+        style->setProperty( PwGisStyle::externalGraphic, IMAGE_STATION_PVO );
+        style->setProperty( PwGisStyle::graphicWidth, "30" );
+        style->setProperty( PwGisStyle::graphicHeight, "30" );
+        style->setProperty( PwGisStyle::graphicOpacity, "0.8" );
+        if(active == 0) {
+            style->setProperty( PwGisStyle::fillOpacity, "0.3" );
+            style->setProperty( PwGisStyle::strokeOpacity, "0.3" );
+            style->setProperty( PwGisStyle::strokeDashstyle, "solid" );
+        } else {
+            style->setProperty( PwGisStyle::fillOpacity, "0.6" );
+            style->setProperty( PwGisStyle::strokeOpacity, "0.6" );
+            style->setProperty( PwGisStyle::strokeDashstyle, "dot" );
+        }
+        style->setProperty( PwGisStyle::layer, layerId );
+    }
+
+    return style;
+}
+
+PwGisStyle* MapStyleManager::createStationRebStyle(const QString& layerId, int active)
+{
+    bool exists;
+    PwGisStyle* style = createStyle( QString(MAP_STYLE_NAME_REB).arg(active), &exists );
+
+    if( !exists ) {
+        style->setProperty( PwGisStyle::mapFontColor, "brown" );
+        style->setProperty( PwGisStyle::mapFontSize, "10pt");
+        style->setProperty( PwGisStyle::fillColor, "orange" );
+        style->setProperty( PwGisStyle::strokeColor, "orange" );
+        style->setProperty( PwGisStyle::externalGraphic, IMAGE_STATION_REB );
+        style->setProperty( PwGisStyle::graphicWidth, "30" );
+        style->setProperty( PwGisStyle::graphicHeight, "30" );
+        style->setProperty( PwGisStyle::graphicOpacity, "0.8" );
+        if(active == 0) {
+            style->setProperty( PwGisStyle::fillOpacity, "0.3" );
+            style->setProperty( PwGisStyle::strokeOpacity, "0.3" );
+            style->setProperty( PwGisStyle::strokeDashstyle, "solid" );
+        } else {
+            style->setProperty( PwGisStyle::fillOpacity, "0.6" );
+            style->setProperty( PwGisStyle::strokeOpacity, "0.6" );
+            style->setProperty( PwGisStyle::strokeDashstyle, "dot" );
+        }
+        style->setProperty( PwGisStyle::layer, layerId );
+    }
+
+    return style;
+}
+
 
 PwGisStyle* MapStyleManager::createStyle(const QString& name, bool* exists)
 {

@@ -217,31 +217,35 @@ void MapTabWidgetController::appendView(MapTabWidget *view)
 
 	m_mapController->appendView(m_view->getMapWidget());
 	m_mapController->init(m_mapSettings);
+    m_mapController->setTcpClientManager(m_view->getTcpClientManager());
 
 	connect( this, SIGNAL(initFinished()), m_mapController, SLOT(loadMapSettings()), Qt::QueuedConnection );
 
 	/// WTF?
-	QPointF latlon1;
-	latlon1.setX(42.511183);
-	latlon1.setY(41.6905);
-	m_niipp1 = new NiippController(100, tr("SPIP DD-1"), latlon1, m_mapController, m_tabManager);
+//	QPointF latlon1;
+//	latlon1.setX(42.511183);
+//	latlon1.setY(41.6905);
+//	m_niipp1 = new NiippController(100, tr("SPIP DD-1"), latlon1, m_mapController, m_tabManager);
 
 
-	QPointF latlon2;
-	latlon2.setX(42.634183);
-	latlon2.setY(41.912167);
-	m_niipp2 = new NiippController(101, tr("SPIP DD-2"), latlon2, m_mapController, m_tabManager);
+//	QPointF latlon2;
+//	latlon2.setX(42.634183);
+//	latlon2.setY(41.912167);
+//	m_niipp2 = new NiippController(101, tr("SPIP DD-2"), latlon2, m_mapController, m_tabManager);
 
 
-	m_niipp1->appendView(m_view->getNiippWidget(1));
-	m_niipp2->appendView(m_view->getNiippWidget(2));
-	connect(this, SIGNAL(signalStartRPC()), m_niipp1, SLOT(onGetConnectionStatus()));
-	connect(this, SIGNAL(signalStartRPC()), m_niipp2, SLOT(onGetConnectionStatus()));
+//	m_niipp1->appendView(m_view->getNiippWidget(1));
+//    //m_niipp2->appendView(m_view->getNiippWidget(2));
 
-	m_uavDbManager->registerReceiver( m_niipp1 );
-	m_uavDbManager->registerReceiver( m_niipp2 );
+     m_view->getNiippWidget(1)->setMap(m_mapController);
 
-	connect(m_uavDbManager, SIGNAL(protoToNiipp(QByteArray)), m_niipp1, SLOT());
+//	connect(this, SIGNAL(signalStartRPC()), m_niipp1, SLOT(onGetConnectionStatus()));
+//	connect(this, SIGNAL(signalStartRPC()), m_niipp2, SLOT(onGetConnectionStatus()));
+
+//	m_uavDbManager->registerReceiver( m_niipp1 );
+//	m_uavDbManager->registerReceiver( m_niipp2 );
+
+//	connect(m_uavDbManager, SIGNAL(protoToNiipp(QByteArray)), m_niipp1, SLOT());
 
 	init();
 
@@ -324,10 +328,10 @@ void MapTabWidgetController::onSendDataToNiippControl(int id, QByteArray data)
 	switch(id)
 	{
 		case 100:
-			m_niipp1->setData(data);
+//			m_niipp1->setData(data);
 			break;
 		case 101:
-			m_niipp2->setData(data);
+//			m_niipp2->setData(data);
 			break;
 		default:
 			break;

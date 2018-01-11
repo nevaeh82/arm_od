@@ -216,7 +216,23 @@ void MapController::removeNiippPoint()
 	IMapClient* client = getMapClient();
 	if( NULL == client ) return;
 
-	client->removeNiippPoint();
+    client->removeNiippPoint();
+}
+
+void MapController::updateStationPowerZone(const NStation &niipp)
+{
+    IMapClient* client = getMapClient();
+    if( NULL == client ) return;
+
+    client->updateStationPowerZone( niipp );
+}
+
+void MapController::removeStationPowerZone(const NStation &niipp)
+{
+    IMapClient* client = getMapClient();
+    if( NULL == client ) return;
+
+    client->removeStationPowerZone( niipp );
 }
 
 void MapController::appendView(MapWidget *view)
@@ -251,7 +267,12 @@ void MapController::setEnemyModel(UavTreeModel *model)
 
 void MapController::setOurModel(UavTreeModel *model)
 {
-	m_ourModel = model;
+    m_ourModel = model;
+}
+
+void MapController::setTcpClientManager(TcpClientManager *manager)
+{
+    m_mapModel->getMapClient(1)->setTcpClientManager(manager);
 }
 
 void MapController::closeMap()

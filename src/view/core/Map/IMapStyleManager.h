@@ -17,6 +17,8 @@
 #define MAP_STYLE_NAME_INTERCEPTION			"Interception"
 #define MAP_STYLE_NAME_NIIPP				"Niipp"
 #define MAP_STYLE_NAME_NIIPP_POINT			"NiippPoint"
+#define MAP_STYLE_NAME_PVO  				"PVO_%1"
+#define MAP_STYLE_NAME_REB  				"REB_%1"
 #define MAP_STYLE_NAME_PELENGATOR			"Pelengator"
 #define MAP_STYLE_NAME_PELENGATOR_POINT		"PelengatorPoint"
 #define MAP_STYLE_NAME_STATION				"Station"
@@ -58,6 +60,9 @@ public:
     virtual PwGisStyle* createKKpointStyle(const QString& layerId, const double& opacity) = 0;
     virtual PwGisStyle* createWorkAreaStyle(const QString& layerId) = 0;
     virtual PwGisStyle* createNetAreaStyle(const QString& layerId) = 0;
+
+    virtual PwGisStyle *createStationRebStyle(const QString &layerId, int active) = 0;
+    virtual PwGisStyle *createStationPvoStyle(const QString &layerId, int active) = 0;
 
 	virtual PwGisStyle* getAisStyle() = 0;
 	virtual PwGisStyle* getFriendBplaStyle() = 0;

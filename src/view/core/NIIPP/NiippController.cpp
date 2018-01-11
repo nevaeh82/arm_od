@@ -21,22 +21,6 @@ NiippController::~NiippController()
 {
 }
 
-bool NiippController::getState()
-{
-	return m_view->getEnableComplexState();
-}
-
-void NiippController::setData(QByteArray data)
-{
-	QDataStream ds(&data, QIODevice::ReadOnly);
-	int mode;
-
-	ds >> mode;
-
-	m_view->setStatusText(mode);
-
-}
-
 void NiippController::slotStopClicked()
 {
 	m_model->stopCommad();
@@ -91,8 +75,8 @@ void NiippController::changeValuePower(int value)
 {
 	m_model->setSBpowerValue(value);
 	m_model->changeValuePower(0, value );
-	m_view->changeValuePower( value, m_model->getRadiusCircle(),
-							  m_model->getRadiusSector(), m_model->getAntenaType() );
+//	m_view->changeValuePower( value, m_model->getRadiusCircle(),
+//							  m_model->getRadiusSector(), m_model->getAntenaType() );
 
 
 	m_mapController->updateNiippPowerZone( *m_model );
@@ -115,15 +99,15 @@ void NiippController::setSwitchOn(bool state)
 
 void NiippController::setAntennaType(int value)
 {
-	if( value == 1 ) {
-		m_model->setMode( m_view->getModeIndex() );
-	}
+//	if( value == 1 ) {
+//		m_model->setMode( m_view->getModeIndex() );
+//	}
 
-	m_model->setAntenaIndex(value);
+//	m_model->setAntenaIndex(value);
 
-	m_model->setAntennaType(0, value );
-	m_view->setAntennaType( m_model->getAntenaType(), getModeCurrentIndex() );
-	m_mapController->updateNiippPowerZone( *m_model );
+//	m_model->setAntennaType(0, value );
+//	m_view->setAntennaType( m_model->getAntenaType(), getModeCurrentIndex() );
+//	m_mapController->updateNiippPowerZone( *m_model );
 }
 
 int NiippController::getId()
@@ -133,25 +117,25 @@ int NiippController::getId()
 
 void NiippController::setPoint(QPointF coord)
 {
-	m_model->setPoint(coord);
+//	m_model->setPoint(coord);
 
-	QString lat_s = QString::number(coord.y(), 'f', 4);
-	m_view->setLatText(lat_s);
-	QString lon_s = QString::number(coord.x(), 'f', 4);
-	m_view->setLonText(lon_s);
+//	QString lat_s = QString::number(coord.y(), 'f', 4);
+//	m_view->setLatText(lat_s);
+//	QString lon_s = QString::number(coord.x(), 'f', 4);
+//	m_view->setLonText(lon_s);
 }
 
 void NiippController::sendEnemyBpla(QPointF point, QPointF point_uvoda, double alt, double bearing)
 {
-    if(!m_view->getStartState())
-    {
-        return;
-    }
+//    if(!m_view->getStartState())
+//    {
+//        return;
+//    }
 
-	m_model->setAntenaIndex(m_view->getAntenaIndex());
-	m_model->setSBpowerValue(m_view->getSbPowerValue());
+//	m_model->setAntenaIndex(m_view->getAntenaIndex());
+//	m_model->setSBpowerValue(m_view->getSbPowerValue());
 
-	m_model->sendEvil(point, point_uvoda, alt, bearing);
+//	m_model->sendEvil(point, point_uvoda, alt, bearing);
 
 }
 
@@ -219,7 +203,7 @@ void NiippController::onMethodCalled(const QString &method, const QVariant &argu
 		dataStream >> status;
 		if(m_model->getId() != id)
 			return;
-		m_view->setStatusConnection(status);
+        //m_view->setStatusConnection(status);
 	}
 
 	if( method == RPC_SLOT_SERVER_SEND_NIIPP_DATA ) {
@@ -273,7 +257,7 @@ void NiippController::onMethodCalled(const QString &method, const QVariant &argu
 		m_model->changeValuePower(1, zone );
 		log_info(QString("IN NIIPP CONTROLLER SET ANGLE = %1!").arg(course));
 		m_model->setAngel(course);
-		m_view->setStatusText(mode);
+        //m_view->setStatusText(mode);
 
 
 		m_mapController->updateNiippPowerZone( *m_model );

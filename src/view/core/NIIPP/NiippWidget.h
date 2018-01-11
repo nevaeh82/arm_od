@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "Niipp.h"
+#include "onepointwgt.h"
 
 namespace Ui {
 class NiippWidget;
@@ -16,42 +17,19 @@ public:
 	explicit NiippWidget(QWidget *parent = 0);
 	~NiippWidget();
 
-	bool getState();
-	void setPoint(QPointF coord);
-
-	bool getEnableComplexState();
-	int getModeIndex();
-	void setStatusText(int mode);
-	void setLonText(QString text);
-	void setLatText(QString text);
-	bool getStartState();
-	int getAntenaIndex();
-	int getSbPowerValue();
-	void changeValuePower(int value, double radiusCircle, double radiusSector, int antennaType);
-	void setAntennaType(int value, Niipp::WorkMode workMode);
-	void setStatusConnection(int status);
+    void setMap(MapController* map);
 
 private:
 	Ui::NiippWidget *ui;
-
-	QPixmap* m_pmRoundRed;
-	QPixmap* m_pmRoundGreen;
-
+    int m_cnt;
+    QMap<int, onepointwgt*> m_stationMap;
+    MapController* m_map;
 private slots:
-	void enableComplex(bool state);
-	void clear();
-	void start(bool state);
-
-
-signals:
-	void complexEnabled(bool);
-	void valuePowerChanged(int);
-	void stopClicked();
-	void startClicked();
-	void antennaTypeChanged(int);
-	void modeChanged(int);
-	void cleared();
-	void signalOpenRDP();
+    void onAddStation(double, double);
+    void onAddStation(NStation cfg, int id);
+    void stationRemove(int);
+    void setMouse(bool);
+    void loadStations();
 };
 
 #endif // NIIPPCONTROLWIDGET_H

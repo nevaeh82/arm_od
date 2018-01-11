@@ -12,7 +12,7 @@ var ppopup = new OpenLayers.Popup("chicken",
                               "example popup",  
                               true);  
                                        
-                             map.addPopup(ppopup); 
+
 
 if (typeof fileref != "undefined") {
     document.getElementsByTagName("head")[0].appendChild(fileref)

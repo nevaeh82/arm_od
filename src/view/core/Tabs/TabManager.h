@@ -27,6 +27,8 @@
 
 #include "Solver/SolverSetupWidgetController.h"
 
+#include "TCP/TcpClientManager.h"
+
 class TabManager: public QObject, public ITabManager
 {
 	Q_OBJECT
@@ -52,6 +54,8 @@ private:
 	MapWidget* m_mapWidget;
 
 	RpcClientWrapper* m_rpcClient;
+
+    TcpClientManager* m_tcpClientManager;
 
 public:
 	TabManager(QTabWidget *tabWidget, QObject *parent = 0);
@@ -83,6 +87,9 @@ public:
 	void setARMRConnection(bool b);
 
 	RpcClientWrapper* getRpcClient() {return m_rpcClient;}
+
+    void setTcpClientManager(TcpClientManager* manager);
+    TcpClientManager* getTcpClientManager() {return m_tcpClientManager;}
 
 private slots:
 	void changeTabSlot(int index);

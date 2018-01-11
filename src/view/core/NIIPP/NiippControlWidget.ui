@@ -7,33 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>421</width>
-    <height>256</height>
+    <height>259</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="1">
-    <widget class="QLabel" name="lbl_distance">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="text">
-      <string>Радиус</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="2">
-    <widget class="QPushButton" name="_pb_start">
-     <property name="text">
-      <string>Пуск</string>
-     </property>
-    </widget>
-   </item>
    <item row="4" column="0" colspan="3">
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="1">
@@ -58,6 +38,13 @@
      </item>
     </layout>
    </item>
+   <item row="2" column="2">
+    <widget class="QPushButton" name="_pb_start">
+     <property name="text">
+      <string>Пуск</string>
+     </property>
+    </widget>
+   </item>
    <item row="2" column="1">
     <widget class="QLineEdit" name="_le_distance">
      <property name="sizePolicy">
@@ -68,11 +55,24 @@
      </property>
     </widget>
    </item>
+   <item row="2" column="0">
+    <widget class="QSpinBox" name="_sb_power"/>
+   </item>
    <item row="7" column="0" colspan="3">
     <widget class="QLineEdit" name="_le_status"/>
    </item>
-   <item row="2" column="0">
-    <widget class="QSpinBox" name="_sb_power"/>
+   <item row="1" column="0">
+    <widget class="QLabel" name="lbl_power">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Зона</string>
+     </property>
+    </widget>
    </item>
    <item row="5" column="0" colspan="3">
     <layout class="QGridLayout" name="gridLayout_3">
@@ -105,19 +105,6 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="lbl_power">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="text">
-      <string>Зона</string>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="0" colspan="3">
     <widget class="QPushButton" name="_pb_enable_complex">
      <property name="text">
@@ -136,6 +123,26 @@
     <widget class="QLabel" name="lbl_status">
      <property name="text">
       <string>Статус</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLabel" name="lbl_distance">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Радиус</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="0">
+    <widget class="QRadioButton" name="radioButton">
+     <property name="text">
+      <string>RadioButton</string>
      </property>
     </widget>
    </item>

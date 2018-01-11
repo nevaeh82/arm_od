@@ -24,5 +24,8 @@
 	<file>images/require.js</file>
 	<file>images/popupStyle.css</file>
 	<file>images/UAV/cross.png</file>
+	<file>images/Add.png</file>
+	<file>images/PvoAnt.png</file>
+	<file>images/RebAnt.png</file>
   </qresource>
 </RCC>

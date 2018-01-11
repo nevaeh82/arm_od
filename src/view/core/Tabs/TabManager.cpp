@@ -50,6 +50,7 @@ TabManager::TabManager(QTabWidget* tabWidget, QObject *parent):
 	connect(this, SIGNAL(finished()), dbBlaManagerThread, SLOT(deleteLater()));
 	connect(this, SIGNAL(finished()), m_dbUavManager, SLOT(deleteLater()));
 	connect(this, SIGNAL(finished()), m_dbUavController, SLOT(deleteLater()));
+
 }
 
 TabManager::~TabManager()
@@ -113,6 +114,7 @@ void TabManager::addStationTabs()
 		tabWidgetController->setRpcConfig(m_rpcPort, m_rpcHost);
 
 		MapTabWidget* tabWidget = new MapTabWidget(m_tabWidget);
+        tabWidget->setTcpManager(m_tcpClientManager);
 
 		m_viewMenu->addAction(tabWidget->getBlaDockWidget()->toggleViewAction());
 		m_viewMenu->addAction(tabWidget->getBplaDockWidget()->toggleViewAction());
@@ -206,7 +208,12 @@ void TabManager::setARMRConnection(bool b)
 {
 	foreach (MapTabWidgetController* cntr, m_tabWidgetsMap.values()) {
 		cntr->setARMRConnection(b);
-	}
+    }
+}
+
+void TabManager::setTcpClientManager(TcpClientManager *manager)
+{
+    m_tcpClientManager = manager;
 }
 
 void TabManager::start()

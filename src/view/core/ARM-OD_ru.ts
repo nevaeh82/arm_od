@@ -430,116 +430,125 @@ Cid</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="141"/>
+        <location filename="MainWindow.ui" line="142"/>
         <source>View</source>
         <translation>Вид</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="147"/>
+        <location filename="MainWindow.ui" line="148"/>
         <source>Server</source>
         <translation>Сервер</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="163"/>
+        <location filename="MainWindow.ui" line="164"/>
         <source>New</source>
         <translation>Новый пункт</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="168"/>
+        <location filename="MainWindow.ui" line="169"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="173"/>
+        <location filename="MainWindow.ui" line="174"/>
         <source>Open Atlas</source>
         <translation>Открыть атлас</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="178"/>
+        <location filename="MainWindow.ui" line="179"/>
         <source>Open from file</source>
         <translation>Открыть из файла</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="183"/>
+        <location filename="MainWindow.ui" line="184"/>
         <source>Solver settings</source>
         <translation>Параметры координатометрии</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="188"/>
+        <location filename="MainWindow.ui" line="189"/>
         <source>Restart Server</source>
         <translation>Перезапуск сервера</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="196"/>
+        <location filename="MainWindow.ui" line="197"/>
         <source>Listen to ADSB</source>
         <translation>Отображать ADSB</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="204"/>
+        <location filename="MainWindow.ui" line="205"/>
         <source>Listen to online ADSB</source>
         <translation>Отображать ADSB из web</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="209"/>
+        <location filename="MainWindow.ui" line="210"/>
         <source>SolverCommands</source>
         <translation>Настройка КВК</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="214"/>
+        <location filename="MainWindow.ui" line="215"/>
         <source>Crash</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="219"/>
+        <location filename="MainWindow.ui" line="220"/>
         <source>Count capture</source>
         <translation>Расчет зоны перехата</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="224"/>
+        <location filename="MainWindow.ui" line="225"/>
         <source>KTP Addres</source>
         <oldsource>Ktr Addres</oldsource>
         <translation>Настройка адреса КТР</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="229"/>
+        <location filename="MainWindow.ui" line="230"/>
         <source>Load Base stations</source>
         <translation>Загрузить БД сеансов связи</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="234"/>
+        <location filename="MainWindow.ui" line="235"/>
         <source>Clear map</source>
         <translation>Очистить карту</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="239"/>
+        <location filename="MainWindow.ui" line="240"/>
         <source>Save objects</source>
         <translation>Сохранить объекты</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="244"/>
+        <location filename="MainWindow.ui" line="245"/>
         <source>Load objects</source>
         <translation>Загрузить объекты</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="252"/>
+        <location filename="MainWindow.ui" line="253"/>
         <source>Show extra board info</source>
         <translation>Показывать доп. борт. информацию</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="20"/>
+        <location filename="MainWindow.ui" line="258"/>
+        <source>PVO Adress</source>
+        <translation>Адрес ПВО-РЭБ</translation>
+    </message>
+    <message>
         <source>Zaviruha</source>
-        <translation>Завируха АРМ-ОД</translation>
+        <translation type="obsolete">Завируха АРМ-ОД</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="20"/>
+        <source>ARM_OD</source>
+        <translation>АРМ-ОД</translation>
     </message>
 </context>
 <context>
     <name>MainWindowController</name>
     <message>
-        <location filename="MainWindowController.cpp" line="120"/>
+        <location filename="MainWindowController.cpp" line="129"/>
         <source>Unable to connect to server</source>
         <translation>Неудалось подключиться к серверу</translation>
     </message>
     <message>
-        <location filename="MainWindowController.cpp" line="120"/>
+        <location filename="MainWindowController.cpp" line="129"/>
         <source>Please try to restart application</source>
         <translation>Попробуйте перезапустить приложение</translation>
     </message>
@@ -551,29 +560,29 @@ Cid</source>
         <translation type="obsolete">НИИПП</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="158"/>
+        <location filename="Map/MapClient1.cpp" line="160"/>
         <source>UAV_enemy_manual</source>
         <oldsource>UAV_enemy</oldsource>
         <translation>БПЛА Р</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="157"/>
+        <location filename="Map/MapClient1.cpp" line="159"/>
         <source>UAV_enemy_track_manual</source>
         <oldsource>UAV_enemy_track</oldsource>
         <translation>БПЛА Р: трек</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="140"/>
+        <location filename="Map/MapClient1.cpp" line="142"/>
         <source>PIPS</source>
         <translation>ПИПС</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="161"/>
+        <location filename="Map/MapClient1.cpp" line="163"/>
         <source>UAV_enemy_auto</source>
         <translation>БПЛА А</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="160"/>
+        <location filename="Map/MapClient1.cpp" line="162"/>
         <source>UAV_enemy_track_auto</source>
         <translation>БПЛА А: трек</translation>
     </message>
@@ -582,18 +591,18 @@ Cid</source>
         <translation type="obsolete">БПЛА Т</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="167"/>
+        <location filename="Map/MapClient1.cpp" line="169"/>
         <source>UAV</source>
         <translation>БЛА</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="166"/>
+        <location filename="Map/MapClient1.cpp" line="168"/>
         <source>UAV_track_autopilot</source>
         <oldsource>UAV_track</oldsource>
         <translation>БЛА: трек от автопилота</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="165"/>
+        <location filename="Map/MapClient1.cpp" line="167"/>
         <source>UAV_track_KTR</source>
         <translation>БЛА: трек от КТР</translation>
     </message>
@@ -610,12 +619,12 @@ Cid</source>
         <translation type="obsolete">Сетка</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="145"/>
+        <location filename="Map/MapClient1.cpp" line="147"/>
         <source>Checkpoints</source>
         <translation>Контрольные точки</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="146"/>
+        <location filename="Map/MapClient1.cpp" line="148"/>
         <source>Interception point</source>
         <translation>Точка перехвата</translation>
     </message>
@@ -640,68 +649,73 @@ Cid</source>
         <translation type="obsolete">ОП</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="150"/>
+        <location filename="Map/MapClient1.cpp" line="152"/>
         <source>Hyperbole</source>
         <translation>Гипербола</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="151"/>
+        <location filename="Map/MapClient1.cpp" line="153"/>
         <source>Hyperbole-Zone</source>
         <translation>Гипербозоны</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="152"/>
+        <location filename="Map/MapClient1.cpp" line="154"/>
         <source>History</source>
         <translation>История</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="153"/>
+        <location filename="Map/MapClient1.cpp" line="155"/>
         <source>Point</source>
         <translation>Точки</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="154"/>
+        <location filename="Map/MapClient1.cpp" line="156"/>
         <source>workArea</source>
         <translation>Рабочая область</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="155"/>
+        <location filename="Map/MapClient1.cpp" line="157"/>
         <source>NetArea</source>
         <translation>Координатная сетка</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="169"/>
+        <location filename="Map/MapClient1.cpp" line="171"/>
         <source>ADSB</source>
         <translation>АДСБ</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="170"/>
+        <location filename="Map/MapClient1.cpp" line="172"/>
         <source>ADSBtrack</source>
         <translation>АДСБтрек</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="460"/>
+        <location filename="Map/MapClient1.cpp" line="174"/>
+        <source>Stations PVO &amp; REB</source>
+        <translation>Станции ПВО и РЭБ</translation>
+    </message>
+    <message>
+        <location filename="Map/MapClient1.cpp" line="468"/>
         <source>Square: %1 : %2</source>
         <translation>Квадрат: %1 : %2</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="1226"/>
+        <location filename="Map/MapClient1.cpp" line="1252"/>
         <source>Capture aim %1</source>
         <translation>Зона перехвата 
  Цели № %1</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="1515"/>
+        <location filename="Map/MapClient1.cpp" line="1541"/>
         <source>Ingur</source>
         <translation>Ингур</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="1569"/>
+        <location filename="Map/MapClient1.cpp" line="1623"/>
         <source>Capture</source>
         <translation>Перехват</translation>
     </message>
     <message>
-        <location filename="Map/MapClient1.cpp" line="1569"/>
+        <location filename="Map/MapClient1.cpp" line="1623"/>
         <source>Capture in hour is impossible</source>
         <translation>Перехват в течении часа невозможен!</translation>
     </message>
@@ -719,7 +733,7 @@ Cid</source>
         <translation>Формат цифровых карт (*.chart *.sxf *.sit *.map *.gc *.gst)</translation>
     </message>
     <message>
-        <location filename="Map/MapController.cpp" line="501"/>
+        <location filename="Map/MapController.cpp" line="522"/>
         <source>Moving aim on %1 mHz</source>
         <translation>Подвижная цель   %1 мГц</translation>
     </message>
@@ -767,21 +781,24 @@ Cid</source>
         <translation>Список БЛА</translation>
     </message>
     <message>
-        <location filename="MapTabWidget.ui" line="64"/>
+        <location filename="MapTabWidget.ui" line="81"/>
+        <source>Stations</source>
+        <translation>Станции ПВО и РЭБ</translation>
+    </message>
+    <message>
+        <location filename="MapTabWidget.ui" line="95"/>
         <source>Enemy UAV List</source>
         <translation>Список БПЛА</translation>
     </message>
     <message>
-        <location filename="MapTabWidget.ui" line="100"/>
         <source>SPIP DD-1</source>
         <oldsource>SPIP-DD 1</oldsource>
-        <translation>СПИП ДД-1</translation>
+        <translation type="obsolete">СПИП ДД-1</translation>
     </message>
     <message>
-        <location filename="MapTabWidget.ui" line="108"/>
         <source>SPIP DD-2</source>
         <oldsource>SPIP-DD 2</oldsource>
-        <translation>СПИП ДД-2</translation>
+        <translation type="obsolete">СПИП ДД-2</translation>
     </message>
 </context>
 <context>
@@ -797,14 +814,12 @@ Cid</source>
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="227"/>
         <source>SPIP DD-1</source>
-        <translation>СПИП ДД-1</translation>
+        <translation type="obsolete">СПИП ДД-1</translation>
     </message>
     <message>
-        <location filename="Tabs/MapTabWidgetController.cpp" line="233"/>
         <source>SPIP DD-2</source>
-        <translation>СПИП ДД-2</translation>
+        <translation type="obsolete">СПИП ДД-2</translation>
     </message>
 </context>
 <context>
@@ -823,22 +838,22 @@ Cid</source>
         <translation>Форма</translation>
     </message>
     <message utf8="true">
-        <location filename="NIIPP/NiippControlWidget.ui" line="26"/>
+        <location filename="NIIPP/NiippControlWidget.ui" line="138"/>
         <source>Радиус</source>
         <translation></translation>
     </message>
     <message utf8="true">
-        <location filename="NIIPP/NiippControlWidget.ui" line="33"/>
+        <location filename="NIIPP/NiippControlWidget.ui" line="44"/>
         <source>Пуск</source>
         <translation></translation>
     </message>
     <message utf8="true">
-        <location filename="NIIPP/NiippControlWidget.ui" line="42"/>
+        <location filename="NIIPP/NiippControlWidget.ui" line="22"/>
         <source>Режим работы</source>
         <translation></translation>
     </message>
     <message utf8="true">
-        <location filename="NIIPP/NiippControlWidget.ui" line="49"/>
+        <location filename="NIIPP/NiippControlWidget.ui" line="29"/>
         <source>Выбор антенны</source>
         <translation></translation>
     </message>
@@ -857,18 +872,23 @@ Cid</source>
         <source>Очистить</source>
         <translation></translation>
     </message>
+    <message>
+        <location filename="NIIPP/NiippControlWidget.ui" line="145"/>
+        <source>RadioButton</source>
+        <translation></translation>
+    </message>
     <message utf8="true">
-        <location filename="NIIPP/NiippControlWidget.ui" line="117"/>
+        <location filename="NIIPP/NiippControlWidget.ui" line="73"/>
         <source>Зона</source>
         <translation></translation>
     </message>
     <message utf8="true">
-        <location filename="NIIPP/NiippControlWidget.ui" line="124"/>
+        <location filename="NIIPP/NiippControlWidget.ui" line="111"/>
         <source>Включить комплекс</source>
         <translation></translation>
     </message>
     <message utf8="true">
-        <location filename="NIIPP/NiippControlWidget.ui" line="138"/>
+        <location filename="NIIPP/NiippControlWidget.ui" line="125"/>
         <source>Статус</source>
         <translation></translation>
     </message>
@@ -876,141 +896,164 @@ Cid</source>
 <context>
     <name>NiippWidget</name>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="14"/>
+        <location filename="NIIPP/NiippWidget.ui" line="26"/>
         <source>Form</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="61"/>
+        <location filename="NIIPP/NiippWidget.ui" line="68"/>
+        <source>add</source>
+        <translation>   Добавить станцию</translation>
+    </message>
+    <message>
         <source>Radius</source>
-        <translation>Радиус</translation>
+        <translation type="obsolete">Радиус</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="94"/>
         <source>Start</source>
-        <translation>Пуск</translation>
+        <translation type="obsolete">Пуск</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="119"/>
         <source>Work mode</source>
-        <translation>Режим работы</translation>
+        <translation type="obsolete">Режим работы</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="112"/>
         <source>Antenna type</source>
-        <translation>Выбор антенны</translation>
+        <translation type="obsolete">Выбор антенны</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="127"/>
         <source>Directed</source>
-        <translation>Направленная</translation>
+        <translation type="obsolete">Направленная</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="132"/>
         <source>Undirected</source>
-        <translation>Ненаправленная</translation>
+        <translation type="obsolete">Ненаправленная</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="141"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="151"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="165"/>
         <source>Radiation</source>
-        <translation>Облучение</translation>
+        <translation type="obsolete">Облучение</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="146"/>
         <source>Adduction</source>
-        <translation>Приведение</translation>
+        <translation type="obsolete">Приведение</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="151"/>
         <source>Round view</source>
-        <translation>Круговой обзор</translation>
+        <translation type="obsolete">Круговой обзор</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="159"/>
         <source>Latitude</source>
-        <translation>Широта</translation>
+        <translation type="obsolete">Широта</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="166"/>
         <source>Longitude</source>
-        <translation>Долгота</translation>
+        <translation type="obsolete">Долгота</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="179"/>
         <source>Clear</source>
-        <translation>Очистить</translation>
+        <translation type="obsolete">Очистить</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="198"/>
         <source>RDP</source>
-        <translation>УРС</translation>
+        <translation type="obsolete">УРС</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="48"/>
         <source>Area</source>
-        <translation>Зона</translation>
+        <translation type="obsolete">Зона</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="33"/>
         <source>Turn complex on</source>
-        <translation>Включить комплекс</translation>
+        <translation type="obsolete">Включить комплекс</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.ui" line="188"/>
         <source>Status</source>
-        <translation>Статус</translation>
+        <translation type="obsolete">Статус</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="37"/>
         <source>0 km</source>
         <oldsource>0 ÐºÐ¼</oldsource>
-        <translation>0 км</translation>
+        <translation type="obsolete">0 км</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="62"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="223"/>
         <source>Simple</source>
-        <translation>Простой</translation>
+        <translation type="obsolete">Простой</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="95"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="101"/>
         <source>%1 km</source>
-        <translation>%1 км</translation>
+        <translation type="obsolete">%1 км</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="97"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="229"/>
         <source>Work with directional antenna</source>
-        <translation>Работа на направленную антенну</translation>
+        <translation type="obsolete">Работа на направленную антенну</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="103"/>
-        <location filename="NIIPP/NiippWidget.cpp" line="226"/>
         <source>Work with undirectional antenna</source>
-        <translation>Работа на ненаправленную антенну</translation>
+        <translation type="obsolete">Работа на ненаправленную антенну</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="232"/>
         <source>Accident</source>
-        <translation>Авария</translation>
+        <translation type="obsolete">Авария</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="235"/>
         <source>No coordinates</source>
-        <translation>Нет координат</translation>
+        <translation type="obsolete">Нет координат</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="238"/>
         <source>Service</source>
-        <translation>Обслуживание</translation>
+        <translation type="obsolete">Обслуживание</translation>
     </message>
     <message>
-        <location filename="NIIPP/NiippWidget.cpp" line="241"/>
         <source>No data</source>
-        <translation>Нет данных</translation>
+        <translation type="obsolete">Нет данных</translation>
+    </message>
+    <message>
+        <location filename="NIIPP/NiippWidget.cpp" line="66"/>
+        <source>Station-%1</source>
+        <translation>Станция-%1</translation>
+    </message>
+</context>
+<context>
+    <name>PvoAddressControl</name>
+    <message>
+        <location filename="PvoAddresControl.ui" line="20"/>
+        <source>Form</source>
+        <translation>Настройки</translation>
+    </message>
+    <message>
+        <location filename="PvoAddresControl.ui" line="26"/>
+        <source>TCP client</source>
+        <translation>TCP клиент (куда подключаться)</translation>
+    </message>
+    <message>
+        <location filename="PvoAddresControl.ui" line="32"/>
+        <source>Client Ip:</source>
+        <translation>IP адрес: </translation>
+    </message>
+    <message>
+        <location filename="PvoAddresControl.ui" line="55"/>
+        <source>Client Port:</source>
+        <translation>Порт: </translation>
+    </message>
+    <message>
+        <location filename="PvoAddresControl.ui" line="84"/>
+        <source>TcpServer</source>
+        <translation>TCP сервер (раздает данные с этого ПК)</translation>
+    </message>
+    <message>
+        <location filename="PvoAddresControl.ui" line="90"/>
+        <source>Server port:</source>
+        <translation>Порт: </translation>
+    </message>
+    <message>
+        <location filename="PvoAddresControl.ui" line="125"/>
+        <source>Apply</source>
+        <translation>Применить</translation>
+    </message>
+    <message>
+        <location filename="PvoAddresControl.ui" line="135"/>
+        <source>Need to restart programm afte changes</source>
+        <translation>Перезапустите программу после
+изменения параметров.</translation>
     </message>
 </context>
 <context>
@@ -1771,6 +1814,88 @@ Cid</source>
     <message>
         <source>Single mode: Point 2</source>
         <translation type="obsolete">Точка 2</translation>
+    </message>
+</context>
+<context>
+    <name>onepointwgt</name>
+    <message>
+        <location filename="NIIPP/onepointwgt.ui" line="20"/>
+        <source>Form</source>
+        <translation>Станции</translation>
+    </message>
+    <message>
+        <location filename="NIIPP/onepointwgt.ui" line="27"/>
+        <source>PVO</source>
+        <translation>ПВО</translation>
+    </message>
+    <message>
+        <location filename="NIIPP/onepointwgt.ui" line="32"/>
+        <source>REB</source>
+        <translation>РЭБ</translation>
+    </message>
+    <message>
+        <location filename="NIIPP/onepointwgt.ui" line="61"/>
+        <source>Name</source>
+        <translation>Имя станции</translation>
+    </message>
+</context>
+<context>
+    <name>onepointwidgetadditional</name>
+    <message>
+        <location filename="NIIPP/onepointwidgetadditional.ui" line="14"/>
+        <source>Station Settings</source>
+        <translation>Настройки станции</translation>
+    </message>
+    <message>
+        <location filename="NIIPP/onepointwidgetadditional.ui" line="20"/>
+        <source>Coordinates</source>
+        <translation>Координаты</translation>
+    </message>
+    <message>
+        <location filename="NIIPP/onepointwidgetadditional.ui" line="27"/>
+        <source>Azimuth</source>
+        <translation>Азимут</translation>
+    </message>
+    <message>
+        <location filename="NIIPP/onepointwidgetadditional.ui" line="34"/>
+        <source>Radius</source>
+        <translation>Радиус</translation>
+    </message>
+    <message>
+        <location filename="NIIPP/onepointwidgetadditional.ui" line="41"/>
+        <source>Width</source>
+        <translation>Ширина обзора</translation>
+    </message>
+    <message>
+        <location filename="NIIPP/onepointwidgetadditional.ui" line="48"/>
+        <source>Round view</source>
+        <translation>Круговой обзор</translation>
+    </message>
+    <message>
+        <location filename="NIIPP/onepointwidgetadditional.ui" line="55"/>
+        <source>Lon: </source>
+        <translation>Долгота: </translation>
+    </message>
+    <message>
+        <location filename="NIIPP/onepointwidgetadditional.ui" line="74"/>
+        <source>Lat: </source>
+        <translation>Широта: </translation>
+    </message>
+    <message>
+        <location filename="NIIPP/onepointwidgetadditional.ui" line="90"/>
+        <source>m</source>
+        <translation></translation>
+    </message>
+    <message utf8="true">
+        <location filename="NIIPP/onepointwidgetadditional.ui" line="103"/>
+        <location filename="NIIPP/onepointwidgetadditional.ui" line="132"/>
+        <source>˚</source>
+        <translation>˚</translation>
+    </message>
+    <message>
+        <location filename="NIIPP/onepointwidgetadditional.ui" line="113"/>
+        <source> km</source>
+        <translation> км</translation>
     </message>
 </context>
 </TS>

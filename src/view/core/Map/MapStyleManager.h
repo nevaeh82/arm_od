@@ -68,6 +68,8 @@ public:
 	static inline QString getADSBStyleName() { return QString(MAP_STYLE_NAME_ADSB); }
 	static inline QString getADSBTrackStyleName() { return QString(MAP_STYLE_NAME_ADSB); }
 
+    virtual PwGisStyle *createStationRebStyle(const QString &layerId, int active);
+    virtual PwGisStyle *createStationPvoStyle(const QString &layerId, int active);
 protected:
 	/// Creates style with \a name
 	/// \return false, is style was created before

@@ -120,6 +120,8 @@ MapClient1::MapClient1(MapWidget* pwWidget, Station* station, QObject* parent)
 	connect(pwWidget, SIGNAL(onClearBaseStation()), this, SLOT(slotClearBaseStation()));
 
     m_qLbl = new QLabel("txtQuadrant", m_pwWidget, Qt::Popup);
+
+    m_tcpClientManager = nullptr;
 }
 
 MapClient1::~MapClient1()
@@ -169,6 +171,7 @@ void MapClient1::init()
 	addMarkerLayer( 202, "ADSB", tr( "ADSB" ) );
 	addMarkerLayer( 203, "ADSBtrack", tr( "ADSBtrack" ) );
 
+    addMarkerLayer( 300, "StationsPVO", tr( "Stations PVO & REB" ) );
 
 
 	showLayer( 8, false );
@@ -217,6 +220,11 @@ void MapClient1::init()
 	for(int i = 1; i<11; i++) {
 		m_styleManager->createHyperboleZoneStyle( m_mapLayers.value(15), i )->apply();
 	}
+
+    m_pvoSimpleStyle = m_styleManager->createStationPvoStyle(m_mapLayers.value(300), 0)->apply();
+    m_pvoActiveStyle = m_styleManager->createStationPvoStyle(m_mapLayers.value(300), 1)->apply();
+    m_rebSimpleStyle = m_styleManager->createStationRebStyle(m_mapLayers.value(300), 0)->apply();
+    m_rebActiveStyle = m_styleManager->createStationRebStyle(m_mapLayers.value(300), 1)->apply();
 
 	for(int i = 1; i<11; i++) {
 		m_styleManager->createKKpointStyle( m_mapLayers.value(17), double((double)i/(double)10) )->apply();
@@ -671,6 +679,15 @@ void MapClient1::mapMoved(double lon, double lat)
     emit onSquare(name);
 }
 
+void MapClient1::setTcpClientManager(TcpClientManager *manager)
+{
+    m_tcpClientManager = manager;
+
+    foreach (MapFeature::PvoFeature* feature, m_pvoList.values()) {
+        feature->setTcpClientManager(m_tcpClientManager);
+    }
+}
+
 void MapClient1::addInterception(int blaId, int bplaId, QList<UavInfo>& blaInfoList, QList<UavInfo>& bplaInfoList )
 {
 	emit interceptionAdded( blaId, bplaId, blaInfoList, bplaInfoList );
@@ -923,7 +940,7 @@ void MapClient1::addNiippPoint( const QPointF& point )
 
 void MapClient1::updateNiippPowerZone(const Niipp& niipp)
 {
-	emit niippPowerZoneUpdated( niipp );
+    emit niippPowerZoneUpdated( niipp );
 }
 
 void MapClient1::removeInterceptionData( int friendBplaId, int enemyBplaId )
@@ -1004,6 +1021,15 @@ void MapClient1::addEnemyBplaInternal(const UavInfo& uav,
 	//Do not set tail temporally
 	if( !uav.historical ) {
 		bpla->setTail( tail, tailStdDev );
+
+        if(m_tcpClientManager) {
+                        m_tcpClientManager->sendEnemyToServer(uav);
+                        m_tcpClientManager->sendEnemyToClient(uav);
+        }
+
+        foreach (MapFeature::PvoFeature* val, m_pvoList.values()) {
+            val->setEnemyPoint(id, uav);
+        }
 	}
 
 	bpla->updateMap();
@@ -1544,6 +1570,34 @@ void MapClient1::addPeleng(int id, int idPost, double lat, double lon, double di
 
 		m_pelengatorList.insert( idPost, p );
 	}
+}
+
+void MapClient1::updateStationPowerZone(const NStation &niipp)
+{
+    // add or update NIIPP
+    MapFeature::PvoFeature* niippFeature = m_pvoList.value( niipp.getID(), NULL );
+    if( niippFeature != NULL ) {
+        niippFeature->update( niipp );
+    } else {
+        niippFeature = m_factory->createPvoStation( niipp,m_pvoSimpleStyle, m_pvoActiveStyle,
+                                                    m_rebSimpleStyle, m_rebActiveStyle);
+        niippFeature->setTcpClientManager(m_tcpClientManager);
+        niippFeature->updateMap();
+
+        m_pvoList.insert( niipp.getID(), niippFeature );
+    }
+}
+
+void MapClient1::removeStationPowerZone(const NStation &niipp)
+{
+    // add or update NIIPP
+
+    MapFeature::PvoFeature* niippFeature = m_pvoList.value( niipp.getID(), NULL );
+    if( niippFeature != NULL ) {
+        m_pvoList.remove(niipp.getID());
+        niippFeature->removeFromMap();
+        delete niippFeature;
+    }
 }
 
 void MapClient1::addNiipInternal( const Niipp& niipp )
