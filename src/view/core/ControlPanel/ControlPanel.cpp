@@ -29,10 +29,11 @@ ControlPanel::ControlPanel(QWidget *parent) :
 	ui->connectToDbLbl->setPixmap(redLbl);
 	ui->lblWriteToBd->setPixmap(yellowLbl);
 
-    ui->movingAlarmLbl->setVisible(false);
-    m_alarmTimer = new QTimer(this);
+	ui->movingAlarmLbl->setVisible(false);
+	m_alarmTimer = new QTimer(this);
 
-    connect(m_alarmTimer, SIGNAL(timeout()), this, SLOT(closeAlarm()));
+	connect(m_alarmTimer, SIGNAL(timeout()), this, SLOT(closeAlarm()));
+	connect(ui->screenPB, SIGNAL(clicked(bool)), this, SIGNAL(signalScreenRequest()));
 }
 
 ControlPanel::~ControlPanel()

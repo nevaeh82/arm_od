@@ -38,6 +38,7 @@ signals:
 	void currentDateTimeChanged(const QDateTime& date);
 
 	void signalBdWriteStateInternal(int);
+	void signalScreenRequest();
 
 private slots:
 	void changeViewStatus(Status status);

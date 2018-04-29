@@ -27,5 +27,6 @@
 	<file>images/Add.png</file>
 	<file>images/PvoAnt.png</file>
 	<file>images/RebAnt.png</file>
+	<file>images/video.png</file>
   </qresource>
 </RCC>

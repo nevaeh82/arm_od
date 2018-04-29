@@ -28,6 +28,8 @@ MapController::MapController(QObject *parent):
 	m_initJsTimer->setInterval( MAP_INITJS_TIMEOUT );
 
 	m_mapUpTime = QTime::currentTime();
+
+	m_moving = false;
 }
 
 MapController::~MapController()
@@ -133,7 +135,7 @@ void MapController::onMapClicked(double lon, double lat)
 
 	emit mapClicked( lon, lat );
 
-    client->mapClicked(lon, lat);
+	client->mapClicked(lon, lat);
 
 	//	client->addNiippPoint( point );
 
@@ -191,6 +193,46 @@ void MapController::onExtraBoardInfo(int val)
 {
 	IMapClient* client = getMapClient();
 	client->setBoardExtraInfo(val);
+}
+
+bool isRunning()
+{
+	QProcess process;
+		process.setReadChannel(QProcess::StandardOutput);
+		process.setReadChannelMode(QProcess::MergedChannels);
+	//    process.start("cmd.exe /C echo test");
+		process.start("wmic.exe /OUTPUT:STDOUT PROCESS get Caption");
+
+		process.waitForStarted(1000);
+		process.waitForFinished(1000);
+
+		QString list = QString(process.readAll());
+		if(list.contains("grab.exe")){
+			return true;
+		}
+
+		return false;
+}
+
+void MapController::screenRequest()
+{
+	if(isRunning()) {
+		return;
+	}
+
+	IMapClient* client = getMapClient();
+	if( NULL == client ) return;
+
+	client->showHyperbole();
+
+
+	m_screenProcess.startDetached("screenGrabber/grab.exe");
+	m_screenGrabTimer.singleShot(60000, this, SLOT(movingReset()));
+}
+
+void MapController::movingReset()
+{
+	m_moving = false;
 }
 
 IMapClient *MapController::getMapClient(int id)
@@ -533,6 +575,13 @@ void MapController::onMethodCalled(const QString& method, const QVariant& argume
 
 					m_enemyModel->onUavInfoChanged(uav, ENEMY_UAV_ROLE);
 				}
+			}
+
+			if(m_moving != movingAim) {
+				if(movingAim) {
+					screenRequest();
+				}
+				m_moving = movingAim;
 			}
 
             if(!movingAim) {

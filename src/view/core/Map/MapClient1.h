@@ -142,7 +142,8 @@ private:
     void readCheckNetFromFile(QString fileName);
 
     QLabel* m_qLbl;
-    QString getSquareName(double lon, double lat);
+	QString getSquareName(double lon, double lat);
+	void addSingleRoundArea(const QPointF center, int id);
 public slots:
 	virtual void init();
 	virtual void setPoint();
@@ -187,6 +188,8 @@ public slots:
 
     virtual void setTcpClientManager(TcpClientManager *manager);
 
+	virtual void showHyperbole();
+
 private slots:
 	void addFriendBplaInternal( const UavInfo& uav );
 	void addEnemyBplaInternal( const UavInfo& uav,
@@ -213,6 +216,7 @@ private slots:
 
 	void addStationInternal(QByteArray data);
 	void addAreaInternal(QPointF point1, QPointF point2);
+	void addAreaNetInternal(QPointF point1, QPointF point2);
 
 	void removeAllHyperbole();
 	void removeAllonePointTimer();

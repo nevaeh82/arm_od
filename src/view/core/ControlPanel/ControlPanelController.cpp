@@ -30,6 +30,7 @@ void ControlPanelController::appendView(ControlPanel *view)
 	connect(m_view, SIGNAL(startExportToXls()), this, SLOT(onExportToXls()));
 
 	connect(m_view, SIGNAL(signalOnMux(int)), this, SLOT(slotChangeMux(int)));
+	connect(m_view, SIGNAL(signalScreenRequest()), this, SIGNAL(signalScreenRequest()));
 }
 
 void ControlPanelController::setUavHistory(IUavHistory *history)
@@ -70,7 +71,7 @@ void ControlPanelController::changeViewStatus(IUavHistoryListener::Status status
 
 		case IUavHistoryListener::NotReady:
 			m_view->setDataBaseStatus( false );
-			m_view->setEnabled( false );
+			//m_view->setEnabled( false );
 			break;
 
 		case IUavHistoryListener::Ready:

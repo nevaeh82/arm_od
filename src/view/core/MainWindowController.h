@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QEventLoop>
+#include <QTime>
 
 #include <SettingsManager/RpcSettingsManager.h>
 
@@ -53,7 +54,8 @@ private:
 
 	QTimer* m_rpcCheckTimer;
 
-    TcpClientManager* m_tcpManager;
+	TcpClientManager* m_tcpManager;
+	QTime m_workTime;
 
 public:
 	explicit MainWindowController(QObject *parent = 0);

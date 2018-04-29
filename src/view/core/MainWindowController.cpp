@@ -41,8 +41,9 @@ MainWindowController::MainWindowController(QObject *parent) :
 	connect(m_rpcCheckTimer, SIGNAL(timeout()), this, SLOT(slotCheckRpc()));
 
 	m_rpcCheckTimer->start(30000);
+	m_workTime.start();
 
-    m_tcpManager = new TcpClientManager(this);
+	m_tcpManager = new TcpClientManager(this);
 }
 
 MainWindowController::~MainWindowController()
@@ -295,6 +296,11 @@ void MainWindowController::slotServerProcessDead()
 
 void MainWindowController::slotCheckRpc()
 {
+	if(m_workTime.elapsed() > 60000*60*6) {
+		log_debug("Ololo, 6 hours of working, restart");
+		slotServerProcessDead();
+	}
+
 	if(!m_armrConnection) {
 		m_ping = true;
 		return;

@@ -439,137 +439,178 @@ void MapClient1::addStationInternal(QByteArray data)
 
 QString MapClient1::getSquareName(double lon, double lat)
 {
-    if(m_arealist.getCount() != 4) {
-        return QString("");
-    }
+//    if(m_arealist.getCount() != 4) {
+//        return QString("");
+//    }
 
-    if(m_pwWidget->mapProvider()->layerManager()->isVisible(m_mapLayers.value( 19 ))) {
+//    if(m_pwWidget->mapProvider()->layerManager()->isVisible(m_mapLayers.value( 19 ))) {
 
-        QPointF point1 = m_areaGeoList.at(0);
-        QPointF point2 = m_areaGeoList.at(1);
+//        QPointF point1 = m_areaGeoList.at(0);
+//        QPointF point2 = m_areaGeoList.at(1);
 
-        int xCnt = (point2.x() - point1.x()) / m_netLength;
-        int yCnt = (point2.y() - point1.y()) / m_netLength;
+//        int xCnt = (point2.x() - point1.x()) / m_netLength;
+//        int yCnt = (point2.y() - point1.y()) / m_netLength;
 
-        int xCntAll = (point2.x() - point1.x()) / m_netLength + 1;
+//        int xCntAll = (point2.x() - point1.x()) / m_netLength + 1;
 
-        if(point1.x() <= lon && point2.x() >= lon &&
-           point1.y() <= lat && point2.y() >= lat) {
-            int xpCnt = (lon - point1.x()) / m_netLength;
-            int ypCnt = (lat - point1.y()) / m_netLength;
+//        if(point1.x() <= lon && point2.x() >= lon &&
+//           point1.y() <= lat && point2.y() >= lat) {
+//            int xpCnt = (lon - point1.x()) / m_netLength;
+//            int ypCnt = (lat - point1.y()) / m_netLength;
 
-            QString xVal = QString(QChar(65+xpCnt%26));
-            QString xValAdd = QString::number(floor((double)xpCnt/26));
+//            QString xVal = QString(QChar(65+xpCnt%26));
+//            QString xValAdd = QString::number(floor((double)xpCnt/26));
 
-            if(xCntAll > 26) {
-                xVal = xVal + xValAdd;
-            }
+//            if(xCntAll > 26) {
+//                xVal = xVal + xValAdd;
+//            }
 
-            return QString(tr("Square: %1 : %2"))
-                    .arg(xVal)
-                    .arg(ypCnt);
+//            return QString(tr("Square: %1 : %2"))
+//                    .arg(xVal)
+//                    .arg(ypCnt);
 
-        }
-    } else {
-        return QString("");
-    }
+//        }
+//    } else {
+//        return QString("");
+//    }
 
     return QString("");
+}
+
+double getCorrectDegAngle(const double deg_1)
+{
+	double retVal = deg_1;
+	if (deg_1 < 0.0) {
+		retVal = deg_1 + 360.0;
+	}
+	else if (deg_1 > 360.0) {
+		retVal = deg_1 - 360.0;
+	}
+	return retVal;
+}
+
+double DegreeToRadian(double angle)
+{
+	return M_PI * angle / 180.0;
+}
+
+double RadianToDegree(double angle)
+{
+	return 180.0 * angle / M_PI;
+}
+
+QPointF getPointByDistance(double lon1, double lat1, double dist, double azimuth)
+{
+	dist *= 1;
+	lon1 = DegreeToRadian(lon1);
+	lat1 = DegreeToRadian(lat1);
+	azimuth = DegreeToRadian( getCorrectDegAngle(azimuth) );
+	double angle = DegreeToRadian(90);
+
+	double b = dist / 6378137.0; //meter;
+	double a = acos( cos(b)*cos(angle-lat1) + sin(angle-lat1)*sin(b)*cos(azimuth) );
+	double B = asin( sin(b)*sin(azimuth)/sin(a) );
+
+	return QPointF( RadianToDegree(B+lon1), RadianToDegree(angle-a) );
+}
+
+void MapClient1::addSingleRoundArea(const QPointF center, int id)
+{
+	for(int i = 0; i<m_netLength; i++) {
+		m_pwWidget->addCircle(QString("cir%1%2").arg(id).arg(i), center.x(), center.y(),
+							  (i+1)*1444, /*QString("%1 km").arg(i)*/"", "", MAP_STYLE_NAME_NET_AREA);
+	}
+
+	for(int i = 0; i<36; i++) {
+		QPointF endP = getPointByDistance(center.x(), center.y(), m_netLength*1000, i*10);
+		m_pwWidget->addLine(QString("Aline%1%2").arg(id).arg(i),
+									endP.x(), endP.y(),
+									center.x(), center.y(),
+									QString("%1").arg(i*10), "", MAP_STYLE_NAME_NET_AREA);
+	}
+}
+
+void MapClient1::addAreaNetInternal(QPointF point1, QPointF point2)
+{
+	addSingleRoundArea(point1, 1);
+	addSingleRoundArea(point2, 2);
 }
 
 void MapClient1::addAreaInternal(QPointF point1, QPointF point2)
 {
 	QString name = QString("SolverWorkArea");
 
+	QPointF point1Net;
+	QPointF point2Net;
+	if(m_areaGeoList.size() == 2) {
+		point1Net = m_areaGeoList.at(0);
+		point2Net = m_areaGeoList.at(1);
+		int xCnt = (point2Net.x() - point1Net.x()) / m_netLength + 2;
+		int yCnt = (point2Net.y() - point1Net.y()) / m_netLength + 1;
+		for(int x = 0; x<xCnt+2; x++) {
+			m_pwWidget->removeObject(QString("x%1").arg(x));
+		}
 
-    QPointF point1Net;
-    QPointF point2Net;
-    if(m_areaGeoList.size() == 2) {
-        point1Net = m_areaGeoList.at(0);
-        point2Net = m_areaGeoList.at(1);
-        int xCnt = (point2Net.x() - point1Net.x()) / m_netLength + 2;
-        int yCnt = (point2Net.y() - point1Net.y()) / m_netLength + 1;
-        for(int x = 0; x<xCnt+2; x++) {
-            m_pwWidget->removeObject(QString("x%1").arg(x));
-        }
+		for(int y = 0; y<yCnt+2; y++) {
+			m_pwWidget->removeObject(QString("y%1").arg(y));
+		}
+	}
 
-        for(int y = 0; y<yCnt+2; y++) {
-            m_pwWidget->removeObject(QString("y%1").arg(y));
-        }
-    }
+	point1Net = point1;
+	point2Net = point2;
+	int inc = 1;
+	if(!m_useCustomArea) {
+		m_areaGeoList.clear();
+		m_areaGeoList.append(point1);
+		m_areaGeoList.append(point2);
+	} else if(m_areaGeoList.size() == 2){
+		point1Net = m_areaGeoList.at(0);
+		point2Net = m_areaGeoList.at(1);
+		inc = 2;
+	}
 
-    point1Net = point1;
-    point2Net = point2;
-    int inc = 1;
-    if(!m_useCustomArea) {
-        m_areaGeoList.clear();
-        m_areaGeoList.append(point1);
-        m_areaGeoList.append(point2);
-    } else if(m_areaGeoList.size() == 2){
-        point1Net = m_areaGeoList.at(0);
-        point2Net = m_areaGeoList.at(1);
-        inc = 2;
-    }
+	m_arealist.clear();
 
-    m_arealist.clear();
-
-    m_arealist.append( new PwGisLonLat(point1.x(), point1.y()) );
-    m_arealist.append( new PwGisLonLat(point1.x(), point2.y()) );
-    m_arealist.append( new PwGisLonLat(point2.x(), point2.y()) );
-    m_arealist.append( new PwGisLonLat(point2.x(), point1.y()) );
+	m_arealist.append( new PwGisLonLat(point1.x(), point1.y()) );
+	m_arealist.append( new PwGisLonLat(point1.x(), point2.y()) );
+	m_arealist.append( new PwGisLonLat(point2.x(), point2.y()) );
+	m_arealist.append( new PwGisLonLat(point2.x(), point1.y()) );
 
 
-    int xCnt = (point2Net.x() - point1Net.x()) / m_netLength + inc;
-    int yCnt = (point2Net.y() - point1Net.y()) / m_netLength + 1;
+//    int xCnt = (point2Net.x() - point1Net.x()) / m_netLength + inc;
+//    int yCnt = (point2Net.y() - point1Net.y()) / m_netLength + 1;
 
-    double lonCnt = point1Net.x();
-    double latCnt = point1Net.y();
+//    double lonCnt = point1Net.x();
+//    double latCnt = point1Net.y();
 
-    int charCnt = -1;
-    for(int x = 0; x < xCnt; x++) {
+//    int charCnt = -1;
+//    for(int x = 0; x < xCnt; x++) {
 
-        QString val = QChar(65+x%26);
-        if(!(x%26)) {
-            charCnt++;
-        }
+//        QString val = QChar(65+x%26);
+//        if(!(x%26)) {
+//            charCnt++;
+//        }
 
-        if(xCnt > 26) {
-            val = val + QString::number(charCnt);
-        }
+//        if(xCnt > 26) {
+//            val = val + QString::number(charCnt);
+//        }
 
-        m_pwWidget->addLine( QString("x%1").arg(x), lonCnt, point1Net.y(), lonCnt, point2Net.y(),
-                             QString(val),"", MAP_STYLE_NAME_NET_AREA);
+//        m_pwWidget->addLine( QString("x%1").arg(x), lonCnt, point1Net.y(), lonCnt, point2Net.y(),
+//                             QString(val),"", MAP_STYLE_NAME_NET_AREA);
 
-        lonCnt += m_netLength;
-    }
+//        lonCnt += m_netLength;
+//    }
 
-    for(int y = 0; y < yCnt; y++) {
-        m_pwWidget->addLine( QString("y%1").arg(y), point1Net.x(), latCnt, point2Net.x(), latCnt,
-                             QString::number(y), "", MAP_STYLE_NAME_NET_AREA);
+//    for(int y = 0; y < yCnt; y++) {
+//        m_pwWidget->addLine( QString("y%1").arg(y), point1Net.x(), latCnt, point2Net.x(), latCnt,
+//                             QString::number(y), "", MAP_STYLE_NAME_NET_AREA);
 
-        latCnt += m_netLength;
-    }
+//        latCnt += m_netLength;
+//    }
 
-    m_pwWidget->addPolygon( name, &m_arealist, "", "", MAP_STYLE_NAME_WORK_AREA);
-
-//    m_pwWidget->executeScript("var GEOJSON_PARSER = new OpenLayers.Format.GeoJSON();");
-//    m_pwWidget->executeScript("var ff = client.getLayerByName(\"NetArea\").features");
-
-//    m_pwWidget->executeScript("for (var i = 0; i < ff.length; i++) { \
-//           ff[i].geometry = ff[i].geometry.transform('EPSG:3857', 'EPSG:4326'); \
-//      }");
-
-//    QString retVal = m_pwWidget->executeScript("GEOJSON_PARSER.write(ff);").toString();
-
-//    m_pwWidget->executeScript("for (var i = 0; i < ff.length; i++) { \
-//           ff[i].geometry = ff[i].geometry.transform('EPSG:4326', 'EPSG:3857'); \
-//      }");
-
-//    QFile f("net.geojson");
-//    f.open(QIODevice::WriteOnly);
-//    f.write(retVal.toLocal8Bit());
-//    f.close();
+	m_pwWidget->addPolygon( name, &m_arealist, "", "", MAP_STYLE_NAME_WORK_AREA);
 }
+
 
 void MapClient1::addStation(const QByteArray& data)
 {
@@ -685,7 +726,12 @@ void MapClient1::setTcpClientManager(TcpClientManager *manager)
 
     foreach (MapFeature::PvoFeature* feature, m_pvoList.values()) {
         feature->setTcpClientManager(m_tcpClientManager);
-    }
+	}
+}
+
+void MapClient1::showHyperbole()
+{
+	showLayer( 14, true );
 }
 
 void MapClient1::addInterception(int blaId, int bplaId, QList<UavInfo>& blaInfoList, QList<UavInfo>& bplaInfoList )
@@ -764,6 +810,8 @@ void MapClient1::readCheckNetFromFile(QString fileName)
 
     m_areaGeoList.append(point1);
     m_areaGeoList.append(point2);
+
+	addAreaNetInternal(point1, point2);
 }
 
 void MapClient1::readCheckPointsFromFile(QString fileName)

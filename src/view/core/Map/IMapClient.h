@@ -85,6 +85,8 @@ public:
     virtual void mapMoved(double lon, double lat) = 0;
 
     virtual void setTcpClientManager(TcpClientManager* manager) = 0;
+
+	virtual void showHyperbole() = 0;
 };
 
 #endif // IMAPCLIENT_H

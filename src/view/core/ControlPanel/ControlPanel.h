@@ -53,9 +53,11 @@ signals:
 
 	void signalOnMux(int);
 
+	void signalScreenRequest();
+
 private slots:
-    void onSetAlarm(QString, bool val);
-    void closeAlarm();
+	void onSetAlarm(QString, bool val);
+	void closeAlarm();
 };
 
 #endif // CONTROLPANEL_H

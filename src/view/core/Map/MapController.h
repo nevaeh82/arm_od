@@ -10,6 +10,7 @@
 #include <QMenu>
 #include <QEvent>
 #include <QMap>
+#include <QProcess>
 
 #include <MapManager.h>
 #include <pwgiswidget.h>
@@ -108,6 +109,9 @@ private:
 	QTime m_mapUpTime;
 	int m_mapUpTimeout;
     TcpClientManager* m_tcpClientManager;
+	QProcess m_screenProcess;
+	bool m_moving;
+	QTimer m_screenGrabTimer;
 
 public slots:
 	void openMapFromAtlas();
@@ -126,6 +130,8 @@ public slots:
 private slots:
 	void mapOpenFinished();
 	void onExtraBoardInfo(int);
+	void screenRequest();
+	void movingReset();
 
 signals:
 	void mapOpened();
