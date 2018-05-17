@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/profile/init.js</file>
+        <file>resources/profile/satellite.png</file>
+        <file>resources/satellite_trace.csv</file>
+        <file>resources/profile/greenpoint.png</file>
+    </qresource>
+</RCC>

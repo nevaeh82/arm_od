@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TestFormats</class>
+ <widget class="QWidget" name="TestFormats">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>983</width>
+    <height>686</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>20</y>
+     <width>961</width>
+     <height>651</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetMaximumSize</enum>
+    </property>
+    <item>
+     <widget class="PwGisWidget" name="widget" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>600</width>
+        <height>449</height>
+       </size>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(85, 170, 255);</string>
+      </property>
+      <zorder>layoutWidget</zorder>
+     </widget>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="layoutMapInfo">
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>MapInfo formats</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnLoadMapinfoTestM180P180">
+        <property name="text">
+         <string>Mapinfo -180 +180</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnLoadMapinfoWorldMap41001">
+        <property name="text">
+         <string>Mapinfo World41001</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnLoadMapinfoRussiaMapQuasi3857">
+        <property name="text">
+         <string>Mapinfo RussiaQuasi3857</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnLoadMapinfoWorldMapQuasi3857">
+        <property name="text">
+         <string>Mapinfo WorldQuasi3857</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnLoadMapinfoRussiaMap41001">
+        <property name="text">
+         <string>Mapinfo Russia41001</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnLoadMapinfoSaintPetersburgMap">
+        <property name="text">
+         <string>Load Mapinfo GK42 Zone6</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnLoadMapinfoNizhnyNovgorodMap">
+        <property name="text">
+         <string>Load Mapinfo GK42 Zone8</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnLoadMapinfoMoscowMap">
+        <property name="text">
+         <string>Load Mapinfo GK42 Zone7</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnLoadMapinfoMoscowUtmWgs84Map">
+        <property name="text">
+         <string>Load Mapinfo UtmWgs84 Zone37</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QVBoxLayout" name="layoutIngit">
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Ingit maps</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnLoadIngitRussiaMap">
+          <property name="text">
+           <string>Load Ingit Russia Map</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnLoadIngitWorldMap">
+          <property name="text">
+           <string>Load Ingit World Map</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnInvalidAbakan">
+          <property name="text">
+           <string>Invalid Abakan map</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="layoutPanorama">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Panorama formats</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnTestMapPanorama">
+          <property name="text">
+           <string>Test MAP (Panorama)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnTestSxf">
+          <property name="text">
+           <string>Test SXF</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnTestSit">
+          <property name="text">
+           <string>Test SIT</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="layoutKml">
+        <item>
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Tracks</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnLoadGpxTrack">
+          <property name="text">
+           <string>Load GpxTrack Zone7</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnLoadRzdTrack">
+          <property name="text">
+           <string>Load RzdTrack</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnKmlMap">
+          <property name="text">
+           <string>Load KML</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnLoadNoMap">
+          <property name="text">
+           <string>Load invalid map</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="bntInvalidMap">
+          <property name="text">
+           <string>Invalid map</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PwGisWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">PwGis/pwgiswidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

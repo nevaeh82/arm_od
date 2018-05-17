@@ -1,0 +1,10 @@
+debug
+release
+ipch
+GeneratedFiles
+vc100.pdb
+*.vcxproj
+*.vcxproj.*
+Makefile
+Makefile.*
+ProjectInfo.h

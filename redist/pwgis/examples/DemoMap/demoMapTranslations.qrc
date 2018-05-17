@@ -1,0 +1,7 @@
+<RCC>
+	<qresource prefix="/">
+		<file>DemoMap_en.qm</file>
+		<file>DemoMap_ru.qm</file>
+		<file>DemoMap_de.qm</file>
+	</qresource>
+</RCC>

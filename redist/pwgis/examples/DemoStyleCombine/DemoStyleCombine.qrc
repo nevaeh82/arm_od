@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/DemoProfiles">
+        <file>profile/init.js</file>
+    </qresource>
+</RCC>
