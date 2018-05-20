@@ -1,0 +1,6 @@
+<RCC>
+	<qresource prefix="/DemoAtlasProfiles">
+		<file>profile-atlas/init.js</file>
+		<file>profile-atlas/init-atlas.js</file>
+	</qresource>
+</RCC>

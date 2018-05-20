@@ -1,0 +1,11 @@
+#include "DemoPolygonSize.h"
+#include <QApplication>
+
+int main(int argc, char *argv[])
+{
+	QApplication a(argc, argv);
+	DemoPolygonSize w;
+	w.show();
+
+	return a.exec();
+}

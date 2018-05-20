@@ -1,0 +1,8 @@
+log4j.rootLogger=ALL, PwGisClientApp1, PwGisClientApp2
+log4j.appender.PwGisClientApp1=org.apache.log4j.ConsoleAppender
+log4j.appender.PwGisClientApp1.layout=org.apache.log4j.TTCCLayout
+log4j.appender.PwGisClientApp2=org.apache.log4j.RollingFileAppender
+log4j.appender.PwGisClientApp2.layout=org.apache.log4j.PatternLayout
+log4j.appender.PwGisClientApp2.layout.conversionPattern=%d{yyyy-MM-dd HH:mm:ss z} %t %c %m%n
+log4j.appender.PwGisClientApp2.File=var/logs/PwGisClient.log
+log4j.handleQtMessages=1

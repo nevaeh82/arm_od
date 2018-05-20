@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>IngitMapWindow</class>
+ <widget class="QWidget" name="IngitMapWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>708</width>
+    <height>520</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Demo ingit map</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="PwGisWidget" name="pwgiswidget" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QPushButton" name="btnOpenMapDialog">
+         <property name="text">
+          <string>open map dialog</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnAddPoints">
+         <property name="text">
+          <string>add points</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnAddTrack">
+         <property name="text">
+          <string>add track</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnCloseMap">
+         <property name="text">
+          <string>close map</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QPlainTextEdit" name="txtInfo">
+       <property name="plainText">
+        <string>Программа `DemoIngitMap` демонстрирует зависимость точности карты типа `Ингит` от калибровки.
+Точность карты оцениваем по пяти контрольным точкам и gpx-треку, координаты которых представлены в `WGS84`.
+1. Некалиброванная карта.
+1.1. Скачиваем карту `https://svn.dfpost.ru/svn/products/pwgis_maps/trunk/Ingit/Lenare`.
+1.2. Запускаем DemoIngitMap.exe.
+1.3. Нажимаем кнопку `open map dialog` и выбираем файл `Lenare.chart`.
+1.4. Нажимаем кнопку `add points`. На карте отображается пять контрольных точек:
+- пересечение КАД и Приморского шоссе,
+- пересечение КАД и Рябовского шоссе,
+- пересечение КАД и Октябрьской набережной,
+- пересечение КАД и Красносельского шоссе
+- Александровская колонна.
+1.5. Скачиваем трек `http://pm.asoft:8080/redmine/attachments/1126/2013.05.30.21.10.34.gpx`.
+1.6. Нажимаем кнопку `add track`. На карте отображается gpx-трек.
+1.7. Наблюдаем смещение контрольных точек относительно перекрестков, трека относительно дорог ~100-200 метров.
+2. Калиброванная карта.
+2.1. Скачиваем карту `https://svn.dfpost.ru/svn/products/pwgis_maps/trunk/Ingit/spbsub`.
+2.2. Повторяем пункты 1.2. - 1.6. В пункте 1.3. выбираем карту `spbsub.chart` ( файл `spbsub.clb` - калибровка карты ).
+2.3. Наблюдаем смещение контрольных точек, трека ~10-20 метров.</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PwGisWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">PwGis/pwgiswidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
