@@ -10,6 +10,8 @@
 
 #include "MapClient1.h"
 
+#include "BplaSimulator.h"
+
 #define MAPOBJECTS_CACHE "./Map/objectsCache.geojson"
 #define MAPMARKERS_CACHE "./Map/markersCache.geojson"
 
@@ -51,6 +53,7 @@ private:
 	int                         m_layersCounter;
 
 	MapWidget* m_pwWidget;
+    BplaSimulator* m_simulator;
 
 private slots:
 	void onMapReady();

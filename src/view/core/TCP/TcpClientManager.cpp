@@ -6,9 +6,12 @@ TcpClientManager::TcpClientManager(QObject* parent) :
 {
     m_tcpClient = new TcpPvoClient();
     m_tcpServer = new TcpPvoServer();
+    m_tcpServer2 = new TcpPvoServer();
+
 
     addTcpDevice(m_tcpClient);
     addTcpDevice(m_tcpServer);
+    addTcpDevice(m_tcpServer2);
 
     startClient();
     startServer();
@@ -39,6 +42,10 @@ void TcpClientManager::startServer()
     QSettings settings("TCP/tcpPvoSettings.ini", QSettings::IniFormat);
     quint32 port = settings.value("tcpServerPort", 4444).toUInt();
     m_tcpServer->start(QHostAddress::Any, port);
+
+    quint32 port2 = settings.value("tcpServerPort2", 4443).toUInt();
+    m_tcpServer2->start(QHostAddress::Any, port2);
+
 }
 
 void TcpClientManager::restartClient(QString host, int port)
@@ -57,10 +64,12 @@ void TcpClientManager::restartServer(int port)
    // emit signalRestartServer(port);
 }
 
-void TcpClientManager::restartServerInternal(int port)
+void TcpClientManager::restartServerInternal(int port, int port2)
 {
     m_tcpServer->stop();
     m_tcpServer->start(QHostAddress::Any, port);
+    m_tcpServer2->stop();
+    m_tcpServer2->start(QHostAddress::Any, port2);
 }
 
 void TcpClientManager::sendEnemyIntersectToServer(UavInfo uav, double azimuth, double distance,
@@ -113,6 +122,7 @@ void TcpClientManager::sendEnemyToServer(UavInfo uav)
 
     QByteArray msg = niippLst.join(",").toAscii();
     m_tcpServer->sendData(msg);
+    sendEnemyToServer2(uav);
 }
 
 void TcpClientManager::sendEnemyToClient(UavInfo uav)
@@ -127,6 +137,28 @@ void TcpClientManager::sendEnemyToClient(UavInfo uav)
 
     QByteArray msg = niippLst.join(",").toAscii();
     m_tcpClient->sendData(msg);
+}
+
+void TcpClientManager::sendEnemyToServer2(UavInfo uav)
+{
+    QStringList vaenga;
+    vaenga.append("BPLA");
+    vaenga.append( QString::number(uav.id) );
+    vaenga.append( QString::number(uav.uavId) );
+    vaenga.append(uav.name);
+    vaenga.append( uav.dateTime.toString() );
+    vaenga.append( uav.restTime.toString() );
+    vaenga.append( QString::number(uav.lat) );
+    vaenga.append( QString::number(uav.lon) );
+    vaenga.append( QString::number(uav.latStddev) );
+    vaenga.append( QString::number(uav.lonStddev) );
+    vaenga.append( QString::number((int)uav.alt) );
+    vaenga.append( QString::number(uav.speed) );
+    vaenga.append( QString::number(uav.yaw) );
+    vaenga.append("\r\n");
+
+    QByteArray msg = vaenga.join(",").toAscii();
+    m_tcpServer2->sendData(msg);
 }
 
 void TcpClientManager::addTcpDevice(QObject *controller)

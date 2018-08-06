@@ -527,7 +527,32 @@ void MapClient1::addSingleRoundArea(const QPointF center, int id)
 									endP.x(), endP.y(),
 									center.x(), center.y(),
 									QString("%1").arg(i*10), "", MAP_STYLE_NAME_NET_AREA);
-	}
+    }
+}
+
+void MapClient1::addEnemyBplaSim(double lat, double lon)
+{
+    UavInfo uav;
+    uav.name = QString("Sim");
+    uav.role = ENEMY_UAV_ROLE;
+    uav.id = 1;
+    uav.uavId = 1;
+    uav.device = 1;
+    uav.source = 1;
+    uav.lat = lat;
+    uav.lon = lon;
+    uav.latStddev = 10;
+    uav.lonStddev = 10;
+    uav.alt = 1000;
+    uav.speed = 100;
+    uav.yaw = 0;
+    uav.restTime = QTime(0,0,0,0);
+    uav.statusId = 1;
+    uav.dateTime = QDateTime::currentDateTime();
+    uav.historical = false;
+    addEnemyBpla(uav);
+    log_debug("Sim1");
+
 }
 
 void MapClient1::addAreaNetInternal(QPointF point1, QPointF point2)

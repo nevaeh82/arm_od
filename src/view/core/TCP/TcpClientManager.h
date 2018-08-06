@@ -35,10 +35,12 @@ public:
 
     void sendEnemyToServer(UavInfo uav);
     void sendEnemyToClient(UavInfo uav);
+    void sendEnemyToServer2(UavInfo uav);
 
 private:
     TcpPvoClient* m_tcpClient;
     TcpPvoServer* m_tcpServer;
+    TcpPvoServer* m_tcpServer2;
 
     QString m_clientHost;
     int m_clientPort;
@@ -55,7 +57,7 @@ private slots:
     void reconnectAllInternal(QString clientHost, int clientPort, int serverPort);
 
     void restartClientInternal(QString host, int port);
-    void restartServerInternal(int port);
+    void restartServerInternal(int port, int port2);
 signals:
     void signalReconnectAll(QString, int, int);
     void signalRestartServer(int);

@@ -28,6 +28,7 @@
 
 #include "Tcp/TcpFlyRadarController.h"
 
+
 typedef QSharedPointer<IMessageOld> rpc_msg;
 typedef QVector<QPointF>         rpc_send_points_vector;
 typedef QPointF                  rpc_QPointF;

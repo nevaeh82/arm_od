@@ -11,6 +11,7 @@ Map::Map(QObject *parent ) :
 	m_profileManager = 0;
 	m_layerManager = 0;
 	m_pwWidget = 0;
+    m_simulator = new BplaSimulator(this);
 }
 
 Map::~Map()
@@ -19,6 +20,7 @@ Map::~Map()
 
 	m_mapManager->closeMap();
 	m_mapManager->closeAtlas();
+    delete m_simulator;
 }
 
 void Map::init(QMap<int, Station*> map_settings, MapWidget* pwwidget)
@@ -34,8 +36,11 @@ void Map::init(QMap<int, Station*> map_settings, MapWidget* pwwidget)
 
         m_firstClient = client;
 
+        connect(m_simulator, SIGNAL(signalGenNewPoint(double, double)),
+                client, SLOT(addEnemyBplaSim(double, double)));
 		connect( this, SIGNAL(modelMapReady()), client, SLOT(init()) );
         connect(client, SIGNAL(onSquare(QString)), this, SIGNAL(onSquare(QString)));
+        m_simulator->startSim();
 	}
 }
 

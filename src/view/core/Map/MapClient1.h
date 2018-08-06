@@ -145,6 +145,7 @@ private:
 	QString getSquareName(double lon, double lat);
 	void addSingleRoundArea(const QPointF center, int id);
 public slots:
+    void addEnemyBplaSim(double, double);
 	virtual void init();
 	virtual void setPoint();
 	virtual void centerMap();
